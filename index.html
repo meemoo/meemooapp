@@ -3,53 +3,119 @@
 <head>
   <meta charset="utf-8" />
   <title>meemoo/iframework @ GitHub -- iframework proof-of-concept</title>
+  
   <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/themes/eggplant/jquery-ui.css" rel="stylesheet" type="text/css">
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js"></script>
+  
+  <style>
+  html, body {
+    margin:0;
+    padding:0;
+    width: 100%;
+    height: 100%;
+  }
+  div.module {
+    border: 1px black solid;
+    padding: 0 10px 45px 10px;
+    display: inline-block;
+    background-color: rgba(255,255,255,.75);
+    box-shadow: 3px 3px 5px rgba(0,0,0,.3);
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+    div.module h1.title {
+      font-size: 20px;
+      margin: 0;
+      padding: 5px 0;
+      cursor: move;
+    }
+    div.module iframe {
+      border: 1px black solid;
+      width: 100%;
+      height: 100%;
+      -webkit-box-sizing: border-box; 
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+    .ui-resizable-helper {
+      border: 1px black dotted;
+      margin: 0 100px 100px 0;
+    }
+    .ui-draggable-helper {
+      border: 1px black dotted;
+      z-index: 1000; /* should just be highest module +1 */
+    }
+  </style>
 </head>
 <body>
   
-  <iframe src="http://meemoo.github.com/metronome" width="500" height="75"></iframe>
-  &rarr;
-  <iframe src="http://meemoo.github.com/log" width="300" height="300"></iframe> 
+  <div id="modules">
+    <div class="module" style="width:500px;height:75px;top:100px;left:20px;"><h1 class="title">metronome</h1><iframe src="http://meemoo.github.com/metronome"></iframe></div>
+    <div class="module" style="width:300px;height:300px;top:20px;left:560px;"><h1 class="title">log</h1><iframe src="http://meemoo.github.com/log"></iframe></div>
+  </div>
   
-  <p id="status">
-  </p>
+  <pre id="status"></pre>
   
   <script type="text/javascript">
+  
+  $(document).ready(function(){
     
-    var start, count, lastTime;
-    
-    start = new Date().getTime();
-    count = 0;
-    
-    var postMessageToWindow = function(message, toWindow) {
-      // toWindow.postMessage(message, window.location.protocol + "//" + window.location.host);
-      toWindow.postMessage(message, "*");
-    };
-    
-    var recieveMessage = function(e) {
-      var message = e.data.split("/");
-      
-      switch (message[1]) {
-        case "loaded":
-          postMessageToWindow("/name/"+e.source.name, e.source);
-          count++;
-          break;
-        case "forward":
-          var windowIndex = parseInt(message[2]);
-          if (0 <= windowIndex && windowIndex < window.frames.length) {
-            postMessageToWindow(decodeURIComponent(message[3]), window.frames[windowIndex]);
-          }
-          break;
+    $("div.module").draggable({
+      // handle: "h1.title",
+      stack: "div#modules div.module",
+      helper: function(event){
+        return $("<div class='ui-draggable-helper'></div>").width($(this).width()+20).height($(this).height()+40);
+      },
+      // start: function(event, ui){
+      //   $("div.module").css("z-index", 1);
+      //   $(event.target).css("z-index", 2);
+      // },
+      stop: function(event, ui){
+        $(event.target).offset({
+          left: $(ui.helper).offset().left, 
+          top: $(ui.helper).offset().top
+        });
       }
-      
-      document.getElementById("status").innerHTML += "<br />" + (new Date().getTime()) +": "+ e.data;
-      
-    };
+    }).resizable({
+      helper: "ui-resizable-helper"
+    }).disableSelection();
     
-    window.addEventListener("message", recieveMessage, false);
+  });
+  
+  
+  var start, count, lastTime;
+  
+  start = new Date().getTime();
+  count = 0;
+  
+  var postMessageToWindow = function(message, toWindow) {
+    // toWindow.postMessage(message, window.location.protocol + "//" + window.location.host);
+    toWindow.postMessage(message, "*");
+  };
+  
+  var recieveMessage = function(e) {
+    var message = e.data.split("/");
     
+    switch (message[1]) {
+      case "info":
+        var info = JSON.parse( decodeURIComponent(message[2]) );
+        $("#status").append( JSON.stringify(info) + "<br />" );
+        count++;
+        break;
+      case "forward":
+        var windowIndex = parseInt(message[2]);
+        if (0 <= windowIndex && windowIndex < window.frames.length) {
+          postMessageToWindow(decodeURIComponent(message[3]), window.frames[windowIndex]);
+        }
+        break;
+    }
+    
+  };
+  
+  window.addEventListener("message", recieveMessage, false);
+  
   </script>
   
 </body>
