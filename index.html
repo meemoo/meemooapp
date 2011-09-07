@@ -22,7 +22,7 @@
       padding: 0 10px 45px 10px;
       display: inline-block;
       background-color: rgba(255,255,255,.75);
-      box-shadow: 3px 3px 5px rgba(0,0,0,.3);
+/*      box-shadow: 3px 3px 5px rgba(0,0,0,.3);*/
       position: absolute;
       top: 0;
       left: 0;
@@ -53,14 +53,22 @@
 </head>
 <body>
   
+  <svg width="95%" height="95%" style="position:absolute;top:0;left:0;">
+    <circle cx="30" cy="235" r="5" fill="none" stroke="black" stroke-width=".9" />
+    <circle cx="570" cy="20" r="5" fill="none" stroke="black" stroke-width="1" />
+    <path d="M 30 235 L 570 20" stroke="blue" stroke-width="4" />
+    <circle cx="30" cy="235" r="2" fill="blue" stroke="none" />
+    <circle cx="570" cy="20" r="2" fill="blue" stroke="none" />
+  </svg>
+
+  <pre id="status" style="position:absolute;top:400px;"></pre>
+  
   <div id="modules">
     <div class="module" style="width:500px;height:75px;top:100px;left:20px;"><h1 class="title">metronome</h1><iframe src="http://meemoo.github.com/metronome"></iframe></div>
-    <div class="module" style="width:300px;height:300px;top:20px;left:560px;"><h1 class="title">log</h1><iframe src="http://meemoo.github.com/log"></iframe></div>
+    <div class="module" style="width:300px;height:300px;top:30px;left:560px;"><h1 class="title">log</h1><iframe src="http://meemoo.github.com/log"></iframe></div>
     <!-- <div class="module" style="width:500px;height:75px;top:100px;left:20px;"><h1 class="title">metronome</h1><iframe src="http://meemoo.dev/metronome"></iframe></div>
-    <div class="module" style="width:300px;height:300px;top:20px;left:560px;"><h1 class="title">log</h1><iframe src="http://meemoo.dev/log"></iframe></div> -->
+    <div class="module" style="width:300px;height:300px;top:30px;left:560px;"><h1 class="title">log</h1><iframe src="http://meemoo.dev/log"></iframe></div> -->
   </div>
-  
-  <pre id="status"></pre>
   
   <script type="text/javascript">
   
@@ -68,25 +76,25 @@
     
     $meemoo.ready();
     
-    $("div.module").draggable({
-      // handle: "h1.title",
-      stack: "div#modules div.module",
-      helper: function(event){
-        return $("<div class='ui-draggable-helper'></div>").width( $(this).width()+20 ).height( $(this).height()+40 );
-      },
-      // start: function(event, ui){
-      //   $("div.module").css("z-index", 1);
-      //   $(event.target).css("z-index", 2);
-      // },
-      stop: function(event, ui){
-        $(event.target).offset({
-          left: $(ui.helper).offset().left, 
-          top: $(ui.helper).offset().top
-        });
-      }
-    }).resizable({
-      helper: "ui-resizable-helper"
-    }).disableSelection();
+    // $("div.module").draggable({
+    //   // handle: "h1.title",
+    //   stack: "div#modules div.module",
+    //   helper: function(event){
+    //     return $("<div class='ui-draggable-helper'></div>").width( $(this).width()+20 ).height( $(this).height()+40 );
+    //   },
+    //   // start: function(event, ui){
+    //   //   $("div.module").css("z-index", 1);
+    //   //   $(event.target).css("z-index", 2);
+    //   // },
+    //   stop: function(event, ui){
+    //     $(event.target).offset({
+    //       left: $(ui.helper).offset().left, 
+    //       top: $(ui.helper).offset().top
+    //     });
+    //   }
+    // }).resizable({
+    //   helper: "ui-resizable-helper"
+    // }).disableSelection();
     
   });
   
