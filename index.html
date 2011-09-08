@@ -6,7 +6,7 @@
   
   <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/themes/eggplant/jquery-ui.css" rel="stylesheet" type="text/css">
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
   
   <script src="/meemoo/meemoo.js"></script>
   
@@ -18,15 +18,19 @@
       height: 100%;
     }
     div.module {
-      border: 1px black solid;
+      border: 1px #AAA solid;
       padding: 0 10px 45px 10px;
       display: inline-block;
       background-color: rgba(255,255,255,.75);
-/*      box-shadow: 3px 3px 5px rgba(0,0,0,.3);*/
       position: absolute;
       top: 0;
       left: 0;
+      cursor: move;
     }
+      div.module.active {
+        border: 1px #000 solid;
+        box-shadow: 3px 3px 4px rgba(0,0,0,.2);
+      }
       div.module h1.title {
         font-size: 20px;
         margin: 0;
@@ -34,7 +38,7 @@
         cursor: move;
       }
       div.module iframe {
-        border: 1px black solid;
+        border: 1px #AAA solid;
         width: 100%;
         height: 100%;
         -webkit-box-sizing: border-box; 
@@ -54,7 +58,7 @@
 <body>
   
   <svg width="95%" height="95%" style="position:absolute;top:0;left:0;">
-    <circle cx="30" cy="235" r="5" fill="none" stroke="black" stroke-width=".9" />
+    <circle cx="30" cy="235" r="5" fill="none" stroke="black" stroke-width="1" />
     <circle cx="570" cy="20" r="5" fill="none" stroke="black" stroke-width="1" />
     <path d="M 30 235 L 570 20" stroke="blue" stroke-width="4" />
     <circle cx="30" cy="235" r="2" fill="blue" stroke="none" />
@@ -63,68 +67,109 @@
 
   <pre id="status" style="position:absolute;top:400px;"></pre>
   
-  <div id="modules">
-    <div class="module" style="width:500px;height:75px;top:100px;left:20px;"><h1 class="title">metronome</h1><iframe src="metronome.html"></iframe></div>
-    <div class="module" style="width:300px;height:300px;top:30px;left:560px;"><h1 class="title">log</h1><iframe src="log.html"></iframe></div>
-  </div>
+  <div id="modules"></div>
   
   <script type="text/javascript">
   
   $(document).ready(function(){
     
-    // $("div.module").draggable({
-    //   // handle: "h1.title",
-    //   stack: "div#modules div.module",
-    //   helper: function(event){
-    //     return $("<div class='ui-draggable-helper'></div>").width( $(this).width()+20 ).height( $(this).height()+40 );
-    //   },
-    //   // start: function(event, ui){
-    //   //   $("div.module").css("z-index", 1);
-    //   //   $(event.target).css("z-index", 2);
-    //   // },
-    //   stop: function(event, ui){
-    //     $(event.target).offset({
-    //       left: $(ui.helper).offset().left, 
-    //       top: $(ui.helper).offset().top
-    //     });
-    //   }
-    // }).resizable({
-    //   helper: "ui-resizable-helper"
-    // }).disableSelection();
+    var modules = [];
     
-  });
-  
-  
-  var start, count, lastTime;
-  
-  start = new Date().getTime();
-  count = 0;
-  
-  var postMessageToWindow = function(message, toWindow) {
-    // toWindow.postMessage(message, window.location.protocol + "//" + window.location.host);
-    toWindow.postMessage(message, "*");
-  };
-  
-  var recieveMessage = function(e) {
-    var message = e.data.split("/");
-    
-    switch (message[1]) {
-      case "info":
-        var info = JSON.parse( decodeURIComponent(message[2]) );
-        $("#status").append( JSON.stringify(info) + "<br />" );
-        console.log(e.data);
-        break;
-      case "forward":
-        var windowIndex = parseInt(message[2]);
-        if (0 <= windowIndex && windowIndex < window.frames.length) {
-          postMessageToWindow(decodeURIComponent(message[3]), window.frames[windowIndex]);
+    $meemoo.actions.info = function (message, e) {
+      for (var i=0; i < window.frames.length; i++) {
+        if (window.frames[i] === e.source) {
+          
         }
-        break;
+      }
+      var info = JSON.parse( decodeURIComponent(message[2]) );
+      $("#status").append( JSON.stringify(info) + "<br />" );
+    };
+    
+    function addNode(module) {
+      var mod = $('<div class="module" style="left:'+module.x+'px;top:'+module.y+'px;width:'+module.w+'px;height:'+module.h+'px;" />')
+        .append('<h1 class="title"></h1>')
+        .append('<iframe src="'+module.src+'"></iframe>')
+        .click(function(){
+          $("div.module").removeClass("active");
+          $(event.target).addClass("active");
+          // Bring to top
+          var topZ = 0;
+          $("div#modules div.module").each(function(){
+            var thisZ = parseInt($(this).css("z-index"), 10);
+            if (thisZ > topZ) { topZ = thisZ; } 
+          });
+          $(this).css("z-index", topZ+1)
+        }).draggable({
+          // handle: "h1.title",
+          stack: "div#modules div.module",
+          helper: function(event){
+            return $("<div class='ui-draggable-helper'></div>").width( $(this).width()+20 ).height( $(this).height()+40 );
+          },
+          start: function() {
+            $(this).trigger("click");
+          },
+          stop: function(event, ui){
+            $(event.target).offset({
+              left: $(ui.helper).offset().left, 
+              top: $(ui.helper).offset().top
+            });
+          }
+        }).resizable({
+          helper: "ui-resizable-helper"
+        }).disableSelection();
+        
+      $('#modules').append(mod);
+    };
+    
+    function loadGraph (graph) {
+      for ( var i=0; i < graph.nodes.length; i++ ) {
+        addNode(graph.nodes[i]);
+      }
+      for ( var i=0; i < graph.edges.length; i++ ) {
+        
+      }
     }
     
-  };
+    var graph = {
+      nodes: [
+        {
+          id: 1,
+          // src:"http://xyz.meemoo.dev/iframework/metronome.html", 
+          src:"metronome.html", 
+          x:20, y:100, w:500, h:75, 
+          state:{ bpm:140 }
+        },
+        {
+          id: 2,
+          // src:"http://abc.meemoo.dev/iframework/log.html", 
+          src:"log.html", 
+          x:560, y:30, w:300, h:300, 
+          state:{}
+        }
+      ],
+      edges: [
+        { from: 1, to: 2 }
+      ]
+    }
+    
+    loadGraph(graph);
+    
+    
+    
+    
+    
+    
+    
+    // $meemoo.actions.forward = function (message) {
+    //   var windowIndex = parseInt(message[2]);
+    //   if (0 <= windowIndex && windowIndex < window.frames.length) {
+    //     postMessageToWindow(decodeURIComponent(message[3]), window.frames[windowIndex]);
+    //   }
+    // };
+    
+    
   
-  window.addEventListener("message", recieveMessage, false);
+  });
   
   </script>
   

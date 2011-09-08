@@ -22,9 +22,9 @@
       
       var count = 0;
       
-      $meemoo.actions.default = function (message) {
+      $meemoo.actions.default = function (message, e) {
         count++;
-        $("#log").prepend(count + ": " + message + "<br />");
+        $("#log").prepend(count + ": " + e.data + "<br />");
       };
       
       $("#clear").click(function(){
