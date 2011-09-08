@@ -22,16 +22,10 @@
       
       var count = 0;
       
-      $meemoo.ready();
-      
       $meemoo.actions.default = function (message) {
         count++;
         $("#log").prepend(count + ": " + message + "<br />");
       };
-      
-      // $meemoo.actions.beat = function (e) {
-      //   console.log("BEAT!!!")
-      // };
       
       $("#clear").click(function(){
         $("#log").empty();
