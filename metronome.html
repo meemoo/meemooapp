@@ -25,19 +25,17 @@
   
   $(document).ready(function() {
     
-    var parentWindow, meemoo_bpm, meemoo_ms, loopInterval, setBpm, setMs, setLoop, doLoop, recieveMessage, postMessageToSib;
-    
-    parentWindow = window.opener ? window.opener : window.parent ? window.parent : void 0;
+    var meemoo_bpm, meemoo_ms, loopInterval, setBpm, setMs, setLoop, doLoop, recieveMessage, postMessageToSib;
     
     meemoo_bpm = $("#bpm").val();
     meemoo_ms = $("#ms").val();
     
     $("#bpm").change(function(){
-      setBpm($(this).val());
+      $meemoo.actions.bpm($(this).val());
     });
     
     $("#ms").change(function(){
-      setMs($(this).val());
+      $meemoo.actions.ms($(this).val());
     });
     
     $("#start").click(function(){
@@ -48,15 +46,15 @@
       clearInterval(loopInterval);
     });
     
-    setBpm = function(val){
-      meemoo_bpm = parseInt(val);
+    $meemoo.actions.bpm = function(message){
+      meemoo_bpm = parseInt(message[2]);
       meemoo_ms = parseInt(1000 / meemoo_bpm * 60);
       $("#ms").val(meemoo_ms);
       setLoop(meemoo_ms);
     };
     
-    setMs = function(val){
-      meemoo_ms = parseInt(val);
+    $meemoo.actions.ms = function(message){
+      meemoo_ms = parseInt(message[2]);
       meemoo_bpm = parseInt(1000 / meemoo_ms * 60);
       $("#bpm").val(meemoo_bpm);
       setLoop(meemoo_ms);
@@ -68,29 +66,7 @@
     };
     
     doLoop = function(){
-      postMessageToSib("/beat");
-    };
-    
-    recieveMessage = function(e) {
-      var action, message, messages, value, _i, _len;
-      message = e.data.split("/");
-      action = message[1];
-      value = message[2];
-      
-      switch (action) {
-        case "setBpm":
-          setBpm(value);
-        case "setMs":
-          setMs(value);
-      }
-    };
-    window.addEventListener("message", recieveMessage, false);
-    
-    postMessageToSib = function(message) {
-      var sib = parentWindow.frames[1];
-      if (sib) {
-        sib.postMessage(message, "*")
-      }
+      $meemoo.send("/beat");
     };
     
   });
