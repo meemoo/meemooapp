@@ -4,7 +4,6 @@
   <meta charset="utf-8" />
   <title>meemoo/iframework @ GitHub -- iframework proof-of-concept</title>
   
-  <!-- <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/eggplant/jquery-ui.css" rel="stylesheet" type="text/css"> -->
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
   
@@ -13,6 +12,8 @@
   
   <script src="/meemoo/meemoo.js"></script>
   <script src="iframework.js?r=3"></script>
+  
+  <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/eggplant/jquery-ui.css" rel="stylesheet" type="text/css">
   
   <style type="text/css">
     html, body {
@@ -35,7 +36,6 @@
       position: absolute;
       top: 0;
       left: 0;
-      cursor: move;
       z-index:2;
     }
       div.module.active {
@@ -44,8 +44,8 @@
       }
       div.module h1.title {
         position: absolute;
-        top: 5px;
-        left: 5px;
+        top: 2px;
+        left: 10px;
         
         font-size: 20px;
         margin: 0;
@@ -96,11 +96,11 @@
   <script type="text/template" id="node-template">
     
     <svg class="ports">
-      <circle class="port input" cx="<%= x-4 %>" cy="<%= y-4 %>" r="6" fill="none" stroke="black" stroke-width=".5" />
-      <circle class="port output" cx="<%= Number(x)+Number(w)+5 %>" cy="<%= Number(y)+Number(h)+5 %>" r="6" fill="none" stroke="black" stroke-width=".5" />
+      <circle class="port input" cx="<%= x-4 %>" cy="<%= y-4 %>" r="6" fill="none" stroke="black" stroke-width=".75" />
+      <circle class="port output" cx="<%= Number(x)+Number(w)+5 %>" cy="<%= Number(y)+Number(h)+5 %>" r="6" fill="none" stroke="black" stroke-width=".75" />
     </svg>
     <div class="module" style="left:<%= x %>px;top:<%= y %>px;width:<%= w %>px;height:<%= h %>px;" >
-      <h1 class="title"></h1>
+      <h1 class="title">...</h1>
       <iframe class="frame" src="<%= src %>" style="width:<%= w - 20 %>px;height:<%= h - 40 %>px;"></iframe>
     </div>
     
@@ -109,9 +109,9 @@
   <script type="text/template" id="edge-template">
   
     <svg>
-      <path class="wire" d="M 30 235 L 570 20" fill="none" stroke="blue" stroke-width="4" />
-      <circle class="wire-end out" cx="30" cy="235" r="2" fill="blue" stroke="none" />
-      <circle class="wire-end in" cx="570" cy="20" r="2" fill="blue" stroke="none" />
+      <path class="wire" d="M 30 235 L 570 20" fill="none" stroke="blue" stroke-width="6" />
+      <circle class="wire-end out" cx="30" cy="235" r="3" fill="blue" stroke="none" />
+      <circle class="wire-end in" cx="570" cy="20" r="3" fill="blue" stroke="none" />
     <svg>
     
   </script>
@@ -125,56 +125,12 @@
     $meemoo.actions.info = function (message, e) {
       for (var i=0; i < window.frames.length; i++) {
         if (window.frames[i] === e.source) {
-          
+          // window.frames[i].trigger("info");
         }
       }
       var info = JSON.parse( decodeURIComponent(message[2]) );
       $(".status").append( JSON.stringify(info) + "<br />" );
     };
-    
-    function addNode(module) {
-      var mod = $('<div class="module" style="left:'+module.x+'px;top:'+module.y+'px;width:'+module.w+'px;height:'+module.h+'px;" />')
-        .append('<h1 class="title"></h1>')
-        .append('<iframe src="'+module.src+'"></iframe>')
-        .click(function(){
-          $("div.module").removeClass("active");
-          $(event.target).addClass("active");
-          // Bring to top
-          var topZ = 0;
-          $("div#modules div.module").each(function(){
-            var thisZ = parseInt($(this).css("z-index"), 10);
-            if (thisZ > topZ) { topZ = thisZ; } 
-          });
-          $(this).css("z-index", topZ+1)
-        }).draggable({
-          stack: "div#modules div.module",
-          helper: function(event){
-            return $("<div class='ui-draggable-helper'></div>").width( $(this).width()+20 ).height( $(this).height()+40 );
-          },
-          start: function() {
-            $(this).trigger("click");
-          },
-          stop: function(event, ui){
-            $(event.target).offset({
-              left: $(ui.helper).offset().left, 
-              top: $(ui.helper).offset().top
-            });
-          }
-        }).resizable({
-          helper: "ui-resizable-helper"
-        }).disableSelection();
-        
-      $('#modules').append(mod);
-    };
-    
-    function loadGraph (graph) {
-      for ( var i=0; i < graph.nodes.length; i++ ) {
-        addNode(graph.nodes[i]);
-      }
-      for ( var i=0; i < graph.edges.length; i++ ) {
-        
-      }
-    }
     
     var g = new Graph({
       info: {
@@ -188,7 +144,7 @@
           id: 1,
           src:"http://xyz.meemoo.dev/iframework/metronome.html", 
           // src:"metronome.html", 
-          x:20, y:100, w:500, h:75, 
+          x:20, y:100, w:500, h:85, 
           state:{ bpm:140 }
         },
         {

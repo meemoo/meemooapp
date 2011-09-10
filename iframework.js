@@ -23,12 +23,14 @@ var NodeView = Backbone.View.extend({
   className: "node",
   template: _.template($('#node-template').html()),
   events: {
-    "dragstop .module": "move"
+    "dragstop .module":   "move",
+    "resizestop .module": "resize",
+    "info .iframe":       "infoLoaded"
   },
   initialize: function () {
     this.render();
     this.$(".module")
-      .click( function () {
+      .mousedown( function () {
         $("div.module").removeClass("active");
         $(event.target).addClass("active");
         // Bring to top
@@ -38,9 +40,13 @@ var NodeView = Backbone.View.extend({
           if (thisZ > topZ) { topZ = thisZ; } 
         });
         $(this).css("z-index", topZ+1);
-      }).draggable({
+      })
+      .click( function () {
+      })
+      .draggable({
+        // handle: 'h1',
         helper: function(event){
-          // Bring to top
+          // Bring helper to top
           var topZ = 0;
           $("div.nodes div.module").each(function(){
             var thisZ = Number($(this).css("z-index"));
@@ -54,16 +60,12 @@ var NodeView = Backbone.View.extend({
         },
         start: function() {
           $(this).trigger("click");
-        },
-        // stop: function(event, ui){
-        //   $(event.target).offset({
-        //     left: $(ui.helper).offset().left, 
-        //     top: $(ui.helper).offset().top
-        //   });
-        // }
-      }).resizable({
+        }
+      })
+      .resizable({
         helper: "ui-resizable-helper"
-      })//.disableSelection();
+      })
+      //.disableSelection();
   },
   render: function () {
     $(this.el).html(this.template(this.model.toJSON()));
@@ -88,6 +90,25 @@ var NodeView = Backbone.View.extend({
       cx: newX + this.model.get("w") + 5,
       cy: newY + this.model.get("h") + 5
     });
+  },
+  resize: function (event, ui) {
+    var newW = this.$(".module").width();
+    var newH = this.$(".module").height();
+    this.model.set({
+      w: newW,
+      h: newH
+    });
+    this.$(".output").attr({
+      cx: this.model.get("x") + newW + 5,
+      cy: this.model.get("y") + newH + 5
+    });
+    this.$(".frame").css({
+      width: newW - 20,
+      height: newH - 40
+    });
+  },
+  infoLoaded: function (event) {
+    console.log(event);
   }
 });
 
@@ -95,6 +116,10 @@ var Edge = Backbone.Model.extend({
   defaults: {
     from: null,
     to: null
+  },
+  initialize: function () {
+    if (this.attributes.from) {
+    }
   },
   initializeView: function () {
     return this.view = new EdgeView({model:this});
@@ -134,6 +159,7 @@ window.Graph = Backbone.Model.extend({
     // Convert arrays into Backbone Collections
     if (this.attributes.nodes) {
       this.attributes.nodes = new Nodes(this.attributes.nodes);
+      console.log(this.attributes.nodes.models);
     }
     if (this.attributes.edges) {
       this.attributes.edges = new Edges(this.attributes.edges);
