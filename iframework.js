@@ -2,6 +2,7 @@ $(function(){
 
 
 var Node = Backbone.Model.extend({
+  loaded: false,
   defaults: {
     src: "",
     x: 0,
@@ -11,7 +12,26 @@ var Node = Backbone.Model.extend({
   },
   initializeView: function () {
     return this.view = new NodeView({model:this});
+  },
+  send: function (message) {
+    if (this.frameIndex != undefined) {
+      window.frames[this.frameIndex].postMessage(message, "*");
+    }
+  },
+  setState: function (state) {
+    this.send("/setState/"+encodeURIComponent(JSON.stringify(state)));
+  },
+  infoLoaded: function (info) {
+    this.view.infoLoaded(info);
+    // Set state
+    if (this.get("state")) {
+      this.setState(this.get("state"));
+    }
+    this.loaded = true;
+    // Check if all modules are loaded
+    this.graph.checkLoaded();
   }
+  
 });
 
 var Nodes = Backbone.Collection.extend({
@@ -24,8 +44,7 @@ var NodeView = Backbone.View.extend({
   template: _.template($('#node-template').html()),
   events: {
     "dragstop .module":   "move",
-    "resizestop .module": "resize",
-    "info .iframe":       "infoLoaded"
+    "resizestop .module": "resize"
   },
   initialize: function () {
     this.render();
@@ -121,8 +140,12 @@ var NodeView = Backbone.View.extend({
       }
     }
   },
-  infoLoaded: function (event) {
-    console.log(event);
+  infoLoaded: function (info) {
+    this.$('h1')
+      .text(info.title)
+      .attr({
+        title: "by "+info.author+": "+info.description
+      });
   }
 });
 
@@ -136,9 +159,9 @@ var Edge = Backbone.Model.extend({
   initializeView: function () {
     return this.view = new EdgeView({model:this});
   },
-  attach: function () {
-    if (this.from && this.to) {
-      // Todo
+  connect: function () {
+    if (this.from && this.from.loaded && this.to && this.to.frameIndex != undefined) {
+      this.from.send("/connect/"+this.to.frameIndex);
     }
   }
 });
@@ -182,9 +205,9 @@ window.Graph = Backbone.Model.extend({
     }
     if (this.attributes.edges) {
       this.attributes.edges = new Edges(this.attributes.edges);
-      for(var i=0; i<this.attributes.edges.models.length; i++) {
+      for(var i=0; i<this.get("edges").length; i++) {
         // Attach this graph to the edge
-        var thisEdge = this.attributes.edges.models[i];
+        var thisEdge = this.get("edges").at(i);
         thisEdge.graph = this;
         // Attach the node models to the edge
         for(var j=0; j<this.attributes.nodes.models.length; j++) {
@@ -195,7 +218,6 @@ window.Graph = Backbone.Model.extend({
           if (thisEdge.attributes.to == thisNode.attributes.id) {
             thisEdge.to = thisNode;
           }
-          thisEdge.attach();
         }
       }
     }
@@ -208,6 +230,23 @@ window.Graph = Backbone.Model.extend({
   addEdge: function (edge) {
     this.attributes.edges.add(edge);
     if (this.view) this.view.addEdge(edge);
+  },
+  checkLoaded: function () {
+    for (var i=0; i<this.get("nodes").length; i++) {
+      if (!this.get("nodes").at(i).loaded) return false;
+    }
+    this.loaded = true;
+    this.connectEdges();
+    return true;
+  },
+  connectEdges: function () {
+    // Only when all modules have loaded
+    if (this.loaded) {
+      for(var i=0; i<this.get("edges").length; i++) {
+        var thisEdge = this.get("edges").at(i);
+        thisEdge.connect();
+      }
+    }
   }
 });
 
@@ -228,6 +267,7 @@ var GraphView = Backbone.View.extend({
   },
   addNode: function (node) {
     this.$(".nodes").append( node.initializeView().el );
+    node.frameIndex = window.frames.length - 1;
   },
   addEdge: function (edge) {
     this.$(".edges").append( edge.initializeView().el );

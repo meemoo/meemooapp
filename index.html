@@ -13,7 +13,9 @@
   <script src="/meemoo/meemoo.js"></script>
   <script src="iframework.js?r=3"></script>
   
-  <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/eggplant/jquery-ui.css" rel="stylesheet" type="text/css">
+  <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/eggplant/jquery-ui.css" rel="stylesheet" type="text/css" />
+  
+  <link href='http://fonts.googleapis.com/css?family=Tenor+Sans&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css' />
   
   <style type="text/css">
     html, body {
@@ -43,11 +45,14 @@
         box-shadow: 3px 3px 4px rgba(0,0,0,.2);
       }
       div.module h1.title {
+        font-family: 'Tenor Sans', cursive;
+        font-weight: 400;
+        
         position: absolute;
         top: 2px;
         left: 10px;
         
-        font-size: 20px;
+        font-size: 14px;
         margin: 0;
         padding: 5px 0;
         cursor: move;
@@ -122,10 +127,17 @@
     
     var modules = [];
     
+    // When we get the info from the module, update it and set state
     $meemoo.actions.info = function (message, e) {
       for (var i=0; i < window.frames.length; i++) {
         if (window.frames[i] === e.source) {
-          // window.frames[i].trigger("info");
+          for (var j=0; j < window.g.get("nodes").length; j++) {
+            var thisNode = window.g.get("nodes").at(j);
+            if (thisNode.frameIndex === i) {
+              // Load module title, author, description
+              thisNode.infoLoaded(JSON.parse(decodeURIComponent(message[2])));
+            }
+          }
         }
       }
       var info = JSON.parse( decodeURIComponent(message[2]) );
@@ -144,14 +156,14 @@
           id: 1,
           // src:"http://xyz.meemoo.dev/iframework/metronome.html", 
           src:"metronome.html", 
-          x:20, y:100, w:500, h:85, 
-          state:{ bpm:140 }
+          x: 20, y: 100, w: 500, h: 85, 
+          state: { bpm: 140 }
         },
         {
           id: 2,
           // src:"http://abc.meemoo.dev/iframework/log.html", 
           src:"log.html", 
-          x:560, y:30, w:300, h:300
+          x: 560, y: 30, w: 300, h: 300
         }
       ],
       edges: [

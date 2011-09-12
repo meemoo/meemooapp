@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8'>
-  <title>meemoo/metronome @ GitHub</title>
+  <title>metronome</title>
   <meta name="author" content="sembiki.com">
   <meta name="description" content="meemoo.js module for rhythm in bpm or ms" />
   
@@ -31,19 +31,19 @@
     meemoo_ms = $("#ms").val();
     
     $("#bpm").change(function(){
-      $meemoo.actions.bpm($(this).val());
+      $meemoo.actions.bpm("/bpm/"+$(this).val());
     });
     
     $("#ms").change(function(){
-      $meemoo.actions.ms($(this).val());
+      $meemoo.actions.ms("/ms/"+$(this).val());
     });
     
     $("#start").click(function(){
-      setLoop(meemoo_ms);
+      $meemoo.actions.start();
     });
     
     $("#stop").click(function(){
-      clearInterval(loopInterval);
+      $meemoo.actions.stop();
     });
     
     $meemoo.actions.bpm = function(message){
@@ -60,6 +60,15 @@
       setLoop(meemoo_ms);
     };
     
+    $meemoo.actions.start = function(message){
+      setLoop(meemoo_ms);
+    };
+    
+    $meemoo.actions.stop = function(message){
+      clearInterval(loopInterval);
+    };
+    
+    
     setLoop = function(val){
       clearInterval(loopInterval);
       loopInterval = setInterval(doLoop, val);
@@ -70,7 +79,7 @@
     };
     
     // Todo
-    $meemoo.actions.connect(["","connect",1]);
+    // $meemoo.actions.connect(["","connect",1]);
     
   });
   
