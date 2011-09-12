@@ -109,9 +109,9 @@
   <script type="text/template" id="edge-template">
   
     <svg>
-      <path class="wire" d="M 30 235 L 570 20" fill="none" stroke="blue" stroke-width="6" />
-      <circle class="wire-end out" cx="30" cy="235" r="3" fill="blue" stroke="none" />
-      <circle class="wire-end in" cx="570" cy="20" r="3" fill="blue" stroke="none" />
+      <path class="wire" d="M <%= this.model.from.get('x') + this.model.from.get('w') + 5 %> <%= this.model.from.get('y') + this.model.from.get('h') + 5 %> L <%= this.model.to.get('x') - 4 %> <%= this.model.to.get('y') - 4 %>" fill="none" stroke="blue" stroke-width="6" />
+      <circle class="wire-end out" cx="<%= this.model.from.get('x') + this.model.from.get('w') + 5 %>" cy="<%= this.model.from.get('y') + this.model.from.get('h') + 5 %>" r="3" fill="blue" stroke="none" />
+      <circle class="wire-end in" cx="<%= this.model.to.get('x') - 4 %>" cy="<%= this.model.to.get('y') - 4 %>" r="3" fill="blue" stroke="none" />
     <svg>
     
   </script>

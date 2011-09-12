@@ -90,6 +90,13 @@ var NodeView = Backbone.View.extend({
       cx: newX + this.model.get("w") + 5,
       cy: newY + this.model.get("h") + 5
     });
+    // Rerender related edges
+    for (var i=0; i<this.model.graph.get("edges").length; i++){
+      var thisEdge = this.model.graph.get("edges").at(i);
+      if (this.model == thisEdge.from || this.model == thisEdge.to) {
+        thisEdge.view.render();
+      }
+    }
   },
   resize: function (event, ui) {
     var newW = this.$(".module").width();
@@ -106,6 +113,13 @@ var NodeView = Backbone.View.extend({
       width: newW - 20,
       height: newH - 40
     });
+    // Rerender related edges
+    for (var i=0; i<this.model.graph.get("edges").length; i++){
+      var thisEdge = this.model.graph.get("edges").at(i);
+      if (this.model == thisEdge.from) {
+        thisEdge.view.render();
+      }
+    }
   },
   infoLoaded: function (event) {
     console.log(event);
@@ -118,11 +132,14 @@ var Edge = Backbone.Model.extend({
     to: null
   },
   initialize: function () {
-    if (this.attributes.from) {
-    }
   },
   initializeView: function () {
     return this.view = new EdgeView({model:this});
+  },
+  attach: function () {
+    if (this.from && this.to) {
+      // Todo
+    }
   }
 });
 
@@ -138,9 +155,9 @@ var EdgeView = Backbone.View.extend({
     this.render();
   },
   render: function () {
-    $(this.el).html(this.template(this.model.toJSON()));
+    $(this.el).html(this.template(this.model));
     return this;
-  },
+  }
 });
 
 window.Graph = Backbone.Model.extend({
@@ -159,10 +176,28 @@ window.Graph = Backbone.Model.extend({
     // Convert arrays into Backbone Collections
     if (this.attributes.nodes) {
       this.attributes.nodes = new Nodes(this.attributes.nodes);
-      console.log(this.attributes.nodes.models);
+      for(var i=0; i<this.attributes.nodes.models.length; i++) {
+        this.attributes.nodes.models[i].graph = this; 
+      }
     }
     if (this.attributes.edges) {
       this.attributes.edges = new Edges(this.attributes.edges);
+      for(var i=0; i<this.attributes.edges.models.length; i++) {
+        // Attach this graph to the edge
+        var thisEdge = this.attributes.edges.models[i];
+        thisEdge.graph = this;
+        // Attach the node models to the edge
+        for(var j=0; j<this.attributes.nodes.models.length; j++) {
+          var thisNode = this.attributes.nodes.models[j];
+          if (thisEdge.attributes.from == thisNode.attributes.id) {
+            thisEdge.from = thisNode;
+          }
+          if (thisEdge.attributes.to == thisNode.attributes.id) {
+            thisEdge.to = thisNode;
+          }
+          thisEdge.attach();
+        }
+      }
     }
     this.view = new GraphView({model:this});
   },
