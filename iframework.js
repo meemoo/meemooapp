@@ -49,7 +49,7 @@ var NodeView = Backbone.View.extend({
   initialize: function () {
     this.render();
     this.$(".module")
-      .mousedown( function () {
+      .mousedown( function (event) {
         $("div.module").removeClass("active");
         $(event.target).addClass("active");
         // Bring to top
