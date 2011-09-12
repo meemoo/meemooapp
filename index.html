@@ -109,7 +109,7 @@
   <script type="text/template" id="edge-template">
   
     <svg>
-      <path class="wire" d="M <%= this.model.from.get('x') + this.model.from.get('w') + 5 %> <%= this.model.from.get('y') + this.model.from.get('h') + 5 %> L <%= this.model.to.get('x') - 4 %> <%= this.model.to.get('y') - 4 %>" fill="none" stroke="blue" stroke-width="6" />
+      <path class="wire" d="M <%= this.model.from.get('x') + this.model.from.get('w') + 5 %> <%= this.model.from.get('y') + this.model.from.get('h') + 5 %> C <%= this.model.from.get('x') + this.model.from.get('w') + 5 + 20 %> <%= this.model.from.get('y') + this.model.from.get('h') + 5 %> <%= this.model.to.get('x') - 4 - 20 %> <%= this.model.to.get('y') - 4 %> <%= this.model.to.get('x') - 4 %> <%= this.model.to.get('y') - 4 %>" fill="none" stroke="blue" stroke-width="6" />
       <circle class="wire-end out" cx="<%= this.model.from.get('x') + this.model.from.get('w') + 5 %>" cy="<%= this.model.from.get('y') + this.model.from.get('h') + 5 %>" r="3" fill="blue" stroke="none" />
       <circle class="wire-end in" cx="<%= this.model.to.get('x') - 4 %>" cy="<%= this.model.to.get('y') - 4 %>" r="3" fill="blue" stroke="none" />
     <svg>
