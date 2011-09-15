@@ -24,7 +24,7 @@
       
       Meemoo.addActions({
         default: {
-          action: function (m) {
+          action: function (message, e) {
             count++;
             $("#log").prepend(count + ": " + e.data + "<br />");
           },
