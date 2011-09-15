@@ -6,7 +6,7 @@
   <meta name="author" content="sembiki.com">
   <meta name="description" content="meemoo.js module for logging all messages recieved" />
   
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
   <script src="/meemoo/meemoo.js"></script>
 </head>
 <body>
@@ -22,14 +22,26 @@
       
       var count = 0;
       
-      $meemoo.actions.default = function (message, e) {
-        count++;
-        $("#log").prepend(count + ": " + e.data + "<br />");
-      };
+      Meemoo.addActions({
+        default: {
+          action: function (m) {
+            count++;
+            $("#log").prepend(count + ": " + e.data + "<br />");
+          },
+          type: "string"
+        },
+        clear: {
+          action: function () {
+            $("#log").empty();
+            count = 0;
+          },
+          port: true,
+          type: "bang"
+        }
+      });
       
       $("#clear").click(function(){
-        $("#log").empty();
-        count = 0;
+        Meemoo.actions.clear();
       });
       
     });

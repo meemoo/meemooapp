@@ -6,7 +6,7 @@
   <meta name="author" content="sembiki.com">
   <meta name="description" content="meemoo.js module for rhythm in bpm or ms" />
   
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
   <script src="/meemoo/meemoo.js"></script>
 </head>
 <body>
@@ -25,49 +25,78 @@
   
   $(document).ready(function() {
     
-    var meemoo_bpm, meemoo_ms, loopInterval, setBpm, setMs, setLoop, doLoop, recieveMessage, postMessageToSib;
+    var meemoo_bpm, meemoo_ms, loopInterval, setBpm, setMs, setLoop, doLoop;
     
     meemoo_bpm = $("#bpm").val();
     meemoo_ms = $("#ms").val();
     
     $("#bpm").change(function(){
-      $meemoo.actions.bpm("/bpm/"+$(this).val());
+      bpm($(this).val());
     });
     
     $("#ms").change(function(){
-      $meemoo.actions.ms("/ms/"+$(this).val());
+      ms($(this).val());
     });
     
     $("#start").click(function(){
-      $meemoo.actions.start();
+      Meemoo.actions.start();
     });
     
     $("#stop").click(function(){
-      $meemoo.actions.stop();
+      Meemoo.actions.stop();
     });
     
-    $meemoo.actions.bpm = function(message){
-      meemoo_bpm = parseInt(message[2]);
-      meemoo_ms = parseInt(1000 / meemoo_bpm * 60);
-      $("#ms").val(meemoo_ms);
-      setLoop(meemoo_ms);
-    };
-    
-    $meemoo.actions.ms = function(message){
-      meemoo_ms = parseInt(message[2]);
-      meemoo_bpm = parseInt(1000 / meemoo_ms * 60);
+    var bpm = function(message){
+      meemoo_bpm = parseInt(message, 10);
+      meemoo_ms = parseInt((1000 / meemoo_bpm * 60), 10);
       $("#bpm").val(meemoo_bpm);
-      setLoop(meemoo_ms);
+      $("#ms").val(meemoo_ms);
     };
     
-    $meemoo.actions.start = function(message){
-      setLoop(meemoo_ms);
+    var ms = function(message){
+      meemoo_ms = parseInt(message, 10);
+      meemoo_bpm = parseInt((1000 / meemoo_ms * 60), 10);
+      $("#ms").val(meemoo_ms);
+      $("#bpm").val(meemoo_bpm);
     };
     
-    $meemoo.actions.stop = function(message){
-      clearInterval(loopInterval);
-    };
-    
+    Meemoo.addActions({
+      ms: {
+        action: ms,
+        port: true,
+        type: "int"
+      },
+      bpm: {
+        action: bpm,
+        port: true,
+        type: "number"
+      },
+      start: {
+        action: function (m) {
+          setLoop(meemoo_ms);
+        },
+        port: true,
+        type: "bang"
+      },
+      stop: {
+        action: function (m) {
+          clearInterval(loopInterval);
+        },
+        port: true,
+        type: "bang"
+      },
+      setState: {
+        action: function (message) {
+          var info;
+          if ( message[2] ) {
+            info = JSON.parse(decodeURIComponent(message[2]));
+          } 
+          if ( info.bpm ) {
+            Meemoo.actions.bpm(info.bpm);
+          }
+        }
+      }
+    });
     
     setLoop = function(val){
       clearInterval(loopInterval);
@@ -75,11 +104,8 @@
     };
     
     doLoop = function(){
-      $meemoo.send("/beat");
+      Meemoo.send("/beat");
     };
-    
-    // Todo
-    // $meemoo.actions.connect(["","connect",1]);
     
   });
   

@@ -4,17 +4,15 @@
   <meta charset="utf-8" />
   <title>meemoo/iframework @ GitHub -- iframework proof-of-concept</title>
   
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
   
   <script src="lib/underscore-min.js"></script>
   <script src="lib/backbone-min.js"></script>
   
-  <script src="/meemoo/meemoo.js"></script>
   <script src="iframework.js"></script>
   
   <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/eggplant/jquery-ui.css" rel="stylesheet" type="text/css" />
-  
   <link href='http://fonts.googleapis.com/css?family=Tenor+Sans&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css' />
   
   <style type="text/css">
@@ -128,14 +126,24 @@
     var modules = [];
     
     // When we get the info from the module, update it and set state
-    $meemoo.actions.info = function (message, e) {
+    var info = function (e) {
+      // Make sure the message has some data to use
+      var message = e.data.split("/");
+      var info;
+      if ( message[2] ) {
+        info = JSON.parse(decodeURIComponent(message[2]));
+      } 
+      if (!info) {
+        return false;
+      }
+      // Load the info into the model
       for (var i=0; i < window.frames.length; i++) {
         if (window.frames[i] === e.source) {
-          for (var j=0; j < window.g.get("nodes").length; j++) {
-            var thisNode = window.g.get("nodes").at(j);
+          for (var j=0; j < window.meemoo_graph.get("nodes").length; j++) {
+            var thisNode = window.meemoo_graph.get("nodes").at(j);
             if (thisNode.frameIndex === i) {
               // Load module title, author, description
-              thisNode.infoLoaded(JSON.parse(decodeURIComponent(message[2])));
+              thisNode.infoLoaded(info);
             }
           }
         }
@@ -143,6 +151,7 @@
       var info = JSON.parse( decodeURIComponent(message[2]) );
       $(".status").append( JSON.stringify(info) + "<br />" );
     };
+    window.addEventListener("message", info, false);
     
     var g = new Graph({
       info: {
@@ -171,7 +180,7 @@
       ]
     });
     
-    window.g = g;
+    window.meemoo_graph = g;
     
     $('body').disableSelection();
     
@@ -180,7 +189,7 @@
     
     
     
-    // $meemoo.actions.forward = function (message) {
+    // Meemoo.actions.forward = function (message) {
     //   var windowIndex = parseInt(message[2]);
     //   if (0 <= windowIndex && windowIndex < window.frames.length) {
     //     postMessageToWindow(decodeURIComponent(message[3]), window.frames[windowIndex]);
