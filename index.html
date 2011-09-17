@@ -13,7 +13,6 @@
   <script src="iframework.js"></script>
   
   <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/eggplant/jquery-ui.css" rel="stylesheet" type="text/css" />
-  <link href='http://fonts.googleapis.com/css?family=Tenor+Sans&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css' />
   
   <style type="text/css">
     html, body {
@@ -43,14 +42,16 @@
         box-shadow: 3px 3px 4px rgba(0,0,0,.2);
       }
       div.module h1.title {
-        font-family: 'Tenor Sans', cursive;
-        font-weight: 400;
+        font-family: 'Courier new', courier, monospace;
+        font-weight: normal;
+        color: #333;
+        font-size: 14px;
+        letter-spacing: 5px;
         
         position: absolute;
         top: 2px;
         left: 10px;
         
-        font-size: 14px;
         margin: 0;
         padding: 5px 0;
         cursor: move;
@@ -153,6 +154,7 @@
     };
     window.addEventListener("message", info, false);
     
+    
     var g = new Graph({
       info: {
         title: "iframework test",
@@ -163,22 +165,25 @@
       nodes: [
         {
           id: 1,
-          // src:"http://xyz.meemoo.dev/iframework/metronome.html", 
-          src:"metronome.html", 
+          // src:"http://meemoo.github.com/iframework/metronome.html", 
+          src: "examples/metronome.html", 
           x: 20, y: 100, w: 500, h: 85, 
           state: { bpm: 140 }
         },
         {
           id: 2,
-          // src:"http://abc.meemoo.dev/iframework/log.html", 
-          src:"log.html", 
+          // src:"http://meemoo.github.com/iframework/examples/log.html", 
+          src: "examples/log.html", 
           x: 560, y: 390, w: 300, h: 300
         },
         {
           id: 3,
-          // src:"http://abc.meemoo.dev/iframework/log.html", 
-          src:"processing.html", 
-          x: 560, y: 20, w: 350, h: 350
+          // src:"http://meemoo.github.com/iframework/examples/processing.html", 
+          src: "examples/processing.html", 
+          x: 560, y: 20, w: 350, h: 350,
+          state: { 
+            processingcode: "void setup() { size(300, 300); colorMode(HSB, 360, 100, height); noStroke(); background(0); } \n void mousePressed () { fill(random(360), 180, 300); triangle(random(width), random(height), 100, 100, 200, 200);}" 
+          }
         },
       ],
       edges: [
