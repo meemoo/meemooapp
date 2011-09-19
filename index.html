@@ -14,77 +14,9 @@
   
   <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/eggplant/jquery-ui.css" rel="stylesheet" type="text/css" />
   
+  <link href="iframework.css" rel="stylesheet" type="text/css" />
+  
   <style type="text/css">
-    html, body {
-      margin:0;
-      padding:0;
-      width: 100%;
-      height: 100%;
-    }
-    div.graph {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-    div.module {
-      border: 1px #AAA solid;
-      display: inline-block;
-      background-color: rgba(255,255,255,.75);
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index:2;
-    }
-      div.module.active {
-        border: 1px #000 solid;
-        box-shadow: 3px 3px 4px rgba(0,0,0,.2);
-      }
-      div.module h1.title {
-        font-family: monospace;
-        font-weight: normal;
-        color: #333;
-        font-size: 15px;
-/*        letter-spacing: 5px;*/
-        
-        position: absolute;
-        top: 2px;
-        left: 10px;
-        
-        margin: 0;
-        padding: 5px 0;
-        cursor: move;
-      }
-      div.module iframe {
-        border: 1px #AAA solid;
-        position: absolute;
-        left: 10px;
-        top: 30px;
-      }
-    div.ui-resizable-helper {
-      display: inline-block;
-      border: 1px black dotted;
-    }
-    div.ui-draggable-helper {
-      display: inline-block;
-      border: 1px black dotted;
-    }
-    
-    svg {
-      position:absolute;
-      top:0;
-      left:0;
-      z-index:0;
-    }
-    div.edges {
-      position:absolute;
-      top:0;
-      left:0;
-      width: 100%;
-      height: 100%;
-      z-index:1;
-    }
   </style>
 </head>
 <body>
@@ -92,21 +24,40 @@
   <script type="text/template" id="graph-template">
   
     <div class="edges" />
-    <pre class="status" style="position:absolute;top:400px;" />
     <div class="nodes" />
   
   </script>
   
   <script type="text/template" id="node-template">
     
-    <svg class="ports">
-      <circle class="port input" cx="<%= x-4 %>" cy="<%= y-4 %>" r="6" fill="none" stroke="black" stroke-width=".75" />
-      <circle class="port output" cx="<%= Number(x)+Number(w)+5 %>" cy="<%= Number(y)+Number(h)+5 %>" r="6" fill="none" stroke="black" stroke-width=".75" />
-    </svg>
     <div class="module" style="left:<%= x %>px;top:<%= y %>px;width:<%= w %>px;height:<%= h %>px;" >
+      <div class="ports-in">
+        <div class="port-in">
+          <span class="port"> </span>
+          <span class="label">default</span>
+        </div>
+      </div>
+      <div class="ports-out">
+      </div>
       <h1 class="title">...</h1>
       <iframe class="frame" src="<%= src %>" style="width:<%= w - 20 %>px;height:<%= h - 40 %>px;"></iframe>
     </div>
+    
+  </script>
+  
+  <script type="text/template" id="port-in-template">
+  
+    <span class="port"> </span>
+    <span class="label">default</span>
+    <span class="widget"></span>
+  
+  </script>
+  
+  <script type="text/template" id="port-out-template">
+  
+    <span class="port"> </span>
+    <span class="label">default</span>
+    <span class="widget"></span>
     
   </script>
   

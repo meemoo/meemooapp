@@ -30,6 +30,9 @@ var Node = Backbone.Model.extend({
     this.loaded = true;
     // Check if all modules are loaded
     this.graph.checkLoaded();
+  },
+  addPort: function (info) {
+    if (this.view) this.view.addPort(info);
   }
 });
 
@@ -145,6 +148,9 @@ var NodeView = Backbone.View.extend({
       .attr({
         title: "by "+info.author+": "+info.description
       });
+  },
+  addPort: function (info) {
+    console.log(info);
   }
 });
 
@@ -292,7 +298,16 @@ window.MeemooApplication = {
       var node = MeemooApplication.shownGraph.get("nodes").at(i);
       // Find the corresponding node and load the info
       if (e.source == node.view.$('.frame')[0].contentWindow) {
-        node.infoLoaded(info);
+        switch (message[1]) {
+          case "info":
+            node.infoLoaded(info);
+            break;
+          case "addPort":
+            node.addPort(info);
+            break;
+          defualt:
+            break;
+        }
       }
     }
   }
