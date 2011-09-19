@@ -31,7 +31,6 @@ var Node = Backbone.Model.extend({
     // Check if all modules are loaded
     this.graph.checkLoaded();
   }
-  
 });
 
 var Nodes = Backbone.Collection.extend({
@@ -183,7 +182,8 @@ var EdgeView = Backbone.View.extend({
   }
 });
 
-window.Graph = Backbone.Model.extend({
+var Graph = Backbone.Model.extend({
+  loaded: false,
   defaults: {
     info: {
       author: "",
@@ -233,7 +233,7 @@ window.Graph = Backbone.Model.extend({
   },
   checkLoaded: function () {
     for (var i=0; i<this.get("nodes").length; i++) {
-      if (!this.get("nodes").at(i).loaded) return false;
+      if (this.get("nodes").at(i).loaded == false) return false;
     }
     this.loaded = true;
     this.connectEdges();
@@ -273,6 +273,36 @@ var GraphView = Backbone.View.extend({
     this.$(".edges").append( edge.initializeView().el );
   }
 });
+
+window.MeemooApplication = {
+  shownGraph: undefined,
+  showGraph: function (graph) {
+    this.shownGraph = new Graph(graph);
+  },
+  gotInfo: function (e) {
+    var message = e.data.split("/");
+    var info;
+    if ( message[2] ) {
+      info = JSON.parse(decodeURIComponent(message[2]));
+    } 
+    if (!info) {
+      return false;
+    }
+    for (var i=0; i<MeemooApplication.shownGraph.get("nodes").models.length; i++){
+      var node = MeemooApplication.shownGraph.get("nodes").at(i);
+      // Find the corresponding node and load the info
+      if (e.source == node.view.$('.frame')[0].contentWindow) {
+        node.infoLoaded(info);
+      }
+    }
+  }
+};
+
+// Listen for /info messages from nodes
+window.addEventListener("message", MeemooApplication.gotInfo, false);
+
+// Disable selection for better drag+drop
+$('body').disableSelection();
 
 
 });

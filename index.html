@@ -42,11 +42,11 @@
         box-shadow: 3px 3px 4px rgba(0,0,0,.2);
       }
       div.module h1.title {
-        font-family: 'Courier new', courier, monospace;
+        font-family: monospace;
         font-weight: normal;
         color: #333;
-        font-size: 14px;
-        letter-spacing: 5px;
+        font-size: 15px;
+/*        letter-spacing: 5px;*/
         
         position: absolute;
         top: 2px;
@@ -124,38 +124,7 @@
   
   $(document).ready(function(){
     
-    var modules = [];
-    
-    // When we get the info from the module, update it and set state
-    var info = function (e) {
-      // Make sure the message has some data to use
-      var message = e.data.split("/");
-      var info;
-      if ( message[2] ) {
-        info = JSON.parse(decodeURIComponent(message[2]));
-      } 
-      if (!info) {
-        return false;
-      }
-      // Load the info into the model
-      for (var i=0; i < window.frames.length; i++) {
-        if (window.frames[i] === e.source) {
-          for (var j=0; j < window.meemoo_graph.get("nodes").length; j++) {
-            var thisNode = window.meemoo_graph.get("nodes").at(j);
-            if (thisNode.frameIndex === i) {
-              // Load module title, author, description
-              thisNode.infoLoaded(info);
-            }
-          }
-        }
-      }
-      var info = JSON.parse( decodeURIComponent(message[2]) );
-      $(".status").append( JSON.stringify(info) + "<br />" );
-    };
-    window.addEventListener("message", info, false);
-    
-    
-    var g = new Graph({
+    var testGraph = {
       info: {
         title: "iframework test",
         author: "sembiki.com",
@@ -165,20 +134,20 @@
       nodes: [
         {
           id: 1,
-          // src:"http://meemoo.github.com/iframework/metronome.html", 
+          // src: "http://meemoo.github.com/iframework/metronome.html", 
           src: "examples/metronome.html", 
           x: 20, y: 100, w: 500, h: 85, 
           state: { bpm: 140 }
         },
         {
           id: 2,
-          // src:"http://meemoo.github.com/iframework/examples/log.html", 
+          // src: "http://meemoo.github.com/iframework/examples/log.html", 
           src: "examples/log.html", 
           x: 560, y: 390, w: 300, h: 300
         },
         {
           id: 3,
-          // src:"http://meemoo.github.com/iframework/examples/processing.html", 
+          // src: "http://meemoo.github.com/iframework/examples/processing.html", 
           src: "examples/processing.html", 
           x: 560, y: 20, w: 350, h: 350,
           state: { 
@@ -190,25 +159,9 @@
         { from: 1, to: 2 },
         { from: 1, to: 3 }
       ]
-    });
+    };
     
-    window.meemoo_graph = g;
-    
-    $('body').disableSelection();
-    
-    
-    
-    
-    
-    
-    // Meemoo.actions.forward = function (message) {
-    //   var windowIndex = parseInt(message[2]);
-    //   if (0 <= windowIndex && windowIndex < window.frames.length) {
-    //     postMessageToWindow(decodeURIComponent(message[3]), window.frames[windowIndex]);
-    //   }
-    // };
-    
-    
+    MeemooApplication.showGraph(testGraph);
   
   });
   
