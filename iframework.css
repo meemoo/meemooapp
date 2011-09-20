@@ -46,7 +46,7 @@ div.module {
   }
   div.module div.ports-in{
     position: absolute;
-    left: -105px;
+    left: -106px;
     top: 0;
   }
     div.port-in {
@@ -56,7 +56,9 @@ div.module {
       border-bottom-left-radius: 12px;
       border-right: none;
       width: 100px;
+      height: 17px;
       padding-left: 5px;
+      margin-top: -1px;
     }
       div.port-in span.port {
         border: 1px black solid;
@@ -65,16 +67,9 @@ div.module {
         width: 12px;
         height: 12px;
       }
-      div.port-in svg {
-        width: 12px;
-        height: 12px;
-        display: inline;
-      }
-      circle.input {
-        radius: 6;
-        fill: none;
-        stroke: black;
-        stroke-width: .75;
+      div.port-in span.label {
+        font-family: monospace;
+        font-size: 10px;
       }
   
   

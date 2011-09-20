@@ -44,6 +44,7 @@ var NodeView = Backbone.View.extend({
   tagName: "div",
   className: "node",
   template: _.template($('#node-template').html()),
+  portInTemplate: _.template($('#port-in-template').html()),
   events: {
     "dragstop .module":   "move",
     "resizestop .module": "resize"
@@ -150,7 +151,7 @@ var NodeView = Backbone.View.extend({
       });
   },
   addPort: function (info) {
-    console.log(info);
+    this.$(".ports-in").append(this.portInTemplate(info));
   }
 });
 

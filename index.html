@@ -31,8 +31,8 @@
   <script type="text/template" id="node-template">
     
     <div class="module" style="left:<%= x %>px;top:<%= y %>px;width:<%= w %>px;height:<%= h %>px;" >
-      <div class="ports-in">
-        <div class="port-in">
+      <div class="ports ports-in">
+        <div class="port port-in">
           <span class="port"> </span>
           <span class="label">default</span>
         </div>
@@ -47,9 +47,11 @@
   
   <script type="text/template" id="port-in-template">
   
-    <span class="port"> </span>
-    <span class="label">default</span>
-    <span class="widget"></span>
+    <div class="port port-in">
+      <span class="port"> </span>
+      <span class="label"><%= name %></span>
+      <span class="widget"></span>
+    </div>
   
   </script>
   
@@ -87,7 +89,7 @@
           id: 1,
           // src: "http://meemoo.github.com/iframework/metronome.html", 
           src: "examples/metronome.html", 
-          x: 20, y: 100, w: 500, h: 85, 
+          x: 150, y: 100, w: 250, h: 150, 
           state: { bpm: 140 }
         },
         {
