@@ -39,11 +39,11 @@
     });
     
     $("#start").click(function(){
-      Meemoo.actions.start();
+      Meemoo.inputs.start();
     });
     
     $("#stop").click(function(){
-      Meemoo.actions.stop();
+      Meemoo.inputs.stop();
     });
     
     var bpm = function(message){
@@ -60,7 +60,7 @@
       $("#bpm").val(meemoo_bpm);
     };
     
-    Meemoo.addActions({
+    Meemoo.addInputs({
       ms: {
         action: ms,
         port: true,
@@ -92,10 +92,15 @@
             info = JSON.parse(decodeURIComponent(message[2]));
           } 
           if ( info.bpm ) {
-            Meemoo.actions.bpm(info.bpm);
+            Meemoo.inputs.bpm(info.bpm);
           }
         }
       }
+    });
+    
+    Meemoo.addOutputs({
+      ms: { port: true },
+      beat: { port: true }
     });
     
     setLoop = function(val){
@@ -104,7 +109,7 @@
     };
     
     doLoop = function(){
-      Meemoo.send("/beat");
+      Meemoo.send("beat");
     };
     
   });

@@ -22,7 +22,7 @@
       
       var count = 0;
       
-      Meemoo.addActions({
+      Meemoo.addInputs({
         default: {
           action: function (message, e) {
             count++;
@@ -41,7 +41,7 @@
       });
       
       $("#clear").click(function(){
-        Meemoo.actions.clear();
+        Meemoo.inputs.clear();
       });
       
     });

@@ -10,6 +10,36 @@ var Node = Backbone.Model.extend({
     w: 100,
     h: 100
   },
+  initializeEdges: function () {
+    if (this.attributes.edges) {
+      this.attributes.edges = new Edges(this.attributes.edges);
+      for(var i=0; i<this.get("edges").length; i++) {
+        var thisEdge = this.get("edges").at(i);
+        // Attach this graph to the edge
+        thisEdge.graph = this.graph;
+        // Attach the node models to the edge
+        thisEdge.from = this;
+        for(var j=0; j<this.graph.get("nodes").length; j++) {
+          var thisNode = this.graph.get("nodes").at(j);
+          if (thisEdge.attributes.node == thisNode.attributes.id) {
+            thisEdge.to = thisNode;
+          }
+        }
+      }
+    } else {
+      this.set({edges: new Edges()});
+    }
+  },
+  // addEdge: function (edge) {
+  //   this.attributes.edges.add(edge);
+  //   if (this.view) this.view.addEdge(edge);
+  // },
+  // Called after all nodes are loaded
+  connectEdges: function () {
+    for(var i=0; i<this.get("edges").length; i++) {
+      this.get("edges").at(i).connect();
+    }
+  },
   initializeView: function () {
     return this.view = new NodeView({model:this});
   },
@@ -31,8 +61,11 @@ var Node = Backbone.Model.extend({
     // Check if all modules are loaded
     this.graph.checkLoaded();
   },
-  addPort: function (info) {
-    if (this.view) this.view.addPort(info);
+  addInput: function (info) {
+    if (this.view) this.view.addInput(info);
+  },
+  addOutput: function (info) {
+    if (this.view) this.view.addOutput(info);
   }
 });
 
@@ -45,6 +78,7 @@ var NodeView = Backbone.View.extend({
   className: "node",
   template: _.template($('#node-template').html()),
   portInTemplate: _.template($('#port-in-template').html()),
+  portOutTemplate: _.template($('#port-out-template').html()),
   events: {
     "dragstop .module":   "move",
     "resizestop .module": "resize"
@@ -66,7 +100,7 @@ var NodeView = Backbone.View.extend({
       .click( function () {
       })
       .draggable({
-        // handle: 'h1',
+        handle: 'h1',
         helper: function(event){
           // Bring helper to top
           var topZ = 0;
@@ -113,10 +147,11 @@ var NodeView = Backbone.View.extend({
       cy: newY + this.model.get("h") + 5
     });
     // Rerender related edges
-    for (var i=0; i<this.model.graph.get("edges").length; i++){
-      var thisEdge = this.model.graph.get("edges").at(i);
-      if (this.model == thisEdge.from || this.model == thisEdge.to) {
-        thisEdge.view.render();
+    for (var i=0; i<this.model.graph.get("nodes").length; i++){
+      var thisNode = this.model.graph.get("nodes").at(i);
+      for (var j=0; j<thisNode.get("edges").length; j++) {
+        // i10n: only related
+        thisNode.get("edges").at(j).view.render();
       }
     }
   },
@@ -136,11 +171,8 @@ var NodeView = Backbone.View.extend({
       height: newH - 40
     });
     // Rerender related edges
-    for (var i=0; i<this.model.graph.get("edges").length; i++){
-      var thisEdge = this.model.graph.get("edges").at(i);
-      if (this.model == thisEdge.from) {
-        thisEdge.view.render();
-      }
+    for (var i=0; i<this.model.get("edges").length; i++){
+      this.model.get("edges").at(i).view.render();
     }
   },
   infoLoaded: function (info) {
@@ -150,15 +182,25 @@ var NodeView = Backbone.View.extend({
         title: "by "+info.author+": "+info.description
       });
   },
-  addPort: function (info) {
+  addInput: function (info) {
     this.$(".ports-in").append(this.portInTemplate(info));
+  },
+  addOutput: function (info) {
+    this.$(".ports-out").append(this.portOutTemplate(info));
+  },
+  portOffsetLeft: function (outin, name) {
+    return this.$('div.port-'+outin+' span.port.'+name).offset().left + 7;
+  },
+  portOffsetTop: function (outin, name) {
+    return this.$('div.port-'+outin+' span.port.'+name).offset().top + 7;
   }
 });
 
 var Edge = Backbone.Model.extend({
   defaults: {
-    from: null,
-    to: null
+    portout: "default",
+    node: null,
+    portin: "default"
   },
   initialize: function () {
   },
@@ -168,7 +210,17 @@ var Edge = Backbone.Model.extend({
   connect: function () {
     if (this.from && this.from.loaded && this.to && this.to.frameIndex != undefined) {
       this.from.send("/connect/"+this.to.frameIndex);
+      if (this.graph.view) {
+        this.graph.view.addEdge(this);
+      }
     }
+  },
+  svgPath: function () {
+    var fromX = this.from.view.portOffsetLeft('out', this.attributes.portout);
+    var fromY = this.from.view.portOffsetTop('out', this.attributes.portout);
+    var toX = this.to.view.portOffsetLeft('in', this.attributes.portin);
+    var toY = this.to.view.portOffsetTop('in', this.attributes.portin);
+    return "M "+ fromX +" "+ fromY +" C "+ (fromX + 20) +" "+ fromY +" "+ (toX - 20) +" "+ toY +" "+ toX +" "+ toY;
   }
 });
 
@@ -177,13 +229,14 @@ var Edges = Backbone.Collection.extend({
 });
 
 var EdgeView = Backbone.View.extend({
-  tagName: "div", // Svg group
+  tagName: "div",
   className: "edge",
   template: _.template($('#edge-template').html()),
   initialize: function () {
     this.render();
   },
   render: function () {
+    // Don't use .toJSON() because using .from and .to Node
     $(this.el).html(this.template(this.model));
     return this;
   }
@@ -199,8 +252,7 @@ var Graph = Backbone.Model.extend({
       parent: "",
       permalink: ""
     },
-    nodes: new Nodes(),
-    edges: new Edges()
+    nodes: new Nodes()
   },
   initialize: function () {
     // Convert arrays into Backbone Collections
@@ -208,24 +260,7 @@ var Graph = Backbone.Model.extend({
       this.attributes.nodes = new Nodes(this.attributes.nodes);
       for(var i=0; i<this.attributes.nodes.models.length; i++) {
         this.attributes.nodes.models[i].graph = this; 
-      }
-    }
-    if (this.attributes.edges) {
-      this.attributes.edges = new Edges(this.attributes.edges);
-      for(var i=0; i<this.get("edges").length; i++) {
-        // Attach this graph to the edge
-        var thisEdge = this.get("edges").at(i);
-        thisEdge.graph = this;
-        // Attach the node models to the edge
-        for(var j=0; j<this.attributes.nodes.models.length; j++) {
-          var thisNode = this.attributes.nodes.models[j];
-          if (thisEdge.attributes.from == thisNode.attributes.id) {
-            thisEdge.from = thisNode;
-          }
-          if (thisEdge.attributes.to == thisNode.attributes.id) {
-            thisEdge.to = thisNode;
-          }
-        }
+        this.attributes.nodes.at(i).initializeEdges();
       }
     }
     this.view = new GraphView({model:this});
@@ -234,26 +269,18 @@ var Graph = Backbone.Model.extend({
     this.attributes.nodes.add(node);
     if (this.view) this.view.addNode(node);
   },
-  addEdge: function (edge) {
-    this.attributes.edges.add(edge);
-    if (this.view) this.view.addEdge(edge);
-  },
   checkLoaded: function () {
     for (var i=0; i<this.get("nodes").length; i++) {
       if (this.get("nodes").at(i).loaded == false) return false;
     }
     this.loaded = true;
-    this.connectEdges();
-    return true;
-  },
-  connectEdges: function () {
-    // Only when all modules have loaded
-    if (this.loaded) {
-      for(var i=0; i<this.get("edges").length; i++) {
-        var thisEdge = this.get("edges").at(i);
-        thisEdge.connect();
-      }
+    
+    // Connect edges when all modules have loaded
+    for(var i=0; i<this.get("nodes").length; i++) {
+      this.get("nodes").at(i).connectEdges();
     }
+    
+    return true;
   }
 });
 
@@ -266,7 +293,7 @@ var GraphView = Backbone.View.extend({
     $('body').append(this.el);
     
     this.model.attributes.nodes.each(this.addNode);
-    this.model.attributes.edges.each(this.addEdge);
+    // this.model.attributes.edges.each(this.addEdge);
   },
   render: function () {
     $(this.el).html(this.template(this.model.toJSON()));
@@ -286,7 +313,7 @@ window.MeemooApplication = {
   showGraph: function (graph) {
     this.shownGraph = new Graph(graph);
   },
-  gotInfo: function (e) {
+  gotMessage: function (e) {
     var message = e.data.split("/");
     var info;
     if ( message[2] ) {
@@ -303,8 +330,11 @@ window.MeemooApplication = {
           case "info":
             node.infoLoaded(info);
             break;
-          case "addPort":
-            node.addPort(info);
+          case "addInput":
+            node.addInput(info);
+            break;
+          case "addOutput":
+            node.addOutput(info);
             break;
           defualt:
             break;
@@ -315,7 +345,7 @@ window.MeemooApplication = {
 };
 
 // Listen for /info messages from nodes
-window.addEventListener("message", MeemooApplication.gotInfo, false);
+window.addEventListener("message", MeemooApplication.gotMessage, false);
 
 // Disable selection for better drag+drop
 $('body').disableSelection();

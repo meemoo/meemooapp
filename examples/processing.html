@@ -27,7 +27,7 @@
     var processingCode;
     var p;
     
-    Meemoo.actions.setState = function (message) {
+    Meemoo.inputs.setState = function (message) {
       var state;
       if ( message[2] ) {
         state = JSON.parse(decodeURIComponent(message[2]));
@@ -38,11 +38,12 @@
         p = new Processing(document.getElementById("processingCanvas"), processingCode);
       }
     }
-    Meemoo.addActions({
+    Meemoo.addInputs({
       beat: {
         action: function (message, e) {
           Processing.getInstanceById("processingCanvas").mousePressed();
         },
+        port: true,
         type: "bang"
       }
     });

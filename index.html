@@ -33,11 +33,15 @@
     <div class="module" style="left:<%= x %>px;top:<%= y %>px;width:<%= w %>px;height:<%= h %>px;" >
       <div class="ports ports-in">
         <div class="port port-in">
-          <span class="port"> </span>
+          <span class="port default"> </span>
           <span class="label">default</span>
         </div>
       </div>
-      <div class="ports-out">
+      <div class="ports ports-out">
+        <div class="port port-out">
+          <span class="label">default</span>
+          <span class="port default"> </span>
+        </div>
       </div>
       <h1 class="title">...</h1>
       <iframe class="frame" src="<%= src %>" style="width:<%= w - 20 %>px;height:<%= h - 40 %>px;"></iframe>
@@ -48,7 +52,7 @@
   <script type="text/template" id="port-in-template">
   
     <div class="port port-in">
-      <span class="port"> </span>
+      <span class="port <%= name %>"> </span>
       <span class="label"><%= name %></span>
       <span class="widget"></span>
     </div>
@@ -57,18 +61,19 @@
   
   <script type="text/template" id="port-out-template">
   
-    <span class="port"> </span>
-    <span class="label">default</span>
-    <span class="widget"></span>
+    <div class="port port-out">
+      <span class="label"><%= name %></span>
+      <span class="port <%= name %>"> </span>
+    </div>
     
   </script>
   
   <script type="text/template" id="edge-template">
   
     <svg>
-      <path class="wire" d="M <%= this.model.from.get('x') + this.model.from.get('w') + 5 %> <%= this.model.from.get('y') + this.model.from.get('h') + 5 %> C <%= this.model.from.get('x') + this.model.from.get('w') + 5 + 20 %> <%= this.model.from.get('y') + this.model.from.get('h') + 5 %> <%= this.model.to.get('x') - 4 - 20 %> <%= this.model.to.get('y') - 4 %> <%= this.model.to.get('x') - 4 %> <%= this.model.to.get('y') - 4 %>" fill="none" stroke="blue" stroke-width="6" />
-      <circle class="wire-end out" cx="<%= this.model.from.get('x') + this.model.from.get('w') + 5 %>" cy="<%= this.model.from.get('y') + this.model.from.get('h') + 5 %>" r="3" fill="blue" stroke="none" />
-      <circle class="wire-end in" cx="<%= this.model.to.get('x') - 4 %>" cy="<%= this.model.to.get('y') - 4 %>" r="3" fill="blue" stroke="none" />
+      <path class="wire" d="<%= svgPath() %>" fill="none" stroke="blue" stroke-width="6" />
+      <circle class="wire-end out" cx="<%= from.view.portOffsetLeft('out', attributes.portout) %>" cy="<%= from.view.portOffsetTop('out', attributes.portout) %>" r="3" fill="blue" stroke="none" />
+      <circle class="wire-end in" cx="<%= to.view.portOffsetLeft('in', attributes.portin) %>" cy="<%= to.view.portOffsetTop('in', attributes.portin) %>" r="3" fill="blue" stroke="none" />
     <svg>
     
   </script>
@@ -81,7 +86,7 @@
       info: {
         title: "iframework test",
         author: "sembiki.com",
-        description: "metronome to log",
+        description: "metronome to processing and log",
         url: ""
       },
       nodes: [
@@ -90,7 +95,11 @@
           // src: "http://meemoo.github.com/iframework/metronome.html", 
           src: "examples/metronome.html", 
           x: 150, y: 100, w: 250, h: 150, 
-          state: { bpm: 140 }
+          state: { bpm: 140 },
+          edges: [
+            {portout: "ms", node: 2, portin: "default"},
+            {portout: "default", node: 3, portin: "beat"}
+          ]
         },
         {
           id: 2,
@@ -107,10 +116,6 @@
             processingcode: "void setup() { size(300, 300); colorMode(HSB, 360, 100, height); noStroke(); background(0); } \n void mousePressed () { fill(random(360), 180, 300); triangle(random(width), random(height), 100, 100, 200, 200);}" 
           }
         },
-      ],
-      edges: [
-        { from: 1, to: 2 },
-        { from: 1, to: 3 }
       ]
     };
     
