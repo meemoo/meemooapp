@@ -121,7 +121,6 @@ var NodeView = Backbone.View.extend({
       .resizable({
         helper: "ui-resizable-helper"
       })
-      //.disableSelection();
   },
   render: function () {
     $(this.el).html(this.template(this.model.toJSON()));
@@ -203,13 +202,20 @@ var Edge = Backbone.Model.extend({
     portin: "default"
   },
   initialize: function () {
+    this.set({color: MeemooApplication.getWireColor()});
   },
   initializeView: function () {
     return this.view = new EdgeView({model:this});
   },
   connect: function () {
     if (this.from && this.from.loaded && this.to && this.to.frameIndex != undefined) {
-      this.from.send("/connect/"+this.to.frameIndex);
+      this.from.send({
+        connect: {
+          portout: this.get("portout"),
+          node: this.to.frameIndex,
+          portin: this.get("portin")
+        }
+      });
       if (this.graph.view) {
         this.graph.view.addEdge(this);
       }
@@ -220,7 +226,7 @@ var Edge = Backbone.Model.extend({
     var fromY = this.from.view.portOffsetTop('out', this.attributes.portout);
     var toX = this.to.view.portOffsetLeft('in', this.attributes.portin);
     var toY = this.to.view.portOffsetTop('in', this.attributes.portin);
-    return "M "+ fromX +" "+ fromY +" C "+ (fromX + 20) +" "+ fromY +" "+ (toX - 20) +" "+ toY +" "+ toX +" "+ toY;
+    return "M "+ fromX +" "+ fromY +" C "+ (fromX + 80) +" "+ fromY +" "+ (toX - 80) +" "+ toY +" "+ toX +" "+ toY;
   }
 });
 
@@ -275,13 +281,20 @@ var Graph = Backbone.Model.extend({
     }
     this.loaded = true;
     
-    // Connect edges when all modules have loaded
-    for(var i=0; i<this.get("nodes").length; i++) {
-      this.get("nodes").at(i).connectEdges();
-    }
+    // Connect edges when all modules have loaded (+.5 second)
+    setTimeout(function () {
+      for(var i=0; i<window.MeemooApplication.shownGraph.get("nodes").length; i++) {
+        window.MeemooApplication.shownGraph.get("nodes").at(i).connectEdges();
+      }
+    }, 500);
     
     return true;
-  }
+  },
+  // connectEdges: function () {
+  //   for(var i=0; i<this.get("nodes").length; i++) {
+  //     this.get("nodes").at(i).connectEdges();
+  //   }
+  // }
 });
 
 var GraphView = Backbone.View.extend({
@@ -310,6 +323,19 @@ var GraphView = Backbone.View.extend({
 
 window.MeemooApplication = {
   shownGraph: undefined,
+  // Color scheme CC-BY-NC-SA from Skyblue2u http://www.colourlovers.com/palette/758853/A_Glass_Rainbow
+  // wireColors: ["#97080E", "#DA4B0F", "#E9B104", "#488C13", "#1B55C0"],
+  // Color scheme CC-BY-NC-SA from Skyblue2u http://www.colourlovers.com/palette/462628/Blazin_Jell-O_Rainbo
+  wireColors: ["#DF151A", "#FD8603", "#F4F328", "#00DA3C", "#00CBE7"],
+  wireColorIndex: 0,
+  getWireColor: function () {
+    var color = this.wireColors[this.wireColorIndex];
+    this.wireColorIndex++;
+    if (this.wireColorIndex > this.wireColors.length) {
+      this.wireColorIndex = 0;
+    }
+    return color;
+  },
   showGraph: function (graph) {
     this.shownGraph = new Graph(graph);
   },

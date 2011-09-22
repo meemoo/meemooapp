@@ -106,6 +106,7 @@
     setLoop = function(val){
       clearInterval(loopInterval);
       loopInterval = setInterval(doLoop, val);
+      Meemoo.send("ms", val);
     };
     
     doLoop = function(){
