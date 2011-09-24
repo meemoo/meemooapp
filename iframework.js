@@ -10,36 +10,6 @@ var Node = Backbone.Model.extend({
     w: 100,
     h: 100
   },
-  initializeEdges: function () {
-    if (this.attributes.edges) {
-      this.attributes.edges = new Edges(this.attributes.edges);
-      for(var i=0; i<this.get("edges").length; i++) {
-        var thisEdge = this.get("edges").at(i);
-        // Attach this graph to the edge
-        thisEdge.graph = this.graph;
-        // Attach the node models to the edge
-        thisEdge.from = this;
-        for(var j=0; j<this.graph.get("nodes").length; j++) {
-          var thisNode = this.graph.get("nodes").at(j);
-          if (thisEdge.attributes.node == thisNode.attributes.id) {
-            thisEdge.to = thisNode;
-          }
-        }
-      }
-    } else {
-      this.set({edges: new Edges()});
-    }
-  },
-  // addEdge: function (edge) {
-  //   this.attributes.edges.add(edge);
-  //   if (this.view) this.view.addEdge(edge);
-  // },
-  // Called after all nodes are loaded
-  connectEdges: function () {
-    for(var i=0; i<this.get("edges").length; i++) {
-      this.get("edges").at(i).connect();
-    }
-  },
   initializeView: function () {
     return this.view = new NodeView({model:this});
   },
@@ -146,12 +116,9 @@ var NodeView = Backbone.View.extend({
       cy: newY + this.model.get("h") + 5
     });
     // Rerender related edges
-    for (var i=0; i<this.model.graph.get("nodes").length; i++){
-      var thisNode = this.model.graph.get("nodes").at(i);
-      for (var j=0; j<thisNode.get("edges").length; j++) {
-        // i10n: only related
-        thisNode.get("edges").at(j).view.render();
-      }
+    for (var i=0; i<this.model.graph.get("edges").length; i++){
+      // i10n: only related
+      this.model.graph.get("edges").at(i).view.render();
     }
   },
   resize: function (event, ui) {
@@ -170,8 +137,9 @@ var NodeView = Backbone.View.extend({
       height: newH - 40
     });
     // Rerender related edges
-    for (var i=0; i<this.model.get("edges").length; i++){
-      this.model.get("edges").at(i).view.render();
+    for (var i=0; i<this.model.graph.get("edges").length; i++){
+      // i10n: only related
+      this.model.graph.get("edges").at(i).view.render();
     }
   },
   infoLoaded: function (info) {
@@ -188,18 +156,21 @@ var NodeView = Backbone.View.extend({
     this.$(".ports-out").append(this.portOutTemplate(info));
   },
   portOffsetLeft: function (outin, name) {
+    // var o = this.$('div.port-'+outin+' span.port.'+name).offset();
+    // return (o ? o.left+7 : 0);
     return this.$('div.port-'+outin+' span.port.'+name).offset().left + 7;
   },
   portOffsetTop: function (outin, name) {
+    // var o = this.$('div.port-'+outin+' span.port.'+name).offset();
+    // return (o ? o.top+7 : 0);
     return this.$('div.port-'+outin+' span.port.'+name).offset().top + 7;
   }
 });
 
 var Edge = Backbone.Model.extend({
   defaults: {
-    portout: "default",
-    node: null,
-    portin: "default"
+    source: [0, "default"], 
+    target: [0, "default"]
   },
   initialize: function () {
     this.set({color: MeemooApplication.getWireColor()});
@@ -208,24 +179,37 @@ var Edge = Backbone.Model.extend({
     return this.view = new EdgeView({model:this});
   },
   connect: function () {
-    if (this.from && this.from.loaded && this.to && this.to.frameIndex != undefined) {
-      this.from.send({
-        connect: {
-          portout: this.get("portout"),
-          node: this.to.frameIndex,
-          portin: this.get("portin")
-        }
-      });
-      if (this.graph.view) {
-        this.graph.view.addEdge(this);
+    // IDs from the graph
+    for (var i=0; i<this.graph.get("nodes").length; i++) {
+      if (this.graph.get("nodes").at(i).get("id") === this.get("source")[0]) {
+        this.source = this.graph.get("nodes").at(i);
       }
+      if (this.graph.get("nodes").at(i).get("id") === this.get("target")[0]) {
+        this.target = this.graph.get("nodes").at(i);
+      }
+    }
+    this.source.send({
+      connect: { 
+        source: this.get("source"),
+        target: [this.target.frameIndex, this.get("target")[1]]
+      }
+    });
+    if (this.graph.view) {
+      this.graph.view.addEdge(this);
     }
   },
   svgPath: function () {
-    var fromX = this.from.view.portOffsetLeft('out', this.attributes.portout);
-    var fromY = this.from.view.portOffsetTop('out', this.attributes.portout);
-    var toX = this.to.view.portOffsetLeft('in', this.attributes.portin);
-    var toY = this.to.view.portOffsetTop('in', this.attributes.portin);
+    var fromX = this.source.view.portOffsetLeft('out', this.get("source")[1]);
+    var fromY = this.source.view.portOffsetTop('out', this.get("source")[1]);
+    var toX = this.target.view.portOffsetLeft('in', this.get("target")[1]);
+    var toY = this.target.view.portOffsetTop('in', this.get("target")[1]);
+    return "M "+ fromX +" "+ fromY +" C "+ (fromX + 80) +" "+ fromY +" "+ (toX - 80) +" "+ toY +" "+ toX +" "+ toY;
+  },
+  svgPathShadow: function () {
+    var fromX = this.source.view.portOffsetLeft('out', this.get("source")[1]);
+    var fromY = this.source.view.portOffsetTop('out', this.get("source")[1]) + 1;
+    var toX = this.target.view.portOffsetLeft('in', this.get("target")[1]);
+    var toY = this.target.view.portOffsetTop('in', this.get("target")[1]) + 1;
     return "M "+ fromX +" "+ fromY +" C "+ (fromX + 80) +" "+ fromY +" "+ (toX - 80) +" "+ toY +" "+ toX +" "+ toY;
   }
 });
@@ -242,7 +226,7 @@ var EdgeView = Backbone.View.extend({
     this.render();
   },
   render: function () {
-    // Don't use .toJSON() because using .from and .to Node
+    // Don't use .toJSON() because using .source and .target Node
     $(this.el).html(this.template(this.model));
     return this;
   }
@@ -258,22 +242,32 @@ var Graph = Backbone.Model.extend({
       parent: "",
       permalink: ""
     },
-    nodes: new Nodes()
+    nodes: new Nodes(),
+    edges: new Edges(),
   },
   initialize: function () {
     // Convert arrays into Backbone Collections
     if (this.attributes.nodes) {
       this.attributes.nodes = new Nodes(this.attributes.nodes);
-      for(var i=0; i<this.attributes.nodes.models.length; i++) {
-        this.attributes.nodes.models[i].graph = this; 
-        this.attributes.nodes.at(i).initializeEdges();
+      for(var i=0; i<this.get("nodes").length; i++) {
+        this.get("nodes").at(i).graph = this; 
+      }
+    }
+    if (this.attributes.edges) {
+      this.attributes.edges = new Edges(this.attributes.edges);
+      for(var i=0; i<this.get("edges").length; i++) {
+        this.get("edges").at(i).graph = this; 
       }
     }
     this.view = new GraphView({model:this});
   },
   addNode: function (node) {
-    this.attributes.nodes.add(node);
+    this.get("nodes").add(node);
     if (this.view) this.view.addNode(node);
+  },
+  addEdge: function (edge) {
+    this.get("edges").add(edge);
+    if (this.view) this.view.addEdge(edge);
   },
   checkLoaded: function () {
     for (var i=0; i<this.get("nodes").length; i++) {
@@ -282,19 +276,18 @@ var Graph = Backbone.Model.extend({
     this.loaded = true;
     
     // Connect edges when all modules have loaded (+.5 second)
-    setTimeout(function () {
-      for(var i=0; i<window.MeemooApplication.shownGraph.get("nodes").length; i++) {
-        window.MeemooApplication.shownGraph.get("nodes").at(i).connectEdges();
-      }
+    setTimeout(function(){
+      MeemooApplication.shownGraph.connectEdges();
     }, 500);
+    // this.connectEdges();
     
     return true;
   },
-  // connectEdges: function () {
-  //   for(var i=0; i<this.get("nodes").length; i++) {
-  //     this.get("nodes").at(i).connectEdges();
-  //   }
-  // }
+  connectEdges: function () {
+    for(var i=0; i<this.get("edges").length; i++) {
+      this.get("edges").at(i).connect();
+    }
+  }
 });
 
 var GraphView = Backbone.View.extend({
@@ -305,8 +298,8 @@ var GraphView = Backbone.View.extend({
     this.render();
     $('body').append(this.el);
     
-    this.model.attributes.nodes.each(this.addNode);
-    // this.model.attributes.edges.each(this.addEdge);
+    this.model.get("nodes").each(this.addNode);
+    // this.model.get("edges").each(this.addEdge);
   },
   render: function () {
     $(this.el).html(this.template(this.model.toJSON()));
@@ -348,22 +341,24 @@ window.MeemooApplication = {
     if (!info) {
       return false;
     }
-    for (var i=0; i<MeemooApplication.shownGraph.get("nodes").models.length; i++){
-      var node = MeemooApplication.shownGraph.get("nodes").at(i);
-      // Find the corresponding node and load the info
-      if (e.source == node.view.$('.frame')[0].contentWindow) {
-        switch (message[1]) {
-          case "info":
-            node.infoLoaded(info);
-            break;
-          case "addInput":
-            node.addInput(info);
-            break;
-          case "addOutput":
-            node.addOutput(info);
-            break;
-          defualt:
-            break;
+    if (MeemooApplication.shownGraph) {
+      for (var i=0; i<MeemooApplication.shownGraph.get("nodes").models.length; i++){
+        var node = MeemooApplication.shownGraph.get("nodes").at(i);
+        // Find the corresponding node and load the info
+        if (e.source == node.view.$('.frame')[0].contentWindow) {
+          switch (message[1]) {
+            case "info":
+              node.infoLoaded(info);
+              break;
+            case "addInput":
+              node.addInput(info);
+              break;
+            case "addOutput":
+              node.addOutput(info);
+              break;
+            defualt:
+              break;
+          }
         }
       }
     }
