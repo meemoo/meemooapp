@@ -71,10 +71,8 @@
   <script type="text/template" id="edge-template">
   
     <svg>
-      <path class="wire-shadow" d="<%= svgPathShadow() %>" fill="none" stroke="#AAA" stroke-width="7" />
-      <path class="wire" d="<%= svgPath() %>" fill="none" stroke="<%= attributes.color %>" stroke-width="6" />
-      <circle class="wire-end out" cx="<%= source.view.portOffsetLeft('out', get('source')[1]) %>" cy="<%= source.view.portOffsetTop('out', get('source')[1]) %>" r="3" fill="<%= attributes.color %>" stroke="none" />
-      <circle class="wire-end in" cx="<%= target.view.portOffsetLeft('in', get('target')[1]) %>" cy="<%= target.view.portOffsetTop('in', get('target')[1]) %>" r="3" fill="<%= attributes.color %>" stroke="none" />
+      <path class="wire-shadow" d="<%= svgPathShadow() %>" stroke="#AAA" />
+      <path class="wire" d="<%= svgPath() %>" stroke="<%= attributes.color %>" />
     <svg>
     
   </script>
@@ -114,7 +112,7 @@
           src: "examples/processing.html", 
           "x":128,"y":246,"w":328,"h":348,
           state: { 
-            processingcode: "void setup() { size(300, 300); colorMode(HSB, 360, 100, height); noStroke(); background(0); } \n void mousePressed () { fill(random(360), 180, 300); triangle(random(width), random(height), 100, 100, 200, 200);}" 
+            processingcode: "void setup() { size(300, 300); colorMode(HSB, 360, 100, 300); noStroke(); background(0); } \n void mousePressed () { fill(random(360), 180, 300); triangle(random(width), random(height), 100, 100, 200, 200);}" 
           },
           // edges: [
           //   {portout: "image", node: 4, portin: "image"}

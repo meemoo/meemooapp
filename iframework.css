@@ -46,7 +46,7 @@ div.module {
   }
   div.module div.ports-in{
     position: absolute;
-    left: -106px;
+    left: -107px;
     top: 0;
   }
     div.ports-in div.port-in {
@@ -115,4 +115,10 @@ div.edges {
     left:0;
     z-index:0;
   }
+    path.wire-shadow,
+    path.wire {
+      fill: none;
+      stroke-linecap: round;
+      stroke-width: 7;
+    }
   
