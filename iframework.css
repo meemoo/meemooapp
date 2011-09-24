@@ -122,3 +122,13 @@ div.edges {
       stroke-width: 7;
     }
   
+
+
+
+footer {
+  position:absolute;
+  bottom: 10px;
+  right: 10px;
+  font-family: monospace;
+  z-index: 10;
+}

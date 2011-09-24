@@ -13,6 +13,8 @@ development blog: http://meemoo.noisepages.com/
 
 ---
 
-composition : graph : javascript routing of .postMessage()
+meemoospeak : model : html5speak
+------------+-------+-----------------------------------------
+composition : graph : json like graph={"nodes":[],"edges":[]}
 module      : node  : iframe
-wire        : edge  : svg path
+wire        : edge  : window.postMessage()
