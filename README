@@ -10,3 +10,9 @@ Like Reason, Quartz Composer, or Pure Data, but 100% open source, and 100% of th
 
 by Forrest Oliphant, http://sembiki.com/
 development blog: http://meemoo.noisepages.com/
+
+---
+
+composition : graph : javascript routing of .postMessage()
+module      : node  : iframe
+wire        : edge  : svg path
