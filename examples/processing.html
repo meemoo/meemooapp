@@ -42,12 +42,19 @@
       pressed: {
         action: function (message, e) {
           Processing.getInstanceById("processingCanvas").mousePressed();
+          var c = document.getElementById("processingCanvas");
+          Meemoo.send("image", c.getContext("2d").getImageData(0,0,c.width,c.height));
         },
         port: true,
         type: "bang"
       }
     });
-      
+    
+    Meemoo.addOutputs({
+      image: { port: true }
+    });
+    
+    
   </script>
   
 </body>

@@ -94,7 +94,7 @@
           id: 1,
           // src: "http://meemoo.github.com/iframework/metronome.html", 
           src: "examples/metronome.html", 
-          x: 150, y: 100, w: 250, h: 150, 
+          "x":130,"y":47,"w":250,"h":150, 
           state: { bpm: 140 },
           edges: [
             {portout: "default", node: 2, portin: "default"},
@@ -105,17 +105,26 @@
           id: 2,
           // src: "http://meemoo.github.com/iframework/examples/log.html", 
           src: "examples/log.html", 
-          x: 560, y: 390, w: 300, h: 300
+          "x":561,"y":7,"w":295,"h":230
         },
         {
           id: 3,
           // src: "http://meemoo.github.com/iframework/examples/processing.html", 
           src: "examples/processing.html", 
-          x: 560, y: 20, w: 328, h: 348,
+          "x":128,"y":246,"w":328,"h":348,
           state: { 
             processingcode: "void setup() { size(300, 300); colorMode(HSB, 360, 100, height); noStroke(); background(0); } \n void mousePressed () { fill(random(360), 180, 300); triangle(random(width), random(height), 100, 100, 200, 200);}" 
-          }
+          },
+          edges: [
+            {portout: "image", node: 4, portin: "image"}
+          ]
         },
+        {
+          id: 4,
+          // src: "http://meemoo.github.com/iframework/examples/glitch.html", 
+          src: "examples/glitch.html", 
+          "x":579,"y":255,"w":469,"h":211
+        }
       ]
     };
     
