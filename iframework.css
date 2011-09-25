@@ -22,7 +22,7 @@ div.module {
 }
   div.module.active {
     border: 1px #000 solid;
-    box-shadow: 3px 3px 4px rgba(0,0,0,.2);
+    /*box-shadow: 3px 3px 4px rgba(0,0,0,.2);*/
   }
   div.module h1.title {
     font-family: monospace;
@@ -62,7 +62,7 @@ div.module {
     }
   div.module div.ports-out{
     position: absolute;
-    right: -81px;
+    right: -82px;
     bottom: -1px;
   }
     div.ports-out div.port-out {
