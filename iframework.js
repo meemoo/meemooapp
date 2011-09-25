@@ -118,7 +118,7 @@ var NodeView = Backbone.View.extend({
     // Rerender related edges
     for (var i=0; i<this.model.graph.get("edges").length; i++){
       // i10n: only related
-      this.model.graph.get("edges").at(i).view.render();
+      if (this.model.graph.get("edges").at(i).view) this.model.graph.get("edges").at(i).view.render();
     }
   },
   resize: function (event, ui) {
@@ -139,7 +139,7 @@ var NodeView = Backbone.View.extend({
     // Rerender related edges
     for (var i=0; i<this.model.graph.get("edges").length; i++){
       // i10n: only related
-      this.model.graph.get("edges").at(i).view.render();
+      if (this.model.graph.get("edges").at(i).view) this.model.graph.get("edges").at(i).view.render();
     }
   },
   infoLoaded: function (info) {
@@ -198,26 +198,6 @@ var Edge = Backbone.Model.extend({
       this.graph.view.addEdge(this);
     }
   },
-  svgPath: function () {
-    var fromX = this.source.view.portOffsetLeft('out', this.get("source")[1]);
-    var fromY = this.source.view.portOffsetTop('out', this.get("source")[1]);
-    var toX = this.target.view.portOffsetLeft('in', this.get("target")[1]);
-    var toY = this.target.view.portOffsetTop('in', this.get("target")[1]);
-    return "M "+ fromX +" "+ fromY 
-      +" L "+ (fromX+15) +" "+ fromY 
-      +" C "+ (fromX + 50) +" "+ fromY +" "+ (toX - 50) +" "+ toY +" "+ (toX-15) +" "+ toY 
-      +" L "+ toX +" "+ toY;
-  },
-  svgPathShadow: function () {
-    var fromX = this.source.view.portOffsetLeft('out', this.get("source")[1]);
-    var fromY = this.source.view.portOffsetTop('out', this.get("source")[1]) + 1;
-    var toX = this.target.view.portOffsetLeft('in', this.get("target")[1]);
-    var toY = this.target.view.portOffsetTop('in', this.get("target")[1]) + 1;
-    return "M "+ fromX +" "+ fromY 
-      +" L "+ (fromX+15) +" "+ fromY 
-      +" C "+ (fromX + 50) +" "+ fromY +" "+ (toX - 50) +" "+ toY +" "+ (toX-15) +" "+ toY 
-      +" L "+ toX +" "+ toY;
-  }
 });
 
 var Edges = Backbone.Collection.extend({
@@ -233,11 +213,31 @@ var EdgeView = Backbone.View.extend({
   },
   render: function () {
     // Don't use .toJSON() because using .source and .target Node
-    $(this.el).html(this.template(this.model));
+    $(this.el).html(this.template(this));
     // port insides
     this.model.source.view.$("div.port-out span.port."+this.model.get("source")[1]).css("background-color", this.model.get("color"));
     this.model.target.view.$("div.port-in span.port."+this.model.get("target")[1]).css("background-color", this.model.get("color"));
     return this;
+  },
+  svgPath: function () {
+    var fromX = this.model.source.view.portOffsetLeft('out', this.model.get("source")[1]);
+    var fromY = this.model.source.view.portOffsetTop('out', this.model.get("source")[1]);
+    var toX = this.model.target.view.portOffsetLeft('in', this.model.get("target")[1]);
+    var toY = this.model.target.view.portOffsetTop('in', this.model.get("target")[1]);
+    return "M "+ fromX +" "+ fromY 
+      +" L "+ (fromX+15) +" "+ fromY 
+      +" C "+ (fromX + 50) +" "+ fromY +" "+ (toX - 50) +" "+ toY +" "+ (toX-15) +" "+ toY 
+      +" L "+ toX +" "+ toY;
+  },
+  svgPathShadow: function () {
+    var fromX = this.model.source.view.portOffsetLeft('out', this.model.get("source")[1]);
+    var fromY = this.model.source.view.portOffsetTop('out', this.model.get("source")[1]) + 1;
+    var toX = this.model.target.view.portOffsetLeft('in', this.model.get("target")[1]);
+    var toY = this.model.target.view.portOffsetTop('in', this.model.get("target")[1]) + 1;
+    return "M "+ fromX +" "+ fromY 
+      +" L "+ (fromX+15) +" "+ fromY 
+      +" C "+ (fromX + 50) +" "+ fromY +" "+ (toX - 50) +" "+ toY +" "+ (toX-15) +" "+ toY 
+      +" L "+ toX +" "+ toY;
   }
 });
 

@@ -33,14 +33,14 @@
     <div class="module" style="left:<%= x %>px;top:<%= y %>px;width:<%= w %>px;height:<%= h %>px;" >
       <div class="ports ports-in">
         <div class="port port-in">
-          <span class="port default"> </span>
-          <span class="label">default</span>
+          <span class="port all"> </span>
+          <span class="label">all</span>
         </div>
       </div>
       <div class="ports ports-out">
         <div class="port port-out">
-          <span class="label">default</span>
-          <span class="port default"> </span>
+          <span class="label">all</span>
+          <span class="port all"> </span>
         </div>
       </div>
       <h1 class="title">...</h1>
@@ -70,9 +70,9 @@
   
   <script type="text/template" id="edge-template">
   
-    <svg>
+    <svg xmlns="http://www.w3.org/2000/svg">
       <path class="wire-shadow" d="<%= svgPathShadow() %>" stroke="#AAA" />
-      <path class="wire" d="<%= svgPath() %>" stroke="<%= attributes.color %>" />
+      <path class="wire" d="<%= svgPath() %>" stroke="<%= model.get('color') %>" />
     <svg>
     
   </script>
@@ -94,11 +94,7 @@
           // src: "http://meemoo.github.com/iframework/metronome.html", 
           src: "examples/metronome.html", 
           "x":130,"y":47,"w":250,"h":150, 
-          state: { bpm: 140 },
-          // edges: [
-          //   {portout: "default", node: 2, portin: "default"},
-          //   {portout: "beat", node: 3, portin: "pressed"}
-          // ]
+          state: { bpm: 140 }
         },
         {
           id: 2,
@@ -113,22 +109,26 @@
           "x":128,"y":246,"w":328,"h":348,
           state: { 
             processingcode: "void setup() { size(300, 300); colorMode(HSB, 360, 100, 300); noStroke(); background(0); } \n void mousePressed () { fill(random(360), 180, 300); triangle(random(width), random(height), 100, 100, 200, 200);}" 
-          },
-          // edges: [
-          //   {portout: "image", node: 4, portin: "image"}
-          // ]
+          }
         },
         {
           id: 4,
           // src: "http://meemoo.github.com/iframework/examples/glitch.html", 
           src: "examples/glitch.html", 
           "x":579,"y":255,"w":469,"h":211
-        }
+        },
+        // {
+        //   id: 5,
+        //   // src: "http://meemoo.github.com/iframework/examples/blocking.html", 
+        //   src: "examples/blocking.html", 
+        //   "x":761,"y":7,"w":295,"h":230
+        // },
       ],
       edges: [
-        { source: [1, "default"], target: [2, "default"] },
-        { source: [1, "beat"],    target: [3, "pressed"] },
-        { source: [3, "image"],   target: [4, "image"] }
+        { source: [1, "all"],   target: [2, "all"] },
+        { source: [1, "beat"],  target: [3, "pressed"] },
+        { source: [3, "image"], target: [4, "image"] },
+        // { source: [1, "beat"],  target: [5, "all"] },
       ]
     };
     

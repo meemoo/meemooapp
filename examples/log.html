@@ -23,12 +23,17 @@
       var count = 0;
       
       Meemoo.addInputs({
-        default: {
+        all: {
           action: function (message, e) {
             count++;
             $("#log").prepend(count + ": " + e.data + "<br />");
-          },
-          type: "string"
+          }
+        },
+        allObject: {
+          action: function (o) {
+            count++;
+            $("#log").prepend(count + ": " + JSON.stringify(o) + "<br />");
+          }
         },
         clear: {
           action: function () {

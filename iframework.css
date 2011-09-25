@@ -131,4 +131,5 @@ footer {
   right: 10px;
   font-family: monospace;
   z-index: 10;
+  text-align: right;
 }

@@ -58,6 +58,7 @@
       meemoo_bpm = parseInt((1000 / meemoo_ms * 60), 10);
       $("#ms").val(meemoo_ms);
       $("#bpm").val(meemoo_bpm);
+      Meemoo.send("ms", meemoo_ms);
     };
     
     Meemoo.addInputs({
@@ -106,7 +107,6 @@
     setLoop = function(val){
       clearInterval(loopInterval);
       loopInterval = setInterval(doLoop, val);
-      Meemoo.send("ms", val);
     };
     
     doLoop = function(){
