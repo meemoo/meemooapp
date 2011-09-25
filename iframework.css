@@ -126,10 +126,11 @@ div.edges {
 
 
 footer {
-  position:absolute;
+  position: fixed;
   bottom: 10px;
   right: 10px;
   font-family: monospace;
+  font-size: 10px;
   z-index: 10;
   text-align: right;
 }

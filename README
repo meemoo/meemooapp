@@ -9,12 +9,14 @@
 Like Reason, Quartz Composer, or Pure Data, but 100% open source, and 100% of the web.
 
 by Forrest Oliphant, http://sembiki.com/
+
+demo: http://meemoo.github.com/iframework
 development blog: http://meemoo.noisepages.com/
 
 ---
 
 meemoospeak : model : html5speak
 ------------+-------+-----------------------------------------
-composition : graph : json like <a href="https://gist.github.com/9f98779f853f3f0ede87">graph={"nodes":[],"edges":[]}</a>
+composition : graph : json like graph={nodes:[],edges:[]} (https://gist.github.com/9f98779f853f3f0ede87)
 module      : node  : iframe
 wire        : edge  : window.postMessage()
