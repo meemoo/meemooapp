@@ -49,9 +49,11 @@
     });
     
     $(window).resize(function() {
+      var oldImageData = cContext.getImageData(0,0,c.width,c.height);
       c.width = $(window).width();
       c.height = $(window).height();
       cImageData = cContext.getImageData(0,0,c.width,c.height);
+      Meemoo.inputs.image(oldImageData);
     });
     
   });
