@@ -24,16 +24,11 @@
       
       Meemoo.addInputs({
         all: {
-          action: function (message, e) {
+          action: function (m, e) {
             count++;
-            $("#log").prepend(count + ": " + e.data + "<br />");
-          }
-        },
-        allObject: {
-          action: function (o) {
-            count++;
-            $("#log").prepend(count + ": " + JSON.stringify(o) + "<br />");
-          }
+            $("#log").prepend(count + ": " + (e.data.constructor === String ? e.data : JSON.stringify(e.data)) + "<br />");
+          },
+          port: true,
         },
         clear: {
           action: function () {

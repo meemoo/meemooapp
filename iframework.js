@@ -1,6 +1,5 @@
 $(function(){
 
-
 var Node = Backbone.Model.extend({
   loaded: false,
   defaults: {
@@ -11,18 +10,21 @@ var Node = Backbone.Model.extend({
     h: 100
   },
   initializeView: function () {
-    return this.view = new NodeView({model:this});
+    this.view = new NodeView({model:this});
+    return this.view;
   },
   send: function (message) {
-    if (this.frameIndex != undefined) {
+    if (this.frameIndex !== undefined) {
       window.frames[this.frameIndex].postMessage(message, "*");
     }
   },
   setState: function (state) {
-    this.send("/setState/"+encodeURIComponent(JSON.stringify(state)));
+    this.send({setState: state});
   },
   infoLoaded: function (info) {
-    this.view.infoLoaded(info);
+    if (this.view) {
+      this.view.infoLoaded(info);
+    }
     // Set state
     if (this.get("state")) {
       this.setState(this.get("state"));
@@ -32,10 +34,10 @@ var Node = Backbone.Model.extend({
     this.graph.checkLoaded();
   },
   addInput: function (info) {
-    if (this.view) this.view.addInput(info);
+    if (this.view) { this.view.addInput(info); }
   },
   addOutput: function (info) {
-    if (this.view) this.view.addOutput(info);
+    if (this.view) { this.view.addOutput(info); }
   }
 });
 
@@ -82,7 +84,7 @@ var NodeView = Backbone.View.extend({
             .width( $(this).width() )
             .height( $(this).height() )
             .css( "z-index", topZ+10 );
-          return helper
+          return helper;
         },
         start: function() {
           $(this).trigger("click");
@@ -90,7 +92,7 @@ var NodeView = Backbone.View.extend({
       })
       .resizable({
         helper: "ui-resizable-helper"
-      })
+      });
   },
   render: function () {
     $(this.el).html(this.template(this.model.toJSON()));
@@ -118,7 +120,7 @@ var NodeView = Backbone.View.extend({
     // Rerender related edges
     for (var i=0; i<this.model.graph.get("edges").length; i++){
       // i10n: only related
-      if (this.model.graph.get("edges").at(i).view) this.model.graph.get("edges").at(i).view.render();
+      if (this.model.graph.get("edges").at(i).view) { this.model.graph.get("edges").at(i).view.render(); }
     }
   },
   resize: function (event, ui) {
@@ -139,7 +141,7 @@ var NodeView = Backbone.View.extend({
     // Rerender related edges
     for (var i=0; i<this.model.graph.get("edges").length; i++){
       // i10n: only related
-      if (this.model.graph.get("edges").at(i).view) this.model.graph.get("edges").at(i).view.render();
+      if (this.model.graph.get("edges").at(i).view) { this.model.graph.get("edges").at(i).view.render(); }
     }
   },
   infoLoaded: function (info) {
@@ -176,7 +178,8 @@ var Edge = Backbone.Model.extend({
     this.set({color: MeemooApplication.getWireColor()});
   },
   initializeView: function () {
-    return this.view = new EdgeView({model:this});
+    this.view = new EdgeView({model:this});
+    return this.view;
   },
   connect: function () {
     // IDs from the graph
@@ -197,7 +200,7 @@ var Edge = Backbone.Model.extend({
     if (this.graph.view) {
       this.graph.view.addEdge(this);
     }
-  },
+  }
 });
 
 var Edges = Backbone.Collection.extend({
@@ -224,20 +227,20 @@ var EdgeView = Backbone.View.extend({
     var fromY = this.model.source.view.portOffsetTop('out', this.model.get("source")[1]);
     var toX = this.model.target.view.portOffsetLeft('in', this.model.get("target")[1]);
     var toY = this.model.target.view.portOffsetTop('in', this.model.get("target")[1]);
-    return "M "+ fromX +" "+ fromY 
-      +" L "+ (fromX+15) +" "+ fromY 
-      +" C "+ (fromX + 50) +" "+ fromY +" "+ (toX - 50) +" "+ toY +" "+ (toX-15) +" "+ toY 
-      +" L "+ toX +" "+ toY;
+    return "M "+ fromX +" "+ fromY +
+      " L "+ (fromX+15) +" "+ fromY +
+      " C "+ (fromX + 50) +" "+ fromY +" "+ (toX - 50) +" "+ toY +" "+ (toX-15) +" "+ toY +
+      " L "+ toX +" "+ toY;
   },
   svgPathShadow: function () {
     var fromX = this.model.source.view.portOffsetLeft('out', this.model.get("source")[1]);
     var fromY = this.model.source.view.portOffsetTop('out', this.model.get("source")[1]) + 1;
     var toX = this.model.target.view.portOffsetLeft('in', this.model.get("target")[1]);
     var toY = this.model.target.view.portOffsetTop('in', this.model.get("target")[1]) + 1;
-    return "M "+ fromX +" "+ fromY 
-      +" L "+ (fromX+15) +" "+ fromY 
-      +" C "+ (fromX + 50) +" "+ fromY +" "+ (toX - 50) +" "+ toY +" "+ (toX-15) +" "+ toY 
-      +" L "+ toX +" "+ toY;
+    return "M "+ fromX +" "+ fromY +
+      " L "+ (fromX+15) +" "+ fromY +
+      " C "+ (fromX + 50) +" "+ fromY +" "+ (toX - 50) +" "+ toY +" "+ (toX-15) +" "+ toY +
+      " L "+ toX +" "+ toY;
   }
 });
 
@@ -252,7 +255,7 @@ var Graph = Backbone.Model.extend({
       permalink: ""
     },
     nodes: new Nodes(),
-    edges: new Edges(),
+    edges: new Edges()
   },
   initialize: function () {
     // Convert arrays into Backbone Collections
@@ -272,15 +275,15 @@ var Graph = Backbone.Model.extend({
   },
   addNode: function (node) {
     this.get("nodes").add(node);
-    if (this.view) this.view.addNode(node);
+    if (this.view) { this.view.addNode(node); }
   },
   addEdge: function (edge) {
     this.get("edges").add(edge);
-    if (this.view) this.view.addEdge(edge);
+    if (this.view) { this.view.addEdge(edge); }
   },
   checkLoaded: function () {
     for (var i=0; i<this.get("nodes").length; i++) {
-      if (this.get("nodes").at(i).loaded == false) return false;
+      if (this.get("nodes").at(i).loaded === false) { return false; }
     }
     this.loaded = true;
     
@@ -323,6 +326,9 @@ var GraphView = Backbone.View.extend({
   }
 });
 
+
+
+
 window.MeemooApplication = {
   shownGraph: undefined,
   // Color scheme CC-BY-NC-SA from Skyblue2u http://www.colourlovers.com/palette/758853/A_Glass_Rainbow
@@ -342,31 +348,26 @@ window.MeemooApplication = {
     this.shownGraph = new Graph(graph);
   },
   gotMessage: function (e) {
-    var message = e.data.split("/");
-    var info;
-    if ( message[2] ) {
-      info = JSON.parse(decodeURIComponent(message[2]));
-    } 
-    if (!info) {
-      return false;
-    }
     if (MeemooApplication.shownGraph) {
       for (var i=0; i<MeemooApplication.shownGraph.get("nodes").models.length; i++){
         var node = MeemooApplication.shownGraph.get("nodes").at(i);
         // Find the corresponding node and load the info
         if (e.source == node.view.$('.frame')[0].contentWindow) {
-          switch (message[1]) {
-            case "info":
-              node.infoLoaded(info);
-              break;
-            case "addInput":
-              node.addInput(info);
-              break;
-            case "addOutput":
-              node.addOutput(info);
-              break;
-            defualt:
-              break;
+          for (var name in e.data) {
+            var info = e.data[name];
+            switch (name) {
+              case "info":
+                node.infoLoaded(info);
+                break;
+              case "addInput":
+                node.addInput(info);
+                break;
+              case "addOutput":
+                node.addOutput(info);
+                break;
+              defualt:
+                break;
+            }
           }
         }
       }
@@ -379,6 +380,5 @@ window.addEventListener("message", MeemooApplication.gotMessage, false);
 
 // Disable selection for better drag+drop
 $('body').disableSelection();
-
 
 });

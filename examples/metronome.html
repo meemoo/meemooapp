@@ -87,13 +87,9 @@
         type: "bang"
       },
       setState: {
-        action: function (message) {
-          var info;
-          if ( message[2] ) {
-            info = JSON.parse(decodeURIComponent(message[2]));
-          } 
-          if ( info.bpm ) {
-            Meemoo.inputs.bpm(info.bpm);
+        action: function (data) {
+          if ( data.bpm ) {
+            Meemoo.inputs.bpm(data.bpm);
           }
         }
       }

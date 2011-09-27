@@ -27,26 +27,24 @@
     var processingCode;
     var p;
     
-    Meemoo.inputs.setState = function (message) {
-      var state;
-      if ( message[2] ) {
-        state = JSON.parse(decodeURIComponent(message[2]));
-      }
-      if (state.processingcode) {
-        processingCode = state.processingcode;
-        p = null;
-        p = new Processing(document.getElementById("processingCanvas"), processingCode);
-      }
-    }
     Meemoo.addInputs({
       pressed: {
-        action: function (message, e) {
+        action: function () {
           Processing.getInstanceById("processingCanvas").mousePressed();
           var c = document.getElementById("processingCanvas");
           Meemoo.send("image", c.getContext("2d").getImageData(0,0,c.width,c.height));
         },
         port: true,
         type: "bang"
+      },
+      setState: {
+        action: function (data) {
+          if (data.processingcode) {
+            processingCode = data.processingcode;
+            p = null;
+            p = new Processing(document.getElementById("processingCanvas"), processingCode);
+          }
+        },
       }
     });
     

@@ -31,18 +31,8 @@
   <script type="text/template" id="node-template">
     
     <div class="module" style="left:<%= x %>px;top:<%= y %>px;width:<%= w %>px;height:<%= h %>px;" >
-      <div class="ports ports-in">
-        <div class="port port-in">
-          <span class="port all"> </span>
-          <span class="label">all</span>
-        </div>
-      </div>
-      <div class="ports ports-out">
-        <div class="port port-out">
-          <span class="label">all</span>
-          <span class="port all"> </span>
-        </div>
-      </div>
+      <div class="ports ports-in"></div>
+      <div class="ports ports-out"></div>
       <h1 class="title">...</h1>
       <iframe class="frame" src="<%= src %>" style="width:<%= w - 20 %>px;height:<%= h - 40 %>px;"></iframe>
     </div>
@@ -70,10 +60,10 @@
   
   <script type="text/template" id="edge-template">
   
-    <svg xmlns="http://www.w3.org/2000/svg">
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1000" height="1000">
       <path class="wire-shadow" d="<%= svgPathShadow() %>" stroke="#AAA" />
       <path class="wire" d="<%= svgPath() %>" stroke="<%= model.get('color') %>" />
-    <svg>
+    </svg>
     
   </script>
   
@@ -96,12 +86,12 @@
           "x":130,"y":47,"w":250,"h":150, 
           state: { bpm: 140 }
         },
-        {
-          id: 2,
-          // src: "http://meemoo.github.com/iframework/examples/log.html", 
-          src: "examples/log.html", 
-          "x":561,"y":7,"w":295,"h":230
-        },
+        // {
+        //   id: 2,
+        //   // src: "http://meemoo.github.com/iframework/examples/log.html", 
+        //   src: "examples/log.html", 
+        //   "x":561,"y":7,"w":295,"h":230
+        // },
         {
           id: 3,
           // src: "http://meemoo.github.com/iframework/examples/processing.html", 
@@ -119,15 +109,16 @@
         },
         // {
         //   id: 5,
-        //   // src: "http://meemoo.github.com/iframework/examples/blocking.html", 
         //   src: "examples/blocking.html", 
         //   "x":761,"y":7,"w":295,"h":230
         // },
       ],
       edges: [
-        { source: [1, "all"],   target: [2, "all"] },
+        // { source: [1, "ms"],   target: [2, "all"] },
+        // { source: [1, "beat"],   target: [2, "all"] },
         { source: [1, "beat"],  target: [3, "pressed"] },
         { source: [3, "image"], target: [4, "image"] },
+        // { source: [3, "all"], target: [2, "all"] },
         // { source: [1, "beat"],  target: [5, "all"] },
       ]
     };
