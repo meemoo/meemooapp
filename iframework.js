@@ -9,6 +9,8 @@ var Node = Backbone.Model.extend({
     w: 100,
     h: 100
   },
+  inputs: {},
+  outputs: {},
   initializeView: function () {
     this.view = new NodeView({model:this});
     return this.view;
@@ -34,10 +36,16 @@ var Node = Backbone.Model.extend({
     this.graph.checkLoaded();
   },
   addInput: function (info) {
-    if (this.view) { this.view.addInput(info); }
+    if (this.view && !this.inputs.hasOwnProperty(info.name)) { 
+      this.inputs[info.name] = info;
+      this.view.addInput(info); 
+    }
   },
   addOutput: function (info) {
-    if (this.view) { this.view.addOutput(info); }
+    if (this.view && !this.outputs.hasOwnProperty(info.name)) { 
+      this.outputs[info.name] = info;
+      this.view.addOutput(info); 
+    }
   }
 });
 
@@ -200,6 +208,19 @@ var Edge = Backbone.Model.extend({
     if (this.graph.view) {
       this.graph.view.addEdge(this);
     }
+  },
+  disconnect: function () {
+    if (this.source && this.target) {
+      this.source.send({
+        disconnect: { 
+          source: this.get("source"),
+          target: [this.target.frameIndex, this.get("target")[1]]
+        }
+      });
+      if (this.graph.view) {
+        this.graph.view.removeEdge(this);
+      }
+    }
   }
 });
 
@@ -287,13 +308,20 @@ var Graph = Backbone.Model.extend({
     }
     this.loaded = true;
     
-    // Connect edges when all modules have loaded (+.5 second)
+    // Disconnect then connect edges
+    this.reconnectEdges();
+    
+    return true;
+  },
+  reconnectEdges: function () {
+    for(var i=0; i<this.get("edges").length; i++) {
+      // Disconnect them first to be sure not doubled
+      this.get("edges").at(i).disconnect();
+    }
+    // Connect edges when all modules have loaded (+.5 seconds)
     setTimeout(function(){
       MeemooApplication.shownGraph.connectEdges();
     }, 500);
-    // this.connectEdges();
-    
-    return true;
   },
   connectEdges: function () {
     for(var i=0; i<this.get("edges").length; i++) {
@@ -323,7 +351,11 @@ var GraphView = Backbone.View.extend({
   },
   addEdge: function (edge) {
     this.$(".edges").append( edge.initializeView().el );
+  },
+  removeEdge: function (edge) {
+    $(edge.view.el).remove();
   }
+  
 });
 
 
