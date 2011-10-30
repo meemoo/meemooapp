@@ -20,13 +20,15 @@ var Node = Backbone.Model.extend({
       window.frames[this.frameIndex].postMessage(message, "*");
     }
   },
-  setState: function (state) {
-    this.send({setState: state});
-  },
   infoLoaded: function (info) {
     if (this.view) {
       this.view.infoLoaded(info);
     }
+  },
+  setState: function (state) {
+    this.send({setState: state});
+  },
+  stateReady: function () {
     // Set state
     if (this.get("state")) {
       this.setState(this.get("state"));
@@ -396,6 +398,9 @@ window.MeemooApplication = {
                 break;
               case "addOutput":
                 node.addOutput(info);
+                break;
+              case "stateReady":
+                node.stateReady();
                 break;
               defualt:
                 break;
