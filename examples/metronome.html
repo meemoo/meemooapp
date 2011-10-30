@@ -61,7 +61,11 @@
       Meemoo.send("ms", meemoo_ms);
     };
     
-    Meemoo.addInputs({
+    Meemoo.setInfo({
+      title: "metronome",
+      author: "Forrest Oliphant",
+      description: "meemoo.js module for rhythm in bpm or ms"
+    }).addInputs({
       ms: {
         action: ms,
         port: true,
