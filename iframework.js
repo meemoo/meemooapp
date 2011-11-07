@@ -9,8 +9,10 @@ var Node = Backbone.Model.extend({
     w: 100,
     h: 100
   },
-  inputs: {},
-  outputs: {},
+  initialize: function () {
+    this.inputs = {};
+    this.outputs = {};
+  },
   initializeView: function () {
     this.view = new NodeView({model:this});
     return this.view;
@@ -38,6 +40,7 @@ var Node = Backbone.Model.extend({
     this.graph.checkLoaded();
   },
   addInput: function (info) {
+    console.log(this, this.inputs, this.id, info.name);
     if (this.view && !this.inputs.hasOwnProperty(info.name)) { 
       this.inputs[info.name] = info;
       this.view.addInput(info); 
@@ -386,7 +389,7 @@ window.MeemooApplication = {
       for (var i=0; i<MeemooApplication.shownGraph.get("nodes").models.length; i++){
         var node = MeemooApplication.shownGraph.get("nodes").at(i);
         // Find the corresponding node and load the info
-        if (e.source == node.view.$('.frame')[0].contentWindow) {
+        if (node.get("id") == e.data.nodeid) {
           for (var name in e.data) {
             var info = e.data[name];
             switch (name) {

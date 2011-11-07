@@ -16,8 +16,6 @@
   
   <link href="iframework.css" rel="stylesheet" type="text/css" />
   
-  <style type="text/css">
-  </style>
 </head>
 <body>
   
@@ -30,11 +28,11 @@
   
   <script type="text/template" id="node-template">
     
-    <div class="module" style="left:<%= x %>px;top:<%= y %>px;width:<%= w %>px;height:<%= h %>px;" >
+    <div class="module" style="left:<%= x-10 %>px;top:<%= y-30 %>px;width:<%= w+20 %>px;height:<%= h+40 %>px;" >
       <div class="ports ports-in"></div>
       <div class="ports ports-out"></div>
       <h1 class="title">...</h1>
-      <iframe class="frame" src="<%= src %>" style="width:<%= w - 20 %>px;height:<%= h - 40 %>px;"></iframe>
+      <iframe class="frame" src="<%= src %>#nodeid=<%= id %>" style="width:<%= w %>px;height:<%= h %>px;"></iframe>
     </div>
     
   </script>
@@ -75,7 +73,7 @@
       info: {
         title: "iframework test",
         author: "sembiki.com",
-        description: "metronome to processing and log",
+        description: "meemoo demo graph",
         url: ""
       },
       nodes: [
@@ -83,20 +81,14 @@
           id: 1,
           // src: "http://meemoo.github.com/iframework/metronome.html", 
           src: "examples/metronome.html", 
-          "x":130,"y":47,"w":250,"h":150, 
+          "x":130,"y":47,"w":230,"h":110, 
           state: { bpm: 140 }
         },
-        // {
-        //   id: 2,
-        //   // src: "http://meemoo.github.com/iframework/examples/log.html", 
-        //   src: "examples/log.html", 
-        //   "x":561,"y":7,"w":295,"h":230
-        // },
         {
           id: 3,
           // src: "http://meemoo.github.com/iframework/examples/processing.html", 
           src: "examples/processing.html", 
-          "x":128,"y":246,"w":328,"h":348,
+          "x":128,"y":246,"w":308,"h":308,
           state: { 
             processingcode: "void setup() { size(300, 300); colorMode(HSB, 360, 100, 300); noStroke(); background(0); } \n void mousePressed () { fill(random(360), 180, 300); triangle(random(width), random(height), 100, 100, 200, 200);}" 
           }
@@ -105,27 +97,25 @@
           id: 4,
           // src: "http://meemoo.github.com/iframework/examples/glitch.html", 
           src: "examples/glitch.html", 
-          "x":579,"y":255,"w":469,"h":211
+          "x":579,"y":255,"w":449,"h":171
         },
-        // {
-        //   id: 5,
-        //   src: "examples/blocking.html", 
-        //   "x":521,"y":91,"w":136,"h":136
-        // },
         {
-          id: 6,
-          src: "http://jsrun.it/forresto/meemoo-module-test",
-          "x":521,"y":50,"w":300,"h":160,
-          state: { txt: "loaded this module from jsdo.it, then set it with this message with the graph data" }
-        }
+          id: 5,
+          // src: "http://meemoo.github.com/iframework/examples/glitch.html", 
+          src: "examples/glitch.html", 
+          "x":579,"y":475,"w":440,"h":175
+        }//,
+        // {
+        //   id: 6,
+        //   src: "http://jsrun.it/forresto/meemoo-module-test",
+        //   "x":521,"y":50,"w":300,"h":160,
+        //   state: { txt: "loaded this module from jsdo.it, then set it with this message with the graph data" }
+        // }
       ],
       edges: [
-        // { source: [1, "ms"],   target: [2, "all"] },
-        // { source: [1, "beat"],   target: [2, "all"] },
         { source: [1, "beat"],  target: [3, "pressed"] },
         { source: [3, "image"], target: [4, "image"] },
-        // { source: [3, "all"], target: [2, "all"] },
-        // { source: [1, "beat"],  target: [5, "all"] },
+        { source: [3, "image"], target: [5, "image"] },
       ]
     };
     
