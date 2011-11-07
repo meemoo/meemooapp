@@ -40,7 +40,6 @@ var Node = Backbone.Model.extend({
     this.graph.checkLoaded();
   },
   addInput: function (info) {
-    console.log(this, this.inputs, this.id, info.name);
     if (this.view && !this.inputs.hasOwnProperty(info.name)) { 
       this.inputs[info.name] = info;
       this.view.addInput(info); 
@@ -248,24 +247,45 @@ var EdgeView = Backbone.View.extend({
     this.model.target.view.$("div.port-in span.port."+this.model.get("target")[1]).css("background-color", this.model.get("color"));
     return this;
   },
-  svgPath: function () {
+  svgW: function () {
     var fromX = this.model.source.view.portOffsetLeft('out', this.model.get("source")[1]);
-    var fromY = this.model.source.view.portOffsetTop('out', this.model.get("source")[1]);
     var toX = this.model.target.view.portOffsetLeft('in', this.model.get("target")[1]);
+    return Math.abs(toX-fromX) + 50;
+  },
+  svgH: function () {
+    var fromY = this.model.source.view.portOffsetTop('out', this.model.get("source")[1]);
     var toY = this.model.target.view.portOffsetTop('in', this.model.get("target")[1]);
+    return Math.abs(toY-fromY) + 50;
+  },
+  svgX: function () {
+    var fromX = this.model.source.view.portOffsetLeft('out', this.model.get("source")[1]);
+    var toX = this.model.target.view.portOffsetLeft('in', this.model.get("target")[1]);
+    return Math.min(toX, fromX) - 25;
+  },
+  svgY: function () {
+    var fromY = this.model.source.view.portOffsetTop('out', this.model.get("source")[1]);
+    var toY = this.model.target.view.portOffsetTop('in', this.model.get("target")[1]);
+    return Math.min(toY, fromY) - 25;
+  },
+  svgPath: function () {
+    var fromX = this.model.source.view.portOffsetLeft('out', this.model.get("source")[1]) - this.svgX();
+    var fromY = this.model.source.view.portOffsetTop('out', this.model.get("source")[1]) - this.svgY();
+    var toX = this.model.target.view.portOffsetLeft('in', this.model.get("target")[1]) - this.svgX();
+    var toY = this.model.target.view.portOffsetTop('in', this.model.get("target")[1]) - this.svgY();
     return "M "+ fromX +" "+ fromY +
       " L "+ (fromX+15) +" "+ fromY +
-      " C "+ (fromX + 50) +" "+ fromY +" "+ (toX - 50) +" "+ toY +" "+ (toX-15) +" "+ toY +
+      " C "+ (fromX+50) +" "+ fromY +" "+ (toX-50) +" "+ toY +" "+ (toX-15) +" "+ toY +
       " L "+ toX +" "+ toY;
   },
   svgPathShadow: function () {
-    var fromX = this.model.source.view.portOffsetLeft('out', this.model.get("source")[1]);
-    var fromY = this.model.source.view.portOffsetTop('out', this.model.get("source")[1]) + 1;
-    var toX = this.model.target.view.portOffsetLeft('in', this.model.get("target")[1]);
-    var toY = this.model.target.view.portOffsetTop('in', this.model.get("target")[1]) + 1;
+    // Same as svgPath() but y+1
+    var fromX = this.model.source.view.portOffsetLeft('out', this.model.get("source")[1]) - this.svgX();
+    var fromY = this.model.source.view.portOffsetTop('out', this.model.get("source")[1]) - this.svgY() + 1;
+    var toX = this.model.target.view.portOffsetLeft('in', this.model.get("target")[1]) - this.svgX();
+    var toY = this.model.target.view.portOffsetTop('in', this.model.get("target")[1]) - this.svgY() + 1;
     return "M "+ fromX +" "+ fromY +
       " L "+ (fromX+15) +" "+ fromY +
-      " C "+ (fromX + 50) +" "+ fromY +" "+ (toX - 50) +" "+ toY +" "+ (toX-15) +" "+ toY +
+      " C "+ (fromX+50) +" "+ fromY +" "+ (toX-50) +" "+ toY +" "+ (toX-15) +" "+ toY +
       " L "+ toX +" "+ toY;
   }
 });
