@@ -85,21 +85,28 @@ var NodeView = Backbone.View.extend({
       })
       .draggable({
         handle: 'h1',
-        helper: function(event){
-          // Bring helper to top
-          var topZ = 0;
-          $("div.nodes div.module").each(function(){
-            var thisZ = Number($(this).css("z-index"));
-            if (thisZ > topZ) { topZ = thisZ; }
-          });
-          var helper = $("<div class='ui-draggable-helper'></div>")
-            .width( $(this).width() )
-            .height( $(this).height() )
-            .css( "z-index", topZ+10 );
-          return helper;
-        },
+        // helper: function(event){
+        //   // Bring helper to top
+        //   var topZ = 0;
+        //   $("div.nodes div.module").each(function(){
+        //     var thisZ = Number($(this).css("z-index"));
+        //     if (thisZ > topZ) { topZ = thisZ; }
+        //   });
+        //   var helper = $("<div class='ui-draggable-helper'></div>")
+        //     .width( $(this).width() )
+        //     .height( $(this).height() )
+        //     .css( "z-index", topZ+10 );
+        //   return helper;
+        // },
         start: function() {
           $(this).trigger("click");
+        },
+        drag: function(event, ui) {
+          var graph = window.MeemooApplication.shownGraph;
+          for (var i=0; i<graph.get("edges").length; i++) {
+            // i10n: only related, redraw()
+            if (graph.get("edges").at(i).view) { graph.get("edges").at(i).view.render(); }
+          }
         }
       })
       .resizable({
@@ -111,29 +118,10 @@ var NodeView = Backbone.View.extend({
     return this;
   },
   move: function (event, ui) {
-    var newX = $(ui.helper).offset().left;
-    var newY = $(ui.helper).offset().top;
-    $(event.target).offset({
-      left: newX, 
-      top: newY
-    });
     this.model.set({
-      x: newX,
-      y: newY
+      x: this.$(".module").offset().left + 10,
+      y: this.$(".module").offset().top + 30
     });
-    this.$(".input").attr({
-      cx: newX - 4,
-      cy: newY - 4
-    });
-    this.$(".output").attr({
-      cx: newX + this.model.get("w") + 5,
-      cy: newY + this.model.get("h") + 5
-    });
-    // Rerender related edges
-    for (var i=0; i<this.model.graph.get("edges").length; i++){
-      // i10n: only related
-      if (this.model.graph.get("edges").at(i).view) { this.model.graph.get("edges").at(i).view.render(); }
-    }
   },
   resize: function (event, ui) {
     var newW = this.$(".module").width();
@@ -153,6 +141,7 @@ var NodeView = Backbone.View.extend({
     // Rerender related edges
     for (var i=0; i<this.model.graph.get("edges").length; i++){
       // i10n: only related
+      // if (this.model.graph.get("edges").at(i).view) { this.model.graph.get("edges").at(i).view.redraw(); }
       if (this.model.graph.get("edges").at(i).view) { this.model.graph.get("edges").at(i).view.render(); }
     }
   },
@@ -170,13 +159,9 @@ var NodeView = Backbone.View.extend({
     this.$(".ports-out").append(this.portOutTemplate(info));
   },
   portOffsetLeft: function (outin, name) {
-    // var o = this.$('div.port-'+outin+' span.port.'+name).offset();
-    // return (o ? o.left+7 : 0);
     return this.$('div.port-'+outin+' span.port.'+name).offset().left + 7;
   },
   portOffsetTop: function (outin, name) {
-    // var o = this.$('div.port-'+outin+' span.port.'+name).offset();
-    // return (o ? o.top+7 : 0);
     return this.$('div.port-'+outin+' span.port.'+name).offset().top + 7;
   }
 });
@@ -247,10 +232,18 @@ var EdgeView = Backbone.View.extend({
     this.model.target.view.$("div.port-in span.port."+this.model.get("target")[1]).css("background-color", this.model.get("color"));
     return this;
   },
+  redraw: function () {
+    // SVG wire
+    this.$("svg").width(this.svgW());
+    this.$("svg").height(this.svgH());
+    this.$("svg").offset({ left: this.svgX()-25, top: this.svgY()+25 });
+    this.$("svg path.wire")[0].setAttribute("d", this.svgPath() );
+    this.$("svg path.wire-shadow")[0].setAttribute("d", this.svgPathShadow() );
+  },
   svgW: function () {
     var fromX = this.model.source.view.portOffsetLeft('out', this.model.get("source")[1]);
     var toX = this.model.target.view.portOffsetLeft('in', this.model.get("target")[1]);
-    return Math.abs(toX-fromX) + 50;
+    return Math.abs(toX-fromX) + 100;
   },
   svgH: function () {
     var fromY = this.model.source.view.portOffsetTop('out', this.model.get("source")[1]);
@@ -260,7 +253,7 @@ var EdgeView = Backbone.View.extend({
   svgX: function () {
     var fromX = this.model.source.view.portOffsetLeft('out', this.model.get("source")[1]);
     var toX = this.model.target.view.portOffsetLeft('in', this.model.get("target")[1]);
-    return Math.min(toX, fromX) - 25;
+    return Math.min(toX, fromX) - 50;
   },
   svgY: function () {
     var fromY = this.model.source.view.portOffsetTop('out', this.model.get("source")[1]);

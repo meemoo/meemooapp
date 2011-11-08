@@ -58,8 +58,7 @@
   
   <script type="text/template" id="edge-template">
   
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" 
-    style="position:absolute;left:<%= svgX() %>px;top:<%= svgY() %>px;width:<%= svgW() %>px;height:<%= svgH() %>px;">
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="position:absolute;left:<%= svgX() %>px;top:<%= svgY() %>px;width:<%= svgW() %>px;height:<%= svgH() %>px;">
       <path class="wire-shadow" d="<%= svgPathShadow() %>" stroke="#AAA" />
       <path class="wire" d="<%= svgPath() %>" stroke="<%= model.get('color') %>" />
     </svg>
@@ -89,7 +88,7 @@
           id: 3,
           // src: "http://meemoo.github.com/iframework/examples/processing.html", 
           src: "examples/processing.html", 
-          "x":128,"y":246,"w":308,"h":308,
+          "x":148,"y":246,"w":308,"h":308,
           state: { 
             processingcode: "void setup() { size(300, 300); colorMode(HSB, 360, 100, 300); noStroke(); background(0); } \n void mousePressed () { fill(random(360), 180, 300); triangle(random(width), random(height), 100, 100, 200, 200);}" 
           }
@@ -98,14 +97,15 @@
           id: 4,
           // src: "http://meemoo.github.com/iframework/examples/glitch.html", 
           src: "examples/glitch.html", 
-          "x":579,"y":255,"w":449,"h":171
+          "x":679,"y":155,"w":449,"h":171
         },
         {
           id: 5,
           // src: "http://meemoo.github.com/iframework/examples/glitch.html", 
           src: "examples/glitch.html", 
           "x":579,"y":475,"w":440,"h":175
-        }//,
+        }
+        //,
         // {
         //   id: 6,
         //   src: "http://jsrun.it/forresto/meemoo-module-test",
@@ -116,7 +116,7 @@
       edges: [
         { source: [1, "beat"],  target: [3, "pressed"] },
         { source: [3, "image"], target: [4, "image"] },
-        { source: [3, "image"], target: [5, "image"] },
+        // { source: [3, "image"], target: [5, "image"] },
       ]
     };
     
