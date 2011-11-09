@@ -86,30 +86,9 @@ var NodeView = Backbone.View.extend({
       })
       .draggable({
         handle: 'h1',
-        // helper: function(event){
-        //   // Bring helper to top
-        //   var topZ = 0;
-        //   $("div.nodes div.module").each(function(){
-        //     var thisZ = Number($(this).css("z-index"));
-        //     if (thisZ > topZ) { topZ = thisZ; }
-        //   });
-        //   var helper = $("<div class='ui-draggable-helper'></div>")
-        //     .width( $(this).width() )
-        //     .height( $(this).height() )
-        //     .css( "z-index", topZ+10 );
-        //   return helper;
-        // },
         start: function() {
           $(this).trigger("click");
         }
-        // ,
-        // drag: function(event, ui) {
-          // var graph = window.MeemooApplication.shownGraph;
-          // for (var i=0; i<graph.get("edges").length; i++) {
-          //   // i10n: only related, redraw()
-          //   if (graph.get("edges").at(i).view) { graph.get("edges").at(i).view.render(); }
-          // }
-        // }
       })
       .resizable({
         helper: "ui-resizable-helper"
