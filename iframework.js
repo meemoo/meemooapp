@@ -64,7 +64,8 @@ var NodeView = Backbone.View.extend({
   portInTemplate: _.template($('#port-in-template').html()),
   portOutTemplate: _.template($('#port-out-template').html()),
   events: {
-    "dragstop .module":   "move",
+    "drag .module":       "drag",
+    "dragstop .module":   "dragstop",
     "resizestop .module": "resize"
   },
   initialize: function () {
@@ -100,14 +101,15 @@ var NodeView = Backbone.View.extend({
         // },
         start: function() {
           $(this).trigger("click");
-        },
-        drag: function(event, ui) {
-          var graph = window.MeemooApplication.shownGraph;
-          for (var i=0; i<graph.get("edges").length; i++) {
-            // i10n: only related, redraw()
-            if (graph.get("edges").at(i).view) { graph.get("edges").at(i).view.render(); }
-          }
         }
+        // ,
+        // drag: function(event, ui) {
+          // var graph = window.MeemooApplication.shownGraph;
+          // for (var i=0; i<graph.get("edges").length; i++) {
+          //   // i10n: only related, redraw()
+          //   if (graph.get("edges").at(i).view) { graph.get("edges").at(i).view.render(); }
+          // }
+        // }
       })
       .resizable({
         helper: "ui-resizable-helper"
@@ -117,7 +119,16 @@ var NodeView = Backbone.View.extend({
     $(this.el).html(this.template(this.model.toJSON()));
     return this;
   },
-  move: function (event, ui) {
+  drag: function (event, ui) {
+    for (var i=0; i<this.model.graph.get("edges").length; i++) {
+      var edge = this.model.graph.get("edges").at(i);
+      if (edge.view && (edge.get("source")[0] == this.model.get("id") || edge.get("target")[0] == this.model.get("id")) ) { 
+        // i10n: redraw()
+        edge.view.render();
+      }
+    }
+  },
+  dragstop: function (event, ui) {
     this.model.set({
       x: this.$(".module").offset().left + 10,
       y: this.$(".module").offset().top + 30
@@ -140,9 +151,11 @@ var NodeView = Backbone.View.extend({
     });
     // Rerender related edges
     for (var i=0; i<this.model.graph.get("edges").length; i++){
-      // i10n: only related
-      // if (this.model.graph.get("edges").at(i).view) { this.model.graph.get("edges").at(i).view.redraw(); }
-      if (this.model.graph.get("edges").at(i).view) { this.model.graph.get("edges").at(i).view.render(); }
+      var edge = this.model.graph.get("edges").at(i);
+      if (edge.view && edge.get("source")[0] == this.model.get("id")) { 
+        // i10n: redraw()
+        edge.view.render(); 
+      }
     }
   },
   infoLoaded: function (info) {
