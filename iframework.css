@@ -51,6 +51,11 @@ div.module {
     left: 10px;
     top: 30px;
   }
+  div.module div.iframemask {
+    position: absolute;
+    left: 9px;
+    top: 29px;
+  }
   div.module div.ports-in{
     position: absolute;
     left: -107px;

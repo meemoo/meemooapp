@@ -64,9 +64,11 @@ var NodeView = Backbone.View.extend({
   portInTemplate: _.template($('#port-in-template').html()),
   portOutTemplate: _.template($('#port-out-template').html()),
   events: {
-    "drag .module":       "drag",
-    "dragstop .module":   "dragstop",
-    "resizestop .module": "resize"
+    "dragstart .module":   "dragstart",
+    "drag .module":        "drag",
+    "dragstop .module":    "dragstop",
+    "resizestart .module": "resizestart",
+    "resizestop .module":  "resizestop"
   },
   initialize: function () {
     this.render();
@@ -82,13 +84,8 @@ var NodeView = Backbone.View.extend({
         });
         $(this).css("z-index", topZ+1);
       })
-      .click( function () {
-      })
       .draggable({
-        handle: 'h1',
-        start: function() {
-          $(this).trigger("click");
-        }
+        handle: 'h1'
       })
       .resizable({
         helper: "ui-resizable-helper"
@@ -98,31 +95,42 @@ var NodeView = Backbone.View.extend({
     $(this.el).html(this.template(this.model.toJSON()));
     return this;
   },
+  dragstart: function (event, ui) {
+    // Add a mask so that iframes don't steal mouse
+    window.MeemooApplication.maskFrames();
+  },
   drag: function (event, ui) {
     for (var i=0; i<this.model.graph.get("edges").length; i++) {
       var edge = this.model.graph.get("edges").at(i);
       if (edge.view && (edge.get("source")[0] == this.model.get("id") || edge.get("target")[0] == this.model.get("id")) ) { 
-        // i10n: redraw()
-        edge.view.render();
+        edge.view.redraw();
       }
     }
   },
   dragstop: function (event, ui) {
+    // Remove iframe masks
+    window.MeemooApplication.unmaskFrames();
+    // Redraw edges once more
+    this.drag();
+    // Save position to model
     this.model.set({
       x: this.$(".module").offset().left + 10,
       y: this.$(".module").offset().top + 30
     });
   },
-  resize: function (event, ui) {
+  resizestart: function (event, ui) {
+    // Add a mask so that iframes don't steal mouse
+    window.MeemooApplication.maskFrames();
+  },
+  resizestop: function (event, ui) {
+    // Remove iframe masks
+    window.MeemooApplication.unmaskFrames();
+    
     var newW = this.$(".module").width();
     var newH = this.$(".module").height();
     this.model.set({
-      w: newW,
-      h: newH
-    });
-    this.$(".output").attr({
-      cx: this.model.get("x") + newW + 5,
-      cy: this.model.get("y") + newH + 5
+      w: newW - 20,
+      h: newH - 40
     });
     this.$(".frame").css({
       width: newW - 20,
@@ -132,8 +140,7 @@ var NodeView = Backbone.View.extend({
     for (var i=0; i<this.model.graph.get("edges").length; i++){
       var edge = this.model.graph.get("edges").at(i);
       if (edge.view && edge.get("source")[0] == this.model.get("id")) { 
-        // i10n: redraw()
-        edge.view.render(); 
+        edge.view.redraw(); 
       }
     }
   },
@@ -225,12 +232,14 @@ var EdgeView = Backbone.View.extend({
     return this;
   },
   redraw: function () {
-    // SVG wire
-    this.$("svg").width(this.svgW());
-    this.$("svg").height(this.svgH());
-    this.$("svg").offset({ left: this.svgX()-25, top: this.svgY()+25 });
-    this.$("svg path.wire")[0].setAttribute("d", this.svgPath() );
-    this.$("svg path.wire-shadow")[0].setAttribute("d", this.svgPathShadow() );
+    this.$("svg").css({ 
+      "left": this.svgX(), 
+      "top": this.svgY(),
+      "width": this.svgW(),
+      "height": this.svgH()
+    });
+    this.$("svg path.wire").attr("d", this.svgPath() );
+    this.$("svg path.wire-shadow").attr("d", this.svgPathShadow() );
   },
   svgW: function () {
     var fromX = this.model.source.view.portOffsetLeft('out', this.model.get("source")[1]);
@@ -417,6 +426,19 @@ window.MeemooApplication = {
         }
       }
     }
+  },
+  maskFrames: function () {
+    $(".module").each(function(){
+      $(this).append(
+        $('<div class="iframemask" />').css({
+          "width": $(this).children(".frame").width()+2,
+          "height": $(this).children(".frame").height()+2
+        })
+      );
+    });
+  },
+  unmaskFrames: function () {
+    $(".iframemask").remove();
   }
 };
 
