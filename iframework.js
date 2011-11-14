@@ -364,10 +364,17 @@ var Graph = Backbone.Model.extend({
   initialize: function () {
     // Convert arrays into Backbone Collections
     if (this.attributes.nodes) {
-      this.attributes.nodes = new Nodes(this.attributes.nodes);
-      for(var i=0; i<this.get("nodes").length; i++) {
-        this.get("nodes").at(i).graph = this; 
+      var nodes = this.attributes.nodes;
+      this.attributes.nodes = new Nodes();
+      for (var i=0; i<nodes.length; i++) {
+        var node = new Node(nodes[i]);
+        node.graph = this;
+        this.addNode(node);
       }
+      // this.attributes.nodes = new Nodes(this.attributes.nodes);
+      // for(var i=0; i<this.get("nodes").length; i++) {
+      //   this.get("nodes").at(i).graph = this; 
+      // }
     }
     if (this.attributes.edges) {
       var edges = this.attributes.edges;
@@ -377,16 +384,20 @@ var Graph = Backbone.Model.extend({
         edge.graph = this;
         this.addEdge(edge);
       }
-      // this.attributes.edges = new Edges(this.attributes.edges);
-      // for(var i=0; i<this.get("edges").length; i++) {
-      //   this.get("edges").at(i).graph = this; 
-      // }
     }
     this.view = new GraphView({model:this});
   },
   addNode: function (node) {
-    this.get("nodes").add(node);
-    if (this.view) { this.view.addNode(node); }
+    // Make sure node id is unique
+    var isDupe = this.get("nodes").any(function(_node) {
+      return _node.get('id') === node.get('id');
+    });
+    if (isDupe) {
+      console.warn("duplicate node ignored", node);
+      return false;
+    } else {
+      return this.get("nodes").add(node);
+    }
   },
   addEdge: function (edge) {
     // Make sure edge is unique
@@ -394,6 +405,7 @@ var Graph = Backbone.Model.extend({
       return _edge.get('source')[0] === edge.get('source')[0] && _edge.get('source')[1] === edge.get('source')[1] && _edge.get('target')[0] === edge.get('target')[0] && _edge.get('target')[1] === edge.get('target')[1];
     });
     if (isDupe) {
+      console.warn("duplicate edge ignored", edge);
       return false;
     } else {
       return this.get("edges").add(edge);
