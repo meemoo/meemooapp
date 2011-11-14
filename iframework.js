@@ -188,7 +188,8 @@ var NodeView = Backbone.View.extend({
     });
   },
   addOutput: function (info) {
-    this.$(".ports-out").append(this.portOutTemplate(info));
+    var el = this.portOutTemplate(info);
+    this.$(".ports-out").append(el);
     this.$("div.ports-out span.hole."+info.name).data({
       nodeId: this.model.get("id"),
       portName: info.name
@@ -237,7 +238,9 @@ var Edge = Backbone.Model.extend({
   initialize: function () {
   },
   initializeView: function () {
-    this.set({color: MeemooApplication.getWireColor()});
+    if (!this.get("color")) {
+      this.set({color: MeemooApplication.getWireColor()});
+    }
     this.view = new EdgeView({model:this});
     return this.view;
   },
@@ -371,10 +374,6 @@ var Graph = Backbone.Model.extend({
         node.graph = this;
         this.addNode(node);
       }
-      // this.attributes.nodes = new Nodes(this.attributes.nodes);
-      // for(var i=0; i<this.get("nodes").length; i++) {
-      //   this.get("nodes").at(i).graph = this; 
-      // }
     }
     if (this.attributes.edges) {
       var edges = this.attributes.edges;
@@ -393,7 +392,7 @@ var Graph = Backbone.Model.extend({
       return _node.get('id') === node.get('id');
     });
     if (isDupe) {
-      console.warn("duplicate node ignored", node);
+      console.warn("duplicate node id ignored", node);
       return false;
     } else {
       return this.get("nodes").add(node);
