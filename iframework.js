@@ -152,16 +152,76 @@ var NodeView = Backbone.View.extend({
       });
   },
   addInput: function (info) {
-    this.$(".ports-in").append(this.portInTemplate(info));
+    var newIn = this.portInTemplate(info);
+    this.$("div.ports-in").append(newIn);
+    this.$("div.ports-in span.hole."+info.name).data({
+      nodeId: this.model.get("id"),
+      portName: info.name
+    }).draggable({
+      helper: function (e) {
+        var helper = $('<span class="holehelper holehelper-in" />');
+        return helper;
+      },
+      start: function (evert, ui) {
+        // All outs
+        $("div.ports-out span.hole").addClass("highlight");
+      },
+      stop: function (evert, ui) {
+        $("div.ports-out span.hole").removeClass("highlight");
+      }
+    }).droppable({
+      // Make new edge
+      accept: ".hole-out",
+      drop: function(event, ui) {
+        var source = ui.draggable;
+        var target = $(this);
+        var edge = new Edge({
+          source: [source.data().nodeId, source.data().portName],
+          target: [target.data().nodeId, target.data().portName]
+        });
+        edge.graph = window.MeemooApplication.shownGraph;
+        edge.graph.addEdge(edge);
+        edge.connect();
+      }
+    });
   },
   addOutput: function (info) {
     this.$(".ports-out").append(this.portOutTemplate(info));
+    this.$("div.ports-out span.hole."+info.name).data({
+      nodeId: this.model.get("id"),
+      portName: info.name
+    }).draggable({
+      helper: function (e) {
+        var helper = $('<span class="holehelper holehelper-out" />');
+        return helper;
+      },
+      start: function (evert, ui) {
+        // All ins
+        $("div.ports-in span.hole").addClass("highlight");
+      },
+      stop: function (evert, ui) {
+        $("div.ports-in span.hole").removeClass("highlight");
+      }
+    }).droppable({
+      accept: ".hole-in",
+      drop: function(event, ui) {
+        var source = $(this);
+        var target = ui.draggable;
+        var edge = new Edge({
+          source: [source.data().nodeId, source.data().portName],
+          target: [target.data().nodeId, target.data().portName]
+        });
+        edge.graph = window.MeemooApplication.shownGraph;
+        edge.graph.addEdge(edge);
+        edge.connect();
+      }
+    });
   },
   portOffsetLeft: function (outin, name) {
-    return this.$('div.port-'+outin+' span.port.'+name).offset().left + 7;
+    return this.$('div.port-'+outin+' span.hole.'+name).offset().left + 7;
   },
   portOffsetTop: function (outin, name) {
-    return this.$('div.port-'+outin+' span.port.'+name).offset().top + 7;
+    return this.$('div.port-'+outin+' span.hole.'+name).offset().top + 7;
   }
 });
 
@@ -227,8 +287,8 @@ var EdgeView = Backbone.View.extend({
     // Don't use .toJSON() because using .source and .target Node
     $(this.el).html(this.template(this));
     // port insides
-    this.model.source.view.$("div.port-out span.port."+this.model.get("source")[1]).css("background-color", this.model.get("color"));
-    this.model.target.view.$("div.port-in span.port."+this.model.get("target")[1]).css("background-color", this.model.get("color"));
+    this.model.source.view.$("div.port-out span.hole."+this.model.get("source")[1]).css("background-color", this.model.get("color"));
+    this.model.target.view.$("div.port-in span.hole."+this.model.get("target")[1]).css("background-color", this.model.get("color"));
     return this;
   },
   redraw: function () {
@@ -319,7 +379,7 @@ var Graph = Backbone.Model.extend({
   },
   addEdge: function (edge) {
     this.get("edges").add(edge);
-    if (this.view) { this.view.addEdge(edge); }
+    // if (this.view) { this.view.addEdge(edge); }
   },
   checkLoaded: function () {
     for (var i=0; i<this.get("nodes").length; i++) {

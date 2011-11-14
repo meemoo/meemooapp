@@ -90,12 +90,19 @@ div.module {
       margin-top: -1px;
     }
   
-  div.port span.port {
+  div.port span.hole,
+  span.holehelper {
     border: 1px black solid;
     border-radius: 6px;
     display: inline-block;
     width: 12px;
     height: 12px;
+  }
+  div.port span.hole.highlight {
+    border-color: #F00;
+  }
+  span.holehelper {
+    border-color: #CCC;
   }
   div.port span.label {
     font-family: monospace;
