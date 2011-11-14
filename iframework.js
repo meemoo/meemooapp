@@ -172,6 +172,7 @@ var NodeView = Backbone.View.extend({
     }).droppable({
       // Make new edge
       accept: ".hole-out",
+      hoverClass: "drophover",
       drop: function(event, ui) {
         var source = ui.draggable;
         var target = $(this);
@@ -180,8 +181,9 @@ var NodeView = Backbone.View.extend({
           target: [target.data().nodeId, target.data().portName]
         });
         edge.graph = window.MeemooApplication.shownGraph;
-        edge.graph.addEdge(edge);
-        edge.connect();
+        if (edge.graph.addEdge(edge)){
+          edge.connect();
+        }
       }
     });
   },
@@ -204,6 +206,7 @@ var NodeView = Backbone.View.extend({
       }
     }).droppable({
       accept: ".hole-in",
+      hoverClass: "drophover",
       drop: function(event, ui) {
         var source = $(this);
         var target = ui.draggable;
@@ -212,8 +215,9 @@ var NodeView = Backbone.View.extend({
           target: [target.data().nodeId, target.data().portName]
         });
         edge.graph = window.MeemooApplication.shownGraph;
-        edge.graph.addEdge(edge);
-        edge.connect();
+        if (edge.graph.addEdge(edge)){
+          edge.connect();
+        }
       }
     });
   },
@@ -231,9 +235,9 @@ var Edge = Backbone.Model.extend({
     target: [0, "default"]
   },
   initialize: function () {
-    this.set({color: MeemooApplication.getWireColor()});
   },
   initializeView: function () {
+    this.set({color: MeemooApplication.getWireColor()});
     this.view = new EdgeView({model:this});
     return this.view;
   },
@@ -366,10 +370,17 @@ var Graph = Backbone.Model.extend({
       }
     }
     if (this.attributes.edges) {
-      this.attributes.edges = new Edges(this.attributes.edges);
-      for(var i=0; i<this.get("edges").length; i++) {
-        this.get("edges").at(i).graph = this; 
+      var edges = this.attributes.edges;
+      this.attributes.edges = new Edges();
+      for (var i=0; i<edges.length; i++) {
+        var edge = new Edge(edges[i]);
+        edge.graph = this;
+        this.addEdge(edge);
       }
+      // this.attributes.edges = new Edges(this.attributes.edges);
+      // for(var i=0; i<this.get("edges").length; i++) {
+      //   this.get("edges").at(i).graph = this; 
+      // }
     }
     this.view = new GraphView({model:this});
   },
@@ -378,12 +389,21 @@ var Graph = Backbone.Model.extend({
     if (this.view) { this.view.addNode(node); }
   },
   addEdge: function (edge) {
-    this.get("edges").add(edge);
-    // if (this.view) { this.view.addEdge(edge); }
+    // Make sure edge is unique
+    var isDupe = this.get("edges").any(function(_edge) {
+      return _edge.get('source')[0] === edge.get('source')[0] && _edge.get('source')[1] === edge.get('source')[1] && _edge.get('target')[0] === edge.get('target')[0] && _edge.get('target')[1] === edge.get('target')[1];
+    });
+    if (isDupe) {
+      return false;
+    } else {
+      return this.get("edges").add(edge);
+    }
   },
   checkLoaded: function () {
     for (var i=0; i<this.get("nodes").length; i++) {
-      if (this.get("nodes").at(i).loaded === false) { return false; }
+      if (this.get("nodes").at(i).loaded === false) { 
+        return false; 
+      }
     }
     this.loaded = true;
     
@@ -450,7 +470,7 @@ window.MeemooApplication = {
   getWireColor: function () {
     var color = this.wireColors[this.wireColorIndex];
     this.wireColorIndex++;
-    if (this.wireColorIndex > this.wireColors.length) {
+    if (this.wireColorIndex > this.wireColors.length-1) {
       this.wireColorIndex = 0;
     }
     return color;

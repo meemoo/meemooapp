@@ -99,7 +99,10 @@ div.module {
     height: 12px;
   }
   div.port span.hole.highlight {
-    border-color: #F00;
+    border-color: #C00;
+  }
+  div.port span.hole.drophover {
+    border-color: #090;
   }
   span.holehelper {
     border-color: #CCC;
