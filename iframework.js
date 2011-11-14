@@ -450,6 +450,26 @@ var GraphView = Backbone.View.extend({
     
     this.model.get("nodes").each(this.addNode);
     // this.model.get("edges").each(this.addEdge);
+    
+    // Panel buttons
+    this.$(".panel .close, .panel .code").hide();
+    this.$(".panel .close").button({
+      icons: {
+        primary: 'ui-icon-close'
+      }
+    }).click( function(){
+      $(".panel .close, .panel .code").hide();
+      $(".panel .source").show();
+    });
+    this.$(".panel .source").button({
+      icons: {
+        primary: 'ui-icon-gear'
+      }
+    }).click( function(){
+      $(".panel .source").hide();
+      $(".panel .close, .panel .code").show();
+      $(".panel .code textarea").text( JSON.stringify(MeemooApplication.shownGraph, null, 2) );
+    });
   },
   render: function () {
     $(this.el).html(this.template(this.model.toJSON()));
