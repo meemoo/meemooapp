@@ -46,8 +46,8 @@
   
   <script type="text/template" id="port-in-template">
   
-    <div class="port port-in">
-      <span class="hole hole-in <%= name %>"> </span>
+    <div class="port port-in port-<%= name %>">
+      <span class="hole hole-in hole-<%= name %>"> </span>
       <span class="label"><%= name %></span>
       <span class="widget"></span>
     </div>
@@ -56,9 +56,9 @@
   
   <script type="text/template" id="port-out-template">
   
-    <div class="port port-out">
+    <div class="port port-out port-<%= name %>">
       <span class="label"><%= name %></span>
-      <span class="hole hole-out <%= name %>"></span>
+      <span class="hole hole-out hole-<%= name %>"></span>
     </div>
     
   </script>

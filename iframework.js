@@ -154,7 +154,7 @@ var NodeView = Backbone.View.extend({
   addInput: function (info) {
     var newIn = this.portInTemplate(info);
     this.$("div.ports-in").append(newIn);
-    this.$("div.ports-in span.hole."+info.name).data({
+    this.$("div.ports-in span.hole-"+info.name).data({
       nodeId: this.model.get("id"),
       portName: info.name
     }).draggable({
@@ -169,13 +169,14 @@ var NodeView = Backbone.View.extend({
       stop: function (evert, ui) {
         $("div.ports-out span.hole").removeClass("highlight");
       }
-    }).droppable({
+    });
+    this.$("div.ports-in div.port-"+info.name).droppable({
       // Make new edge
       accept: ".hole-out",
       hoverClass: "drophover",
       drop: function(event, ui) {
         var source = ui.draggable;
-        var target = $(this);
+        var target = $(this).children(".hole");
         var edge = new Edge({
           source: [source.data().nodeId, source.data().portName],
           target: [target.data().nodeId, target.data().portName]
@@ -190,7 +191,7 @@ var NodeView = Backbone.View.extend({
   addOutput: function (info) {
     var el = this.portOutTemplate(info);
     this.$(".ports-out").append(el);
-    this.$("div.ports-out span.hole."+info.name).data({
+    this.$("div.ports-out span.hole-"+info.name).data({
       nodeId: this.model.get("id"),
       portName: info.name
     }).draggable({
@@ -205,11 +206,12 @@ var NodeView = Backbone.View.extend({
       stop: function (evert, ui) {
         $("div.ports-in span.hole").removeClass("highlight");
       }
-    }).droppable({
+    });
+    this.$("div.ports-out div.port-"+info.name).droppable({
       accept: ".hole-in",
       hoverClass: "drophover",
       drop: function(event, ui) {
-        var source = $(this);
+        var source = $(this).children(".hole");
         var target = ui.draggable;
         var edge = new Edge({
           source: [source.data().nodeId, source.data().portName],
@@ -223,10 +225,10 @@ var NodeView = Backbone.View.extend({
     });
   },
   portOffsetLeft: function (outin, name) {
-    return this.$('div.port-'+outin+' span.hole.'+name).offset().left + 7;
+    return this.$('div.port-'+outin+' span.hole-'+name).offset().left + 7;
   },
   portOffsetTop: function (outin, name) {
-    return this.$('div.port-'+outin+' span.hole.'+name).offset().top + 7;
+    return this.$('div.port-'+outin+' span.hole-'+name).offset().top + 7;
   }
 });
 
@@ -312,12 +314,17 @@ var EdgeView = Backbone.View.extend({
     this.$("svg path.wire-shadow").attr("d", this.svgPathShadow() );
   },
   calcPositions: function () {
-    var sourceName = this.model.get("source")[1];
-    var targetName = this.model.get("target")[1];
-    this.positions.fromX = this.model.source.view.portOffsetLeft('out', sourceName);
-    this.positions.fromY = this.model.source.view.portOffsetTop('out', sourceName);
-    this.positions.toX = this.model.target.view.portOffsetLeft('in', targetName);
-    this.positions.toY = this.model.target.view.portOffsetTop('in', targetName);
+    if (this.model) {
+      // Connected edge
+      var sourceName = this.model.get("source")[1];
+      var targetName = this.model.get("target")[1];
+      this.positions.fromX = this.model.source.view.portOffsetLeft('out', sourceName);
+      this.positions.fromY = this.model.source.view.portOffsetTop('out', sourceName);
+      this.positions.toX = this.model.target.view.portOffsetLeft('in', targetName);
+      this.positions.toY = this.model.target.view.portOffsetTop('in', targetName);
+    } else {
+      // Mouse dragging preview edge, not connected
+    }
   },
   svgX: function () {
     return Math.min(this.positions.toX, this.positions.fromX) - 50;
@@ -351,6 +358,15 @@ var EdgeView = Backbone.View.extend({
       " L "+ (fromX+15) +" "+ fromY +
       " C "+ (fromX+50) +" "+ fromY +" "+ (toX-50) +" "+ toY +" "+ (toX-15) +" "+ toY +
       " L "+ toX +" "+ toY;
+  },
+  color: function () {
+    if (this.model) {
+      // Connected
+      return model.get('color');
+    } else {
+      // Preview
+      return MeemooApplication.wireColors[wireColorIndex];
+    }
   }
 });
 
