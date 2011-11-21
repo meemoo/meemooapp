@@ -310,7 +310,7 @@ var NodeView = Backbone.View.extend({
   },
   disconnect: function (event) {
     //HACK
-    var edge = this.model.graph.get("edges").getByCid( $(event.target).parent().parent().attr("id") );
+    var edge = this.model.graph.get("edges").getByCid( $(event.target).parents(".edge-edit-item").attr("id") );
     if (edge) {
       this.model.graph.removeEdge(edge);
     }
