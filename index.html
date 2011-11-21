@@ -30,6 +30,7 @@
         <textarea />
       </div>
     </div>
+    <div class="overlay" />
   
   </script>
   
@@ -74,9 +75,9 @@
 
   <script type="text/template" id="edge-edit-template">
     
-    <div>
-      <span><%= name() %></span>
-      <input class="color" value="<%= color() %>" />
+    <div id="<%= model.cid %>">
+      <span><%= label() %></span>
+      <!-- <input class="color" value="<%= color() %>" /> -->
       <button class="disconnect">disconnect</button>
     </div>
     

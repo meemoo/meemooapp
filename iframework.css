@@ -11,6 +11,41 @@ div.graph {
   width: 100%;
   height: 100%;
 }
+  div.edges {
+    z-index: 1;
+  }
+  div.nodes {
+    z-index: 2;
+  }
+  div.panel {
+    z-index: 1000;
+  }
+  div.overlay {
+  }
+    div.edge-edit {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      z-index: 1000;
+      padding: 10px;
+      font-size: 11px;
+      font-family: monospace;
+      white-space: nowrap;
+    }
+      span.wiresymbol {
+        font-size: 250%;
+        font-weight: bold;
+        text-shadow: 0 1px 1px #AAA;
+      }
+
+/* box */
+
+div.edge-edit,
+div.module,
+div.panel {
+  border: 1px #AAA solid;
+  background-color: rgba(255,255,255,.75);
+}
 
 div.node {
   position: absolute;
@@ -19,9 +54,7 @@ div.node {
 }
 
 div.module {
-  border: 1px #AAA solid;
   display: inline-block;
-  background-color: rgba(255,255,255,.75);
   position: absolute;
   top: 0;
   left: 0;
@@ -127,17 +160,13 @@ div.edges {
   position:absolute;
   top:0;
   left:0;
-/*  width: 100%;
-  height: 100%;
-*/  z-index:1;
+  z-index:1;
 }
   div.edges svg {
     position:absolute;
     top:0;
     left:0;
-/*    width: 100%;
-    height: 100%;
-*/    z-index:0;
+    z-index:0;
   }
     path.wire-shadow,
     path.wire {
@@ -149,16 +178,16 @@ div.edges {
 div.panel {
   position: absolute;
   z-index: 1000;
-  padding: 10px;
+  padding: 5px;
   top: 0px;
   right: 0px;
-  background-color: rgba(255,255,255,.9);
   font-size: 10px;
   text-align: right;
+  border-width: 0 0 1px 1px;
 }
 
 div.code textarea {
-  background-color: transparent;
+  background-color: white;
   width: 300px;
   height: 400px;
 }

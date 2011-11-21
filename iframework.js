@@ -70,7 +70,8 @@ var NodeView = Backbone.View.extend({
     "dragstop .module":    "dragstop",
     "resizestart .module": "resizestart",
     "resizestop .module":  "resizestop",
-    "click .hole":         "holeclick"
+    "click .hole":         "holeclick",
+    "click .disconnect":   "disconnect"
   },
   initialize: function () {
     this.render();
@@ -147,12 +148,9 @@ var NodeView = Backbone.View.extend({
       height: newH - 40
     });
     // Rerender related edges
-    for (var i=0; i<this.model.graph.get("edges").length; i++){
-      var edge = this.model.graph.get("edges").at(i);
-      if (edge.view && edge.get("source")[0] == this.model.get("id")) { 
-        edge.view.redraw(); 
-      }
-    }
+    _.each(this.relatedEdges(), function(edge){
+      edge.view.redraw();
+    });
   },
   infoLoaded: function (info) {
     this.$('h1')
@@ -279,15 +277,44 @@ var NodeView = Backbone.View.extend({
     });
   },
   holeclick: function (event) {
-    // // Show connected edges editor
-    // var isIn = $(event.target).hasClass("hole-in");
-    // var portName = $(event.target).data("portName");
-    // 
-    // var connectedEdges = _.filter(this.relatedEdges(), function (edge) {
-    //   return ( (isIn && portName === edge.get("target")[1]) || (!isIn && portName === edge.get("source")[1]) );
-    // });
-    // 
-    // console.log(connectedEdges);
+    // Hide previous connected edges editor
+    $('div.edge-edit').remove();
+    
+    // Show connected edges editor
+    var isIn = $(event.target).hasClass("hole-in");
+    var portName = $(event.target).data("portName");
+    
+    //HACK
+    this._relatedEdges = null;
+    var connectedEdges = _.filter(this.relatedEdges(), function (edge) {
+      return ( (isIn && portName === edge.get("target")[1]) || (!isIn && portName === edge.get("source")[1]) );
+    });
+    
+    if (connectedEdges.length > 0) {
+      var popupEl = $('<div class="edge-edit" />').css({
+        left: event.pageX, 
+        top: event.pageY
+      });
+      _.each(connectedEdges, function (edge) {
+        var edgeEditEl = this.edgeEditTemplate(edge.view);
+        popupEl.append(edgeEditEl);
+      }, this);
+      $(this.el).append(popupEl);
+      $(".disconnect").button({
+        icons: {
+          primary: "ui-icon-scissors"
+        },
+        text: false
+      });
+    }
+  },
+  disconnect: function (event) {
+    //HACK
+    var edge = this.model.graph.get("edges").getByCid( $(event.target).parent().parent().attr("id") );
+    if (edge) {
+      this.model.graph.removeEdge(edge);
+    }
+    $('div.edge-edit').remove();
   },
   portOffsetLeft: function (outin, name) {
     return this.$('div.port-'+outin+' span.hole-'+name).offset().left + 7;
@@ -345,9 +372,6 @@ var Edge = Backbone.Model.extend({
           target: [this.target.frameIndex, this.get("target")[1]]
         }
       });
-      if (this.graph.view) {
-        this.graph.view.removeEdge(this);
-      }
     }
   }
 });
@@ -445,6 +469,11 @@ var EdgeView = Backbone.View.extend({
       // Preview
       return window.MeemooApplication.wireColors[window.MeemooApplication.wireColorIndex];
     }
+  },
+  label: function () {
+    return this.model.get("source")[0] +":"+ this.model.get("source")[1] + 
+      ' <span class="wiresymbol" style="color:' + this.color() + '">&mdash;</span> ' + 
+      this.model.get("target")[0] +":"+ this.model.get("target")[1];
   }
 });
 
@@ -506,6 +535,13 @@ var Graph = Backbone.Model.extend({
     } else {
       return this.get("edges").add(edge);
     }
+  },
+  removeEdge: function (edge) {
+    edge.disconnect();
+    if (this.view) {
+      this.view.removeEdge(edge);
+    }
+    this.get("edges").remove(edge);
   },
   checkLoaded: function () {
     for (var i=0; i<this.get("nodes").length; i++) {
