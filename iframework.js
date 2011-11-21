@@ -287,10 +287,12 @@ var EdgeView = Backbone.View.extend({
   tagName: "div",
   className: "edge",
   template: _.template($('#edge-template').html()),
+  positions: {},
   initialize: function () {
     this.render();
   },
   render: function () {
+    this.calcPositions();
     // Don't use .toJSON() because using .source and .target Node
     $(this.el).html(this.template(this));
     // port insides
@@ -299,8 +301,9 @@ var EdgeView = Backbone.View.extend({
     return this;
   },
   redraw: function () {
-    this.$("svg").css({ 
-      "left": this.svgX(), 
+    this.calcPositions();
+    this.$("svg").css({
+      "left": this.svgX(),
       "top": this.svgY(),
       "width": this.svgW(),
       "height": this.svgH()
@@ -308,31 +311,31 @@ var EdgeView = Backbone.View.extend({
     this.$("svg path.wire").attr("d", this.svgPath() );
     this.$("svg path.wire-shadow").attr("d", this.svgPathShadow() );
   },
-  svgW: function () {
-    var fromX = this.model.source.view.portOffsetLeft('out', this.model.get("source")[1]);
-    var toX = this.model.target.view.portOffsetLeft('in', this.model.get("target")[1]);
-    return Math.abs(toX-fromX) + 100;
-  },
-  svgH: function () {
-    var fromY = this.model.source.view.portOffsetTop('out', this.model.get("source")[1]);
-    var toY = this.model.target.view.portOffsetTop('in', this.model.get("target")[1]);
-    return Math.abs(toY-fromY) + 50;
+  calcPositions: function () {
+    var sourceName = this.model.get("source")[1];
+    var targetName = this.model.get("target")[1];
+    this.positions.fromX = this.model.source.view.portOffsetLeft('out', sourceName);
+    this.positions.fromY = this.model.source.view.portOffsetTop('out', sourceName);
+    this.positions.toX = this.model.target.view.portOffsetLeft('in', targetName);
+    this.positions.toY = this.model.target.view.portOffsetTop('in', targetName);
   },
   svgX: function () {
-    var fromX = this.model.source.view.portOffsetLeft('out', this.model.get("source")[1]);
-    var toX = this.model.target.view.portOffsetLeft('in', this.model.get("target")[1]);
-    return Math.min(toX, fromX) - 50;
+    return Math.min(this.positions.toX, this.positions.fromX) - 50;
   },
   svgY: function () {
-    var fromY = this.model.source.view.portOffsetTop('out', this.model.get("source")[1]);
-    var toY = this.model.target.view.portOffsetTop('in', this.model.get("target")[1]);
-    return Math.min(toY, fromY) - 25;
+    return Math.min(this.positions.toY, this.positions.fromY) - 25;
+  },
+  svgW: function () {
+    return Math.abs(this.positions.toX - this.positions.fromX) + 100;
+  },
+  svgH: function () {
+    return Math.abs(this.positions.toY - this.positions.fromY) + 50;
   },
   svgPath: function () {
-    var fromX = this.model.source.view.portOffsetLeft('out', this.model.get("source")[1]) - this.svgX();
-    var fromY = this.model.source.view.portOffsetTop('out', this.model.get("source")[1]) - this.svgY();
-    var toX = this.model.target.view.portOffsetLeft('in', this.model.get("target")[1]) - this.svgX();
-    var toY = this.model.target.view.portOffsetTop('in', this.model.get("target")[1]) - this.svgY();
+    var fromX = this.positions.fromX - this.svgX();
+    var fromY = this.positions.fromY - this.svgY();
+    var toX = this.positions.toX - this.svgX();
+    var toY = this.positions.toY - this.svgY();
     return "M "+ fromX +" "+ fromY +
       " L "+ (fromX+15) +" "+ fromY +
       " C "+ (fromX+50) +" "+ fromY +" "+ (toX-50) +" "+ toY +" "+ (toX-15) +" "+ toY +
@@ -340,10 +343,10 @@ var EdgeView = Backbone.View.extend({
   },
   svgPathShadow: function () {
     // Same as svgPath() but y+1
-    var fromX = this.model.source.view.portOffsetLeft('out', this.model.get("source")[1]) - this.svgX();
-    var fromY = this.model.source.view.portOffsetTop('out', this.model.get("source")[1]) - this.svgY() + 1;
-    var toX = this.model.target.view.portOffsetLeft('in', this.model.get("target")[1]) - this.svgX();
-    var toY = this.model.target.view.portOffsetTop('in', this.model.get("target")[1]) - this.svgY() + 1;
+    var fromX = this.positions.fromX - this.svgX();
+    var fromY = this.positions.fromY - this.svgY() + 1;
+    var toX = this.positions.toX - this.svgX();
+    var toY = this.positions.toY - this.svgY() + 1;
     return "M "+ fromX +" "+ fromY +
       " L "+ (fromX+15) +" "+ fromY +
       " C "+ (fromX+50) +" "+ fromY +" "+ (toX-50) +" "+ toY +" "+ (toX-15) +" "+ toY +

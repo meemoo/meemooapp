@@ -17,6 +17,6 @@ development blog: http://meemoo.noisepages.com/
 
 meemoospeak : model : html5speak
 ------------+-------+-----------------------------------------
-composition : graph : json like graph={nodes:[],edges:[]} (https://gist.github.com/9f98779f853f3f0ede87)
+composition : graph : json, like graph={nodes:[],edges:[]}
 module      : node  : iframe
 wire        : edge  : window.postMessage()
