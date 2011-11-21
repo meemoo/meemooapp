@@ -63,12 +63,14 @@ var NodeView = Backbone.View.extend({
   template: _.template($('#node-template').html()),
   portInTemplate: _.template($('#port-in-template').html()),
   portOutTemplate: _.template($('#port-out-template').html()),
+  edgeEditTemplate: _.template($('#edge-edit-template').html()),
   events: {
     "dragstart .module":   "dragstart",
     "drag .module":        "drag",
     "dragstop .module":    "dragstop",
     "resizestart .module": "resizestart",
-    "resizestop .module":  "resizestop"
+    "resizestop .module":  "resizestop",
+    "click .hole":         "holeclick"
   },
   initialize: function () {
     this.render();
@@ -95,17 +97,25 @@ var NodeView = Backbone.View.extend({
     $(this.el).html(this.template(this.model.toJSON()));
     return this;
   },
+  _relatedEdges: null,
+  relatedEdges: function () {
+    // i10n? Don't have to filter through all edges, just ones connected to this node
+    // Resets to null on dis/connect
+    if ( this._relatedEdges === null ) {
+      this._relatedEdges = _.filter(this.model.graph.get("edges").models, function (edge) {
+        return ( edge.get("source")[0] == this.model.get("id") || edge.get("target")[0] == this.model.get("id") );
+      }, this);
+    }
+    return this._relatedEdges;
+  },
   dragstart: function (event, ui) {
     // Add a mask so that iframes don't steal mouse
     window.MeemooApplication.maskFrames();
   },
   drag: function (event, ui) {
-    for (var i=0; i<this.model.graph.get("edges").length; i++) {
-      var edge = this.model.graph.get("edges").at(i);
-      if (edge.view && (edge.get("source")[0] == this.model.get("id") || edge.get("target")[0] == this.model.get("id")) ) { 
-        edge.view.redraw();
-      }
-    }
+    _.each(this.relatedEdges(), function(edge){
+      edge.view.redraw();
+    });
   },
   dragstop: function (event, ui) {
     // Remove iframe masks
@@ -268,6 +278,17 @@ var NodeView = Backbone.View.extend({
       }
     });
   },
+  holeclick: function (event) {
+    // // Show connected edges editor
+    // var isIn = $(event.target).hasClass("hole-in");
+    // var portName = $(event.target).data("portName");
+    // 
+    // var connectedEdges = _.filter(this.relatedEdges(), function (edge) {
+    //   return ( (isIn && portName === edge.get("target")[1]) || (!isIn && portName === edge.get("source")[1]) );
+    // });
+    // 
+    // console.log(connectedEdges);
+  },
   portOffsetLeft: function (outin, name) {
     return this.$('div.port-'+outin+' span.hole-'+name).offset().left + 7;
   },
@@ -306,6 +327,12 @@ var Edge = Backbone.Model.extend({
         target: [this.target.frameIndex, this.get("target")[1]]
       }
     });
+    if (this.source.view) {
+      this.source.view._relatedEdges = null;
+    }
+    if (this.target.view) {
+      this.target.view._relatedEdges = null;
+    }
     if (this.graph.view) {
       this.graph.view.addEdge(this);
     }
