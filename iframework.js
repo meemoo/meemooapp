@@ -12,6 +12,8 @@ var Node = Backbone.Model.extend({
   initialize: function () {
     this.inputs = {};
     this.outputs = {};
+    // this.bind('change:x', this.positionChanged, this);
+    // this.bind('change:y', this.positionChanged, this);
   },
   initializeView: function () {
     this.view = new NodeView({model:this});
@@ -50,7 +52,12 @@ var Node = Backbone.Model.extend({
       this.outputs[info.name] = info;
       this.view.addOutput(info); 
     }
-  }
+  },
+  // positionChanged: function () {
+  //   if (this.view) {
+  //     this.view.positionChangedFromModel();
+  //   }
+  // }
 });
 
 var Nodes = Backbone.Collection.extend({
@@ -129,6 +136,12 @@ var NodeView = Backbone.View.extend({
       y: this.$(".module").offset().top + 30
     });
   },
+  // positionChangedFromModel: function () {
+  //   this.$(".module").css({
+  //     left: this.model.get("x") - 10,
+  //     top: this.model.get("y") - 30
+  //   });
+  // },
   resizestart: function (event, ui) {
     // Add a mask so that iframes don't steal mouse
     window.MeemooApplication.maskFrames();
@@ -575,8 +588,13 @@ var Graph = Backbone.Model.extend({
 
 var GraphView = Backbone.View.extend({
   tagName: "div",
-  className: "graph",
+  className: "app",
   template: _.template($('#graph-template').html()),
+  events: {
+    "dragstart .graph": "dragstart",
+    "drag .graph":      "drag",
+    "dragstop .graph":  "dragstop"
+  },
   initialize: function () {
     this.render();
     $('body').append(this.el);
@@ -603,6 +621,33 @@ var GraphView = Backbone.View.extend({
       $(".panel .close, .panel .code").show();
       $(".panel .code textarea").text( JSON.stringify(MeemooApplication.shownGraph, null, 2) );
     });
+    
+    // Drag graph
+    this.$(".graph").draggable();
+  },
+  dragstart: function (event) {},
+  drag: function (event) {},
+  dragstop: function (event) {
+    if ($(event.target).hasClass("graph")) {
+      var delta = $(event.target).position();
+      
+      // Move nodes
+      this.model.get("nodes").each( function (node) {
+        var pos = node.view.$(".module").position();
+        node.view.$(".module").css({
+          "left": pos.left + delta.left,
+          "top": pos.top + delta.top
+        });
+      });
+      
+      // Bump graph back
+      this.$(".graph").css({top:0,left:0});
+      
+      // Sets node model x y and redraw edges
+      this.model.get("nodes").each( function (node) {
+        node.view.dragstop();
+      });
+    }
   },
   render: function () {
     $(this.el).html(this.template(this.model.toJSON()));
@@ -687,7 +732,7 @@ window.MeemooApplication = {
 };
 
 // Listen for /info messages from nodes
-window.addEventListener("message", MeemooApplication.gotMessage, false);
+window.addEventListener("message", window.MeemooApplication.gotMessage, false);
 
 // Disable selection for better drag+drop
 $('body').disableSelection();

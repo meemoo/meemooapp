@@ -21,8 +21,10 @@
   
   <script type="text/template" id="graph-template">
   
-    <div class="edges" />
-    <div class="nodes" />
+    <div class="graph">
+      <div class="edges" />
+      <div class="nodes" />
+    </div>
     <div class="panel">
       <button class="button source">source</button>
       <button class="button close">close</button>
@@ -30,7 +32,6 @@
         <textarea />
       </div>
     </div>
-    <div class="overlay" />
   
   </script>
   
@@ -66,7 +67,7 @@
   
   <script type="text/template" id="edge-template">
   
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="position:absolute;left:<%= svgX() %>px;top:<%= svgY() %>px;width:<%= svgW() %>px;height:<%= svgH() %>px;">
+    <svg class="wire" xmlns="http://www.w3.org/2000/svg" version="1.1" style="position:absolute;left:<%= svgX() %>px;top:<%= svgY() %>px;width:<%= svgW() %>px;height:<%= svgH() %>px;">
       <path class="wire-shadow" d="<%= svgPathShadow() %>" stroke="#AAA" />
       <path class="wire" d="<%= svgPath() %>" stroke="<%= color() %>" />
     </svg>

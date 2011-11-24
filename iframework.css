@@ -20,25 +20,24 @@ div.graph {
   div.panel {
     z-index: 1000;
   }
-  div.overlay {
+  
+div.edge-edit {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: 1000;
+  padding: 10px;
+  font-size: 11px;
+  font-family: monospace;
+  white-space: nowrap;
+}
+  span.wiresymbol {
+    font-size: 250%;
+    font-weight: bold;
+    text-shadow: 0 1px 1px #AAA;
   }
-    div.edge-edit {
-      position: absolute;
-      left: 0px;
-      top: 0px;
-      z-index: 1000;
-      padding: 10px;
-      font-size: 11px;
-      font-family: monospace;
-      white-space: nowrap;
-    }
-      span.wiresymbol {
-        font-size: 250%;
-        font-weight: bold;
-        text-shadow: 0 1px 1px #AAA;
-      }
 
-/* box */
+/* boxes */
 
 div.edge-edit,
 div.module,
@@ -176,7 +175,7 @@ div.edges {
     }
   
 div.panel {
-  position: absolute;
+  position: fixed;
   z-index: 1000;
   padding: 5px;
   top: 0px;
