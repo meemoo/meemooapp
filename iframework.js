@@ -395,8 +395,8 @@ var EdgeView = Backbone.View.extend({
     $(this.el).html(this.template(this));
     if (this.model) {
       // port insides
-      this.model.source.view.$("div.port-out span.hole."+this.model.get("source")[1]).css("background-color", this.model.get("color"));
-      this.model.target.view.$("div.port-in span.hole."+this.model.get("target")[1]).css("background-color", this.model.get("color"));
+      // this.model.source.view.$("div.port-out span.hole-"+this.model.get("source")[1]).css("background-color", this.model.get("color"));
+      // this.model.target.view.$("div.port-in span.hole-"+this.model.get("target")[1]).css("background-color", this.model.get("color"));
     } else {
       $(this.el).addClass("preview");
     }
@@ -579,6 +579,7 @@ var GraphView = Backbone.View.extend({
   className: "app",
   template: _.template($('#graph-template').html()),
   events: {
+    "click .graph":     "click",
     "dragstart .graph": "dragstart",
     "drag .graph":      "drag",
     "dragstop .graph":  "dragstop"
@@ -613,7 +614,14 @@ var GraphView = Backbone.View.extend({
     // Drag graph
     this.$(".graph").draggable();
   },
-  dragstart: function (event) {},
+  click: function (event) {
+    if (!$(event.target).hasClass("hole")) {
+      // Hide dis/connection boxes
+      $(".edge-edit").remove();
+    }
+  },
+  dragstart: function (event) {
+  },
   drag: function (event) {},
   dragstop: function (event) {
     if ($(event.target).hasClass("graph")) {
