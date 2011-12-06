@@ -136,12 +136,6 @@ var NodeView = Backbone.View.extend({
       y: this.$(".module").offset().top + 30
     });
   },
-  // positionChangedFromModel: function () {
-  //   this.$(".module").css({
-  //     left: this.model.get("x") - 10,
-  //     top: this.model.get("y") - 30
-  //   });
-  // },
   resizestart: function (event, ui) {
     // Add a mask so that iframes don't steal mouse
     window.MeemooApplication.maskFrames();
@@ -150,6 +144,7 @@ var NodeView = Backbone.View.extend({
     // Remove iframe masks
     window.MeemooApplication.unmaskFrames();
     
+    // Set model w/h
     var newW = this.$(".module").width();
     var newH = this.$(".module").height();
     this.model.set({
@@ -161,9 +156,7 @@ var NodeView = Backbone.View.extend({
       height: newH - 40
     });
     // Rerender related edges
-    _.each(this.relatedEdges(), function(edge){
-      edge.view.redraw();
-    });
+    this.drag();
   },
   infoLoaded: function (info) {
     this.$('h1')
