@@ -6,8 +6,8 @@
   
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-  <!-- <script src="lib/jquery-1.7.1.min.js"></script>
-  <script src="lib/jquery-ui-1.8.16.min.js"></script> -->
+  <!-- <script src="lib/jquery.min.js"></script>
+  <script src="lib/jquery-ui.min.js"></script> -->
   
   <script src="lib/underscore-min.js"></script>
   <script src="lib/backbone-min.js"></script>
@@ -15,7 +15,7 @@
   <script src="iframework.js"></script>
   
   <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
-  <!-- <link href="lib/css/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet" type="text/css" /> -->
+  <!-- <link href="lib/css/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" /> -->
   
   <link href="iframework.css" rel="stylesheet" type="text/css" />
   
@@ -51,7 +51,7 @@
   
   <script type="text/template" id="port-in-template">
   
-    <div class="port port-in port-<%= name %>">
+    <div class="port port-in port-<%= name %>" title="<%= name %> (<%= type %>)">
       <span class="hole hole-in hole-<%= name %>"> </span>
       <span class="label"><%= name %></span>
       <span class="widget"></span>
@@ -61,7 +61,7 @@
   
   <script type="text/template" id="port-out-template">
   
-    <div class="port port-out port-<%= name %>">
+    <div class="port port-out port-<%= name %>" title="<%= name %> (<%= type %>)">
       <span class="label"><%= name %></span>
       <span class="hole hole-out hole-<%= name %>"></span>
     </div>

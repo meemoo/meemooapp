@@ -53,11 +53,6 @@ var Node = Backbone.Model.extend({
       this.view.addOutput(info); 
     }
   },
-  // positionChanged: function () {
-  //   if (this.view) {
-  //     this.view.positionChangedFromModel();
-  //   }
-  // }
 });
 
 var Nodes = Backbone.Collection.extend({

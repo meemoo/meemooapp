@@ -100,8 +100,14 @@
         }
       }
     }).addOutputs({
-      ms: { port: true },
-      beat: { port: true }
+      ms: { 
+        port: true, 
+        type: "int" 
+      },
+      beat: { 
+        port: true,
+        type: "bang"
+      }
     });
     
     setLoop = function(val){
