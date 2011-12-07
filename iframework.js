@@ -90,7 +90,7 @@ var NodeView = Backbone.View.extend({
         $(this).css("z-index", topZ+1);
       })
       .draggable({
-        handle: 'h1'
+        // handle: 'h1'
       })
       .resizable({
         helper: "ui-resizable-helper"
