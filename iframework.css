@@ -58,6 +58,7 @@ div.module {
   top: 0;
   left: 0;
   z-index:2;
+  cursor: move;
 }
   div.module.active {
     border: 1px #000 solid;
@@ -88,7 +89,10 @@ div.module {
     left: 9px;
     top: 29px;
   }
-  div.module div.ports-in{
+  div.module div.ports {
+    cursor: default;
+  }
+  div.module div.ports-in {
     position: absolute;
     left: -107px;
     top: 0;
@@ -104,7 +108,7 @@ div.module {
       padding: 2px 0 0 5px;
       margin-top: -1px;
     }
-  div.module div.ports-out{
+  div.module div.ports-out {
     position: absolute;
     right: -82px;
     bottom: -1px;
@@ -124,6 +128,7 @@ div.module {
   
   div.port span.hole,
   span.holehelper {
+    cursor: pointer;
     border: 1px black solid;
     border-radius: 6px;
     display: inline-block;
