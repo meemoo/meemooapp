@@ -105,7 +105,7 @@ var NodeView = Backbone.View.extend({
     // i10n? Don't have to filter through all edges, just ones connected to this node
     // Resets to null on dis/connect
     if ( this._relatedEdges === null ) {
-      this._relatedEdges = _.filter(this.model.graph.get("edges").models, function (edge) {
+      this._relatedEdges = this.model.graph.get("edges").filter( function (edge) {
         return ( edge.get("source")[0] == this.model.get("id") || edge.get("target")[0] == this.model.get("id") );
       }, this);
     }
@@ -285,6 +285,15 @@ var NodeView = Backbone.View.extend({
     var isIn = $(event.target).hasClass("hole-in");
     var portName = $(event.target).data("portName");
     
+    // Look at all node ports
+    // this.model.graph.get("nodes").each( function(node){
+    //   if (isIn) {
+    //     console.log(node.outputs);
+    //   } else {
+    //     console.log(node.inputs);
+    //   }
+    // });
+    
     //HACK
     this._relatedEdges = null;
     var connectedEdges = _.filter(this.relatedEdges(), function (edge) {
@@ -394,10 +403,11 @@ var EdgeView = Backbone.View.extend({
     // Don't use .toJSON() because using .source and .target Node
     $(this.el).html(this.template(this));
     if (this.model) {
-      // port insides
+      // Port insides
       // this.model.source.view.$("div.port-out span.hole-"+this.model.get("source")[1]).css("background-color", this.model.get("color"));
       // this.model.target.view.$("div.port-in span.hole-"+this.model.get("target")[1]).css("background-color", this.model.get("color"));
     } else {
+      // While dragging to connect
       $(this.el).addClass("preview");
     }
     return this;
@@ -572,6 +582,10 @@ var Graph = Backbone.Model.extend({
       this.get("edges").at(i).connect();
     }
   }
+});
+
+var Graphs = Backbone.Collection.extend({
+  model: Graph
 });
 
 var GraphView = Backbone.View.extend({

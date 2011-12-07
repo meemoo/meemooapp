@@ -43,7 +43,7 @@ div.edge-edit,
 div.module,
 div.panel {
   border: 1px #AAA solid;
-  background-color: rgba(255,255,255,.75);
+  background-color: rgba(255,255,255,.85);
 }
 
 div.node {
