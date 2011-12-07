@@ -632,6 +632,7 @@ var GraphView = Backbone.View.extend({
     }).click( function(){
       var newGraph = JSON.parse( $(".panel .sourceedit").val() );
       window.MeemooApplication.showGraph(newGraph);
+      $(".panel .source").click();
     });
     
     // Drag graph
