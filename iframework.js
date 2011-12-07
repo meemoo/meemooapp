@@ -52,7 +52,7 @@ var Node = Backbone.Model.extend({
       this.outputs[info.name] = info;
       this.view.addOutput(info); 
     }
-  },
+  }
 });
 
 var Nodes = Backbone.Collection.extend({
@@ -106,7 +106,7 @@ var NodeView = Backbone.View.extend({
     // Resets to null on dis/connect
     if ( this._relatedEdges === null ) {
       this._relatedEdges = this.model.graph.get("edges").filter( function (edge) {
-        return ( edge.get("source")[0] == this.model.get("id") || edge.get("target")[0] == this.model.get("id") );
+        return ( edge.get("source")[0] === this.model.get("id") || edge.get("target")[0] === this.model.get("id") );
       }, this);
     }
     return this._relatedEdges;
@@ -188,7 +188,7 @@ var NodeView = Backbone.View.extend({
           fromY: event.pageY,
           toX: $(this).offset().left + 7,
           toY: $(this).offset().top + 7
-        }
+        };
         window.MeemooApplication.edgePreview.setPositions(positions);
         window.MeemooApplication.edgePreview.redraw();
       },
@@ -247,7 +247,7 @@ var NodeView = Backbone.View.extend({
           fromY: $(this).offset().top + 7,
           toX: event.pageX,
           toY: event.pageY
-        }
+        };
         window.MeemooApplication.edgePreview.setPositions(positions);
         window.MeemooApplication.edgePreview.redraw();
       },
@@ -402,11 +402,12 @@ var EdgeView = Backbone.View.extend({
     this.calcPositions();
     // Don't use .toJSON() because using .source and .target Node
     $(this.el).html(this.template(this));
-    if (this.model) {
-      // Port insides
-      // this.model.source.view.$("div.port-out span.hole-"+this.model.get("source")[1]).css("background-color", this.model.get("color"));
-      // this.model.target.view.$("div.port-in span.hole-"+this.model.get("target")[1]).css("background-color", this.model.get("color"));
-    } else {
+    // if (this.model) {
+    //   // Port insides
+    //   this.model.source.view.$("div.port-out span.hole-"+this.model.get("source")[1]).css("background-color", this.model.get("color"));
+    //   this.model.target.view.$("div.port-in span.hole-"+this.model.get("target")[1]).css("background-color", this.model.get("color"));
+    // } else {
+    if (!this.model) {
       // While dragging to connect
       $(this.el).addClass("preview");
     }
@@ -435,8 +436,6 @@ var EdgeView = Backbone.View.extend({
       this.positions.fromY = this.model.source.view.portOffsetTop('out', sourceName);
       this.positions.toX = this.model.target.view.portOffsetLeft('in', targetName);
       this.positions.toY = this.model.target.view.portOffsetTop('in', targetName);
-    } else {
-      // Mouse dragging preview edge, not connected
     }
   },
   svgX: function () {
@@ -515,8 +514,8 @@ var Graph = Backbone.Model.extend({
     if (this.attributes.edges) {
       var edges = this.attributes.edges;
       this.attributes.edges = new Edges();
-      for (var i=0; i<edges.length; i++) {
-        var edge = new Edge(edges[i]);
+      for (var j=0; j<edges.length; j++) {
+        var edge = new Edge(edges[j]);
         edge.graph = this;
         this.addEdge(edge);
       }
@@ -699,11 +698,10 @@ window.MeemooApplication = {
   },
   gotMessage: function (e) {
     if (MeemooApplication.shownGraph) {
-      for (var i=0; i<MeemooApplication.shownGraph.get("nodes").models.length; i++){
-        var node = MeemooApplication.shownGraph.get("nodes").at(i);
-        // Find the corresponding node and load the info
-        if (node.get("id") == e.data.nodeid) {
-          for (var name in e.data) {
+      var node = MeemooApplication.shownGraph.get("nodes").get(e.data.nodeid);
+      if (node) {
+        for (var name in e.data) {
+          if (e.data.hasOwnProperty(name)) {
             var info = e.data[name];
             switch (name) {
               case "info":
@@ -718,7 +716,7 @@ window.MeemooApplication = {
               case "stateReady":
                 node.stateReady();
                 break;
-              defualt:
+              default:
                 break;
             }
           }
