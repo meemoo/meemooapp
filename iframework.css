@@ -41,6 +41,7 @@ div.edge-edit {
 
 div.edge-edit,
 div.module,
+div.ports div.port,
 div.panel {
   border: 1px #AAA solid;
   background-color: rgba(255,255,255,.85);
@@ -98,8 +99,6 @@ div.module {
     top: 0;
   }
     div.ports-in div.port-in {
-      background-color: rgba(255,255,255,.5);
-      border: 1px #AAA solid;
       border-top-left-radius: 12px;
       border-bottom-left-radius: 12px;
       border-right: none;
@@ -115,8 +114,6 @@ div.module {
   }
     div.ports-out div.port-out {
       text-align: right;
-      background-color: rgba(255,255,255,.5);
-      border: 1px #AAA solid;
       border-top-right-radius: 12px;
       border-bottom-right-radius: 12px;
       border-left: none;
