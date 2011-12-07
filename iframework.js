@@ -605,23 +605,33 @@ var GraphView = Backbone.View.extend({
     // this.model.get("edges").each(this.addEdge);
     
     // Panel buttons
-    this.$(".panel .close, .panel .code").hide();
+    this.$(".panel .code").hide();
     this.$(".panel .close").button({
       icons: {
         primary: 'ui-icon-close'
       }
     }).click( function(){
-      $(".panel .close, .panel .code").hide();
+      $(".panel .code").hide();
       $(".panel .source").show();
     });
+    
     this.$(".panel .source").button({
       icons: {
         primary: 'ui-icon-gear'
       }
     }).click( function(){
       $(".panel .source").hide();
-      $(".panel .close, .panel .code").show();
+      $(".panel .code").show();
       $(".panel .code textarea").text( JSON.stringify(MeemooApplication.shownGraph, null, 2) );
+    });
+    
+    this.$(".panel .apply").button({
+      icons: {
+        primary: 'ui-icon-check'
+      }
+    }).click( function(){
+      var newGraph = JSON.parse( $(".panel .sourceedit").val() );
+      window.MeemooApplication.showGraph(newGraph);
     });
     
     // Drag graph
@@ -694,6 +704,11 @@ window.MeemooApplication = {
     return color;
   },
   showGraph: function (graph) {
+    if (this.shownGraph && this.shownGraph.view) {
+      $(this.shownGraph.view.el).remove();
+      this.shownGraph.view = null;
+      this.shownGraph = null;
+    }
     this.shownGraph = new Graph(graph);
   },
   gotMessage: function (e) {
@@ -743,6 +758,6 @@ window.MeemooApplication = {
 window.addEventListener("message", window.MeemooApplication.gotMessage, false);
 
 // Disable selection for better drag+drop
-$('body').disableSelection();
+// $('body').disableSelection();
 
 });
