@@ -71,7 +71,7 @@ var NodeView = Backbone.View.extend({
     "drag .module":        "drag",
     "dragstop .module":    "dragstop",
     "resizestart .module": "resizestart",
-    "resizestop .module":  "resizestop",
+    // "resizestop .module":  "resizestop",
     "click .hole":         "holeclick",
     "click .disconnect":   "disconnect"
   },
@@ -94,7 +94,9 @@ var NodeView = Backbone.View.extend({
       })
       .resizable({
         helper: "ui-resizable-helper"
-      });
+      })
+      .on("resizestop", {view: this}, this.resizestop);
+      //HACK w/ event.data.view for jq 1.7
   },
   render: function () {
     $(this.el).html(this.template(this.model.toJSON()));
@@ -136,22 +138,23 @@ var NodeView = Backbone.View.extend({
     window.MeemooApplication.maskFrames();
   },
   resizestop: function (event, ui) {
+    //HACK w/ event.data.view for jq 1.7
     // Remove iframe masks
     window.MeemooApplication.unmaskFrames();
     
     // Set model w/h
     var newW = $(ui.element).width();
     var newH = $(ui.element).height();
-    this.model.set({
+    event.data.view.model.set({
       w: newW - 20,
       h: newH - 40
     });
-    this.$(".frame").css({
+    event.data.view.$(".frame").css({
       width: newW - 20,
       height: newH - 40
     });
     // Rerender related edges
-    this.drag();
+    event.data.view.drag();
   },
   infoLoaded: function (info) {
     this.$('h1')
