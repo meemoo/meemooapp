@@ -127,8 +127,8 @@ var NodeView = Backbone.View.extend({
     this.drag();
     // Save position to model
     this.model.set({
-      x: this.$(".module").offset().left + 10,
-      y: this.$(".module").offset().top + 30
+      x: $(ui.element).offset().left + 10,
+      y: $(ui.element).offset().top + 30
     });
   },
   resizestart: function (event, ui) {
@@ -140,9 +140,8 @@ var NodeView = Backbone.View.extend({
     window.MeemooApplication.unmaskFrames();
     
     // Set model w/h
-    var newW = this.$(".module").width();
-    var newH = this.$(".module").height();
-    console.log(newW, newH);
+    var newW = $(ui.element).width();
+    var newH = $(ui.element).height();
     this.model.set({
       w: newW - 20,
       h: newH - 40
