@@ -184,8 +184,8 @@ var NodeView = Backbone.View.extend({
       drag: function (event, ui) {
         // Edge preview
         var positions = {
-          fromX: event.pageX,
-          fromY: event.pageY,
+          fromX: ui.offset.left + 7,
+          fromY: ui.offset.top + 7,
           toX: $(this).offset().left + 7,
           toY: $(this).offset().top + 7
         };
@@ -241,12 +241,13 @@ var NodeView = Backbone.View.extend({
         window.MeemooApplication.shownGraph.view.$(".edges").append( edgePreview.el );
       },
       drag: function (event, ui) {
+        // console.log(event, ui);
         // Edge preview
         var positions = {
           fromX: $(this).offset().left + 7,
           fromY: $(this).offset().top + 7,
-          toX: event.pageX,
-          toY: event.pageY
+          toX: ui.offset.left + 7,
+          toY: ui.offset.top + 7
         };
         window.MeemooApplication.edgePreview.setPositions(positions);
         window.MeemooApplication.edgePreview.redraw();
@@ -528,7 +529,7 @@ var Graph = Backbone.Model.extend({
       return _node.get('id') === node.get('id');
     });
     if (isDupe) {
-      console.warn("duplicate node id ignored", node);
+      console.warn("duplicate node id ignored");
       return false;
     } else {
       return this.get("nodes").add(node);
@@ -540,7 +541,7 @@ var Graph = Backbone.Model.extend({
       return _edge.get('source')[0] === edge.get('source')[0] && _edge.get('source')[1] === edge.get('source')[1] && _edge.get('target')[0] === edge.get('target')[0] && _edge.get('target')[1] === edge.get('target')[1];
     });
     if (isDupe) {
-      console.warn("duplicate edge ignored", edge);
+      console.warn("duplicate edge ignored");
       return false;
     } else {
       return this.get("edges").add(edge);
