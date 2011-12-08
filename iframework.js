@@ -142,6 +142,7 @@ var NodeView = Backbone.View.extend({
     // Set model w/h
     var newW = this.$(".module").width();
     var newH = this.$(".module").height();
+    console.log(newW, newH);
     this.model.set({
       w: newW - 20,
       h: newH - 40

@@ -92,6 +92,38 @@
     var exampleGraphs = [
     {
       info: {
+        title: "cam",
+        author: "forresto",
+        description: "webcam2glitch",
+        url: ""
+      },
+      nodes: [
+        {
+          id: 1,
+          src: "http://forresto.github.com/meemoo-modules/metronome.html", 
+          "x":139,"y":45,"w":230,"h":110, 
+          state: { bpm: 30 }
+        },
+        {
+          id: 2,
+          src: "/camcanvas/", 
+          // src: "http://forresto.github.com/camcanvas/", 
+          "x":139,"y":220,"w":350,"h":550, 
+          state: { bpm: 140 }
+        },
+        {
+          id: 3,
+          src: "http://forresto.github.com/meemoo-modules/glitch.html", 
+          "x":633,"y":220,"w":200,"h":300
+        }
+      ],
+      edges: [
+        { source: [1, "beat"],  target: [2, "capture"] },
+        { source: [2, "image"],  target: [3, "image"] }
+      ]
+    },
+    {
+      info: {
         title: "iframework test",
         author: "forresto",
         description: "meemoo demo graph",
