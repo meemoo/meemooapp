@@ -384,6 +384,9 @@ var Edge = Backbone.Model.extend({
         }
       });
     }
+    if (this.view) {
+      this.view.remove();
+    }
   }
 });
 
@@ -424,6 +427,9 @@ var EdgeView = Backbone.View.extend({
     });
     this.$("svg path.wire").attr("d", this.svgPath() );
     this.$("svg path.wire-shadow").attr("d", this.svgPathShadow() );
+  },
+  remove: function () {
+    $(this.el).remove();
   },
   setPositions: function (_positions) {
     this.positions = _positions;
