@@ -12,8 +12,6 @@ var Node = Backbone.Model.extend({
   initialize: function () {
     this.inputs = {};
     this.outputs = {};
-    // this.bind('change:x', this.positionChanged, this);
-    // this.bind('change:y', this.positionChanged, this);
   },
   initializeView: function () {
     this.view = new NodeView({model:this});
@@ -71,7 +69,8 @@ var NodeView = Backbone.View.extend({
     "drag .module":        "drag",
     "dragstop .module":    "dragstop",
     "resizestart .module": "resizestart",
-    // "resizestop .module":  "resizestop",
+    "resize .module":      "resize",
+    "resizestop .module":  "resizestop",
     "click .hole":         "holeclick",
     "click .disconnect":   "disconnect"
   },
@@ -89,14 +88,8 @@ var NodeView = Backbone.View.extend({
         });
         $(this).css("z-index", topZ+1);
       })
-      .draggable({
-        // handle: 'h1'
-      })
-      .resizable({
-        helper: "ui-resizable-helper"
-      })
-      .on("resizestop", {view: this}, this.resizestop);
-      //HACK w/ event.data.view for jq 1.7
+      .draggable()
+      .resizable()
   },
   render: function () {
     $(this.el).html(this.template(this.model.toJSON()));
@@ -129,32 +122,35 @@ var NodeView = Backbone.View.extend({
     this.drag();
     // Save position to model
     this.model.set({
-      x: $(ui.element).offset().left + 10,
-      y: $(ui.element).offset().top + 30
+      x: ui.offset.left + 10,
+      y: ui.offset.top + 30
     });
   },
   resizestart: function (event, ui) {
     // Add a mask so that iframes don't steal mouse
     window.MeemooApplication.maskFrames();
   },
+  resize: function (event, ui) {
+    // Rerender related edges
+    this.drag();
+  },
   resizestop: function (event, ui) {
-    //HACK w/ event.data.view for jq 1.7
     // Remove iframe masks
     window.MeemooApplication.unmaskFrames();
     
     // Set model w/h
-    var newW = $(ui.element).width();
-    var newH = $(ui.element).height();
-    event.data.view.model.set({
+    var newW = ui.size.width;
+    var newH = ui.size.height;
+    this.model.set({
       w: newW - 20,
       h: newH - 40
     });
-    event.data.view.$(".frame").css({
+    this.$(".frame").css({
       width: newW - 20,
       height: newH - 40
     });
     // Rerender related edges
-    event.data.view.drag();
+    this.drag();
   },
   infoLoaded: function (info) {
     this.$('h1')
@@ -602,10 +598,10 @@ var GraphView = Backbone.View.extend({
   className: "app",
   template: _.template($('#graph-template').html()),
   events: {
-    "click .graph":     "click",
-    "dragstart .graph": "dragstart",
-    "drag .graph":      "drag",
-    "dragstop .graph":  "dragstop"
+    // "dragstart .graph": "dragstart",
+    // "drag .graph":      "drag",
+    // "dragstop .graph":  "dragstop",
+    "click .graph":     "click"
   },
   initialize: function () {
     this.render();
@@ -646,7 +642,7 @@ var GraphView = Backbone.View.extend({
     });
     
     // Drag graph
-    this.$(".graph").draggable();
+    // this.$(".graph").draggable();
   },
   click: function (event) {
     if (!$(event.target).hasClass("hole")) {
@@ -654,31 +650,31 @@ var GraphView = Backbone.View.extend({
       $(".edge-edit").remove();
     }
   },
-  dragstart: function (event) {
-  },
-  drag: function (event) {},
-  dragstop: function (event) {
-    if ($(event.target).hasClass("graph")) {
-      var delta = $(event.target).position();
-      
-      // Move nodes
-      this.model.get("nodes").each( function (node) {
-        var pos = node.view.$(".module").position();
-        node.view.$(".module").css({
-          "left": pos.left + delta.left,
-          "top": pos.top + delta.top
-        });
-      });
-      
-      // Bump graph back
-      this.$(".graph").css({top:0,left:0});
-      
-      // Sets node model x y and redraw edges
-      this.model.get("nodes").each( function (node) {
-        node.view.dragstop();
-      });
-    }
-  },
+  // dragstart: function (event) {
+  // },
+  // drag: function (event) {},
+  // dragstop: function (event) {
+  //   if ($(event.target).hasClass("graph")) {
+  //     var delta = $(event.target).position();
+  //     
+  //     // Move nodes
+  //     this.model.get("nodes").each( function (node) {
+  //       var pos = node.view.$(".module").position();
+  //       node.view.$(".module").css({
+  //         "left": pos.left + delta.left,
+  //         "top": pos.top + delta.top
+  //       });
+  //     });
+  //     
+  //     // Bump graph back
+  //     this.$(".graph").css({top:0,left:0});
+  //     
+  //     // Sets node model x y and redraw edges
+  //     this.model.get("nodes").each( function (node) {
+  //       node.view.dragstop();
+  //     });
+  //   }
+  // },
   render: function () {
     $(this.el).html(this.template(this.model.toJSON()));
     return this;
