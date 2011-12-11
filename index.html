@@ -19,6 +19,12 @@
 </head>
 <body>
   
+  <footer>
+    meemoo iframework by <a href="http://forresto.com/">forrest oliphant</a><br />
+    <a href="https://github.com/meemoo/iframework">view source</a> on github<br />
+    examples: <span id="examples"></span>
+  </footer>
+  
   <script type="text/template" id="graph-template">
   
     <div class="graph">
@@ -91,49 +97,115 @@
     
     var exampleGraphs = [
     {
-      info: {
-        title: "cam",
-        author: "forresto",
-        description: "cam to glitch",
-        url: ""
+      "info": {
+        "title": "cam to glitch",
+        "author": "forresto",
+        "description": "webcam to jpg to glitch",
+        "url": "cam"
       },
-      nodes: [
+      "nodes": [
         {
-          id: 1,
-          src: "http://forresto.github.com/meemoo-modules/metronome.html", 
-          "x":139,"y":45,"w":230,"h":110, 
-          state: { bpm: 150 }
+          "src": "http://forresto.github.com/meemoo-modules/metronome.html",
+          "x": 139,
+          "y": 45,
+          "w": 200,
+          "h": 100,
+          "id": 1,
+          "state": {
+            "bpm": 150
+          }
         },
         {
-          id: 2,
-          src: "http://forresto.github.com/meemoo-camcanvas/", 
-          "x":139,"y":220,"w":350,"h":550, 
-          state: { quality: 10, width:320, height: 240 }
+          "src": "http://forresto.github.com/meemoo-camcanvas/webcam2jpg.html",
+          "x": 581,
+          "y": 49,
+          "w": 339,
+          "h": 283,
+          "id": 2,
+          "state": {
+            "quality": 50,
+            "width": 320,
+            "height": 240
+          }
         },
-        // {
-        //   id: 3,
-        //   src: "http://forresto.github.com/meemoo-modules/reflow.html", 
-        //   "x": 633, "y": 220, "w": 256, "h": 297
-        // },
         {
-          id: 4,
-          src: "http://forresto.github.com/meemoo-jpgglitch/", 
-          // src: "/jpgglitch/", 
-          "x": 633, "y": 120, "w": 400, "h": 400
+          "src": "http://forresto.github.com/meemoo-jpgglitch/index.html",
+          "x": 138,
+          "y": 220,
+          "w": 339,
+          "h": 262,
+          "id": 4
+        },
+        {
+          "src": "http://forresto.github.com/meemoo-modules/img2canvas.html",
+          "x": 282,
+          "y": 559,
+          "w": 116,
+          "h": 98,
+          "id": 5
+        },
+        {
+          "src": "http://forresto.github.com/meemoo-modules/reflow.html",
+          "x": 646,
+          "y": 398,
+          "w": 256,
+          "h": 297,
+          "id": 3
         }
       ],
-      edges: [
-        { source: [1, "beat"],  target: [2, "capture"] },
-        // { source: [2, "image"],  target: [3, "image"] },
-        { source: [2, "jpg"],  target: [4, "jpg"] }
+      "edges": [
+        {
+          "source": [
+            1,
+            "beat"
+          ],
+          "target": [
+            2,
+            "capture"
+          ],
+          "color": "#DF151A"
+        },
+        {
+          "source": [
+            2,
+            "jpg"
+          ],
+          "target": [
+            4,
+            "jpg"
+          ],
+          "color": "#FD8603"
+        },
+        {
+          "source": [
+            5,
+            "image"
+          ],
+          "target": [
+            3,
+            "image"
+          ],
+          "color": "#F4F328"
+        },
+        {
+          "source": [
+            4,
+            "jpg"
+          ],
+          "target": [
+            5,
+            "dataurl"
+          ],
+          "color": "#00DA3C"
+        }
       ]
     },
     {
       info: {
-        title: "iframework test",
+        title: "processing dot js",
         author: "forresto",
         description: "processing to reflow",
-        url: ""
+        url: "processing"
       },
       nodes: [
         {
@@ -176,14 +248,43 @@
     ];
     
     MeemooApplication.showGraph(exampleGraphs[0]);
+    
+    
+    
+    
+    var MeemooRouter = Backbone.Router.extend({
+
+      routes: {
+        "/example/:url": "loadExample",    // #/example/url
+      },
+
+      loadExample: function(url) {
+        for (var i=0; i<exampleGraphs.length; i++) {
+          if (exampleGraphs[i]["info"]["url"] === url) {
+            MeemooApplication.showGraph(exampleGraphs[i]);
+            document.title = "meemoo/"+url;
+            return;
+          }
+        }
+      }
+
+    });
+    MeemooApplication.router = new MeemooRouter();
+    Backbone.history.start();
+    
+    // Make example links:
+    for (var i=0; i<exampleGraphs.length; i++) {
+      var url = exampleGraphs[i]["info"]["url"];
+      if (url) {
+        $("#examples").append('<a href="#/example/'+url+'">'+url+'</a> ')
+      }
+    }
+    
+    examples
   
   });
   
   </script>
-  
-  <footer>
-    meemoo iframework by <a href="http://forresto.com/">forrest oliphant</a>: <a href="https://github.com/meemoo/iframework">view source</a> on github
-  </footer>
   
   <script type="text/javascript">
     var _gaq = _gaq || [];
