@@ -98,6 +98,91 @@
     var exampleGraphs = [
     {
       "info": {
+        "title": "cam to gif",
+        "author": "forresto",
+        "description": "webcam to animated gif",
+        "url": "cam2gif"
+      },
+      "nodes": [
+        {
+          "src": "http://forresto.github.com/meemoo-camcanvas/webcam2jpg.html",
+          "x": 129,
+          "y": 45,
+          "w": 339,
+          "h": 283,
+          "id": 1,
+          "state": {
+            "quality": 75,
+            "width": 320,
+            "height": 240
+          }
+        },
+        {
+          "src": "http://forresto.github.com/meemoo-modules/img2canvas.html",
+          "x": 616,
+          "y": 45,
+          "w": 333,
+          "h": 264,
+          "id": 2
+        },
+        {
+          "src": "http://forresto.github.com/meemoo-canvas2gif/canvas2gif.html",
+          "x": 127,
+          "y": 415,
+          "w": 357,
+          "h": 285,
+          "id": 3,
+          "state": {
+            "delay": 200
+          }
+        },
+        {
+          "src": "http://forresto.github.com/meemoo-modules/imgur.html",
+          "x": 629,
+          "y": 412,
+          "w": 357,
+          "h": 297,
+          "id": 5
+        }
+      ],
+      "edges": [
+        {
+          "source": [
+            1,
+            "jpg"
+          ],
+          "target": [
+            2,
+            "dataurl"
+          ],
+          "color": "#DF151A"
+        },
+        {
+          "source": [
+            2,
+            "image"
+          ],
+          "target": [
+            3,
+            "image"
+          ],
+          "color": "#FD8603"
+        },
+        {
+          "source": [
+            3,
+            "gif"
+          ],
+          "target": [
+            5,
+            "dataurl"
+          ],
+          "color": "#F4F328"
+        }
+      ]
+    },
+    {
+      "info": {
         "title": "cam to glitch",
         "author": "forresto",
         "description": "webcam to jpg to glitch",
@@ -276,7 +361,7 @@
     for (var i=0; i<exampleGraphs.length; i++) {
       var url = exampleGraphs[i]["info"]["url"];
       if (url) {
-        $("#examples").append('<a href="#/example/'+url+'">'+url+'</a> ')
+        $("#examples").append('<a href="#/example/'+url+'" title="'+exampleGraphs[i]["info"]["description"]+'">'+url+'</a> ')
       }
     }
     
