@@ -307,7 +307,7 @@
         {
           id: 3,
           src: "http://forresto.github.com/meemoo-modules/processing.html", 
-          "x":148,"y":246,"w":308,"h":308,
+          "x":148,"y":246,"w":308,"h":348,
           state: { 
             processingcode: "void setup() { size(300, 300); colorMode(HSB, 360, 100, 300); noStroke(); background(0); } \n void mousePressed () { fill(random(360), 180, 300); triangle(random(width), random(height), 100, 100, 200, 200);}" 
           }
@@ -334,7 +334,54 @@
         { source: [1, "beat"],  target: [3, "pressed"] },
         { source: [3, "image"], target: [4, "image"] }
       ]
+    },
+    {
+      "info": {
+        "title": "doodle flipbook",
+        "author": "forresto",
+        "description": "processing to animated gif",
+        "url": "flipbook"
+      },
+      "nodes": [
+        {
+          "src": "http://forresto.github.com/meemoo-modules/processing.html",
+          "x": 144,
+          "y": 119,
+          "w": 308,
+          "h": 348,
+          "id": 1,
+          "state": {
+            "processingcode": "void setup() { size(300, 300); background(0); stroke(255); } void draw() { if(mousePressed) {point(mouseX, mouseY);} }"
+          }
+        },
+        {
+          "src": "http://forresto.github.com/meemoo-canvas2gif/canvas2gif.html",
+          "x": 643,
+          "y": 124,
+          "w": 354,
+          "h": 341,
+          "id": 2,
+          "state": {
+            "delay": 200,
+            "quality": 75
+          }
+        }
+      ],
+      "edges": [
+        {
+          "source": [
+            1,
+            "image"
+          ],
+          "target": [
+            2,
+            "image"
+          ],
+          "color": "#DF151A"
+        }
+      ]
     }
+    
     ];
     
     MeemooApplication.showGraph(exampleGraphs[0]);
