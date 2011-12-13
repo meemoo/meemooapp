@@ -351,7 +351,7 @@
           "h": 348,
           "id": 1,
           "state": {
-            "processingcode": "void setup() { size(300, 300); background(0); stroke(255); } void draw() { if(mousePressed) {point(mouseX, mouseY);} }"
+            "processingcode": "void setup() { size(300, 300); background(0); stroke(255); } Integer lastX, lastY; void draw() { if(mousePressed) { if (lastX==null) {lastX = mouseX; lastY = mouseY;} line(mouseX, mouseY, lastX, lastY); lastX = mouseX; lastY = mouseY;} else {lastX = null; lastY = null;}}"
           }
         },
         {
