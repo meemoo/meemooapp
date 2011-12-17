@@ -108,7 +108,7 @@ var NodeView = Backbone.View.extend({
   },
   dragstart: function (event, ui) {
     // Add a mask so that iframes don't steal mouse
-    window.MeemooApplication.maskFrames();
+    window.Iframework.maskFrames();
   },
   drag: function (event, ui) {
     _.each(this.relatedEdges(), function(edge){
@@ -117,7 +117,7 @@ var NodeView = Backbone.View.extend({
   },
   dragstop: function (event, ui) {
     // Remove iframe masks
-    window.MeemooApplication.unmaskFrames();
+    window.Iframework.unmaskFrames();
     // Redraw edges once more
     this.drag();
     // Save position to model
@@ -128,7 +128,7 @@ var NodeView = Backbone.View.extend({
   },
   resizestart: function (event, ui) {
     // Add a mask so that iframes don't steal mouse
-    window.MeemooApplication.maskFrames();
+    window.Iframework.maskFrames();
   },
   resize: function (event, ui) {
     // Rerender related edges
@@ -136,7 +136,7 @@ var NodeView = Backbone.View.extend({
   },
   resizestop: function (event, ui) {
     // Remove iframe masks
-    window.MeemooApplication.unmaskFrames();
+    window.Iframework.unmaskFrames();
     
     // Set model w/h
     var newW = ui.size.width;
@@ -177,8 +177,8 @@ var NodeView = Backbone.View.extend({
         
         // Edge preview
         var edgePreview = new EdgeView();
-        window.MeemooApplication.edgePreview = edgePreview;
-        window.MeemooApplication.shownGraph.view.$(".edges").append( edgePreview.el );
+        window.Iframework.edgePreview = edgePreview;
+        window.Iframework.shownGraph.view.$(".edges").append( edgePreview.el );
       },
       drag: function (event, ui) {
         // Edge preview
@@ -188,15 +188,15 @@ var NodeView = Backbone.View.extend({
           toX: $(this).offset().left + 7,
           toY: $(this).offset().top + 7
         };
-        window.MeemooApplication.edgePreview.setPositions(positions);
-        window.MeemooApplication.edgePreview.redraw();
+        window.Iframework.edgePreview.setPositions(positions);
+        window.Iframework.edgePreview.redraw();
       },
       stop: function (event, ui) {
         $("div.ports-out span.hole").removeClass("highlight");
         
         // Edge preview
-        window.MeemooApplication.shownGraph.view.$(".edges").children(".preview").remove();
-        window.MeemooApplication.edgePreview = undefined;
+        window.Iframework.shownGraph.view.$(".edges").children(".preview").remove();
+        window.Iframework.edgePreview = undefined;
       }
     });
     // Drag to port
@@ -211,7 +211,7 @@ var NodeView = Backbone.View.extend({
           source: [source.data().nodeId, source.data().portName],
           target: [target.data().nodeId, target.data().portName]
         });
-        edge.graph = window.MeemooApplication.shownGraph;
+        edge.graph = window.Iframework.shownGraph;
         if (edge.graph.addEdge(edge)){
           edge.connect();
         }
@@ -236,8 +236,8 @@ var NodeView = Backbone.View.extend({
         
         // Edge preview
         var edgePreview = new EdgeView();
-        window.MeemooApplication.edgePreview = edgePreview;
-        window.MeemooApplication.shownGraph.view.$(".edges").append( edgePreview.el );
+        window.Iframework.edgePreview = edgePreview;
+        window.Iframework.shownGraph.view.$(".edges").append( edgePreview.el );
       },
       drag: function (event, ui) {
         // console.log(event, ui);
@@ -248,15 +248,15 @@ var NodeView = Backbone.View.extend({
           toX: ui.offset.left + 7,
           toY: ui.offset.top + 7
         };
-        window.MeemooApplication.edgePreview.setPositions(positions);
-        window.MeemooApplication.edgePreview.redraw();
+        window.Iframework.edgePreview.setPositions(positions);
+        window.Iframework.edgePreview.redraw();
       },
       stop: function (event, ui) {
         $("div.ports-in span.hole").removeClass("highlight");
         
         // Edge preview
-        window.MeemooApplication.shownGraph.view.$(".edges").children(".preview").remove();
-        window.MeemooApplication.edgePreview = undefined;
+        window.Iframework.shownGraph.view.$(".edges").children(".preview").remove();
+        window.Iframework.edgePreview = undefined;
       }
     });
     // Drag to port
@@ -270,7 +270,7 @@ var NodeView = Backbone.View.extend({
           source: [source.data().nodeId, source.data().portName],
           target: [target.data().nodeId, target.data().portName]
         });
-        edge.graph = window.MeemooApplication.shownGraph;
+        edge.graph = window.Iframework.shownGraph;
         if (edge.graph.addEdge(edge)){
           edge.connect();
         }
@@ -343,7 +343,7 @@ var Edge = Backbone.Model.extend({
   },
   initializeView: function () {
     if (!this.get("color")) {
-      this.set({color: window.MeemooApplication.getWireColor()});
+      this.set({color: window.Iframework.getWireColor()});
     }
     this.view = new EdgeView({model:this});
     return this.view;
@@ -483,7 +483,7 @@ var EdgeView = Backbone.View.extend({
       return this.model.get('color');
     } else {
       // Preview
-      return window.MeemooApplication.wireColors[window.MeemooApplication.wireColorIndex];
+      return window.Iframework.wireColors[window.Iframework.wireColorIndex];
     }
   },
   label: function () {
@@ -579,7 +579,7 @@ var Graph = Backbone.Model.extend({
     }
     // Connect edges when all modules have loaded (+.5 seconds)
     setTimeout(function(){
-      MeemooApplication.shownGraph.connectEdges();
+      Iframework.shownGraph.connectEdges();
     }, 500);
   },
   connectEdges: function () {
@@ -628,7 +628,7 @@ var GraphView = Backbone.View.extend({
     }).click( function(){
       $(".panel .source").hide();
       $(".panel .code").show();
-      $(".panel .code textarea").text( JSON.stringify(MeemooApplication.shownGraph, null, 2) );
+      $(".panel .code textarea").text( JSON.stringify(Iframework.shownGraph, null, 2) );
     });
     
     this.$(".panel .apply").button({
@@ -637,7 +637,7 @@ var GraphView = Backbone.View.extend({
       }
     }).click( function(){
       var newGraph = JSON.parse( $(".panel .sourceedit").val() );
-      window.MeemooApplication.showGraph(newGraph);
+      window.Iframework.showGraph(newGraph);
       $(".panel .source").click();
     });
     
@@ -695,7 +695,7 @@ var GraphView = Backbone.View.extend({
 
 
 
-window.MeemooApplication = {
+window.Iframework = {
   shownGraph: undefined,
   // Color scheme CC-BY-NC-SA from Skyblue2u http://www.colourlovers.com/palette/758853/A_Glass_Rainbow
   // wireColors: ["#97080E", "#DA4B0F", "#E9B104", "#488C13", "#1B55C0"],
@@ -719,8 +719,8 @@ window.MeemooApplication = {
     this.shownGraph = new Graph(graph);
   },
   gotMessage: function (e) {
-    if (MeemooApplication.shownGraph) {
-      var node = MeemooApplication.shownGraph.get("nodes").get(e.data.nodeid);
+    if (Iframework.shownGraph) {
+      var node = Iframework.shownGraph.get("nodes").get(e.data.nodeid);
       if (node) {
         for (var name in e.data) {
           if (e.data.hasOwnProperty(name)) {
@@ -762,7 +762,7 @@ window.MeemooApplication = {
 };
 
 // Listen for /info messages from nodes
-window.addEventListener("message", window.MeemooApplication.gotMessage, false);
+window.addEventListener("message", window.Iframework.gotMessage, false);
 
 // Disable selection for better drag+drop
 // $('body').disableSelection();
