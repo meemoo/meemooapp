@@ -1,6 +1,49 @@
 $(document).ready(function(){
   
   var exampleGraphs = [
+  // {
+  //   "info": {
+  //     "title": "contextfree to gif",
+  //     "author": "forresto",
+  //     "description": "contextfree to animated gif",
+  //     "url": "contextfree"
+  //   },
+  //   "nodes": [
+  //     {
+  //       "src": "/modules/contextfree.html",
+  //       "x": 128,
+  //       "y": 45,
+  //       "w": 343,
+  //       "h": 524,
+  //       "id": 1
+  //     },
+  //     {
+  //       "src": "http://forresto.github.com/meemoo-canvas2gif/canvas2gif.html",
+  //       "x": 622,
+  //       "y": 43,
+  //       "w": 357,
+  //       "h": 285,
+  //       "id": 3,
+  //       "state": {
+  //         "delay": 200,
+  //         "quality": 75
+  //       }
+  //     },
+  //     {
+  //       "src": "http://forresto.github.com/meemoo-modules/imgur.html",
+  //       "x": 625,
+  //       "y": 398,
+  //       "w": 357,
+  //       "h": 297,
+  //       "id": 5,
+  //       "state": {
+  //         "title": "meemoo/cam2gif image share",
+  //         "caption": "This image was created with a Meemoo composition. http://meemoo.org/iframework/#/example/cam2gif"
+  //       }
+  //     }
+  //   ],
+  //   "edges": []
+  // },
   {
     "info": {
       "title": "cam to gif",
@@ -10,11 +53,11 @@ $(document).ready(function(){
     },
     "nodes": [
       {
-        "src": "http://forresto.github.com/meemoo-camcanvas/webcam2canvas.html",
+        "src": "http://forresto.github.com/meemoo-camcanvas/onionskin.html",
         "x": 128,
         "y": 45,
         "w": 343,
-        "h": 524,
+        "h": 280,
         "id": 1,
         "state": {
           "quality": 75,
