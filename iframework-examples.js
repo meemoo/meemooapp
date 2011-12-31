@@ -417,7 +417,7 @@ $(document).ready(function(){
     },
     "nodes": [
       {
-        "src": "http://forresto.github.com/meemoo-camcanvas/webcam2canvas.html",
+        "src": "http://forresto.github.com/meemoo-camcanvas/onionskin.html",
         "x": 126,
         "y": 43,
         "w": 342,
