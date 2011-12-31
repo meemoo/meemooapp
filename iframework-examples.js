@@ -53,7 +53,7 @@ $(document).ready(function(){
     },
     "nodes": [
       {
-        "src": "http://forresto.github.com/meemoo-camcanvas/onionskin.html",
+        "src": "/camcanvas/onionskin.html",
         "x": 128,
         "y": 45,
         "w": 343,
@@ -117,10 +117,76 @@ $(document).ready(function(){
   },
   {
     "info": {
+      "title": "cam to canvas",
+      "author": "forresto",
+      "description": "webcam to canvas",
+      "url": "cam"
+    },
+    "nodes": [
+      {
+        "src": "http://forresto.github.com/meemoo-modules/metronome.html",
+        "x": 205,
+        "y": 43,
+        "w": 200,
+        "h": 100,
+        "id": 1,
+        "state": {
+          "bpm": 60
+        }
+      },
+      {
+        "src": "http://forresto.github.com/meemoo-camcanvas/webcam2canvas.html",
+        "x": 608,
+        "y": 43,
+        "w": 339,
+        "h": 516,
+        "id": 2,
+        "state": {
+          "quality": 75,
+          "width": 320,
+          "height": 240
+        }
+      },
+      {
+        "src": "http://forresto.github.com/meemoo-modules/reflow.html",
+        "x": 199,
+        "y": 245,
+        "w": 256,
+        "h": 297,
+        "id": 3
+      }
+    ],
+    "edges": [
+      {
+        "source": [
+          1,
+          "beat"
+        ],
+        "target": [
+          2,
+          "capture"
+        ],
+        "color": "#DF151A"
+      },
+      {
+        "source": [
+          2,
+          "image"
+        ],
+        "target": [
+          3,
+          "image"
+        ],
+        "color": "#FD8603"
+      }
+    ]
+  },
+  {
+    "info": {
       "title": "cam to glitch",
       "author": "forresto",
       "description": "webcam to jpg to glitch",
-      "url": "cam"
+      "url": "glitch"
     },
     "nodes": [
       {
@@ -142,7 +208,7 @@ $(document).ready(function(){
         "h": 283,
         "id": 2,
         "state": {
-          "quality": 50,
+          "quality": 20,
           "width": 320,
           "height": 240
         }
@@ -261,39 +327,48 @@ $(document).ready(function(){
     "info": {
       "title": "doodle flipbook",
       "author": "forresto",
-      "description": "processing doodle to image stack to animated gif",
+      "description": "paint doodle to image array to animated gif",
       "url": "flipbook"
     },
     "nodes": [
       {
-        "src": "http://forresto.github.com/meemoo-modules/processing.html",
-        "x": 156,
-        "y": 63,
-        "w": 308,
-        "h": 348,
-        "id": 1,
-        "state": {
-          "processingcode": "void setup() { size(300, 300); background(0); stroke(255); } Integer lastX, lastY; void draw() { if(mousePressed) { if (lastX==null) {lastX = mouseX; lastY = mouseY;} line(mouseX, mouseY, lastX, lastY); lastX = mouseX; lastY = mouseY;} else {lastX = null; lastY = null;}}"
-        }
+        "src": "http://forresto.github.com/meemoo-paint/paint.html",
+        "x": 136,
+        "y": 52,
+        "w": 377,
+        "h": 342,
+        "id": 1
       },
       {
-        "src": "http://forresto.github.com/meemoo-modules/canvasstack.html",
-        "x": 655,
-        "y": 53,
-        "w": 308,
-        "h": 420,
+        "src": "http://forresto.github.com/meemoo-modules/canvasarray.html",
+        "x": 663,
+        "y": 48,
+        "w": 348,
+        "h": 331,
         "id": 3
       },
       {
         "src": "http://forresto.github.com/meemoo-canvas2gif/canvas2gif.html",
-        "x": 154,
-        "y": 473,
+        "x": 145,
+        "y": 450,
         "w": 354,
         "h": 341,
         "id": 2,
         "state": {
           "delay": 200,
           "quality": 75
+        }
+      },
+      {
+        "src": "http://forresto.github.com/meemoo-modules/imgur.html",
+        "x": 678,
+        "y": 464,
+        "w": 357,
+        "h": 297,
+        "id": 6,
+        "state": {
+          "title": "meemoo/flipbook image share",
+          "caption": "This image was created with a Meemoo composition. http://meemoo.org/iframework/#/example/flipbook"
         }
       }
     ],
@@ -319,6 +394,17 @@ $(document).ready(function(){
           "image"
         ],
         "color": "#00DA3C"
+      },
+      {
+        "source": [
+          2,
+          "gif"
+        ],
+        "target": [
+          6,
+          "dataurl"
+        ],
+        "color": "#DF151A"
       }
     ]
   },
@@ -332,8 +418,8 @@ $(document).ready(function(){
     "nodes": [
       {
         "src": "http://forresto.github.com/meemoo-camcanvas/webcam2canvas.html",
-        "x": 127,
-        "y": 45,
+        "x": 126,
+        "y": 43,
         "w": 342,
         "h": 283,
         "id": 4,
@@ -344,28 +430,17 @@ $(document).ready(function(){
         }
       },
       {
-        "src": "http://forresto.github.com/meemoo-modules/processing.html",
-        "x": 625,
-        "y": 44,
-        "w": 353,
-        "h": 284,
-        "id": 1,
-        "state": {
-          "processingcode": "void setup() { size(320, 240); background(0); stroke(255); } Integer lastX, lastY; void draw() { if(mousePressed) { if (lastX==null) {lastX = mouseX; lastY = mouseY;} line(mouseX, mouseY, lastX, lastY); lastX = mouseX; lastY = mouseY;} else {lastX = null; lastY = null;}}"
-        }
-      },
-      {
-        "src": "http://forresto.github.com/meemoo-modules/canvasstack.html",
-        "x": 126,
-        "y": 423,
-        "w": 347,
-        "h": 315,
-        "id": 3
+        "src": "http://forresto.github.com/meemoo-paint/paint.html",
+        "x": 634,
+        "y": 53,
+        "w": 377,
+        "h": 342,
+        "id": 1
       },
       {
         "src": "http://forresto.github.com/meemoo-canvas2gif/canvas2gif.html",
-        "x": 621,
-        "y": 450,
+        "x": 135,
+        "y": 395,
         "w": 354,
         "h": 341,
         "id": 2,
@@ -376,8 +451,8 @@ $(document).ready(function(){
       },
       {
         "src": "http://forresto.github.com/meemoo-modules/imgur.html",
-        "x": 677,
-        "y": 876,
+        "x": 652,
+        "y": 456,
         "w": 357,
         "h": 297,
         "id": 6,
@@ -388,28 +463,6 @@ $(document).ready(function(){
       }
     ],
     "edges": [
-      {
-        "source": [
-          1,
-          "image"
-        ],
-        "target": [
-          3,
-          "image"
-        ],
-        "color": "#00CBE7"
-      },
-      {
-        "source": [
-          3,
-          "image"
-        ],
-        "target": [
-          2,
-          "image"
-        ],
-        "color": "#00DA3C"
-      },
       {
         "source": [
           4,
@@ -423,6 +476,17 @@ $(document).ready(function(){
       },
       {
         "source": [
+          1,
+          "image"
+        ],
+        "target": [
+          2,
+          "image"
+        ],
+        "color": "#FD8603"
+      },
+      {
+        "source": [
           2,
           "gif"
         ],
@@ -430,7 +494,7 @@ $(document).ready(function(){
           6,
           "dataurl"
         ],
-        "color": "#FD8603"
+        "color": "#F4F328"
       }
     ]
   }
