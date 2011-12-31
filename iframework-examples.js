@@ -53,7 +53,7 @@ $(document).ready(function(){
     },
     "nodes": [
       {
-        "src": "/camcanvas/onionskin.html",
+        "src": "http://forresto.github.com/meemoo-camcanvas/onionskin.html",
         "x": 128,
         "y": 45,
         "w": 343,
