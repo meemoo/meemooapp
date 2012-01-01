@@ -12,7 +12,8 @@
     "url": "http://meemoo.org"  
   },  
   "installs_allowed_from": [  
-    "https://appstore.mozillalabs.com",
+    "https://apps-preview.mozilla.org",
+    "https://apps.mozilla.org",
     "http://meemoo.org"
   ],  
   "default_locale": "en"  
