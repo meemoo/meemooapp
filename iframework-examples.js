@@ -451,6 +451,17 @@ $(document).ready(function(){
           "dataurl"
         ],
         "color": "#DF151A"
+      },  
+      {
+        "source": [
+          1,
+          "image"
+        ],
+        "target": [
+          2,
+          "image"
+        ],
+        "color": "#FD8603"
       }
     ]
   },
