@@ -7,11 +7,6 @@
     "48": "/iframework/img/meemoo-icon-48.png",  
     "128": "/iframework/img/meemoo-icon-128.png"  
   },  
-  // "widget": {  
-  //   "path": "widget.html",  
-  //   "width": 100,  
-  //   "height": 200  
-  // },  
   "developer": {  
     "name": "Forrest Oliphant",  
     "url": "http://meemoo.org"  
@@ -20,19 +15,5 @@
     "https://appstore.mozillalabs.com",
     "http://meemoo.org"
   ],  
-  // "locales": {  
-  //   "es": {  
-  //     "description": "¡Acción abierta emocionante del desarrollo del Web!",  
-  //     "developer": {  
-  //       "url": "http://es.mozillalabs.com/"  
-  //     }  
-  //   },  
-  //   "it": {  
-  //     "description": "Azione aperta emozionante di sviluppo di fotoricettore!",  
-  //     "developer": {  
-  //       "url": "http://it.mozillalabs.com/"  
-  //     }  
-  //   }  
-  // },  
   "default_locale": "en"  
 }
