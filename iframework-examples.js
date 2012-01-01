@@ -286,41 +286,87 @@ $(document).ready(function(){
     ]
   },
   {
-    info: {
-      title: "processing dot js",
-      author: "forresto",
-      description: "processing to reflow",
-      url: "processing"
+    "info": {
+      "title": "processing dot js",
+      "author": "forresto",
+      "description": "processing to reflow",
+      "url": "processing"
     },
-    nodes: [
+    "nodes": [
       {
-        id: 1,
-        src: "http://forresto.github.com/meemoo-modules/metronome.html", 
-        "x":130,"y":47,"w":230,"h":110, 
-        state: { bpm: 140 }
-      },
-      {
-        id: 3,
-        src: "http://forresto.github.com/meemoo-modules/processing.html", 
-        "x":148,"y":246,"w":308,"h":348,
-        state: { 
-          code: "void setup() { size(300, 300); colorMode(HSB, 360, 100, 300); noStroke(); background(0); } \n void mousePressed () { fill(random(360), 180, 300); triangle(random(width), random(height), 100, 100, 200, 200);}" 
+        "src": "http://forresto.github.com/meemoo-modules/metronome.html",
+        "x": 147,
+        "y": 44,
+        "w": 230,
+        "h": 110,
+        "id": 1,
+        "state": {
+          "bpm": 140,
+          "start": true
         }
       },
       {
-        id: 4,
-        src: "http://forresto.github.com/meemoo-modules/reflow.html", 
-        "x":630,"y":88,"w":449,"h":199
+        "src": "http://forresto.github.com/meemoo-modules/processing.html",
+        "x": 148,
+        "y": 246,
+        "w": 308,
+        "h": 348,
+        "id": 3,
+        "state": {
+          "code": "void setup() { size(300, 300); colorMode(HSB, 360, 100, 300); noStroke(); background(0); } \n void mousePressed () { fill(random(360), 180, 300); triangle(random(width), random(height), 100, 100, 200, 200);}"
+        }
       },
       {
-        id: 5,
-        src: "http://forresto.github.com/meemoo-modules/reflow.html", 
-        "x":686,"y":384,"w":440,"h":204
+        "src": "http://forresto.github.com/meemoo-modules/reflow.html",
+        "x": 630,
+        "y": 88,
+        "w": 449,
+        "h": 199,
+        "id": 4
+      },
+      {
+        "src": "http://forresto.github.com/meemoo-modules/reflow.html",
+        "x": 686,
+        "y": 384,
+        "w": 440,
+        "h": 204,
+        "id": 5
       }
     ],
-    edges: [
-      { source: [1, "beat"],  target: [3, "pressed"] },
-      { source: [3, "image"], target: [4, "image"] }
+    "edges": [
+      {
+        "source": [
+          1,
+          "beat"
+        ],
+        "target": [
+          3,
+          "pressed"
+        ],
+        "color": "#DF151A"
+      },
+      {
+        "source": [
+          3,
+          "image"
+        ],
+        "target": [
+          4,
+          "image"
+        ],
+        "color": "#F4F328"
+      },
+      {
+        "source": [
+          1,
+          "beat"
+        ],
+        "target": [
+          3,
+          "send"
+        ],
+        "color": "#FD8603"
+      }
     ]
   },
   {
