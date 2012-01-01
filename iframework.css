@@ -204,6 +204,6 @@ footer {
   right: 0px;
   font-family: monospace;
   font-size: 10px;
-  z-index: 10;
+  z-index: 1000;
   text-align: right;
 }

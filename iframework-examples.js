@@ -297,14 +297,14 @@ $(document).ready(function(){
         id: 1,
         src: "http://forresto.github.com/meemoo-modules/metronome.html", 
         "x":130,"y":47,"w":230,"h":110, 
-        state: { bpm: 140, start: true }
+        state: { bpm: 140 }
       },
       {
         id: 3,
         src: "http://forresto.github.com/meemoo-modules/processing.html", 
         "x":148,"y":246,"w":308,"h":348,
         state: { 
-          processingcode: "void setup() { size(300, 300); colorMode(HSB, 360, 100, 300); noStroke(); background(0); } \n void mousePressed () { fill(random(360), 180, 300); triangle(random(width), random(height), 100, 100, 200, 200);}" 
+          code: "void setup() { size(300, 300); colorMode(HSB, 360, 100, 300); noStroke(); background(0); } \n void mousePressed () { fill(random(360), 180, 300); triangle(random(width), random(height), 100, 100, 200, 200);}" 
         }
       },
       {
