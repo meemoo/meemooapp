@@ -214,7 +214,7 @@ $(document).ready(function(){
         }
       },
       {
-        "src": "http://forresto.github.com/meemoo-jpgglitch/index.html",
+        "src": "http://forresto.github.com/meemoo-jpgglitch/jpgglitch.html",
         "x": 138,
         "y": 220,
         "w": 339,
