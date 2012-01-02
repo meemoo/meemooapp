@@ -379,36 +379,37 @@ $(document).ready(function(){
     "nodes": [
       {
         "src": "http://forresto.github.com/meemoo-paint/paint.html",
-        "x": 136,
-        "y": 52,
+        "x": 132,
+        "y": 45,
         "w": 377,
         "h": 342,
         "id": 1
       },
       {
         "src": "http://forresto.github.com/meemoo-modules/canvasarray.html",
-        "x": 663,
-        "y": 48,
+        "x": 760,
+        "y": 401,
         "w": 348,
-        "h": 331,
+        "h": 290,
         "id": 3
       },
       {
         "src": "http://forresto.github.com/meemoo-canvas2gif/canvas2gif.html",
-        "x": 145,
-        "y": 450,
+        "x": 702,
+        "y": 43,
         "w": 354,
-        "h": 341,
+        "h": 291,
         "id": 2,
         "state": {
           "delay": 200,
-          "quality": 75
+          "quality": 75,
+          "transparent": "#FFFFFF"
         }
       },
       {
         "src": "http://forresto.github.com/meemoo-modules/imgur.html",
-        "x": 678,
-        "y": 464,
+        "x": 1275,
+        "y": 81,
         "w": 357,
         "h": 297,
         "id": 6,
@@ -451,7 +452,7 @@ $(document).ready(function(){
           "dataurl"
         ],
         "color": "#DF151A"
-      },  
+      },
       {
         "source": [
           1,
