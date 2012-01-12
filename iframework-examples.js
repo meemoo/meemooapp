@@ -555,6 +555,81 @@ $(document).ready(function(){
         "color": "#F4F328"
       }
     ]
+  },
+  {
+    "info": {
+      "title": "(speech to) text to speech",
+      "author": "forresto",
+      "description": "(in chrome, speech to) text to speech",
+      "url": "text2speech"
+    },
+    "nodes": [
+      {
+        "src": "http://forresto.github.com/meemoo-modules/speech2text.html",
+        "x": 162,
+        "y": 61,
+        "w": 346,
+        "h": 98,
+        "id": 1
+      },
+      {
+        "src": "http://forresto.github.com/meemoo-speak.js/text2speech.html",
+        "x": 234,
+        "y": 221,
+        "w": 167,
+        "h": 117,
+        "id": 2,
+        "state": {
+          "amplitude": 100,
+          "pitch": 50,
+          "speed": 175,
+          "wordgap": 0
+        }
+      },
+      {
+        "src": "http://forresto.github.com/meemoo-modules/audioarray.html",
+        "x": 657,
+        "y": 227,
+        "w": 216,
+        "h": 280,
+        "id": 3
+      }
+    ],
+    "edges": [
+      {
+        "source": [
+          1,
+          "text"
+        ],
+        "target": [
+          2,
+          "text"
+        ],
+        "color": "#DF151A"
+      },
+      {
+        "source": [
+          1,
+          "text"
+        ],
+        "target": [
+          3,
+          "title"
+        ],
+        "color": "#FD8603"
+      },
+      {
+        "source": [
+          2,
+          "audio"
+        ],
+        "target": [
+          3,
+          "audio"
+        ],
+        "color": "#F4F328"
+      }
+    ]
   }
   
   ];
