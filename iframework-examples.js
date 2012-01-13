@@ -590,7 +590,7 @@ $(document).ready(function(){
         "src": "http://forresto.github.com/meemoo-modules/audioarray.html",
         "x": 657,
         "y": 227,
-        "w": 216,
+        "w": 330,
         "h": 280,
         "id": 3
       }
