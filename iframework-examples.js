@@ -504,7 +504,8 @@ $(document).ready(function(){
         "id": 2,
         "state": {
           "delay": 200,
-          "quality": 75
+          "quality": 75,
+          "transparent": "#FFFFFF"
         }
       },
       {
