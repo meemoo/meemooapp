@@ -116,6 +116,8 @@ var NodeView = Backbone.View.extend({
     });
   },
   dragstop: function (event, ui) {
+    //HACK fix new edge setting module xy bug
+    if ( !$(event.target).is(".module") ) { return; }
     // Remove iframe masks
     window.Iframework.unmaskFrames();
     // Redraw edges once more
