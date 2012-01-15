@@ -247,7 +247,6 @@ var NodeView = Backbone.View.extend({
           window.Iframework.shownGraph.view.$(".edges").append( edgePreview.el );
         },
         drag: function (event, ui) {
-          // console.log(event, ui);
           // Edge preview
           var positions = {
             fromX: $(this).offset().left + 7,
@@ -307,23 +306,32 @@ var NodeView = Backbone.View.extend({
       return ( (isIn && portName === edge.get("target")[1]) || (!isIn && portName === edge.get("source")[1]) );
     });
     
+    var popupEl = $('<div class="edge-edit" />').css({
+      left: event.pageX, 
+      top: event.pageY
+    });
+    // Port's module as parent
+    $(this.el).append(popupEl);
+/*
+    if (isIn) {
+      popupEl.append('<h2>input</h2>');
+      var inputWidget = $("<input />");
+      popupEl.append(inputWidget);
+    }
+    popupEl.append('<h2>connect</h2><p>(click on the other port)</p>');
+*/
     if (connectedEdges.length > 0) {
-      var popupEl = $('<div class="edge-edit" />').css({
-        left: event.pageX, 
-        top: event.pageY
-      });
+      popupEl.append('<h2>disconnect</h2>');
       _.each(connectedEdges, function (edge) {
         var edgeEditEl = this.edgeEditTemplate(edge.view);
         popupEl.append(edgeEditEl);
       }, this);
-      $(this.el).append(popupEl);
       $(".disconnect").button({
         icons: {
           primary: "ui-icon-scissors"
         },
         text: false
       });
-      console.log(this.el);
     }
   },
   disconnect: function (event) {
@@ -606,9 +614,6 @@ var GraphView = Backbone.View.extend({
   className: "app",
   template: _.template($('#graph-template').html()),
   events: {
-    // "dragstart .graph": "dragstart",
-    // "drag .graph":      "drag",
-    // "dragstop .graph":  "dragstop",
     "click .graph":     "click"
   },
   initialize: function () {
@@ -616,7 +621,6 @@ var GraphView = Backbone.View.extend({
     $('body').append(this.el);
     
     this.model.get("nodes").each(this.addNode);
-    // this.model.get("edges").each(this.addEdge);
     
     // Panel buttons
     this.$(".panel .code").hide();
@@ -648,41 +652,13 @@ var GraphView = Backbone.View.extend({
       window.Iframework.showGraph(newGraph);
       $(".panel .source").click();
     });
-    
-    // Drag graph
-    // this.$(".graph").draggable();
   },
   click: function (event) {
-    if (!$(event.target).parents().hasClass("edge-edit") && !$(event.target).hasClass("hole") && !$(event.target).parents().hasClass("hole")) {
+    if (!$(event.target).hasClass("hole") && !$(event.target).parents().hasClass("edge-edit") && !$(event.target).parents().hasClass("hole")) {
       // Hide dis/connection boxes
       $(".edge-edit").remove();
     }
   },
-  // dragstart: function (event) {
-  // },
-  // drag: function (event) {},
-  // dragstop: function (event) {
-  //   if ($(event.target).hasClass("graph")) {
-  //     var delta = $(event.target).position();
-  //     
-  //     // Move nodes
-  //     this.model.get("nodes").each( function (node) {
-  //       var pos = node.view.$(".module").position();
-  //       node.view.$(".module").css({
-  //         "left": pos.left + delta.left,
-  //         "top": pos.top + delta.top
-  //       });
-  //     });
-  //     
-  //     // Bump graph back
-  //     this.$(".graph").css({top:0,left:0});
-  //     
-  //     // Sets node model x y and redraw edges
-  //     this.model.get("nodes").each( function (node) {
-  //       node.view.dragstop();
-  //     });
-  //   }
-  // },
   render: function () {
     $(this.el).html(this.template(this.model.toJSON()));
     return this;
