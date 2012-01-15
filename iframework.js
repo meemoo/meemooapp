@@ -168,7 +168,11 @@ var NodeView = Backbone.View.extend({
     this.$("div.ports-in span.hole-"+info.name)
       .data({
         nodeId: this.model.get("id"),
-        portName: info.name
+        portName: info.name,
+        description: info.description,
+        type: info.type,
+        min: info.min,
+        max: info.max
       }).draggable({
         helper: function (e) {
           var helper = $('<span class="holehelper holehelper-in" />');
@@ -233,7 +237,11 @@ var NodeView = Backbone.View.extend({
     this.$("div.ports-out span.hole-"+info.name)
       .data({
         nodeId: this.model.get("id"),
-        portName: info.name
+        portName: info.name,
+        description: info.description,
+        type: info.type,
+        min: info.min,
+        max: info.max
       }).draggable({
         helper: function (e) {
           var helper = $('<span class="holehelper holehelper-out" />');
@@ -314,14 +322,79 @@ var NodeView = Backbone.View.extend({
     });
     // Port's module as parent
     $(this.el).append(popupEl);
-/*
+    popupEl.append(
+      $('<button />')
+        .attr({
+          "type": "button",
+          "class": "close",
+          "title": "close"
+        })
+        .button({
+          icons: {
+            primary: "ui-icon-close"
+          },
+          text: false
+        })
+        .click(function(){
+          $('div.edge-edit').remove();
+        })
+    );
+    popupEl.append('<h2>'+portName+' ('+hole.data("type")+')</h2><p>'+hole.data("description")+'</p>');
+    var typeabbr = hole.data("type").substring(0,3);
     if (isIn) {
-      popupEl.append('<h2>input</h2>');
-      var inputWidget = $("<input />");
-      popupEl.append(inputWidget);
+      var showForm = false;
+      var inputForm = $("<form />")
+        .data({
+          "modulecid": this.model.cid,
+          "inputname": portName
+        })
+        .submit(function(e){
+          var module = window.Iframework.shownGraph.get("nodes").getByCid( $(this).data("modulecid") );
+          var inputname = $(this).data("inputname");
+          if (module && inputname) {
+            var message = {};
+            message[inputname] = $(this).children("input").length > 0 ? $(this).children("input").val() : "bang!";
+            module.send(message);
+          }
+          return false;
+        });
+      if (typeabbr === "int" || typeabbr === "num" ) {
+        showForm = true;
+        inputForm.append(
+          $("<input />").attr({
+            "type": "number",
+            "min": hole.data("min"),
+            "max": hole.data("max"),
+          })
+        );
+      } else if (typeabbr === "col" || typeabbr === "str") {
+        showForm = true;
+        inputForm.append(
+          $("<input />").attr({
+            "type": "text",
+            "maxlength": hole.data("max")
+          })
+        );
+      } else if (typeabbr === "ban") {
+        showForm = true;
+      }
+      if (showForm) {
+        inputForm.append(
+          $("<button />").attr({
+            "type": "submit",
+            "class": "send",
+            "title": "send value to module"
+          }).button({
+            icons: {
+              primary: "ui-icon-arrowthick-1-e"
+            },
+            text: false
+          })
+        );
+        popupEl.append(inputForm);
+      }
     }
-    popupEl.append('<h2>connect</h2><p>(click on the other port)</p>');
-*/
+    // popupEl.append('<h2>connect</h2><p>(click on the other port)</p>');
     if (connectedEdges.length > 0) {
       popupEl.append('<h2>disconnect</h2>');
       _.each(connectedEdges, function (edge) {

@@ -29,12 +29,21 @@ div.edge-edit {
   padding: 10px;
   font-size: 11px;
   font-family: monospace;
-  white-space: nowrap;
+  width: 200px;
 }
   div.edge-edit h2 {
     font-size: 110%;
     margin: 0;
     padding: 0;
+  }
+  div.edge-edit button {
+    width: 25px;
+    height: 25px;
+  }
+  div.edge-edit button.close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
   }
   span.wiresymbol {
     position: relative;
