@@ -89,7 +89,7 @@ var NodeView = Backbone.View.extend({
         $(this).css("z-index", topZ+1);
       })
       .draggable()
-      .resizable()
+      .resizable();
   },
   render: function () {
     $(this.el).html(this.template(this.model.toJSON()));
@@ -154,7 +154,7 @@ var NodeView = Backbone.View.extend({
   },
   infoLoaded: function (info) {
     this.$('h1')
-      .text(info.title)
+      .text(this.model.frameIndex + ":" + info.title)
       .attr({
         title: "by "+info.author+": "+info.description
       });
@@ -163,42 +163,48 @@ var NodeView = Backbone.View.extend({
     var newIn = this.portInTemplate(info);
     this.$("div.ports-in").append(newIn);
     // Drag from hole
-    this.$("div.ports-in span.hole-"+info.name).data({
-      nodeId: this.model.get("id"),
-      portName: info.name
-    }).draggable({
-      helper: function (e) {
-        var helper = $('<span class="holehelper holehelper-in" />');
-        return helper;
-      },
-      start: function (event, ui) {
-        // All outs
-        $("div.ports-out span.hole").addClass("highlight");
-        
-        // Edge preview
-        var edgePreview = new EdgeView();
-        window.Iframework.edgePreview = edgePreview;
-        window.Iframework.shownGraph.view.$(".edges").append( edgePreview.el );
-      },
-      drag: function (event, ui) {
-        // Edge preview
-        var positions = {
-          fromX: ui.offset.left + 7,
-          fromY: ui.offset.top + 7,
-          toX: $(this).offset().left + 7,
-          toY: $(this).offset().top + 7
-        };
-        window.Iframework.edgePreview.setPositions(positions);
-        window.Iframework.edgePreview.redraw();
-      },
-      stop: function (event, ui) {
-        $("div.ports-out span.hole").removeClass("highlight");
-        
-        // Edge preview
-        window.Iframework.shownGraph.view.$(".edges").children(".preview").remove();
-        window.Iframework.edgePreview = undefined;
-      }
-    });
+    this.$("div.ports-in span.hole-"+info.name)
+      .data({
+        nodeId: this.model.get("id"),
+        portName: info.name
+      }).draggable({
+        helper: function (e) {
+          var helper = $('<span class="holehelper holehelper-in" />');
+          return helper;
+        },
+        start: function (event, ui) {
+          // All outs
+          $("div.ports-out span.hole").addClass("highlight");
+          
+          // Edge preview
+          var edgePreview = new EdgeView();
+          window.Iframework.edgePreview = edgePreview;
+          window.Iframework.shownGraph.view.$(".edges").append( edgePreview.el );
+        },
+        drag: function (event, ui) {
+          // Edge preview
+          var positions = {
+            fromX: ui.offset.left + 7,
+            fromY: ui.offset.top + 7,
+            toX: $(this).offset().left + 7,
+            toY: $(this).offset().top + 7
+          };
+          window.Iframework.edgePreview.setPositions(positions);
+          window.Iframework.edgePreview.redraw();
+        },
+        stop: function (event, ui) {
+          $("div.ports-out span.hole").removeClass("highlight");
+          
+          // Edge preview
+          window.Iframework.shownGraph.view.$(".edges").children(".preview").remove();
+          window.Iframework.edgePreview = undefined;
+        }
+      }).button({
+        icons: {
+          primary: "ui-icon-arrow-1-e"
+        },
+        text: false
+      });
     // Drag to port
     this.$("div.ports-in div.port-"+info.name).droppable({
       // Make new edge
@@ -222,43 +228,49 @@ var NodeView = Backbone.View.extend({
     var el = this.portOutTemplate(info);
     this.$(".ports-out").append(el);
     // Drag from hole
-    this.$("div.ports-out span.hole-"+info.name).data({
-      nodeId: this.model.get("id"),
-      portName: info.name
-    }).draggable({
-      helper: function (e) {
-        var helper = $('<span class="holehelper holehelper-out" />');
-        return helper;
-      },
-      start: function (event, ui) {
-        // All ins
-        $("div.ports-in span.hole").addClass("highlight");
-        
-        // Edge preview
-        var edgePreview = new EdgeView();
-        window.Iframework.edgePreview = edgePreview;
-        window.Iframework.shownGraph.view.$(".edges").append( edgePreview.el );
-      },
-      drag: function (event, ui) {
-        // console.log(event, ui);
-        // Edge preview
-        var positions = {
-          fromX: $(this).offset().left + 7,
-          fromY: $(this).offset().top + 7,
-          toX: ui.offset.left + 7,
-          toY: ui.offset.top + 7
-        };
-        window.Iframework.edgePreview.setPositions(positions);
-        window.Iframework.edgePreview.redraw();
-      },
-      stop: function (event, ui) {
-        $("div.ports-in span.hole").removeClass("highlight");
-        
-        // Edge preview
-        window.Iframework.shownGraph.view.$(".edges").children(".preview").remove();
-        window.Iframework.edgePreview = undefined;
-      }
-    });
+    this.$("div.ports-out span.hole-"+info.name)
+      .data({
+        nodeId: this.model.get("id"),
+        portName: info.name
+      }).draggable({
+        helper: function (e) {
+          var helper = $('<span class="holehelper holehelper-out" />');
+          return helper;
+        },
+        start: function (event, ui) {
+          // All ins
+          $("div.ports-in span.hole").addClass("highlight");
+          
+          // Edge preview
+          var edgePreview = new EdgeView();
+          window.Iframework.edgePreview = edgePreview;
+          window.Iframework.shownGraph.view.$(".edges").append( edgePreview.el );
+        },
+        drag: function (event, ui) {
+          // console.log(event, ui);
+          // Edge preview
+          var positions = {
+            fromX: $(this).offset().left + 7,
+            fromY: $(this).offset().top + 7,
+            toX: ui.offset.left + 7,
+            toY: ui.offset.top + 7
+          };
+          window.Iframework.edgePreview.setPositions(positions);
+          window.Iframework.edgePreview.redraw();
+        },
+        stop: function (event, ui) {
+          $("div.ports-in span.hole").removeClass("highlight");
+          
+          // Edge preview
+          window.Iframework.shownGraph.view.$(".edges").children(".preview").remove();
+          window.Iframework.edgePreview = undefined;
+        }
+      }).button({
+        icons: {
+          primary: "ui-icon-arrow-1-e"
+        },
+        text: false
+      });
     // Drag to port
     this.$("div.ports-out div.port-"+info.name).droppable({
       accept: ".hole-in",
@@ -281,18 +293,13 @@ var NodeView = Backbone.View.extend({
     // Hide previous connected edges editor
     $('div.edge-edit').remove();
     
+    //HACK for .ui-icon jqueryui button
+    var target = $(event.target);
+    var hole = target.is(".hole") ? target : target.parent();
+        
     // Show connected edges editor
-    var isIn = $(event.target).hasClass("hole-in");
-    var portName = $(event.target).data("portName");
-    
-    // Look at all node ports
-    // this.model.graph.get("nodes").each( function(node){
-    //   if (isIn) {
-    //     console.log(node.outputs);
-    //   } else {
-    //     console.log(node.inputs);
-    //   }
-    // });
+    var isIn = hole.hasClass("hole-in");
+    var portName = hole.data("portName");
     
     //HACK
     this._relatedEdges = null;
@@ -316,6 +323,7 @@ var NodeView = Backbone.View.extend({
         },
         text: false
       });
+      console.log(this.el);
     }
   },
   disconnect: function (event) {
@@ -487,9 +495,9 @@ var EdgeView = Backbone.View.extend({
     }
   },
   label: function () {
-    return this.model.get("source")[0] +":"+ this.model.get("source")[1] + 
-      ' <span class="wiresymbol" style="color:' + this.color() + '">&mdash;</span> ' + 
-      this.model.get("target")[0] +":"+ this.model.get("target")[1];
+    return this.model.source.frameIndex +":"+ this.model.get("source")[1] + 
+      '<span class="wiresymbol" style="color:' + this.color() + '">&rarr;</span>' + 
+      this.model.target.frameIndex +":"+ this.model.get("target")[1];
   }
 });
 
@@ -645,7 +653,7 @@ var GraphView = Backbone.View.extend({
     // this.$(".graph").draggable();
   },
   click: function (event) {
-    if (!$(event.target).hasClass("hole")) {
+    if (!$(event.target).parents().hasClass("edge-edit") && !$(event.target).hasClass("hole") && !$(event.target).parents().hasClass("hole")) {
       // Hide dis/connection boxes
       $(".edge-edit").remove();
     }
@@ -697,10 +705,8 @@ var GraphView = Backbone.View.extend({
 
 window.Iframework = {
   shownGraph: undefined,
-  // Color scheme CC-BY-NC-SA from Skyblue2u http://www.colourlovers.com/palette/758853/A_Glass_Rainbow
-  // wireColors: ["#97080E", "#DA4B0F", "#E9B104", "#488C13", "#1B55C0"],
-  // Color scheme CC-BY-NC-SA from Skyblue2u http://www.colourlovers.com/palette/462628/Blazin_Jell-O_Rainbo
-  wireColors: ["#DF151A", "#FD8603", "#F4F328", "#00DA3C", "#00CBE7"],
+  // Thanks http://www.madebypi.co.uk/labs/colorutils/examples.html red.equal(10, true);
+  wireColors: ["#FF0000", "#5B8E00", "#00A189", "#0097FF", "#DF05E1", "#BE6C00", "#009C00", "#00A1F3", "#0073FF", "#FF0078"],
   wireColorIndex: 0,
   getWireColor: function () {
     var color = this.wireColors[this.wireColorIndex];

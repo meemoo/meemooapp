@@ -54,16 +54,15 @@
   
   <script type="text/template" id="port-in-template">
     <div class="port port-in port-<%= name %>" title="<%= name %> (<%= type %>)">
-      <span class="hole hole-in hole-<%= name %>"> </span>
+      <span class="hole hole-in hole-<%= name %>">dis/connect</span>
       <span class="label"><%= name %></span>
-      <span class="widget"></span>
     </div>
   </script>
   
   <script type="text/template" id="port-out-template">
     <div class="port port-out port-<%= name %>" title="<%= name %> (<%= type %>)">
       <span class="label"><%= name %></span>
-      <span class="hole hole-out hole-<%= name %>"></span>
+      <span class="hole hole-out hole-<%= name %>">dis/connect</span>
     </div>
   </script>
   
@@ -77,7 +76,7 @@
   
   <script type="text/template" id="edge-template">
     <svg class="wire" xmlns="http://www.w3.org/2000/svg" version="1.1" style="position:absolute;left:<%= svgX() %>px;top:<%= svgY() %>px;width:<%= svgW() %>px;height:<%= svgH() %>px;">
-      <path class="wire-shadow" d="<%= svgPathShadow() %>" stroke="#AAA" />
+      <path class="wire-shadow" d="<%= svgPathShadow() %>" />
       <path class="wire" d="<%= svgPath() %>" stroke="<%= color() %>" />
     </svg>
   </script>

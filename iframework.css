@@ -32,9 +32,12 @@ div.edge-edit {
   white-space: nowrap;
 }
   span.wiresymbol {
+    position: relative;
+    top: .11em;
     font-size: 250%;
     font-weight: bold;
     text-shadow: 0 1px 1px #AAA;
+    padding: 0 3px;
   }
 
 /* boxes */
@@ -67,9 +70,9 @@ div.module {
   }
   div.module h1.title {
     font-family: monospace;
-    font-weight: normal;
+    font-weight: bold;
     color: #333;
-    font-size: 15px;
+    font-size: 12px;
     
     position: absolute;
     top: 2px;
@@ -95,42 +98,38 @@ div.module {
   }
   div.module div.ports-in {
     position: absolute;
-    left: -107px;
+    left: -79px;
     top: 0;
   }
     div.ports-in div.port-in {
-      border-top-left-radius: 12px;
-      border-bottom-left-radius: 12px;
       border-right: none;
-      width: 100px;
+      width: 75px;
       height: 17px;
-      padding: 2px 0 0 5px;
+      padding: 2px 0 0 2px;
       margin-top: -1px;
     }
   div.module div.ports-out {
     position: absolute;
-    right: -82px;
+    right: -79px;
     bottom: -1px;
   }
     div.ports-out div.port-out {
       text-align: right;
-      border-top-right-radius: 12px;
-      border-bottom-right-radius: 12px;
       border-left: none;
       width: 75px;
       height: 17px;
-      padding: 2px 5px 0 0;
+      padding: 2px 2px 0 0;
       margin-top: -1px;
     }
   
   div.port span.hole,
   span.holehelper {
     cursor: pointer;
-    border: 1px black solid;
-    border-radius: 6px;
+    border-radius: 3px;
     display: inline-block;
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
+    overflow: hidden;
   }
   div.port span.hole.highlight {
     border-color: #C00;
@@ -144,6 +143,9 @@ div.module {
   div.port span.label {
     font-family: monospace;
     font-size: 10px;
+    overflow: hidden;
+    width: 50px;
+    display: inline-block;
   }
   
   
@@ -169,11 +171,14 @@ div.edges {
     left:0;
     z-index:0;
   }
-    path.wire-shadow,
-    path.wire {
+    path.wire,
+    path.wire-shadow {
       fill: none;
-      stroke-linecap: round;
-      stroke-width: 7;
+      stroke-linecap: square;
+      stroke-width: 9;
+    }
+    path.wire-shadow {
+      stroke: #AAA;
     }
   
 div.panel {
