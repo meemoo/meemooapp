@@ -426,32 +426,10 @@ $(document).ready(function(){
           "image"
         ],
         "target": [
-          3,
-          "image"
+          1,
+          "tracing"
         ],
-        "color": "#00CBE7"
-      },
-      {
-        "source": [
-          3,
-          "image"
-        ],
-        "target": [
-          2,
-          "image"
-        ],
-        "color": "#00DA3C"
-      },
-      {
-        "source": [
-          2,
-          "gif"
-        ],
-        "target": [
-          6,
-          "dataurl"
-        ],
-        "color": "#DF151A"
+        "color": "#FF0000"
       },
       {
         "source": [
@@ -462,7 +440,40 @@ $(document).ready(function(){
           2,
           "image"
         ],
-        "color": "#FD8603"
+        "color": "#5B8E00"
+      },
+      {
+        "source": [
+          1,
+          "image"
+        ],
+        "target": [
+          3,
+          "image"
+        ],
+        "color": "#00A189"
+      },
+      {
+        "source": [
+          3,
+          "image"
+        ],
+        "target": [
+          2,
+          "image"
+        ],
+        "color": "#0097FF"
+      },
+      {
+        "source": [
+          2,
+          "gif"
+        ],
+        "target": [
+          6,
+          "dataurl"
+        ],
+        "color": "#DF05E1"
       }
     ]
   },
