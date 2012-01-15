@@ -210,6 +210,29 @@ var NodeView = Backbone.View.extend({
           primary: "ui-icon-arrow-1-e"
         },
         text: false
+      }).mouseover(function(){
+        // Tap-connect edge preview
+        if ( window.Iframework.selectedPort && !window.Iframework.selectedPort.isIn ) {
+          var edgePreview = new EdgeView();
+          window.Iframework.edgePreview = edgePreview;
+          window.Iframework.shownGraph.view.$(".edges").append( edgePreview.el );
+          // Edge preview
+          var fromOffset = window.Iframework.selectedPort.node.view.$(".ports-out .hole-"+window.Iframework.selectedPort.portName).offset();
+          var positions = {
+            fromX: fromOffset.left + 7,
+            fromY: fromOffset.top + 7,
+            toX: $(this).offset().left + 7,
+            toY: $(this).offset().top + 7
+          };
+          window.Iframework.edgePreview.setPositions(positions);
+          window.Iframework.edgePreview.redraw();
+        }
+      }).mouseout(function(){
+        // Tap-connect edge preview
+        if ( window.Iframework.selectedPort && !window.Iframework.selectedPort.isIn ) {
+          window.Iframework.shownGraph.view.$(".edges").children(".preview").remove();
+          window.Iframework.edgePreview = undefined;
+        }
       });
     // Drag to port
     this.$("div.ports-in div.port-"+info.name).droppable({
@@ -279,6 +302,29 @@ var NodeView = Backbone.View.extend({
           primary: "ui-icon-arrow-1-e"
         },
         text: false
+      }).mouseover(function(){
+        // Tap-connect edge preview
+        if ( window.Iframework.selectedPort && window.Iframework.selectedPort.isIn ) {
+          var edgePreview = new EdgeView();
+          window.Iframework.edgePreview = edgePreview;
+          window.Iframework.shownGraph.view.$(".edges").append( edgePreview.el );
+          // Edge preview
+          var fromOffset = window.Iframework.selectedPort.node.view.$(".ports-in .hole-"+window.Iframework.selectedPort.portName).offset();
+          var positions = {
+            fromX: $(this).offset().left + 7,
+            fromY: $(this).offset().top + 7,
+            toX: fromOffset.left + 7,
+            toY: fromOffset.top + 7
+          };
+          window.Iframework.edgePreview.setPositions(positions);
+          window.Iframework.edgePreview.redraw();
+        }
+      }).mouseout(function(){
+        // Tap-connect edge preview
+        if ( window.Iframework.selectedPort && window.Iframework.selectedPort.isIn ) {
+          window.Iframework.shownGraph.view.$(".edges").children(".preview").remove();
+          window.Iframework.edgePreview = undefined;
+        }
       });
     // Drag to port
     this.$("div.ports-out div.port-"+info.name).droppable({
@@ -326,6 +372,11 @@ var NodeView = Backbone.View.extend({
       edge.graph = window.Iframework.shownGraph;
       if (edge.graph.addEdge(edge)){
         edge.connect();
+      }
+      // Tap-connect edge preview
+      if ( window.Iframework.edgePreview ) {
+        window.Iframework.shownGraph.view.$(".edges").children(".preview").remove();
+        window.Iframework.edgePreview = undefined;
       }
       // Don't show popup
       window.Iframework.selectedPort = null;
