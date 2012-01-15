@@ -423,7 +423,7 @@ var NodeView = Backbone.View.extend({
         popupEl.append(inputForm);
       }
     }
-    // popupEl.append('<h2>connect</h2><p>(click on the other port)</p>');
+    popupEl.append('<h2>connect</h2><p>(click on the other port)</p>');
     if (connectedEdges.length > 0) {
       popupEl.append('<h2>disconnect</h2>');
       _.each(connectedEdges, function (edge) {
