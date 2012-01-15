@@ -301,7 +301,7 @@ var NodeView = Backbone.View.extend({
   holeclick: function (event) {
     // Hide previous connected edges editor
     $('div.edge-edit').remove();
-    
+      
     //HACK for .ui-icon jqueryui button
     var target = $(event.target);
     var hole = target.is(".hole") ? target : target.parent();
@@ -309,7 +309,35 @@ var NodeView = Backbone.View.extend({
     // Show connected edges editor
     var isIn = hole.hasClass("hole-in");
     var portName = hole.data("portName");
-    
+
+    if ( window.Iframework.selectedPort && (isIn !== window.Iframework.selectedPort.isIn) ) {
+      // Connect
+      if (isIn) {
+        var edge = new Edge({
+          source: [window.Iframework.selectedPort.node.id, window.Iframework.selectedPort.portName],
+          target: [this.model.id, portName]
+        });
+      } else {
+        var edge = new Edge({
+          source: [this.model.id, portName],
+          target: [window.Iframework.selectedPort.node.id, window.Iframework.selectedPort.portName]
+        });
+      }
+      edge.graph = window.Iframework.shownGraph;
+      if (edge.graph.addEdge(edge)){
+        edge.connect();
+      }
+      // Don't show popup
+      window.Iframework.selectedPort = null;
+      return;
+    } else {
+      window.Iframework.selectedPort = {
+        node: this.model,
+        isIn: isIn,
+        portName: portName
+      };
+    }
+        
     //HACK
     this._relatedEdges = null;
     var connectedEdges = _.filter(this.relatedEdges(), function (edge) {
@@ -337,6 +365,7 @@ var NodeView = Backbone.View.extend({
         })
         .click(function(){
           $('div.edge-edit').remove();
+          window.Iframework.selectedPort = null;
         })
     );
     popupEl.append('<h2>'+portName+' ('+hole.data("type")+')</h2><p>'+hole.data("description")+'</p>');
@@ -386,7 +415,7 @@ var NodeView = Backbone.View.extend({
             "title": "send value to module"
           }).button({
             icons: {
-              primary: "ui-icon-arrowthick-1-e"
+              primary: "ui-icon-check"
             },
             text: false
           })
@@ -416,6 +445,7 @@ var NodeView = Backbone.View.extend({
       this.model.graph.removeEdge(edge);
     }
     $('div.edge-edit').remove();
+    window.Iframework.selectedPort = null;
   },
   portOffsetLeft: function (outin, name) {
     return this.$('div.port-'+outin+' span.hole-'+name).offset().left + 7;
@@ -732,6 +762,7 @@ var GraphView = Backbone.View.extend({
     if (!$(event.target).hasClass("hole") && !$(event.target).parents().hasClass("edge-edit") && !$(event.target).parents().hasClass("hole")) {
       // Hide dis/connection boxes
       $(".edge-edit").remove();
+      window.Iframework.selectedPort = null;
     }
   },
   render: function () {
@@ -759,6 +790,7 @@ window.Iframework = {
   // Thanks http://www.madebypi.co.uk/labs/colorutils/examples.html red.equal(10, true);
   wireColors: ["#FF0000", "#5B8E00", "#00A189", "#0097FF", "#DF05E1", "#BE6C00", "#009C00", "#00A1F3", "#0073FF", "#FF0078"],
   wireColorIndex: 0,
+  selectedPort: null,
   getWireColor: function () {
     var color = this.wireColors[this.wireColorIndex];
     this.wireColorIndex++;
