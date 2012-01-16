@@ -40,6 +40,11 @@ div.edge-edit {
     width: 25px;
     height: 25px;
   }
+  div.edge-edit form input,
+  div.edge-edit form label,
+  div.edge-edit form button {
+    vertical-align: middle;
+  }
   div.edge-edit button.close {
     position: absolute;
     top: 5px;
@@ -235,4 +240,5 @@ footer {
   font-size: 10px;
   z-index: 1000;
   text-align: right;
+  max-width: 250px;
 }

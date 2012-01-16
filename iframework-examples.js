@@ -403,7 +403,7 @@ $(document).ready(function(){
         "state": {
           "delay": 200,
           "quality": 75,
-          "transparent": "#FFFFFF"
+          "matte": "#FFFFFF"
         }
       },
       {
@@ -508,15 +508,15 @@ $(document).ready(function(){
       },
       {
         "src": "http://forresto.github.com/meemoo-canvas2gif/canvas2gif.html",
-        "x": 135,
-        "y": 395,
+        "x": 125,
+        "y": 386,
         "w": 354,
         "h": 341,
         "id": 2,
         "state": {
           "delay": 200,
           "quality": 75,
-          "transparent": "#FFFFFF"
+          "matte": "#FFFFFF"
         }
       },
       {
@@ -542,7 +542,18 @@ $(document).ready(function(){
           1,
           "image"
         ],
-        "color": "#DF151A"
+        "color": "#FF0000"
+      },
+      {
+        "source": [
+          1,
+          "image"
+        ],
+        "target": [
+          1,
+          "tracing"
+        ],
+        "color": "#5B8E00"
       },
       {
         "source": [
@@ -553,7 +564,7 @@ $(document).ready(function(){
           2,
           "image"
         ],
-        "color": "#FD8603"
+        "color": "#00A189"
       },
       {
         "source": [
@@ -564,7 +575,7 @@ $(document).ready(function(){
           6,
           "dataurl"
         ],
-        "color": "#F4F328"
+        "color": "#0097FF"
       }
     ]
   },

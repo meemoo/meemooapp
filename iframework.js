@@ -456,6 +456,7 @@ var NodeView = Backbone.View.extend({
           })
         );
       } else if (typeabbr === "ban") {
+        inputForm.append("<label>Send bang:</label> ");
         showForm = true;
       }
       if (showForm) {
