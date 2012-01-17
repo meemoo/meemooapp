@@ -1,6 +1,6 @@
 $(function(){
 
-  window.Iframework.Node = Backbone.Model.extend({
+  Iframework.Node = Backbone.Model.extend({
     loaded: false,
     defaults: {
       src: "",
@@ -14,7 +14,7 @@ $(function(){
       this.outputs = {};
     },
     initializeView: function () {
-      this.view = new window.Iframework.NodeView({model:this});
+      this.view = new Iframework.NodeView({model:this});
       return this.view;
     },
     send: function (message) {
@@ -53,8 +53,8 @@ $(function(){
     }
   });
   
-  window.Iframework.Nodes = Backbone.Collection.extend({
-    model: window.Iframework.Node
+  Iframework.Nodes = Backbone.Collection.extend({
+    model: Iframework.Node
   });
 
 });

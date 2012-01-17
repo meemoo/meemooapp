@@ -1,6 +1,6 @@
 $(function(){
 
-  window.Iframework.Edge = Backbone.Model.extend({
+  Iframework.Edge = Backbone.Model.extend({
     defaults: {
       source: [0, "default"], 
       target: [0, "default"]
@@ -8,7 +8,7 @@ $(function(){
     initialize: function () {
     },
     initializeView: function () {
-      this.view = new window.Iframework.EdgeView({model:this});
+      this.view = new Iframework.EdgeView({model:this});
       return this.view;
     },
     connect: function () {
@@ -52,8 +52,8 @@ $(function(){
     }
   });
   
-  window.Iframework.Edges = Backbone.Collection.extend({
-    model: window.Iframework.Edge
+  Iframework.Edges = Backbone.Collection.extend({
+    model: Iframework.Edge
   });
 
 });

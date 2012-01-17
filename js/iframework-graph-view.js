@@ -1,6 +1,6 @@
 $(function(){
 
-  window.Iframework.GraphView = Backbone.View.extend({
+  Iframework.GraphView = Backbone.View.extend({
     tagName: "div",
     className: "app",
     template: _.template($('#graph-template').html()),
@@ -40,7 +40,7 @@ $(function(){
         }
       }).click( function(){
         var newGraph = JSON.parse( $(".panel .sourceedit").val() );
-        window.Iframework.showGraph(newGraph);
+        Iframework.showGraph(newGraph);
         $(".panel .source").click();
       });
     },
@@ -48,7 +48,7 @@ $(function(){
       if (!$(event.target).hasClass("hole") && !$(event.target).parents().hasClass("edge-edit") && !$(event.target).parents().hasClass("hole")) {
         // Hide dis/connection boxes
         $(".edge-edit").remove();
-        window.Iframework.selectedPort = null;
+        Iframework.selectedPort = null;
       }
     },
     render: function () {

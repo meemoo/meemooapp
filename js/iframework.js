@@ -3,7 +3,7 @@ $(function(){
   window.Iframework = {
     shownGraph: undefined,
     // Thanks http://www.madebypi.co.uk/labs/colorutils/examples.html red.equal(10, true);
-    wireColors: ["#FF0000", "#5B8E00", "#00A189", "#0097FF", "#DF05E1", "#BE6C00", "#009C00", "#00A1F3", "#0073FF", "#FF0078"],
+    wireColors: ["#FF9292", "#00C2EE", "#DCA761", "#8BB0FF", "#96BD6D", "#E797D7", "#29C6AD"],
     wireColorIndex: 0,
     selectedPort: null,
     getWireColor: function () {
@@ -20,7 +20,7 @@ $(function(){
         this.shownGraph.view = null;
         this.shownGraph = null;
       }
-      this.shownGraph = new window.Iframework.Graph(graph);
+      this.shownGraph = new Iframework.Graph(graph);
       this.wireColorIndex = 0;
     },
     gotMessage: function (e) {
@@ -67,7 +67,7 @@ $(function(){
   };
   
   // Listen for /info messages from nodes
-  window.addEventListener("message", window.Iframework.gotMessage, false);
+  window.addEventListener("message", Iframework.gotMessage, false);
   
   // Disable selection for better drag+drop
   // $('body').disableSelection();

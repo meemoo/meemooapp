@@ -1,6 +1,6 @@
 $(function(){
 
-  window.Iframework.Graph = Backbone.Model.extend({
+  Iframework.Graph = Backbone.Model.extend({
     loaded: false,
     defaults: {
       info: {
@@ -10,30 +10,30 @@ $(function(){
         parent: "",
         permalink: ""
       }
-      //nodes: new window.Iframework.Nodes(),
-      //edges: new window.Iframework.Edges()
+      //nodes: new Iframework.Nodes(),
+      //edges: new Iframework.Edges()
     },
     initialize: function () {
       // Convert arrays into Backbone Collections
       if (this.attributes.nodes) {
         var nodes = this.attributes.nodes;
-        this.attributes.nodes = new window.Iframework.Nodes();
+        this.attributes.nodes = new Iframework.Nodes();
         for (var i=0; i<nodes.length; i++) {
-          var node = new window.Iframework.Node(nodes[i]);
+          var node = new Iframework.Node(nodes[i]);
           node.graph = this;
           this.addNode(node);
         }
       }
       if (this.attributes.edges) {
         var edges = this.attributes.edges;
-        this.attributes.edges = new window.Iframework.Edges();
+        this.attributes.edges = new Iframework.Edges();
         for (var j=0; j<edges.length; j++) {
-          var edge = new window.Iframework.Edge(edges[j]);
+          var edge = new Iframework.Edge(edges[j]);
           edge.graph = this;
           this.addEdge(edge);
         }
       }
-      this.view = new window.Iframework.GraphView({model:this});
+      this.view = new Iframework.GraphView({model:this});
     },
     addNode: function (node) {
       // Make sure node id is unique
@@ -96,8 +96,8 @@ $(function(){
     }
   });
   
-  var Graphs = Backbone.Collection.extend({
-    model: window.Iframework.Graph
+  Iframework.Graphs = Backbone.Collection.extend({
+    model: Iframework.Graph
   });
 
 });

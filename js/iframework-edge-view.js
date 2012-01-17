@@ -1,6 +1,6 @@
 $(function(){
 
-  window.Iframework.EdgeView = Backbone.View.extend({
+  Iframework.EdgeView = Backbone.View.extend({
     tagName: "div",
     className: "edge",
     template: _.template($('#edge-template').html()),
@@ -90,10 +90,10 @@ $(function(){
       }
       if (this.model) {
         // Connected
-        return this._color = window.Iframework.getWireColor();
+        return this._color = Iframework.getWireColor();
       } else {
         // Preview
-        return window.Iframework.wireColors[window.Iframework.wireColorIndex];
+        return Iframework.wireColors[Iframework.wireColorIndex];
       }
     },
     label: function () {

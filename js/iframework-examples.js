@@ -635,7 +635,7 @@ $(document).ready(function(){
   ];
   
   // Default example
-  window.Iframework.showGraph(exampleGraphs[0]);
+  Iframework.showGraph(exampleGraphs[0]);
   
   // Router
   var IframeworkRouter = Backbone.Router.extend({
