@@ -50,7 +50,7 @@ $(function(){
     addEdge: function (edge) {
       // Make sure edge is unique
       var isDupe = this.get("edges").any(function(_edge) {
-        return _edge.get('source')[0] === edge.get('source')[0] && _edge.get('source')[1] === edge.get('source')[1] && _edge.get('target')[0] === edge.get('target')[0] && _edge.get('target')[1] === edge.get('target')[1];
+        return ( _edge.get('source')[0] === edge.get('source')[0] && _edge.get('source')[1] === edge.get('source')[1] && _edge.get('target')[0] === edge.get('target')[0] && _edge.get('target')[1] === edge.get('target')[1] );
       });
       if (isDupe) {
         console.warn("duplicate edge ignored");

@@ -11,31 +11,37 @@ $(function(){
       this.view = new Iframework.EdgeView({model:this});
       return this.view;
     },
+    source: null,
+    target: null,
     connect: function () {
       // IDs from the graph
       for (var i=0; i<this.graph.get("nodes").length; i++) {
         if (this.graph.get("nodes").at(i).get("id") === this.get("source")[0]) {
-          this.source = this.graph.get("nodes").at(i);
+          this.source = this.graph.get("nodes").at(i).outputs.findByName( this.get("source")[1] );
         }
         if (this.graph.get("nodes").at(i).get("id") === this.get("target")[0]) {
-          this.target = this.graph.get("nodes").at(i);
+          this.target = this.graph.get("nodes").at(i).inputs.findByName( this.get("target")[1] );
         }
       }
-      this.source.send({
+      if (!this.source || !this.target) {
+        return false;
+      }
+      this.source.node.send({
         connect: { 
           source: this.get("source"),
-          target: [this.target.frameIndex, this.get("target")[1]]
+          target: [this.target.node.frameIndex, this.get("target")[1]]
         }
       });
-      if (this.source.view) {
+      if (this.source.node.view) {
         this.source.view._relatedEdges = null;
       }
-      if (this.target.view) {
+      if (this.target.node.view) {
         this.target.view._relatedEdges = null;
       }
       if (this.graph.view) {
         this.graph.view.addEdge(this);
       }
+      return this;
     },
     disconnect: function () {
       if (this.source && this.target) {

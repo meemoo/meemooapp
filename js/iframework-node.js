@@ -10,8 +10,8 @@ $(function(){
       h: 100
     },
     initialize: function () {
-      this.inputs = {};
-      this.outputs = {};
+      this.inputs = new Iframework.Ports();
+      this.outputs = new Iframework.Ports();
     },
     initializeView: function () {
       this.view = new Iframework.NodeView({model:this});
@@ -40,17 +40,35 @@ $(function(){
       this.graph.checkLoaded();
     },
     addInput: function (info) {
-      if (this.view && !this.inputs.hasOwnProperty(info.name)) { 
-        this.inputs[info.name] = info;
-        this.view.addInput(info); 
+      // Name must be unique
+      var replace = this.inputs.findByName(info.name);
+      if (replace) {
+        return;
+      }
+      var newPort = new Iframework.Port(info);
+      newPort.isIn = true;
+      newPort.node = this;
+      newPort.graph = this.graph;
+      this.inputs.add(newPort);
+      if (this.view) {
+        this.view.addInput(newPort);
       }
     },
     addOutput: function (info) {
-      if (this.view && !this.outputs.hasOwnProperty(info.name)) { 
-        this.outputs[info.name] = info;
-        this.view.addOutput(info); 
+      // Name must be unique
+      var replace = this.outputs.findByName(info.name);
+      if (replace) {
+        return;
       }
-    }
+      var newPort = new Iframework.Port(info);
+      newPort.isIn = false;
+      newPort.node = this;
+      newPort.graph = this.graph;
+      this.outputs.add(newPort);
+      if (this.view) {
+        this.view.addOutput(newPort);
+      }
+    },
   });
   
   Iframework.Nodes = Backbone.Collection.extend({
