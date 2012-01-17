@@ -85,9 +85,12 @@ $(function(){
         " L "+ toX +" "+ toY;
     },
     color: function () {
+      if (this._color) {
+        return this._color;
+      }
       if (this.model) {
         // Connected
-        return window.Iframework.getWireColor();
+        return this._color = window.Iframework.getWireColor();
       } else {
         // Preview
         return window.Iframework.wireColors[window.Iframework.wireColorIndex];
@@ -95,7 +98,7 @@ $(function(){
     },
     label: function () {
       return this.model.source.frameIndex +":"+ this.model.get("source")[1] + 
-        '<span class="wiresymbol" style="color:' + this.color() + '">&rarr;</span>' + 
+        '<span class="wiresymbol" style="color:' + this._color + '">&rarr;</span>' + 
         this.model.target.frameIndex +":"+ this.model.get("target")[1];
     }
   });

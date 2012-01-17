@@ -126,7 +126,7 @@ $(function(){
             $("div.ports-out span.hole").addClass("highlight");
             
             // Edge preview
-            var edgePreview = new EdgeView();
+            var edgePreview = new window.Iframework.EdgeView();
             window.Iframework.edgePreview = edgePreview;
             window.Iframework.shownGraph.view.$(".edges").append( edgePreview.el );
           },
@@ -156,7 +156,7 @@ $(function(){
         }).mouseover(function(){
           // Tap-connect edge preview
           if ( window.Iframework.selectedPort && !window.Iframework.selectedPort.isIn ) {
-            var edgePreview = new EdgeView();
+            var edgePreview = new window.Iframework.EdgeView();
             window.Iframework.edgePreview = edgePreview;
             window.Iframework.shownGraph.view.$(".edges").append( edgePreview.el );
             // Edge preview
@@ -185,7 +185,7 @@ $(function(){
         drop: function(event, ui) {
           var source = ui.draggable;
           var target = $(this).children(".hole");
-          var edge = new Edge({
+          var edge = new window.Iframework.Edge({
             source: [source.data().nodeId, source.data().portName],
             target: [target.data().nodeId, target.data().portName]
           });
@@ -218,7 +218,7 @@ $(function(){
             $("div.ports-in span.hole").addClass("highlight");
             
             // Edge preview
-            var edgePreview = new EdgeView();
+            var edgePreview = new window.Iframework.EdgeView();
             window.Iframework.edgePreview = edgePreview;
             window.Iframework.shownGraph.view.$(".edges").append( edgePreview.el );
           },
@@ -248,7 +248,7 @@ $(function(){
         }).mouseover(function(){
           // Tap-connect edge preview
           if ( window.Iframework.selectedPort && window.Iframework.selectedPort.isIn ) {
-            var edgePreview = new EdgeView();
+            var edgePreview = new window.Iframework.EdgeView();
             window.Iframework.edgePreview = edgePreview;
             window.Iframework.shownGraph.view.$(".edges").append( edgePreview.el );
             // Edge preview
@@ -276,7 +276,7 @@ $(function(){
         drop: function(event, ui) {
           var source = $(this).children(".hole");
           var target = ui.draggable;
-          var edge = new Edge({
+          var edge = new window.Iframework.Edge({
             source: [source.data().nodeId, source.data().portName],
             target: [target.data().nodeId, target.data().portName]
           });
@@ -302,12 +302,12 @@ $(function(){
       if ( window.Iframework.selectedPort && (isIn !== window.Iframework.selectedPort.isIn) ) {
         // Connect
         if (isIn) {
-          var edge = new Edge({
+          var edge = new window.Iframework.Edge({
             source: [window.Iframework.selectedPort.node.id, window.Iframework.selectedPort.portName],
             target: [this.model.id, portName]
           });
         } else {
-          var edge = new Edge({
+          var edge = new window.Iframework.Edge({
             source: [this.model.id, portName],
             target: [window.Iframework.selectedPort.node.id, window.Iframework.selectedPort.portName]
           });
