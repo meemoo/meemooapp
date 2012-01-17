@@ -621,25 +621,14 @@ $(document).ready(function(){
     "edges": [
       {
         "source": [
-          1,
-          "text"
-        ],
-        "target": [
           2,
-          "text"
-        ],
-        "color": "#DF151A"
-      },
-      {
-        "source": [
-          1,
-          "text"
+          "info"
         ],
         "target": [
           3,
           "title"
         ],
-        "color": "#FD8603"
+        "color": "#FF0000"
       },
       {
         "source": [
@@ -650,7 +639,18 @@ $(document).ready(function(){
           3,
           "audio"
         ],
-        "color": "#F4F328"
+        "color": "#5B8E00"
+      },
+      {
+        "source": [
+          1,
+          "text"
+        ],
+        "target": [
+          2,
+          "text"
+        ],
+        "color": "#00A189"
       }
     ]
   }
