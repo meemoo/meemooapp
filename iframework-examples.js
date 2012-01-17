@@ -99,8 +99,7 @@ $(document).ready(function(){
         "target": [
           3,
           "image"
-        ],
-        "color": "#DF151A"
+        ]
       },
       {
         "source": [
@@ -110,8 +109,7 @@ $(document).ready(function(){
         "target": [
           5,
           "dataurl"
-        ],
-        "color": "#F4F328"
+        ]
       }
     ]
   },
@@ -165,8 +163,7 @@ $(document).ready(function(){
         "target": [
           2,
           "capture"
-        ],
-        "color": "#DF151A"
+        ]
       },
       {
         "source": [
@@ -176,8 +173,7 @@ $(document).ready(function(){
         "target": [
           3,
           "image"
-        ],
-        "color": "#FD8603"
+        ]
       }
     ]
   },
@@ -247,8 +243,7 @@ $(document).ready(function(){
         "target": [
           2,
           "capture"
-        ],
-        "color": "#DF151A"
+        ]
       },
       {
         "source": [
@@ -258,8 +253,7 @@ $(document).ready(function(){
         "target": [
           4,
           "jpg"
-        ],
-        "color": "#FD8603"
+        ]
       },
       {
         "source": [
@@ -269,8 +263,7 @@ $(document).ready(function(){
         "target": [
           3,
           "image"
-        ],
-        "color": "#F4F328"
+        ]
       },
       {
         "source": [
@@ -280,8 +273,7 @@ $(document).ready(function(){
         "target": [
           5,
           "dataurl"
-        ],
-        "color": "#00DA3C"
+        ]
       }
     ]
   },
@@ -342,8 +334,7 @@ $(document).ready(function(){
         "target": [
           3,
           "pressed"
-        ],
-        "color": "#DF151A"
+        ]
       },
       {
         "source": [
@@ -353,8 +344,7 @@ $(document).ready(function(){
         "target": [
           4,
           "image"
-        ],
-        "color": "#F4F328"
+        ]
       },
       {
         "source": [
@@ -364,8 +354,7 @@ $(document).ready(function(){
         "target": [
           3,
           "send"
-        ],
-        "color": "#FD8603"
+        ]
       }
     ]
   },
@@ -428,8 +417,7 @@ $(document).ready(function(){
         "target": [
           1,
           "tracing"
-        ],
-        "color": "#FF0000"
+        ]
       },
       {
         "source": [
@@ -439,8 +427,7 @@ $(document).ready(function(){
         "target": [
           2,
           "image"
-        ],
-        "color": "#5B8E00"
+        ]
       },
       {
         "source": [
@@ -450,8 +437,7 @@ $(document).ready(function(){
         "target": [
           3,
           "image"
-        ],
-        "color": "#00A189"
+        ]
       },
       {
         "source": [
@@ -461,8 +447,7 @@ $(document).ready(function(){
         "target": [
           2,
           "image"
-        ],
-        "color": "#0097FF"
+        ]
       },
       {
         "source": [
@@ -472,8 +457,7 @@ $(document).ready(function(){
         "target": [
           6,
           "dataurl"
-        ],
-        "color": "#DF05E1"
+        ]
       }
     ]
   },
@@ -541,8 +525,7 @@ $(document).ready(function(){
         "target": [
           1,
           "image"
-        ],
-        "color": "#FF0000"
+        ]
       },
       {
         "source": [
@@ -552,8 +535,7 @@ $(document).ready(function(){
         "target": [
           1,
           "tracing"
-        ],
-        "color": "#5B8E00"
+        ]
       },
       {
         "source": [
@@ -563,8 +545,7 @@ $(document).ready(function(){
         "target": [
           2,
           "image"
-        ],
-        "color": "#00A189"
+        ]
       },
       {
         "source": [
@@ -574,8 +555,7 @@ $(document).ready(function(){
         "target": [
           6,
           "dataurl"
-        ],
-        "color": "#0097FF"
+        ]
       }
     ]
   },
@@ -627,8 +607,7 @@ $(document).ready(function(){
         "target": [
           3,
           "title"
-        ],
-        "color": "#FF0000"
+        ]
       },
       {
         "source": [
@@ -638,8 +617,7 @@ $(document).ready(function(){
         "target": [
           3,
           "audio"
-        ],
-        "color": "#5B8E00"
+        ]
       },
       {
         "source": [
@@ -649,8 +627,7 @@ $(document).ready(function(){
         "target": [
           2,
           "text"
-        ],
-        "color": "#00A189"
+        ]
       }
     ]
   }

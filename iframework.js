@@ -515,9 +515,6 @@ var Edge = Backbone.Model.extend({
   initialize: function () {
   },
   initializeView: function () {
-    if (!this.get("color")) {
-      this.set({color: window.Iframework.getWireColor()});
-    }
     this.view = new EdgeView({model:this});
     return this.view;
   },
@@ -653,7 +650,7 @@ var EdgeView = Backbone.View.extend({
   color: function () {
     if (this.model) {
       // Connected
-      return this.model.get('color');
+      return window.Iframework.getWireColor();
     } else {
       // Preview
       return window.Iframework.wireColors[window.Iframework.wireColorIndex];
@@ -858,6 +855,7 @@ window.Iframework = {
       this.shownGraph = null;
     }
     this.shownGraph = new Graph(graph);
+    this.wireColorIndex = 0;
   },
   gotMessage: function (e) {
     if (Iframework.shownGraph) {
