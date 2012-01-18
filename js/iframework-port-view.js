@@ -1,11 +1,25 @@
 $(function(){
 
+  var portInTemplate = 
+    '<span class="hole hole-in hole-<%= name %>"></span>'+
+    '<span class="label"><%= name %></span>';
+    
+  var portOutTemplate = 
+    '<span class="label"><%= name %></span>'+
+    '<span class="hole hole-out hole-<%= name %>"></span>';
+    
+  var edgeEditTemplate =
+    '<div class="edge-edit-item" id="<%= model.cid %>">'+
+      '<span><%= label() %></span>'+
+      '<button class="disconnect">disconnect</button>'+
+    '</div>';
+
   Iframework.PortView = Backbone.View.extend({
     tagName: "div",
     className: "port",
-    portInTemplate: _.template($('#port-in-template').html()),
-    portOutTemplate: _.template($('#port-out-template').html()),
-    edgeEditTemplate: _.template($('#edge-edit-template').html()),
+    portInTemplate: _.template(portInTemplate),
+    portOutTemplate: _.template(portOutTemplate),
+    edgeEditTemplate: _.template(edgeEditTemplate),
     events: {
       "mouseover .hole":             "mouseoverhole",
       "mouseout .hole":              "mouseouthole",

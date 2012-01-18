@@ -1,9 +1,23 @@
 $(function(){
 
+  var template = 
+    '<div class="graph">'+
+      '<div class="edges" />'+
+      '<div class="nodes" />'+
+    '</div>'+
+    '<div class="panel">'+
+      '<button class="button source">source</button>'+
+      '<div class="code">'+
+        '<button class="button close">close</button><br />'+
+        '<textarea class="sourceedit" /><br />'+
+        '<button class="button apply" title="reloads the app">apply changes</button>'+
+      '</div>'+
+    '</div>';
+
   Iframework.GraphView = Backbone.View.extend({
     tagName: "div",
     className: "app",
-    template: _.template($('#graph-template').html()),
+    template: _.template(template),
     events: {
       "click .graph":     "click"
     },
@@ -45,10 +59,16 @@ $(function(){
       });
     },
     click: function (event) {
+      //HACK don't bubble?
       if (!$(event.target).hasClass("hole") && !$(event.target).parents().hasClass("edge-edit") && !$(event.target).parents().hasClass("hole")) {
         // Hide dis/connection boxes
         $(".edge-edit").remove();
         Iframework.selectedPort = null;
+        
+        // Unactivate modules
+        if (!$(event.target).is(".module, .module .title")) {
+          $("div.module.active").removeClass("active");
+        }
       }
     },
     render: function () {

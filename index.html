@@ -25,6 +25,7 @@
   <script src="js/iframework-examples.js"></script>
   
   <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
+  <link href='http://fonts.googleapis.com/css?family=Nova+Flat' rel='stylesheet' type='text/css'>
   
   <link href="iframework.css" rel="stylesheet" type="text/css" />
   
@@ -35,59 +36,6 @@
     <a href="http://meemoo.org/">meemoo</a> iframework by <a href="http://forresto.com/">forrest oliphant</a><br />
     <a href="https://github.com/meemoo/iframework">view source</a> on github<br />
   </footer>
-  
-  <script type="text/template" id="graph-template">
-    <div class="graph">
-      <div class="edges" />
-      <div class="nodes" />
-    </div>
-    <div class="panel">
-      <button class="button source">source</button>
-      <div class="code">
-        <button class="button close">close</button><br />
-        <textarea class="sourceedit" /><br />
-        <button class="button apply" title="reloads the app">apply changes</button>
-      </div>
-    </div>
-  </script>
-  
-  <script type="text/template" id="node-template">
-    <div class="module" style="left:<%= x-10 %>px;top:<%= y-30 %>px;width:<%= w+20 %>px;height:<%= h+40 %>px;" >
-      <div class="ports ports-in"></div>
-      <div class="ports ports-out"></div>
-      <h1 class="title">...</h1>
-      <iframe class="frame" src="<%= src %>#nodeid=<%= id %>" style="width:<%= w %>px;height:<%= h %>px;"></iframe>
-    </div>
-  </script>
-  
-  <script type="text/template" id="port-in-template">
-<!--     <div class="port port-in port-<%= name %>" title="<%= name %> (<%= type %>)"> -->
-      <span class="hole hole-in hole-<%= name %>"></span>
-      <span class="label"><%= name %></span>
-<!--     </div> -->
-  </script>
-  
-  <script type="text/template" id="port-out-template">
-<!--     <div class="port port-out port-<%= name %>" title="<%= name %> (<%= type %>)"> -->
-      <span class="label"><%= name %></span>
-      <span class="hole hole-out hole-<%= name %>"></span>
-<!--     </div> -->
-  </script>
-  
-  <script type="text/template" id="edge-edit-template">
-    <div class="edge-edit-item" id="<%= model.cid %>">
-      <span><%= label() %></span>
-      <button class="disconnect">disconnect</button>
-    </div>
-  </script> 
-  
-  <script type="text/template" id="edge-template">
-    <svg class="wire" xmlns="http://www.w3.org/2000/svg" version="1.1" style="position:absolute;left:<%= svgX() %>px;top:<%= svgY() %>px;width:<%= svgW() %>px;height:<%= svgH() %>px;">
-      <path class="wire-shadow" d="<%= svgPathShadow() %>" />
-      <path class="wire" d="<%= svgPath() %>" stroke="<%= color() %>" />
-    </svg>
-  </script>
-  
   
   <script type="text/javascript">
     var _gaq = _gaq || [];

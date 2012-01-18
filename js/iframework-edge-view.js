@@ -1,9 +1,15 @@
 $(function(){
 
+  var template = 
+    '<svg class="wire" xmlns="http://www.w3.org/2000/svg" version="1.1" style="position:absolute;left:<%= svgX() %>px;top:<%= svgY() %>px;width:<%= svgW() %>px;height:<%= svgH() %>px;">'+
+      '<path class="wire-shadow" d="<%= svgPathShadow() %>" />'+
+      '<path class="wire" d="<%= svgPath() %>" stroke="<%= color() %>" />'+
+    '</svg>';
+
   Iframework.EdgeView = Backbone.View.extend({
     tagName: "div",
     className: "edge",
-    template: _.template($('#edge-template').html()),
+    template: _.template(template),
     positions: {},
     initialize: function () {
       this.render();
