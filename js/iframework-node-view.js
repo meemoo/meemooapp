@@ -33,7 +33,7 @@ $(function(){
     },
     infoLoaded: function (info) {
       this.$('h1')
-        .text(this.model.frameIndex + ":" + info.title)
+        .text(this.model.frameIndex + ": " + info.title)
         .attr({
           title: "by "+info.author+": "+info.description
         });

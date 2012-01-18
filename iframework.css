@@ -86,9 +86,8 @@ div.module {
   cursor: move;
 }
   div.module.active {
-    border: 1px #000 solid;
+    border: 1px #333 solid;
     background-color: #FFF;
-    /*box-shadow: 3px 3px 4px rgba(0,0,0,.2);*/
   }
   div.module h1.title {
     font-family: 'Nova Flat', monospace;
@@ -121,6 +120,9 @@ div.module {
   div.module div.ports {
     cursor: default;
   }
+    div.module.active div.port {
+      border: 1px #666 solid;
+    }
   div.module div.ports-in {
     position: absolute;
     left: -79px;
