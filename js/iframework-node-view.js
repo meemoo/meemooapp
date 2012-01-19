@@ -19,7 +19,8 @@ $(function(){
       "resizestart .module": "resizestart",
       "resize .module":      "resize",
       "resizestop .module":  "resizestop",
-      "mousedown .module, .title": "mousedown"
+      "mousedown .module, .title": "mousedown",
+      "click .module, .title": "click"
     },
     initialize: function () {
       this.render();
@@ -33,7 +34,7 @@ $(function(){
     },
     infoLoaded: function (info) {
       this.$('h1')
-        .text(this.model.frameIndex + ": " + info.title)
+        .text(this.model.get("id") + ": " + info.title)
         .attr({
           title: "by "+info.author+": "+info.description
         });
@@ -63,8 +64,6 @@ $(function(){
     dragstop: function (event, ui) {
       // Remove iframe masks
       Iframework.unmaskFrames();
-      //HACK fix new edge setting module xy bug (makes dragging modules by ports not work)
-      if ( !$(event.target).is(".module") ) { return; }
       // Redraw edges once more
       this.drag();
       // Save position to model
@@ -114,6 +113,10 @@ $(function(){
       this.$(".module")
         .css("z-index", topZ+1)
         .addClass("active");
+    },
+    click: function (event) {
+      // Don't fire click on graph
+      event.stopPropagation();
     },
     addInput: function (port) {
       this.$(".ports-in").append( port.initializeView().el );

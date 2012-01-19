@@ -10,6 +10,8 @@ $(function(){
       '<div class="code">'+
         '<button class="button close">close</button><br />'+
         '<textarea class="sourceedit" /><br />'+
+        '<button class="button refresh" title="refresh the source code">refresh</button>'+
+        '<button class="button compress" title="refresh and compress the source code into one line">compress</button>'+
         '<button class="button apply" title="reloads the app">apply changes</button>'+
       '</div>'+
     '</div>';
@@ -33,7 +35,8 @@ $(function(){
         icons: {
           primary: 'ui-icon-close'
         }
-      }).click( function(){
+      })
+      .click( function(){
         $(".panel .code").hide();
         $(".panel .source").show();
       });
@@ -42,34 +45,49 @@ $(function(){
         icons: {
           primary: 'ui-icon-gear'
         }
-      }).click( function(){
+      })
+      .click( function(){
         $(".panel .source").hide();
         $(".panel .code").show();
-        $(".panel .code textarea").text( JSON.stringify(Iframework.shownGraph, null, 2) );
+        $(".panel .code textarea").text( JSON.stringify(Iframework.shownGraph, null, "  ") );
+      });
+
+      this.$(".panel .refresh").button({
+        icons: {
+          primary: 'ui-icon-arrowrefresh-1-s'
+        }
+      })
+      .click( function(){
+        $(".panel .code textarea").text( JSON.stringify(Iframework.shownGraph, null, "  ") );
+      });
+
+      this.$(".panel .compress").button({
+        icons: {
+          primary: 'ui-icon-suitcase'
+        }
+      })
+      .click( function(){
+        $(".panel .code textarea").text( JSON.stringify(Iframework.shownGraph) );
       });
       
       this.$(".panel .apply").button({
         icons: {
           primary: 'ui-icon-check'
         }
-      }).click( function(){
+      })
+      .click( function(){
         var newGraph = JSON.parse( $(".panel .sourceedit").val() );
         Iframework.showGraph(newGraph);
         $(".panel .source").click();
       });
     },
     click: function (event) {
-      //HACK don't bubble?
-      if (!$(event.target).hasClass("hole") && !$(event.target).parents().hasClass("edge-edit") && !$(event.target).parents().hasClass("hole")) {
-        // Hide dis/connection boxes
-        $(".edge-edit").remove();
-        Iframework.selectedPort = null;
-        
-        // Unactivate modules
-        if (!$(event.target).is(".module, .module .title")) {
-          $("div.module.active").removeClass("active");
-        }
-      }
+      // Hide dis/connection boxes
+      $(".edge-edit").remove();
+      Iframework.selectedPort = null;
+      
+      // Unactivate modules
+      $("div.module.active").removeClass("active");
     },
     render: function () {
       $(this.el).html(this.template(this.model.toJSON()));

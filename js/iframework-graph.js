@@ -10,9 +10,8 @@ $(function(){
         parent: "",
         permalink: ""
       }
-      //nodes: new Iframework.Nodes(),
-      //edges: new Iframework.Edges()
     },
+    
     initialize: function () {
       // Convert arrays into Backbone Collections
       if (this.attributes.nodes) {

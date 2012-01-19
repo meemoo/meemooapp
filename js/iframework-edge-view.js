@@ -103,9 +103,9 @@ $(function(){
       }
     },
     label: function () {
-      return this.model.source.frameIndex +":"+ this.model.get("source")[1] + 
+      return this.model.get("source")[0] +":"+ this.model.get("source")[1] + 
         '<span class="wiresymbol" style="color:' + this._color + '">&rarr;</span>' + 
-        this.model.target.frameIndex +":"+ this.model.get("target")[1];
+        this.model.get("target")[0] +":"+ this.model.get("target")[1];
     }
   });
 
