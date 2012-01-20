@@ -24,12 +24,13 @@ div.graph {
 div.edge-edit {
   position: absolute;
   left: 0px;
-  top: 0px;
+  top: 15px;
   z-index: 1000;
   padding: 10px;
   font-size: 11px;
   font-family: monospace;
   width: 200px;
+  text-align: left;
 }
   div.edge-edit h2 {
     font-size: 110%;
@@ -45,11 +46,17 @@ div.edge-edit {
   div.edge-edit form button {
     vertical-align: middle;
   }
+    div.edge-edit form button.send span.ui-button-icon-primary {
+      margin-top: -14px;
+    }
   div.edge-edit button.close {
     position: absolute;
     top: 5px;
     right: 5px;
   }
+    div.edge-edit button.close span.ui-button-icon-primary {
+      margin-top: -14px;
+    }
   span.wiresymbol {
     position: relative;
     top: .11em;
@@ -58,6 +65,16 @@ div.edge-edit {
     text-shadow: 0 1px 1px #AAA;
     padding: 0 3px;
   }
+/*  div.edge-edit .ui-button-icon-only .ui-icon, 
+  div.edge-edit .ui-button-text-icon-primary .ui-icon, 
+  div.edge-edit .ui-button-text-icon-secondary .ui-icon, 
+  div.edge-edit .ui-button-text-icons .ui-icon, 
+  div.edge-edit .ui-button-icons-only .ui-icon {
+    margin-top: -14px;
+    position: absolute;
+    top: 50%;
+  }
+*/
 
 /* boxes */
 
@@ -129,6 +146,7 @@ div.module {
     top: 0;
   }
     div.ports-in div.port-in {
+      position: relative;
       border-top-left-radius: 3px; 
       border-bottom-left-radius: 3px; 
       border-right: none;
@@ -137,12 +155,17 @@ div.module {
       padding: 1px 0 0 1px;
       margin-top: -1px;
     }
+      div.ports-in div.port-in div.edge-edit{
+        left: 2px;
+        top: 15px;
+      }
   div.module div.ports-out {
     position: absolute;
     right: -79px;
     bottom: -1px;
   }
     div.ports-out div.port-out {
+      position: relative;
       text-align: right;
       border-top-right-radius: 3px; 
       border-bottom-right-radius: 3px; 
@@ -152,6 +175,10 @@ div.module {
       padding: 1px 0 0 0;
       margin-top: -1px;
     }
+      div.ports-out div.port-out div.edge-edit{
+        left: 59px;
+        top: 15px;
+      }
   
   div.port span.hole,
   span.holehelper {

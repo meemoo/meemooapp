@@ -28,7 +28,7 @@ $(function(){
       }
       this.source.node.send({
         connect: { 
-          source: this.get("source"),
+          source: [this.source.node.frameIndex, this.get("source")[1]],
           target: [this.target.node.frameIndex, this.get("target")[1]]
         }
       });
@@ -45,10 +45,10 @@ $(function(){
     },
     disconnect: function () {
       if (this.source && this.target) {
-        this.source.send({
+        this.source.node.send({
           disconnect: { 
-            source: this.get("source"),
-            target: [this.target.frameIndex, this.get("target")[1]]
+            source: [this.source.node.frameIndex, this.get("source")[1]],
+            target: [this.target.node.frameIndex, this.get("target")[1]]
           }
         });
       }

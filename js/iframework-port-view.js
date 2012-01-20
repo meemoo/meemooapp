@@ -33,7 +33,8 @@ $(function(){
       "drag .hole, .holehelper":     "drag",
       "dragstop .hole, .holehelper": "dragstop",
       "drop":                        "drop",
-      "click .disconnect":           "disconnect"
+      "click .disconnect":           "disconnect",
+      "click .armconnect":           "armconnect"
     },
     initialize: function () {
       this.render();
@@ -203,17 +204,12 @@ $(function(){
         // Don't show popup
         Iframework.selectedPort = null;
         return;
-      } else {
-        Iframework.selectedPort = this.model;
-      }
+      } 
           
-      var offset = hole.offset();
-      var popupEl = $('<div class="edge-edit" />').css({
-        left: offset.left,
-        top: offset.top + 15
-      });
+      // var offset = hole.offset();
+      var popupEl = $('<div class="edge-edit" />');
       // Port's module as parent
-      $(this.model.node.view.el).append(popupEl);
+      $(this.el).append(popupEl);
       popupEl.append(
         $('<button />')
           .attr({
@@ -288,7 +284,18 @@ $(function(){
           popupEl.append(inputForm);
         }
       }
-      popupEl.append('<h2>connect</h2><p>(click on the other port)</p>');
+      popupEl.append('<h2>connect</h2>');
+      popupEl.append('<p>drag wire from directly port or:</p>');
+      popupEl.append('<label for="select_'+this.model.id+'" class="armconnect_label">click</label>');
+      popupEl.append(
+        $('<input type="checkbox" class="armconnect" id="select_'+this.model.id+'" />')
+      );
+      $("#select_"+this.model.id)
+        .button({
+          icons: {
+            primary: "ui-icon-power"
+          }
+        });
       if (this.relatedEdges().length > 0) {
         popupEl.append('<h2>disconnect</h2>');
         _.each(this.relatedEdges(), function (edge) {
@@ -305,6 +312,10 @@ $(function(){
 
       // Don't fire click on graph
       event.stopPropagation();
+    },
+    armconnect: function (event) {
+      this.$(".armconnect_label .ui-button-text").text("now click other port");
+      Iframework.selectedPort = this.model;
     },
     disconnect: function (event) {
       //HACK

@@ -9,7 +9,9 @@ $(function(){
         description: "",
         parent: "",
         permalink: ""
-      }
+      },
+      nodes: [],
+      edges: []
     },
     
     initialize: function () {
