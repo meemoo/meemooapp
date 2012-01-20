@@ -37,15 +37,29 @@ $(function(){
       this.view = new Iframework.GraphView({model:this});
     },
     addNode: function (node) {
+      var count = this.get("nodes").length;
+      // Give id if not defined
+      if (!node.get('id') || node.get('id') === "") {
+        node.set({"id": count});
+      }
       // Make sure node id is unique
       var isDupe = this.get("nodes").any(function(_node) {
         return _node.get('id') === node.get('id');
       });
-      if (isDupe) {
-        console.warn("duplicate node id ignored");
-        return false;
-      } else {
-        return this.get("nodes").add(node);
+      // Change id if duplicate
+      while (isDupe) {
+        count++;
+        node.set({"id":count});
+        isDupe = this.get("nodes").any(function(_node) {
+          return _node.get('id') === node.get('id');
+        });
+      }
+
+      this.get("nodes").add(node);
+      node.graph = this;
+
+      if (this.view) {
+        this.view.addNode(node);
       }
     },
     addEdge: function (edge) {
@@ -77,6 +91,8 @@ $(function(){
       
       // Disconnect then connect edges
       this.reconnectEdges();
+
+      Iframework.addModulesToLibrary();
       
       return true;
     },

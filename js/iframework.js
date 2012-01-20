@@ -63,6 +63,16 @@ $(function(){
     },
     unmaskFrames: function () {
       $(".iframemask").remove();
+    },
+    Library: null,
+    addModulesToLibrary: function () {
+      // This should fire after all nodes ins/outs are loaded
+      if (!this.Library) {
+        this.Library = new Iframework.Modules();
+      }
+      this.shownGraph.get("nodes").each(function(node){
+        var module = this.Library.findOrAdd(node);
+      }, this);
     }
   };
   

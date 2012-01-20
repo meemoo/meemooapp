@@ -4,16 +4,18 @@ $(function(){
     loaded: false,
     defaults: {
       src: "",
-      x: 0,
-      y: 0,
+      x: 200,
+      y: 200,
       w: 100,
-      h: 100
+      h: 100,
+      state: {}
     },
     initialize: function () {
-      this.inputs = new Iframework.Ports();
-      this.outputs = new Iframework.Ports();
+      this.Inputs = new Iframework.Ports();
+      this.Outputs = new Iframework.Ports();
     },
     initializeView: function () {
+      // Called from GraphView.addNode();
       this.view = new Iframework.NodeView({model:this});
       return this.view;
     },
@@ -22,8 +24,10 @@ $(function(){
         window.frames[this.frameIndex].postMessage(message, "*");
       }
     },
+    Info: {},
     infoLoaded: function (info) {
       if (this.view) {
+        this.Info = info;
         this.view.infoLoaded(info);
       }
     },
@@ -41,7 +45,7 @@ $(function(){
     },
     addInput: function (info) {
       // Name must be unique
-      var replace = this.inputs.findByName(info.name);
+      var replace = this.Inputs.findByName(info.name);
       if (replace) {
         return;
       }
@@ -49,14 +53,14 @@ $(function(){
       newPort.isIn = true;
       newPort.node = this;
       newPort.graph = this.graph;
-      this.inputs.add(newPort);
+      this.Inputs.add(newPort);
       if (this.view) {
         this.view.addInput(newPort);
       }
     },
     addOutput: function (info) {
       // Name must be unique
-      var replace = this.outputs.findByName(info.name);
+      var replace = this.Outputs.findByName(info.name);
       if (replace) {
         return;
       }
@@ -64,7 +68,7 @@ $(function(){
       newPort.isIn = false;
       newPort.node = this;
       newPort.graph = this.graph;
-      this.outputs.add(newPort);
+      this.Outputs.add(newPort);
       if (this.view) {
         this.view.addOutput(newPort);
       }
