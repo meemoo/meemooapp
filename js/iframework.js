@@ -173,7 +173,16 @@ $(function(){
     },
     addbyurl: function() {
       var url = this.$(".addbyurlinput").val();
-      this.shownGraph.addNode( new Iframework.Node({"src": url}) );
+      if (url != "") {
+        this.shownGraph.addNode( new Iframework.Node({"src": url}) );
+        this.$(".addbyurlinput")
+          .val("")
+          .attr("placeholder", "loading...");
+        window.setTimeout(function(){
+          this.$(".addbyurlinput")
+            .attr("placeholder", "load by url");
+        },1000);
+      }
       return false;
     }
 
