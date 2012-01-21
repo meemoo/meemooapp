@@ -155,7 +155,17 @@ div.module {
       padding: 1px 0 0 1px;
       margin-top: -1px;
     }
-      div.ports-in div.port-in div.edge-edit{
+      div.port-in .hole{
+        position: absolute;
+        top: 1px;
+        left: 1px;
+      }
+      div.port-in .label{
+        position: absolute;
+        top: 4px;
+        left: 20px;
+      }
+      div.port-in div.edge-edit{
         left: 2px;
         top: 15px;
       }
@@ -175,7 +185,17 @@ div.module {
       padding: 1px 0 0 0;
       margin-top: -1px;
     }
-      div.ports-out div.port-out div.edge-edit{
+      div.port-out .hole{
+        position: absolute;
+        top: 1px;
+        right: 0px;
+      }
+      div.port-out .label{
+        position: absolute;
+        top: 4px;
+        right: 22px;
+      }
+      div.port-out div.edge-edit{
         left: 59px;
         top: 15px;
       }
@@ -206,14 +226,11 @@ div.module {
     overflow: hidden;
     width: 50px;
     display: inline-block;
-    position: relative;
-    top: -2px;
   }
     div.port-in span.label {
-      padding-left: 2px;
+
     }
     div.port-out span.label {
-      padding-right: 3px;
     }
   
 /*  Data Types  */

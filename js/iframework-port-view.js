@@ -15,7 +15,7 @@ $(function(){
   var edgeEditTemplate =
     '<div class="edge-edit-item" id="<%= model.cid %>">'+
       '<span><%= label() %></span>'+
-      '<button class="disconnect">disconnect</button>'+
+      '<button class="disconnect" type="button">disconnect</button>'+
     '</div>';
 
   Iframework.PortView = Backbone.View.extend({
@@ -34,7 +34,8 @@ $(function(){
       "dragstop .hole, .holehelper": "dragstop",
       "drop":                        "drop",
       "click .disconnect":           "disconnect",
-      "click .armconnect":           "armconnect"
+      "click .armconnect":           "armconnect",
+      "submit .manualinput":         "manualinput"
     },
     initialize: function () {
       this.render();
@@ -205,11 +206,11 @@ $(function(){
         Iframework.selectedPort = null;
         return;
       } 
-          
+      
       // var offset = hole.offset();
       var popupEl = $('<div class="edge-edit" />');
-      // Port's module as parent
       $(this.el).append(popupEl);
+
       popupEl.append(
         $('<button />')
           .attr({
@@ -232,20 +233,10 @@ $(function(){
       var typeabbr = this.model.get("type").substring(0,3);
       if (isIn) {
         var showForm = false;
-        var inputForm = $("<form />")
+        var inputForm = $('<form class="manualinput" />')
           .data({
             "modulecid": this.model.cid,
             "inputname": portName
-          })
-          .submit(function(e){
-            var module = Iframework.shownGraph.get("nodes").getByCid( $(this).data("modulecid") );
-            var inputname = $(this).data("inputname");
-            if (module && inputname) {
-              var message = {};
-              message[inputname] = $(this).children("input").length > 0 ? $(this).children("input").val() : "bang!";
-              module.send(message);
-            }
-            return false;
           });
         if (typeabbr === "int" || typeabbr === "num" ) {
           showForm = true;
@@ -254,6 +245,7 @@ $(function(){
               "type": "number",
               "min": hole.data("min"),
               "max": hole.data("max"),
+              "value": this.model.node.get("state")[this.model.get("name")]
             })
           );
         } else if (typeabbr === "col" || typeabbr === "str") {
@@ -261,7 +253,8 @@ $(function(){
           inputForm.append(
             $("<input />").attr({
               "type": "text",
-              "maxlength": hole.data("max")
+              "maxlength": hole.data("max"),
+              "value": this.model.node.get("state")[this.model.get("name")]
             })
           );
         } else if (typeabbr === "ban") {
@@ -312,6 +305,15 @@ $(function(){
 
       // Don't fire click on graph
       event.stopPropagation();
+    },
+    manualinput: function (event) {
+      var inputname = this.model.get("name");
+      var val = this.$(".manualinput").children("input") ? this.$(".manualinput").children("input").val() : "bang!";
+      var message = {};
+      message[inputname] = val;
+      this.model.node.send(message);
+      this.model.node.get("state")[inputname] = val;
+      return false;
     },
     armconnect: function (event) {
       this.$(".armconnect_label .ui-button-text").text("now click other port");
