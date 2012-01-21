@@ -1,8 +1,68 @@
 $(function(){
+  
+  var template = 
+    '<div class="panel">'+
+      '<div class="options">'+
+        '<button class="button showsource">source</button>'+
+        '<button class="button showlibrary">add module</button>'+
+      '</div>'+
+      '<div class="source">'+
+        '<button class="button close">close</button><br />'+
+        '<textarea class="sourceedit" /><br />'+
+        '<button class="button sourcerefresh" title="refresh the source code">refresh</button>'+
+        '<button class="button sourcecompress" title="refresh and compress the source code into one line">compress</button>'+
+        '<button class="button sourceapply" title="reloads the app">apply changes</button>'+
+      '</div>'+
+      '<div class="library">'+
+        '<button class="button close">close</button>'+
+        '<form class="addbyurl">'+
+          '<input class="url" placeholder="load by url" type="text" />'+
+          '<button type="submit">load</button>'+
+        '</form>'+
+      '</div>'+
+    '</div>';
+  
+  var iframework = Backbone.View.extend({
+    tagName: "div",
+    className: "app",
+    template: _.template(template),
+    events: {
+      "click .close" : "closepanels",
+      "click .showsource" : "showsource",
+      "click .showlibrary": "showlibrary",
+      "click .sourcerefresh": "sourcerefresh",
+      "click .sourcecompress": "sourcecompress",
+      "click .sourceapply": "sourceapply",
+    },
+    initialize: function () {
+      this.render();
+      $('body').append(this.el);
+      
+      // Hide panels
+      this.$(".panel .source").hide();
+      this.$(".panel .library").hide();
 
-  window.Iframework = {
+      // Panel buttons
+      this.$(".close")
+        .button({ icons: { primary: 'ui-icon-close' } });
+      this.$(".showsource")
+        .button({ icons: { primary: 'ui-icon-gear' } });
+      this.$(".showlibrary")
+        .button({ icons: { primary: 'ui-icon-plus' } });
+      this.$(".sourcerefresh")
+        .button({ icons: { primary: 'ui-icon-arrowrefresh-1-s' } });
+      this.$(".sourcecompress")
+        .button({ icons: { primary: 'ui-icon-suitcase' } });
+      this.$(".sourceapply")
+        .button({ icons: { primary: 'ui-icon-check' } });
+
+    },
+    render: function () {
+      $(this.el).html(this.template());
+      return this;
+    },
     shownGraph: undefined,
-    // Thanks http://www.madebypi.co.uk/labs/colorutils/examples.html red.equal(10, true);
+    // Thanks http://www.madebypi.co.uk/labs/colorutils/examples.html :: red.equal(7, true);
     wireColors: ["#FF9292", "#00C2EE", "#DCA761", "#8BB0FF", "#96BD6D", "#E797D7", "#29C6AD"],
     wireColorIndex: 0,
     selectedPort: null,
@@ -73,8 +133,46 @@ $(function(){
       this.shownGraph.get("nodes").each(function(node){
         var module = this.Library.findOrAdd(node);
       }, this);
+    },
+    loadLibrary: function (library) {
+      this.Library = library;
+      Iframework.Library.each(function(module){
+        module.initializeView();
+        // this.$(".panel .library").append( module.view.el );
+      }, this);
+    },
+    closepanels: function() {
+      this.$(".panel .options").show();
+      this.$(".panel .library").hide();
+      this.$(".panel .source").hide();
+    },
+    showsource: function() {
+      this.$(".panel .options").hide();
+      this.$(".panel .library").hide();
+      this.$(".panel .source").show();
+      this.$(".panel .source textarea").val( JSON.stringify(Iframework.shownGraph, null, "  ") );
+    },
+    showlibrary: function() {
+      this.$(".panel .options").hide();
+      this.$(".panel .source").hide();
+      this.$(".panel .library").show();
+    },
+    sourcerefresh: function() {
+      this.$(".panel .source textarea").val( JSON.stringify(Iframework.shownGraph, null, "  ") );
+    },
+    sourcecompress: function() {
+      this.$(".panel .source textarea").val( JSON.stringify(Iframework.shownGraph, null, "") );
+    },
+    sourceapply: function() {
+      var newGraph = JSON.parse( $(".panel .sourceedit").val() );
+      this.showGraph(newGraph);
+      this.showsource();
     }
-  };
+
+  });
+
+  // Start app
+  window.Iframework = new iframework();
   
   // Listen for /info messages from nodes
   window.addEventListener("message", Iframework.gotMessage, false);

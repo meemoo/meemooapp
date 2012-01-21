@@ -33,10 +33,10 @@ $(function(){
         }
       });
       if (this.source.node.view) {
-        this.source.view._relatedEdges = null;
+        this.source.node.view._relatedEdges = null;
       }
       if (this.target.node.view) {
-        this.target.view._relatedEdges = null;
+        this.target.node.view._relatedEdges = null;
       }
       if (this.graph.view) {
         this.graph.view.addEdge(this);

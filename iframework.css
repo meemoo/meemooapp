@@ -1,4 +1,5 @@
 html, body {
+  font-family: Verdana;
   margin:0;
   padding:0;
   width: 100%;
@@ -28,7 +29,6 @@ div.edge-edit {
   z-index: 1000;
   padding: 10px;
   font-size: 11px;
-  font-family: monospace;
   width: 200px;
   text-align: left;
 }
@@ -263,12 +263,49 @@ div.panel {
   text-align: right;
   border-width: 0 0 1px 1px;
 }
+  
+  div.panel .source,
+  div.panel .library {
+  }
 
-div.code textarea {
-  background-color: white;
-  width: 300px;
-  height: 400px;
-}
+  div.panel .close {
+    float: right;
+  }
+
+  div.panel .source textarea {
+    background-color: white;
+    width: 300px;
+    height: 400px;
+  }
+
+  div.panel .library {
+    text-align: left;
+    padding: 10px;
+    height: 400px;
+    overflow: auto;
+  }
+    div.panel .library h2,
+    div.panel .library p{
+      margin: 0;
+      padding: 0;
+    }
+    div.panel .library h2{
+      font-size: 14px;
+      line-height: 14px;
+    }
+    div.panel .library .description{
+      font-size: 10px;
+      line-height: 14px;
+    }
+    div.panel .library .src{
+      font-size: 10px;
+      line-height: 10px;
+      color: #999;
+    }
+    div.panel .library .addnode {
+      float: left;
+      clear: left;
+    }
 
 
 

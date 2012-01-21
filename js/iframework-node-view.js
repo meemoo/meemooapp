@@ -52,7 +52,6 @@ $(function(){
     },
     dragstart: function (event, ui) {
       // Add a mask so that iframes don't steal mouse
-      console.log(this._relatedEdges);
       Iframework.maskFrames();
     },
     drag: function (event, ui) {

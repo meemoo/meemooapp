@@ -12,12 +12,18 @@ $(function(){
     },
     initialize: function () {
     },
+    initializeView: function () {
+      if (!this.view) {
+        this.view = new Iframework.ModuleView({model:this});
+      }
+      return this.view;
+    },
     toJSON: function () {
       return {
-        "src": this.get("node").get("src"),
-        "info": this.get("node").Info,
-        "inputs": this.get("node").Inputs.toJSON(),
-        "outputs": this.get("node").Outputs.toJSON()
+        "src": this.get("src"),
+        "info": this.get("info"),
+        "inputs": this.get("inputs"),
+        "outputs": this.get("outputs")
       };
     }
   });
