@@ -285,7 +285,7 @@ $(function(){
         }
       }
       popupEl.append('<h2>connect</h2>');
-      popupEl.append('<p>drag wire from directly port or:</p>');
+      popupEl.append('<p>drag wire from port or:</p>');
       popupEl.append('<label for="select_'+this.model.id+'" class="armconnect_label">click</label>');
       popupEl.append(
         $('<input type="checkbox" class="armconnect" id="select_'+this.model.id+'" />')
