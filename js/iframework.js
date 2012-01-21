@@ -16,8 +16,8 @@ $(function(){
       '<div class="library">'+
         '<button class="button close">close</button>'+
         '<form class="addbyurl">'+
-          '<input class="url" placeholder="load by url" type="text" />'+
-          '<button type="submit">load</button>'+
+          '<input class="addbyurlinput" placeholder="load by url" type="text" />'+
+          '<button class="addbyurlsubmit" type="submit">load</button>'+
         '</form>'+
       '</div>'+
     '</div>';
@@ -27,12 +27,13 @@ $(function(){
     className: "app",
     template: _.template(template),
     events: {
-      "click .close" : "closepanels",
-      "click .showsource" : "showsource",
-      "click .showlibrary": "showlibrary",
-      "click .sourcerefresh": "sourcerefresh",
+      "click .close" :         "closepanels",
+      "click .showsource" :    "showsource",
+      "click .showlibrary":    "showlibrary",
+      "click .sourcerefresh":  "sourcerefresh",
       "click .sourcecompress": "sourcecompress",
-      "click .sourceapply": "sourceapply",
+      "click .sourceapply":    "sourceapply",
+      "submit .addbyurl":      "addbyurl"
     },
     initialize: function () {
       this.render();
@@ -54,6 +55,8 @@ $(function(){
       this.$(".sourcecompress")
         .button({ icons: { primary: 'ui-icon-suitcase' } });
       this.$(".sourceapply")
+        .button({ icons: { primary: 'ui-icon-check' } });
+      this.$(".addbyurlsubmit")
         .button({ icons: { primary: 'ui-icon-check' } });
 
     },
@@ -167,6 +170,11 @@ $(function(){
       var newGraph = JSON.parse( $(".panel .sourceedit").val() );
       this.showGraph(newGraph);
       this.showsource();
+    },
+    addbyurl: function() {
+      var url = this.$(".addbyurlinput").val();
+      this.shownGraph.addNode( new Iframework.Node({"src": url}) );
+      return false;
     }
 
   });

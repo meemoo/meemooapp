@@ -284,6 +284,10 @@ div.panel {
     height: 400px;
     overflow: auto;
   }
+    div.panel .library form{
+      margin-bottom: 10px;
+    }
+
     div.panel .library h2,
     div.panel .library p{
       margin: 0;
