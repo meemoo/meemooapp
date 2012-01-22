@@ -9,7 +9,7 @@ $(function(){
     className: "graph",
     template: _.template(template),
     events: {
-      "click .graph":     "click"
+      "click": "click"
     },
     initialize: function () {
       this.render();
@@ -27,7 +27,7 @@ $(function(){
       Iframework.selectedPort = null;
       
       // Unactivate modules
-      $("div.module.active").removeClass("active");
+      $("div.module").removeClass("active");
     },
     addNode: function (node) {
       this.$(".nodes").append( node.initializeView().el );
