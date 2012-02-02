@@ -10,7 +10,7 @@ Copyright (c) 2012, Forrest Oliphant
 
 
 Built with backbone.js, jQuery, and jQueryUI
-  http://documentcloud.github.com/backbone/
+  http://backbonejs.org/ - http://backbonejs.org/backbone.js
   http://jquery.com/
   http://jqueryui.com/
 
