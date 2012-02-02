@@ -13,6 +13,9 @@ $(function(){
     initialize: function () {
       this.Inputs = new Iframework.Ports();
       this.Outputs = new Iframework.Ports();
+
+      // Change event
+      this.on("change", this.nodeChanged);
     },
     initializeView: function () {
       // Called from GraphView.addNode();
@@ -57,6 +60,10 @@ $(function(){
       if (this.view) {
         this.view.addInput(newPort);
       }
+      // var currentState = this.get("state");
+      // if (info.hasOwnProperty("default") && !currentState.hasOwnProperty(info.name)) {
+      //   currentState[info.name] = info.default;
+      // }
     },
     addOutput: function (info) {
       // Name must be unique
@@ -73,6 +80,9 @@ $(function(){
         this.view.addOutput(newPort);
       }
     },
+    nodeChanged: function () {
+      this.graph.trigger("change");
+    }
   });
   
   Iframework.Nodes = Backbone.Collection.extend({

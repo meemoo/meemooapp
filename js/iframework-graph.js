@@ -13,7 +13,9 @@ $(function(){
       nodes: [],
       edges: []
     },
-    
+    // events: {
+    //   "change": "graphChanged"
+    // },
     initialize: function () {
       // Convert arrays into Backbone Collections
       if (this.attributes.nodes) {
@@ -35,6 +37,9 @@ $(function(){
         }
       }
       this.view = new Iframework.GraphView({model:this});
+
+      // Change event
+      this.on("change", this.graphChanged);
     },
     addNode: function (node) {
       var count = this.get("nodes").length;
@@ -61,6 +66,12 @@ $(function(){
       if (this.view) {
         this.view.addNode(node);
       }
+
+      this.trigger("change");
+    },
+    removeNode: function (node) {
+
+      this.trigger("change");
     },
     addEdge: function (edge) {
       // Make sure edge is unique
@@ -71,6 +82,7 @@ $(function(){
         console.warn("duplicate edge ignored");
         return false;
       } else {
+        this.trigger("change");
         return this.get("edges").add(edge);
       }
     },
@@ -80,6 +92,8 @@ $(function(){
         this.view.removeEdge(edge);
       }
       this.get("edges").remove(edge);
+
+      this.trigger("change");
     },
     checkLoaded: function () {
       for (var i=0; i<this.get("nodes").length; i++) {
@@ -109,6 +123,14 @@ $(function(){
     connectEdges: function () {
       for(var i=0; i<this.get("edges").length; i++) {
         this.get("edges").at(i).connect();
+      }
+    },
+    graphChanged: function () {
+      if (Iframework.$(".source").is(":visible")) {
+        // HACK
+        window.setTimeout(function(){
+          Iframework.sourcerefresh();
+        }, 100);
       }
     }
   });
