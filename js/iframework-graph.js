@@ -104,7 +104,7 @@ $(function(){
       // Connect edges when all modules have loaded (+.5 seconds)
       setTimeout(function(){
         Iframework.shownGraph.connectEdges();
-      }, 750);
+      }, 500);
     },
     connectEdges: function () {
       for(var i=0; i<this.get("edges").length; i++) {
