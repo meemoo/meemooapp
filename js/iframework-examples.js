@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(function(){
   
   var exampleGraphs = [
     {"info":{"title":"cam to gif","author":"forresto","description":"webcam to animated gif","url":"cam2gif"},"nodes":[{"src":"http://forresto.github.com/meemoo-camcanvas/onionskin.html","x":128,"y":45,"w":343,"h":280,"state":{"quality":75,"width":320,"height":240},"id":1},{"src":"http://forresto.github.com/meemoo-canvas2gif/canvas2gif.html","x":622,"y":43,"w":357,"h":285,"state":{"delay":200,"quality":75},"id":3},{"src":"http://forresto.github.com/meemoo-modules/imgur.html","x":625,"y":398,"w":357,"h":297,"state":{"title":"meemoo/cam2gif image share","caption":"This image was created with a Meemoo composition. http://meemoo.org/iframework/#/example/cam2gif"},"id":5}],"edges":[{"source":[1,"image"],"target":[3,"image"]},{"source":[3,"gif"],"target":[5,"dataurl"]}]},
@@ -10,26 +10,26 @@ $(document).ready(function(){
     {"info":{"title":"(speech to) text to speech","author":"forresto","description":"(in chrome, speech to) text to speech","url":"text2speech"},"nodes":[{"src":"http://forresto.github.com/meemoo-modules/speech2text.html","x":162,"y":61,"w":346,"h":98,"state":{},"id":1},{"src":"http://forresto.github.com/meemoo-speak.js/text2speech.html","x":234,"y":221,"w":167,"h":117,"state":{"amplitude":100,"pitch":50,"speed":175,"wordgap":0},"id":2},{"src":"http://forresto.github.com/meemoo-modules/audioarray.html","x":657,"y":227,"w":330,"h":280,"state":{},"id":3}],"edges":[{"source":[2,"info"],"target":[3,"title"]},{"source":[2,"audio"],"target":[3,"audio"]},{"source":[1,"text"],"target":[2,"text"]}]}
   ];
   
-  // Default example
-  Iframework.showGraph(exampleGraphs[0]);
-  
   // Router
   var IframeworkRouter = Backbone.Router.extend({
-
     routes: {
-      "/example/:url": "loadExample" // #/example/url
+      "example/:url": "loadExample", // #/example/url
+      "*path":        "default"
     },
-
     loadExample: function(url) {
+      console.log(url);
       for (var i=0; i<exampleGraphs.length; i++) {
         if (exampleGraphs[i]["info"]["url"] === url) {
           Iframework.showGraph(exampleGraphs[i]);
-          document.title = "meemoo/"+url;
           return;
         }
       }
+    },
+    default: function(url) {
+      console.log(url);
+      // Default example
+      Iframework.showGraph(exampleGraphs[0]);
     }
-
   });
   Iframework.router = new IframeworkRouter();
   Backbone.history.start();

@@ -23,7 +23,7 @@ $(function(){
       return this;
     },
     render: function () {
-      $(this.el).html(this.template(this.model.toJSON()));
+      this.$el.html(this.template(this.model.toJSON()));
     },
     addnode: function() {
       Iframework.shownGraph.addNode( 

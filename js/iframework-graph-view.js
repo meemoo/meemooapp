@@ -13,12 +13,12 @@ $(function(){
     },
     initialize: function () {
       this.render();
-      $(Iframework.el).prepend(this.el);
+      Iframework.$el.prepend(this.el);
       
       this.model.get("nodes").each(this.addNode);
     },
     render: function () {
-      $(this.el).html(this.template(this.model.toJSON()));
+      this.$el.html(this.template(this.model.toJSON()));
       return this;
     },
     click: function (event) {
@@ -37,7 +37,7 @@ $(function(){
       this.$(".edges").append( edge.initializeView().el );
     },
     removeEdge: function (edge) {
-      $(edge.view.el).remove();
+      edge.view.$el.remove();
     }
     
   });

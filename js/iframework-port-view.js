@@ -43,11 +43,11 @@ $(function(){
     },
     render: function () {
       if (this.model.isIn) {
-        $(this.el).html( this.portInTemplate(this.model.toJSON()) );
-        $(this.el).addClass("port-in");
+        this.$el.html( this.portInTemplate(this.model.toJSON()) );
+        this.$el.addClass("port-in");
       } else {
-        $(this.el).html( this.portOutTemplate(this.model.toJSON()) );
-        $(this.el).addClass("port-out");
+        this.$el.html( this.portOutTemplate(this.model.toJSON()) );
+        this.$el.addClass("port-out");
       }
 
       // Drag from hole
@@ -68,7 +68,7 @@ $(function(){
         });
         
       // Drag to port
-      $(this.el).droppable({
+      this.$el.droppable({
         accept: this.model.isIn ? ".hole-out" : ".hole-in",
         hoverClass: "drophover"
       });
@@ -209,7 +209,7 @@ $(function(){
       
       // var offset = hole.offset();
       var popupEl = $('<div class="edge-edit" />');
-      $(this.el).append(popupEl);
+      this.$el.append(popupEl);
 
       popupEl.append(
         $('<button />')

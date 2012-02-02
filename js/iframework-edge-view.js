@@ -17,7 +17,7 @@ $(function(){
     render: function () {
       this.calcPositions();
       // Don't use .toJSON() because using .source and .target Node
-      $(this.el).html(this.template(this));
+      this.$el.html(this.template(this));
       // if (this.model) {
       //   // Port insides
       //   this.model.source.view.$("div.port-out span.hole-"+this.model.get("source")[1]).css("background-color", this.model.get("color"));
@@ -25,7 +25,7 @@ $(function(){
       // } else {
       if (!this.model) {
         // While dragging to connect
-        $(this.el).addClass("preview");
+        this.$el.addClass("preview");
       }
       return this;
     },
@@ -41,7 +41,7 @@ $(function(){
       this.$("svg path.wire-shadow").attr("d", this.svgPathShadow() );
     },
     remove: function () {
-      $(this.el).remove();
+      this.$el.remove();
     },
     setPositions: function (_positions) {
       this.positions = _positions;

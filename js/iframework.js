@@ -61,7 +61,7 @@ $(function(){
 
     },
     render: function () {
-      $(this.el).html(this.template());
+      this.$el.html(this.template());
       return this;
     },
     shownGraph: undefined,
@@ -79,12 +79,15 @@ $(function(){
     },
     showGraph: function (graph) {
       if (this.shownGraph && this.shownGraph.view) {
-        $(this.shownGraph.view.el).remove();
+        this.shownGraph.view.$el.remove();
         this.shownGraph.view = null;
         this.shownGraph = null;
       }
-      this.shownGraph = new Iframework.Graph(graph);
       this.wireColorIndex = 0;
+      this.shownGraph = new Iframework.Graph(graph);
+      if (graph["info"]["title"]) {
+        document.title = "Meemoo: "+graph["info"]["title"];
+      }
     },
     gotMessage: function (e) {
       if (Iframework.shownGraph) {
