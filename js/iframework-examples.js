@@ -17,7 +17,6 @@ $(function(){
       "*path":        "default"
     },
     loadExample: function(url) {
-      console.log(url);
       for (var i=0; i<exampleGraphs.length; i++) {
         if (exampleGraphs[i]["info"]["url"] === url) {
           Iframework.showGraph(exampleGraphs[i]);
@@ -26,7 +25,6 @@ $(function(){
       }
     },
     default: function(url) {
-      console.log(url);
       // Default example
       Iframework.showGraph(exampleGraphs[0]);
     }
