@@ -81,7 +81,10 @@ $(function(){
       }
     },
     nodeChanged: function () {
-      this.graph.trigger("change");
+      
+      if (this.graph) {
+        this.graph.trigger("change");
+      }
     }
   });
   

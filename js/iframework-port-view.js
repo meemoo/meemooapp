@@ -10,6 +10,9 @@ $(function(){
     
   var popupTemplate =
     '<div class="edge-edit">'+
+      '<button class="close">close</button>'+
+      '<h2><%= name %> (<%= type %>)</h2>'+
+      '<p><%= description %></p>'+
     '</div>';
 
   var edgeEditTemplate =
@@ -207,29 +210,24 @@ $(function(){
         return;
       } 
       
-      // var offset = hole.offset();
-      var popupEl = $('<div class="edge-edit" />');
+      // var popupEl = $('<div class="edge-edit" />');
+      var popupEl = this.popupTemplate(this.model.toJSON());
+      popupEl = $(popupEl);
       this.$el.append(popupEl);
 
-      popupEl.append(
-        $('<button />')
-          .attr({
-            "type": "button",
-            "class": "close",
-            "title": "close"
-          })
-          .button({
-            icons: {
-              primary: "ui-icon-close"
-            },
-            text: false
-          })
-          .click(function(){
-            $('div.edge-edit').remove();
-            Iframework.selectedPort = null;
-          })
-      );
-      popupEl.append('<h2>'+portName+' ('+this.model.get("type")+')</h2><p>'+this.model.get("description")+'</p>');
+      // Close button
+      popupEl.children("button.close")
+        .button({
+          icons: {
+            primary: "ui-icon-close"
+          },
+          text: false
+        })
+        .click(function(){
+          $('div.edge-edit').remove();
+          Iframework.selectedPort = null;
+        });
+
       var typeabbr = this.model.get("type").substring(0,3);
       if (isIn) {
         var showForm = false;
@@ -263,16 +261,19 @@ $(function(){
         }
         if (showForm) {
           inputForm.append(
-            $("<button />").attr({
-              "type": "submit",
-              "class": "send",
-              "title": "send value to module"
-            }).button({
-              icons: {
-                primary: "ui-icon-check"
-              },
-              text: false
-            })
+            $("<button></button>")
+              .html("send")
+              .attr({
+                "type": "submit",
+                "class": "send",
+                "title": "send value to module"
+              })
+              .button({
+                icons: {
+                  primary: "ui-icon-check"
+                },
+                text: false
+              })
           );
           popupEl.append(inputForm);
         }

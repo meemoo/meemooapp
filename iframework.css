@@ -38,6 +38,7 @@ div.edge-edit {
     padding: 0;
   }
   div.edge-edit button {
+    margin-left: 5px;
     width: 25px;
     height: 25px;
   }

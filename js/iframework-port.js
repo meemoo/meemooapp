@@ -2,7 +2,10 @@ $(function(){
 
   Iframework.Port = Backbone.Model.extend({
     defaults: {
-      name: ""
+      name: "",
+      type: "",
+      description: "",
+      default: null
     },
     initialize: function () {
     },
