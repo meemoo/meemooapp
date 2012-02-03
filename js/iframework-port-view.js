@@ -313,6 +313,7 @@ $(function(){
       message[inputname] = val;
       this.model.node.send(message);
       this.model.node.get("state")[inputname] = val;
+      this.model.node.trigger("change");
       return false;
     },
     armconnect: function (event) {
