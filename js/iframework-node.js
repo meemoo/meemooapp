@@ -60,10 +60,11 @@ $(function(){
       if (this.view) {
         this.view.addInput(newPort);
       }
-      // var currentState = this.get("state");
-      // if (info.hasOwnProperty("default") && !currentState.hasOwnProperty(info.name)) {
-      //   currentState[info.name] = info.default;
-      // }
+      // Set state to post defaults
+      var currentState = this.get("state");
+      if ( info.hasOwnProperty("default") && info.default != "" && !currentState.hasOwnProperty(info.name) ) {
+        currentState[info.name] = info.default;
+      }
     },
     addOutput: function (info) {
       // Name must be unique
@@ -81,7 +82,6 @@ $(function(){
       }
     },
     nodeChanged: function () {
-      
       if (this.graph) {
         this.graph.trigger("change");
       }
