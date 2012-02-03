@@ -46,16 +46,14 @@ div.edge-edit {
   div.edge-edit form button {
     vertical-align: middle;
   }
-    div.edge-edit form button.send span.ui-button-icon-primary {
-      margin-top: -14px;
-    }
   div.edge-edit button.close {
     position: absolute;
     top: 5px;
     right: 5px;
   }
+    div.edge-edit form button.send span.ui-button-icon-primary,
     div.edge-edit button.close span.ui-button-icon-primary {
-      margin-top: -14px;
+      margin-top: -8px;
     }
   span.wiresymbol {
     position: relative;
@@ -287,6 +285,7 @@ div.panel {
 
   div.panel .close {
     float: right;
+    clear: both;
   }
 
   div.panel .source textarea {
