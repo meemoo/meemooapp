@@ -16,7 +16,7 @@ $(function(){
       '<div class="library">'+
         '<button class="button close">close</button>'+
         '<form class="addbyurl">'+
-          '<input class="addbyurlinput" placeholder="load by url" type="text" />'+
+          '<input class="addbyurlinput" name="addbyurlinput" placeholder="load by url" type="text" />'+
           '<button class="addbyurlsubmit" type="submit">load</button>'+
         '</form>'+
       '</div>'+
