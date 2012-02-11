@@ -35,8 +35,15 @@ $(function(){
     addEdge: function (edge) {
       this.$(".edges").append( edge.initializeView().el );
     },
+    removeNode: function (node) {
+      if (node.view) {
+        node.view.$el.remove();
+      }
+    },
     removeEdge: function (edge) {
-      edge.view.$el.remove();
+      if (edge.view) {
+        edge.view.$el.remove();
+      }
     }
     
   });

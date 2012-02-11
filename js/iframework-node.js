@@ -92,10 +92,7 @@ $(function(){
       }
     },
     remove: function () {
-      this.trigger("change");
-      this.graph.reconnectEdges();
-      this.view.remove();
-      this.graph.get("nodes").remove(this);
+      this.graph.removeNode(this);
     }
 
   });

@@ -71,10 +71,6 @@ $(function(){
 
       this.trigger("change");
     },
-    removeNode: function (node) {
-
-      this.trigger("change");
-    },
     addEdge: function (edge) {
       // Make sure edge is unique
       var isDupe = this.get("edges").any(function(_edge) {
@@ -87,6 +83,26 @@ $(function(){
         this.trigger("change");
         return this.get("edges").add(edge);
       }
+    },
+    removeNode: function (node) {
+      if (this.view) {
+        this.view.removeNode(node);
+      }
+
+      // disconnect node's edges
+      var connected = [];
+      this.get("edges").each(function(edge){
+        if (edge.source.node == node || edge.target.node == node) {
+          connected.push(edge);
+        }
+      });
+      for (var i=0; i<connected.length; i++) {
+        connected[i].remove();
+      }
+
+      this.get("nodes").remove(node);
+
+      this.trigger("change");
     },
     removeEdge: function (edge) {
       edge.disconnect();

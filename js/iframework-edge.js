@@ -63,10 +63,7 @@ $(function(){
       }
     },
     remove: function(){
-      if (this.view){
-        this.view.remove();
-      }
-      this.graph.get("edges").remove(this);
+      this.graph.removeEdge(this);
     }
   });
   
