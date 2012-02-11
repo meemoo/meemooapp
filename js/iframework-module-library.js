@@ -6,6 +6,8 @@ $(function(){
   var library = new Iframework.Modules(
     [
       {"src":"http://forresto.github.com/meemoo-modules/canvasarray.html","info":{"title":"canvas array","author":"forresto","description":"hold a stack of canvases for reuse, click sends it, arrows navigate to prev/next"},"inputs":[{"name":"image","type":"image","description":"","min":"","max":"","default":""}],"outputs":[{"name":"image","type":"image"}]},
+      {"src":"http://forresto.github.com/meemoo-image/spritesheet.html","info":{"title":"spritesheet","author":"forresto","description":"makes a single-image filmstrip sprite sheet"},"inputs":[],"outputs":[]},
+      {"src":"http://forresto.github.com/meemoo-image/spritesplit.html","info":{"title":"spritesplit","author":"forresto","description":"separates images from filmstrip sprite sheet"},"inputs":[],"outputs":[]},
       {"src":"http://forresto.github.com/meemoo-blend/blend.html","info":{"title":"blend","author":"forresto","description":"blend imageData under and over with given mode"},"inputs":[],"outputs":[]},
       {"src":"http://forresto.github.com/meemoo-image/mask.html","info":{"title":"alpha mask","author":"forresto","description":"use a grayscale image as the alpha for another image"},"inputs":[],"outputs":[]},
       {"src":"http://forresto.github.com/meemoo-image/threshold.html","info":{"title":"threshold","author":"forresto","description":"image to monochrome via luminosity threshold"},"inputs":[],"outputs":[]},
