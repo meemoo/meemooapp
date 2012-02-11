@@ -5,7 +5,8 @@ $(function(){
       '<div class="ports ports-in"></div>'+
       '<div class="ports ports-out"></div>'+
       '<h1 class="title">...</h1>'+
-      '<iframe class="frame" src="<%= src %>#nodeid=<%= id %>" style="width:<%= w %>px;height:<%= h %>px;"></iframe>'+
+      '<button type="button" class="remove">remove</button>'+
+      '<iframe class="frame" name="frame_<%= id %>" src="<%= src %>#nodeid=<%= id %>" style="width:<%= w %>px;height:<%= h %>px;"></iframe>'+
     '</div>';
 
   Iframework.NodeView = Backbone.View.extend({
@@ -20,13 +21,21 @@ $(function(){
       "resize .module":      "resize",
       "resizestop .module":  "resizestop",
       "mousedown .module, .title": "mousedown",
-      "click .module, .title": "click"
+      "click .module, .title": "click",
+      "click .remove":       "removeModel"
     },
     initialize: function () {
       this.render();
       this.$(".module")
         .draggable()
         .resizable();
+      this.$(".remove")
+        .button({
+          icons: {
+            primary: "ui-icon-trash"
+          },
+          text: false
+        });
     },
     render: function () {
       this.$el.html(this.template(this.model.toJSON()));
@@ -123,6 +132,14 @@ $(function(){
     },
     addOutput: function (port) {
       this.$(".ports-out").append( port.initializeView().el );
+    },
+    removeModel: function () {
+      if (confirm("Are you sure?")) {
+        this.model.remove();
+      }
+    },
+    remove: function () {
+      this.$el.remove();
     }
 
   });

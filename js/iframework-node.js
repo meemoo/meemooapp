@@ -5,7 +5,8 @@ $(function(){
     defaults: {
       src: "",
       x: 200,
-      y: 200,
+      y: 400,
+      z: 0,
       w: 100,
       h: 100,
       state: {}
@@ -13,6 +14,8 @@ $(function(){
     initialize: function () {
       this.Inputs = new Iframework.Ports();
       this.Outputs = new Iframework.Ports();
+
+      this.frameIndex = "frame_"+this.get("id");
 
       // Change event
       this.on("change", this.nodeChanged);
@@ -23,8 +26,10 @@ $(function(){
       return this.view;
     },
     send: function (message) {
-      if (this.frameIndex !== undefined) {
+      if (window.frames[this.frameIndex]) {
         window.frames[this.frameIndex].postMessage(message, "*");
+      } else {
+        console.error("wat "+this.id+" "+this.frameIndex);
       }
     },
     Info: {},
@@ -85,7 +90,14 @@ $(function(){
       if (this.graph) {
         this.graph.trigger("change");
       }
+    },
+    remove: function () {
+      this.trigger("change");
+      this.graph.reconnectEdges();
+      this.view.remove();
+      this.graph.get("nodes").remove(this);
     }
+
   });
   
   Iframework.Nodes = Backbone.Collection.extend({

@@ -31,7 +31,6 @@ $(function(){
     },
     addNode: function (node) {
       this.$(".nodes").append( node.initializeView().el );
-      node.frameIndex = window.frames.length - 1;
     },
     addEdge: function (edge) {
       this.$(".edges").append( edge.initializeView().el );

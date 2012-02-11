@@ -107,6 +107,7 @@ $(function(){
         '<span class="wiresymbol" style="color:' + this._color + '">&rarr;</span>' + 
         this.model.get("target")[0] +":"+ this.model.get("target")[1];
     }
+
   });
 
 });

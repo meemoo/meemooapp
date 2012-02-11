@@ -60,6 +60,8 @@ $(function(){
         });
       }
 
+      node.frameIndex = "frame_"+node.get('id');
+
       this.get("nodes").add(node);
       node.graph = this;
 
@@ -122,7 +124,14 @@ $(function(){
     },
     connectEdges: function () {
       for(var i=0; i<this.get("edges").length; i++) {
-        this.get("edges").at(i).connect();
+        var edge = this.get("edges").at(i);
+        var from = this.get("nodes").get( edge.get("source")[0] );
+        var to = this.get("nodes").get( edge.get("target")[0] );
+        if (from && to) {
+          edge.connect();
+        } else {
+          edge.remove();
+        }
       }
     },
     graphChanged: function () {
