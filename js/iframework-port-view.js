@@ -255,6 +255,17 @@ $(function(){
               "value": this.model.node.get("state")[this.model.get("name")]
             })
           );
+        } else if (typeabbr === "boo") {
+          showForm = true;
+          var val = this.model.node.get("state")[this.model.get("name")];
+          val = (Boolean(val) && val != "false");
+          inputForm.append(
+            $("<input />")
+              .attr({
+                "type": "checkbox",
+                "checked": val
+              })
+          );
         } else if (typeabbr === "ban") {
           inputForm.append("<label>Send bang:</label> ");
           showForm = true;
@@ -310,6 +321,15 @@ $(function(){
     manualinput: function (event) {
       var inputname = this.model.get("name");
       var val = this.$(".manualinput").children("input") ? this.$(".manualinput").children("input").val() : "bang!";
+      console.log(val);
+      if (this.$(".manualinput").children("input:checkbox")) {
+        if (this.$(".manualinput").children("input:checkbox").is(':checked')) {
+          val = true;
+        } else {
+          val = false;
+        }
+      }
+      console.log(val);
       var message = {};
       message[inputname] = val;
       this.model.node.send(message);
