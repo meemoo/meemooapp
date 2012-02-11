@@ -321,20 +321,19 @@ $(function(){
     manualinput: function (event) {
       var inputname = this.model.get("name");
       var val = this.$(".manualinput").children("input") ? this.$(".manualinput").children("input").val() : "bang!";
-      console.log(val);
-      if (this.$(".manualinput").children("input:checkbox")) {
+      if (this.$(".manualinput").children("input:checkbox").length) {
         if (this.$(".manualinput").children("input:checkbox").is(':checked')) {
           val = true;
         } else {
           val = false;
         }
       }
-      console.log(val);
       var message = {};
       message[inputname] = val;
       this.model.node.send(message);
       this.model.node.get("state")[inputname] = val;
       this.model.node.trigger("change");
+      $('div.edge-edit').remove();
       return false;
     },
     armconnect: function (event) {
