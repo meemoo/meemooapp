@@ -6,7 +6,7 @@ $(function(){
       '<div class="ports ports-out"></div>'+
       '<h1 class="title">...</h1>'+
       '<button type="button" class="remove">remove</button>'+
-      '<iframe class="frame" name="frame_<%= id %>" src="<%= src %>#nodeid=<%= id %>" style="width:<%= w %>px;height:<%= h %>px;"></iframe>'+
+      '<iframe class="frame" name="frame_<%= id %>" src="<%= src %>" style="width:<%= w %>px;height:<%= h %>px;"></iframe>'+
     '</div>';
 
   Iframework.NodeView = Backbone.View.extend({

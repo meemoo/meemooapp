@@ -41,6 +41,7 @@ $(function(){
       // Change event
       this.on("change", this.graphChanged);
     },
+    usedIds: [],
     addNode: function (node) {
       var count = this.get("nodes").length;
       // Give id if not defined
@@ -48,17 +49,12 @@ $(function(){
         node.set({"id": count});
       }
       // Make sure node id is unique
-      var isDupe = this.get("nodes").any(function(_node) {
-        return _node.get('id') === node.get('id');
-      });
-      // Change id if duplicate
-      while (isDupe) {
+      // Firefox doesn't like removing frames then adding with same name
+      while ( this.usedIds.indexOf(node.get('id')) >= 0 ) {
         count++;
-        node.set({"id":count});
-        isDupe = this.get("nodes").any(function(_node) {
-          return _node.get('id') === node.get('id');
-        });
+        node.set({"id": count});
       }
+      this.usedIds.push( node.get('id') );
 
       node.frameIndex = "frame_"+node.get('id');
 

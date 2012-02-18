@@ -7,8 +7,8 @@ $(function(){
       x: 200,
       y: 400,
       z: 0,
-      w: 100,
-      h: 100,
+      w: 200,
+      h: 200,
       state: {}
     },
     initialize: function () {
