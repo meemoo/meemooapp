@@ -231,10 +231,10 @@ $(function(){
       var typeabbr = this.model.get("type").substring(0,3);
       if (isIn) {
         var showForm = false;
-        var inputForm = $('<form class="manualinput" />')
-          .data({
-            "modulecid": this.model.cid,
-            "inputname": portName
+        var inputForm = $('<form />')
+          .attr({
+            "id": this.model.node.id + "_" + this.model.get("name"),
+            "class": "manualinput"
           });
         if (typeabbr === "int" || typeabbr === "num" ) {
           showForm = true;
@@ -321,12 +321,18 @@ $(function(){
     manualinput: function (event) {
       var inputname = this.model.get("name");
       var val = this.$(".manualinput").children("input") ? this.$(".manualinput").children("input").val() : "bang!";
-      if (this.$(".manualinput").children("input:checkbox").length) {
+      if (this.$(".manualinput").children("input:checkbox").length > 0) {
         if (this.$(".manualinput").children("input:checkbox").is(':checked')) {
           val = true;
         } else {
           val = false;
         }
+      }
+      if (this.model.get("type") === "int") {
+        val = parseInt(val);
+      }
+      if (this.model.get("type") === "number") {
+        val = parseFloat(val);
       }
       var message = {};
       message[inputname] = val;

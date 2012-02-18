@@ -2,14 +2,16 @@ $(function(){
 
   Iframework.Node = Backbone.Model.extend({
     loaded: false,
-    defaults: {
-      src: "",
-      x: 200,
-      y: 400,
-      z: 0,
-      w: 200,
-      h: 200,
-      state: {}
+    defaults: function() {
+      return {
+        src: "",
+        x: 200,
+        y: 400,
+        z: 0,
+        w: 200,
+        h: 200,
+        state: {}
+      }
     },
     initialize: function () {
       this.Inputs = new Iframework.Ports();
