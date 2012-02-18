@@ -1,7 +1,7 @@
 $(function(){
   
   var exampleGraphs = [
-    {"info":{"author":"","title":"","description":"","parent":"","permalink":""},"nodes":[{"src":"http://forresto.github.com/meemoo-camcanvas/onionskin.html","x":129,"y":62,"z":0,"w":328,"h":299,"state":{},"id":0},{"src":"/world/control.html","x":578,"y":141,"z":0,"w":188,"h":289,"state":{},"id":2},{"src":"/world/world.html","x":866,"y":92,"z":0,"w":266,"h":232,"state":{},"id":3}],"edges":[{"source":[2,"layer"],"target":[3,"layer"]},{"source":[0,"image"],"target":[2,"image"]}]},
+    // {"info":{"author":"forresto","title":"world","description":"welcome to meemoo world","parent":"","url":"world"},"nodes":[{"src":"/camcanvas/onionskin.html","x":129,"y":62,"z":0,"w":328,"h":299,"state":{},"id":0},{"src":"/world/control.html","x":649,"y":67,"z":0,"w":596,"h":392,"state":{"layerid":"first"},"id":2},{"src":"/world/world.html","x":298,"y":445,"z":0,"w":266,"h":232,"state":{},"id":3}],"edges":[{"source":[2,"layer"],"target":[3,"layer"]},{"source":[0,"image"],"target":[2,"image"]}]},
     {"info":{"title":"cam to gif","author":"forresto","description":"webcam to animated gif","url":"cam2gif"},"nodes":[{"src":"http://forresto.github.com/meemoo-camcanvas/onionskin.html","x":128,"y":45,"w":343,"h":280,"state":{"quality":75,"width":320,"height":240},"id":1},{"src":"http://forresto.github.com/meemoo-canvas2gif/canvas2gif.html","x":622,"y":43,"w":357,"h":285,"state":{"delay":200,"quality":75},"id":3},{"src":"http://forresto.github.com/meemoo-modules/imgur.html","x":625,"y":398,"w":357,"h":297,"state":{"title":"meemoo/cam2gif image share","caption":"This image was created with a Meemoo composition. http://meemoo.org/iframework/#/example/cam2gif"},"id":5}],"edges":[{"source":[1,"image"],"target":[3,"image"]},{"source":[3,"gif"],"target":[5,"dataurl"]}]},
     {"info":{"title":"cam to canvas","author":"forresto","description":"webcam to canvas","url":"cam"},"nodes":[{"src":"http://forresto.github.com/meemoo-modules/metronome.html","x":205,"y":43,"w":200,"h":100,"state":{"bpm":60},"id":1},{"src":"http://forresto.github.com/meemoo-camcanvas/webcam2canvas.html","x":608,"y":43,"w":339,"h":516,"state":{"quality":75,"width":320,"height":240},"id":2},{"src":"http://forresto.github.com/meemoo-modules/reflow.html","x":199,"y":245,"w":256,"h":297,"state":{},"id":3}],"edges":[{"source":[1,"beat"],"target":[2,"capture"]},{"source":[2,"image"],"target":[3,"image"]}]},
     {"info":{"title":"cam to glitch","author":"forresto","description":"webcam to jpg to glitch","url":"glitch"},"nodes":[{"src":"http://forresto.github.com/meemoo-modules/metronome.html","x":139,"y":45,"w":200,"h":100,"state":{"bpm":150},"id":1},{"src":"http://forresto.github.com/meemoo-camcanvas/webcam2jpg.html","x":581,"y":49,"w":339,"h":283,"state":{"quality":20,"width":320,"height":240},"id":2},{"src":"http://forresto.github.com/meemoo-jpgglitch/jpgglitch.html","x":138,"y":220,"w":339,"h":262,"state":{},"id":4},{"src":"http://forresto.github.com/meemoo-modules/img2canvas.html","x":282,"y":559,"w":116,"h":98,"state":{},"id":5},{"src":"http://forresto.github.com/meemoo-modules/reflow.html","x":646,"y":398,"w":256,"h":297,"state":{},"id":3}],"edges":[{"source":[1,"beat"],"target":[2,"capture"]},{"source":[2,"jpg"],"target":[4,"jpg"]},{"source":[5,"image"],"target":[3,"image"]},{"source":[4,"jpg"],"target":[5,"dataurl"]}]},
@@ -15,10 +15,11 @@ $(function(){
   // Router
   var IframeworkRouter = Backbone.Router.extend({
     routes: {
-      "example/:url": "loadExample", // #/example/url
+      "/example/:url": "loadExample", // #/example/url
       "*path":        "default"
     },
     loadExample: function(url) {
+      console.log(url);
       for (var i=0; i<exampleGraphs.length; i++) {
         if (exampleGraphs[i]["info"]["url"] === url) {
           Iframework.showGraph(exampleGraphs[i]);
@@ -26,7 +27,8 @@ $(function(){
         }
       }
     },
-    default: function(url) {
+    default: function() {
+      console.log("default");
       // Default example
       Iframework.showGraph(exampleGraphs[0]);
     }
