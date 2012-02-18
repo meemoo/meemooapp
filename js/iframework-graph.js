@@ -13,10 +13,9 @@ $(function(){
       nodes: [],
       edges: []
     },
-    // events: {
-    //   "change": "graphChanged"
-    // },
+    usedIds: [],
     initialize: function () {
+      this.usedIds = [];
       // Convert arrays into Backbone Collections
       if (this.attributes.nodes) {
         var nodes = this.attributes.nodes;
@@ -41,7 +40,6 @@ $(function(){
       // Change event
       this.on("change", this.graphChanged);
     },
-    usedIds: [],
     addNode: function (node) {
       var count = this.get("nodes").length;
       // Give id if not defined
@@ -56,7 +54,7 @@ $(function(){
       }
       this.usedIds.push( node.get('id') );
 
-      node.frameIndex = "frame_"+node.get('id');
+      node.frameIndex = "frame_"+node.get('id')+"_"+(Iframework.frameCount++);
 
       this.get("nodes").add(node);
       node.graph = this;

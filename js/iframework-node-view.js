@@ -1,12 +1,12 @@
 $(function(){
 
   var template = 
-    '<div class="module" style="left:<%= x-10 %>px;top:<%= y-30 %>px;width:<%= w+20 %>px;height:<%= h+40 %>px;" >'+
+    '<div class="module" style="left:<%= get("x")-10 %>px;top:<%= get("y")-30 %>px;width:<%= get("w")+20 %>px;height:<%= get("h")+40 %>px;" >'+
       '<div class="ports ports-in"></div>'+
       '<div class="ports ports-out"></div>'+
       '<h1 class="title">...</h1>'+
       '<button type="button" class="remove">remove</button>'+
-      '<iframe class="frame" name="frame_<%= id %>" src="<%= src %>" style="width:<%= w %>px;height:<%= h %>px;"></iframe>'+
+      '<iframe class="frame" name="<%= frameIndex %>" src="<%= get("src") %>" style="width:<%= get("w") %>px;height:<%= get("h") %>px;"></iframe>'+
     '</div>';
 
   Iframework.NodeView = Backbone.View.extend({
@@ -38,7 +38,7 @@ $(function(){
         });
     },
     render: function () {
-      this.$el.html(this.template(this.model.toJSON()));
+      this.$el.html(this.template(this.model));
       return this;
     },
     infoLoaded: function (info) {

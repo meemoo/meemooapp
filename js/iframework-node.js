@@ -17,8 +17,6 @@ $(function(){
       this.Inputs = new Iframework.Ports();
       this.Outputs = new Iframework.Ports();
 
-      this.frameIndex = "frame_"+this.get("id");
-
       // Change event
       this.on("change", this.nodeChanged);
     },
