@@ -25,7 +25,7 @@ wire        : edge  : window.postMessage()
 
 ---
 
-You may use any Meemoo project under the terms of either the MIT License or the GNU General Public License (GPL) Version 2.
+You may use any Meemoo project under the terms of either the MIT License or the GNU Affero General Public License (AGPL) Version 3.
 
 The MIT License is recommended for most projects using Meemoo. It is simple and easy to understand and it places almost no restrictions on what you can do with Meemoo.
 http://meemoo.org/iframework/LICENSE-MIT.txt
