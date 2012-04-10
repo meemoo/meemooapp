@@ -6,20 +6,19 @@ html, body {
   height: 100%;
 }
 div.graph {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  right: 0px;
+  bottom: 0;
+  overflow: auto;
+  border-right: 1px dotted #666;
 }
   div.edges {
     z-index: 1;
   }
   div.nodes {
     z-index: 2;
-  }
-  div.panel {
-    z-index: 1000;
   }
   
 div.edge-edit {
@@ -80,9 +79,9 @@ div.edge-edit {
 div.edge-edit,
 div.module,
 div.ports div.port,
-div.panel {
+div.showpanel {
   border: 1px #AAA solid;
-  background-color: rgba(255,255,255,.85);
+  background-color: rgba(255, 255, 255, 0.85);
 }
 
 div.node {
@@ -286,19 +285,34 @@ div.edges {
       stroke: #AAA;
     }
   
-div.panel {
+div.showpanel {
   position: fixed;
   z-index: 1000;
-  padding: 5px;
   top: 0px;
-  right: 0px;
+  right: 16px;
   font-size: 10px;
   text-align: right;
-  border-width: 0 0 1px 1px;
+  border-width: 0 1px 1px 1px;
+
+  padding: 5px;
+}
+div.panel {
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 350px;
+  overflow: auto;
+
+  font-size: 10px;
+
+  position: fixed;
+  display: none;
 }
   
+  div.panel .load,
   div.panel .source,
   div.panel .library {
+    padding: 10px;
   }
 
   div.panel .close {
@@ -306,22 +320,39 @@ div.panel {
     clear: both;
   }
 
+  div.panel .source .sourceedit {
+    background-color: white;
+
+    position: absolute;
+    top: 40px;
+    right: 15px;
+    left: 10px;
+    bottom: 50px;
+
+  }
+
   div.panel .source textarea {
     background-color: white;
-    width: 300px;
-    height: 400px;
+    width: 100%;
+    height: 100%;
   }
+
+    div.panel .source .controls {
+      position: absolute;
+      bottom: 10px;
+    }
 
   div.panel .library {
     text-align: left;
-    padding: 10px;
-    height: 400px;
-    overflow: auto;
   }
     div.panel .library .controls {
     }
     div.panel .library .listing {
-      height: 360px;
+      position: absolute;
+      top: 50px;
+      right: 10px;
+      left: 10px;
+      bottom: 10px;
       overflow: auto;
     }
     div.panel .library form{
@@ -329,7 +360,7 @@ div.panel {
     }
 
     div.panel .library input.addbyurlinput {
-      width: 275px;
+      width: 225px;
       margin-right: 5px;
     }
 
@@ -369,12 +400,10 @@ div.panel {
 footer {
   position: fixed;
   background-color: rgba(255,255,255,.75);
-  padding: 5px 10px;
-  bottom: 0px;
-  right: 0px;
+  padding: 0 5px 2px 2px;
+  top: 0px;
+  left: 0px;
   font-family: monospace;
   font-size: 10px;
   z-index: 1000;
-  text-align: right;
-  max-width: 250px;
 }

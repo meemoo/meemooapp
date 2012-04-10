@@ -1,17 +1,25 @@
 $(function(){
   
   var template = 
+    '<div class="showpanel">'+
+      '<button class="button showload">load app</button>'+
+      '<button class="button showsource">source</button>'+
+      '<button class="button showlibrary">add module</button>'+
+    '</div>'+
     '<div class="panel">'+
-      '<div class="options">'+
-        '<button class="button showsource">source</button>'+
-        '<button class="button showlibrary">add module</button>'+
+      '<div class="load">'+
+        '<button class="button close">close</button>'+
       '</div>'+
       '<div class="source">'+
-        '<button class="button close">close</button><br />'+
-        '<textarea class="sourceedit" /><br />'+
-        '<button class="button sourcerefresh" title="refresh the source code">refresh</button>'+
-        '<button class="button sourcecompress" title="refresh and compress the source code into one line">compress</button>'+
-        '<button class="button sourceapply" title="reloads the app">apply changes</button>'+
+        '<button class="button close">close</button>'+
+        '<div class="sourceedit">'+
+          '<textarea />'+
+        '</div>'+
+        '<div class="controls">'+
+          '<button class="button sourcerefresh" title="refresh the source code">refresh</button>'+
+          '<button class="button sourcecompress" title="refresh and compress the source code into one line">compress</button>'+
+          '<button class="button sourceapply" title="reloads the app">apply changes</button>'+
+        '</div>'+
       '</div>'+
       '<div class="library">'+
         '<div class="controls">'+
@@ -33,13 +41,13 @@ $(function(){
     frameCount: 0, // HACK to not use same name in Firefox
     events: {
       "click .close" :         "closepanels",
+      "click .showload" :      "showload",
       "click .showsource" :    "showsource",
       "click .showlibrary":    "showlibrary",
       "click .sourcerefresh":  "sourcerefresh",
       "click .sourcecompress": "sourcecompress",
       "click .sourceapply":    "sourceapply",
-      "submit .addbyurl":      "addbyurl",
-      "autocompleteselect .addbyurlinput": "addbyurl",
+      "submit .addbyurl":      "addbyurl"
     },
     initialize: function () {
       this.render();
@@ -51,9 +59,11 @@ $(function(){
 
       // Panel buttons
       this.$(".close")
-        .button({ icons: { primary: 'ui-icon-close' } });
+        .button({ icons: { primary: 'ui-icon-close' }, text: false });
       this.$(".showsource")
         .button({ icons: { primary: 'ui-icon-gear' } });
+      this.$(".showload")
+        .button({ icons: { primary: 'ui-icon-disk' } });
       this.$(".showlibrary")
         .button({ icons: { primary: 'ui-icon-plus' } });
       this.$(".sourcerefresh")
@@ -165,10 +175,6 @@ $(function(){
         .autocomplete({
           minLength: 1,
           source: autocompleteData
-          // select: function(event, ui) { 
-          //   // Autoload on enter or click
-          //   $('form.addbyurl').submit(); 
-          // }
         })
         .data( "autocomplete" )._renderItem = function( ul, item ) {
           return $( "<li></li>" )
@@ -178,19 +184,34 @@ $(function(){
         };
     },
     closepanels: function() {
-      this.$(".panel .options").show();
+      this.$(".showpanel").show();
+      this.$(".panel").hide();
+      this.$(".graph").css("right", "0px");
+
+      this.$(".panel .load").hide();
       this.$(".panel .library").hide();
       this.$(".panel .source").hide();
     },
-    showsource: function() {
-      this.$(".panel .options").hide();
+    showpanel: function() {
+      this.$(".panel .load").hide();
       this.$(".panel .library").hide();
+      this.$(".panel .source").hide();
+
+      this.$(".showpanel").hide();
+      this.$(".panel").show();
+      this.$(".graph").css("right", "350px");
+    },
+    showload: function() {
+      this.showpanel();
+      this.$(".panel .load").show();
+    },
+    showsource: function() {
+      this.showpanel();
       this.$(".panel .source").show();
       this.$(".panel .source textarea").val( JSON.stringify(Iframework.shownGraph, null, "  ") );
     },
     showlibrary: function() {
-      this.$(".panel .options").hide();
-      this.$(".panel .source").hide();
+      this.showpanel();
       this.$(".panel .library").show();
     },
     sourcerefresh: function() {
@@ -200,7 +221,7 @@ $(function(){
       this.$(".panel .source textarea").val( JSON.stringify(Iframework.shownGraph, null, "") );
     },
     sourceapply: function() {
-      var newGraph = JSON.parse( $(".panel .sourceedit").val() );
+      var newGraph = JSON.parse( $(".panel .sourceedit textarea").val() );
       this.showGraph(newGraph);
       this.showsource();
     },

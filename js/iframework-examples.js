@@ -24,6 +24,7 @@ $(function(){
       for (var i=0; i<exampleGraphs.length; i++) {
         if (exampleGraphs[i]["info"]["url"] === url) {
           Iframework.showGraph(exampleGraphs[i]);
+          Iframework.closepanels();
           return;
         }
       }
@@ -37,13 +38,13 @@ $(function(){
   Backbone.history.start();
   
   // Make example links:
-  var exampleLinks = "examples: "
+  var exampleLinks = "examples: <br /> "
   for (var i=0; i<exampleGraphs.length; i++) {
     var url = exampleGraphs[i]["info"]["url"];
     if (url) {
-      exampleLinks += '<a href="#/example/'+url+'" title="'+exampleGraphs[i]["info"]["title"]+": "+exampleGraphs[i]["info"]["description"]+'">'+url+'</a> ';
+      exampleLinks += '<a href="#/example/'+url+'" title="'+exampleGraphs[i]["info"]["title"]+": "+exampleGraphs[i]["info"]["description"]+'">'+url+'</a> <br />';
     }
   }
-  $("footer").append(exampleLinks);
+  $(".panel .load").append(exampleLinks);
   
 });

@@ -334,7 +334,8 @@ $(function(){
     portOffsetLeft: function () {
       var holeoffset = this.$('.hole').offset();
       if (holeoffset) {
-        return holeoffset.left + 7;
+        // HACK
+        return holeoffset.left + 7 + $('.graph').scrollLeft();
       } else {
         return 0;
       }
@@ -342,7 +343,8 @@ $(function(){
     portOffsetTop: function () {
       var holeoffset = this.$('.hole').offset();
       if (holeoffset) {
-        return holeoffset.top + 7;
+        // HACK
+        return holeoffset.top + 7 + $('.graph').scrollTop();
       } else {
         return 0;
       }
