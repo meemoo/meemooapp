@@ -322,6 +322,18 @@ div.panel {
       margin-bottom: 10px;
     }
 
+    div.panel .library input.addbyurlinput {
+      width: 250px;
+      margin-right: 5px;
+    }
+
+    ul.ui-autocomplete {
+      font-size: 14px;
+    }
+    ul.ui-autocomplete li .autocomplete-desc {
+      font-size: 10px;
+    }
+
     div.panel .library h2,
     div.panel .library p{
       margin: 0;

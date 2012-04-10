@@ -16,7 +16,7 @@ $(function(){
       '<div class="library">'+
         '<button class="button close">close</button>'+
         '<form class="addbyurl">'+
-          '<input class="addbyurlinput" name="addbyurlinput" placeholder="load by url" type="text" />'+
+          '<input class="addbyurlinput" name="addbyurlinput" placeholder="search or url" type="text" />'+
           '<button class="addbyurlsubmit" type="submit">load</button>'+
         '</form>'+
       '</div>'+
@@ -34,7 +34,8 @@ $(function(){
       "click .sourcerefresh":  "sourcerefresh",
       "click .sourcecompress": "sourcecompress",
       "click .sourceapply":    "sourceapply",
-      "submit .addbyurl":      "addbyurl"
+      "submit .addbyurl":      "addbyurl",
+      "autocompleteselect .addbyurlinput": "addbyurl",
     },
     initialize: function () {
       this.render();
@@ -143,10 +144,34 @@ $(function(){
     },
     loadLibrary: function (library) {
       this.Library = library;
+      var autocompleteData = [];
       Iframework.Library.each(function(module){
         module.initializeView();
         // this.$(".panel .library").append( module.view.el );
+        var autocompleteDataItem = {
+          value: module.get("src"),
+          label: module.get("info").title + " by " + module.get("info").author + " - " + module.get("info").description + " " + module.get("src"),
+          title: module.get("info").title,
+          desc: module.get("info").description
+        };
+        autocompleteData.push(autocompleteDataItem);
       }, this);
+
+      this.$('.addbyurlinput')
+        .autocomplete({
+          minLength: 1,
+          source: autocompleteData
+          // select: function(event, ui) { 
+          //   // Autoload on enter or click
+          //   $('form.addbyurl').submit(); 
+          // }
+        })
+        .data( "autocomplete" )._renderItem = function( ul, item ) {
+          return $( "<li></li>" )
+            .data( "item.autocomplete", item )
+            .append( '<a title="'+item.value+'">' + item.title + '<br /><span class="autocomplete-desc">' + item.desc + "</span></a>" )
+            .appendTo( ul );
+        };
     },
     closepanels: function() {
       this.$(".panel .options").show();
@@ -176,6 +201,7 @@ $(function(){
       this.showsource();
     },
     addbyurl: function() {
+      $(".addbyurlinput").blur();
       var url = this.$(".addbyurlinput").val();
       if (url != "") {
         this.shownGraph.addNode( new Iframework.Node({"src": url}) );
