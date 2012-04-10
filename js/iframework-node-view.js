@@ -5,7 +5,12 @@ $(function(){
       '<div class="ports ports-in"></div>'+
       '<div class="ports ports-out"></div>'+
       '<h1 class="title">...</h1>'+
-      '<button type="button" class="remove">remove</button>'+
+      '<button type="button" class="showcontrols">show controls</button>'+
+      '<div class="controls">'+
+        '<button type="button" class="remove">remove</button>'+
+        '<button type="button" class="refresh">refresh</button>'+
+        '<button type="button" class="hidecontrols">hide controls</button>'+
+      '</div>'+
       '<iframe class="frame" name="<%= frameIndex %>" src="<%= get("src") %>" style="width:<%= get("w") %>px;height:<%= get("h") %>px;"></iframe>'+
     '</div>';
 
@@ -22,6 +27,9 @@ $(function(){
       "resizestop .module":  "resizestop",
       "mousedown .module, .title": "mousedown",
       "click .module, .title": "click",
+      "click .showcontrols": "showControls",
+      "click .hidecontrols": "hideControls",
+      "click .refresh":      "refresh",
       "click .remove":       "removeModel"
     },
     initialize: function () {
@@ -29,13 +37,14 @@ $(function(){
       this.$(".module")
         .draggable()
         .resizable();
+      this.$(".showcontrols")
+        .button({ icons: { primary: "ui-icon-carat-1-w" }, text: false });
+      this.$(".hidecontrols")
+        .button({ icons: { primary: "ui-icon-carat-1-e" }, text: false });
+      this.$(".refresh")
+        .button({ icons: { primary: "ui-icon-arrowrefresh-1-s" }, text: false });
       this.$(".remove")
-        .button({
-          icons: {
-            primary: "ui-icon-trash"
-          },
-          text: false
-        });
+        .button({ icons: { primary: "ui-icon-trash" }, text: false });
     },
     render: function () {
       this.$el.html(this.template(this.model));
@@ -133,10 +142,19 @@ $(function(){
     addOutput: function (port) {
       this.$(".ports-out").append( port.initializeView().el );
     },
+    showControls: function () {
+      this.$(".showcontrols").hide();
+      this.$(".controls").show();
+    },
+    hideControls: function () {
+      this.$(".showcontrols").show();
+      this.$(".controls").hide();
+    },
+    refresh: function () {
+      this.$(".frame")[0].src = this.model.get("src");
+    },
     removeModel: function () {
-      if (confirm("Are you sure?")) {
-        this.model.remove();
-      }
+      this.model.remove();
     },
     remove: function () {
       this.$el.remove();

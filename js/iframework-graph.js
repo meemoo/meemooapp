@@ -47,7 +47,6 @@ $(function(){
         node.set({"id": count});
       }
       // Make sure node id is unique
-      // Firefox doesn't like removing frames then adding with same name
       while ( this.usedIds.indexOf(node.get('id')) >= 0 ) {
         count++;
         node.set({"id": count});

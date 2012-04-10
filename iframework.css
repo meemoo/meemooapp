@@ -122,16 +122,22 @@ div.module {
     div.module.active h1.title {
       color: #333;
     }
-  div.module button.remove {
-    /*display: none;*/
+  div.module button.showcontrols,
+  div.module div.controls {
+    /*/*display: none;*/
     position: absolute;
     top: 5px;
     right: 5px;
-    width: 17px;
-    height: 17px;
   }
-    div.module.active button.remove {
-      /*display: inline;*/
+  div.module div.controls {
+    display: none;
+    text-align: right;
+  }
+    div.module button.showcontrols,
+    div.module div.controls button {
+      margin-left: 3px;
+      width: 18px;
+      height: 18px;
     }
   div.module iframe {
     border: 1px #AAA solid;
