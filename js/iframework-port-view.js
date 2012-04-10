@@ -29,8 +29,6 @@ $(function(){
     popupTemplate: _.template(popupTemplate),
     edgeEditTemplate: _.template(edgeEditTemplate),
     events: {
-      "mouseover .hole":             "mouseoverhole",
-      "mouseout .hole":              "mouseouthole",
       "click .hole":                 "clickhole",
       "dragstart .hole":             "dragstart",
       "drag .hole, .holehelper":     "drag",
@@ -76,37 +74,6 @@ $(function(){
         hoverClass: "drophover"
       });
       
-    },
-    mouseoverhole: function(event){
-      // Click-connect edge preview
-      if ( Iframework.selectedPort && (Iframework.selectedPort.isIn !== this.model.isIn) ) {
-        if (!Iframework.edgePreview) {
-          var edgePreview = new Iframework.EdgeView();
-          Iframework.edgePreview = edgePreview;
-          Iframework.shownGraph.view.$(".edges").append( edgePreview.el );
-        }
-        // Edge preview
-        var from = (this.model.isIn ? Iframework.selectedPort : this.model);
-        var to = (this.model.isIn ? this.model : Iframework.selectedPort);
-        var fromOffset = from.view.$(".hole").offset();
-        var toOffset = to.view.$(".hole").offset();
-        var positions = {
-          fromX: fromOffset.left + 7,
-          fromY: fromOffset.top + 7,
-          toX: toOffset.left + 7,
-          toY: toOffset.top + 7
-        };
-        Iframework.edgePreview.setPositions(positions);
-        Iframework.edgePreview.tapPreview = true;
-        Iframework.edgePreview.redraw();
-      }
-    },
-    mouseouthole: function(event){
-      // Click-connect edge preview
-      if ( Iframework.edgePreview && Iframework.edgePreview.tapPreview) {
-        Iframework.shownGraph.view.$(".edges").children(".preview").remove();
-        Iframework.edgePreview = undefined;
-      }
     },
     dragstart: function (event, ui) {
       // Add a mask so that iframes don't steal mouse
@@ -291,12 +258,6 @@ $(function(){
           popupEl.append(inputForm);
         }
       }
-      popupEl.append('<h2>connect</h2>');
-      popupEl.append('<p>drag wire from port or:</p>');
-      popupEl.append('<label for="select_'+this.model.id+'" class="armconnect_label">click</label>');
-      popupEl.append(
-        $('<input type="checkbox" class="armconnect" id="select_'+this.model.id+'" />')
-      );
       $("#select_"+this.model.id)
         .button({
           icons: {
