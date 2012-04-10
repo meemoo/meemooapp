@@ -17,7 +17,7 @@ $(function(){
   // Router
   var IframeworkRouter = Backbone.Router.extend({
     routes: {
-      "/example/:url": "loadExample", // #/example/url
+      "example/:url": "loadExample", // #/example/url
       "*path":        "default"
     },
     loadExample: function(url) {
