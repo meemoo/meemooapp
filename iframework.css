@@ -318,20 +318,26 @@ div.panel {
     height: 400px;
     overflow: auto;
   }
+    div.panel .library .controls {
+    }
+    div.panel .library .listing {
+      height: 360px;
+      overflow: auto;
+    }
     div.panel .library form{
       margin-bottom: 10px;
     }
 
     div.panel .library input.addbyurlinput {
-      width: 250px;
+      width: 275px;
       margin-right: 5px;
     }
 
     ul.ui-autocomplete {
-      font-size: 14px;
-    }
-    ul.ui-autocomplete li .autocomplete-desc {
       font-size: 10px;
+    }
+    ul.ui-autocomplete li .autocomplete-title {
+      font-size: 14px;
     }
 
     div.panel .library h2,

@@ -8,6 +8,7 @@ $(function(){
       default: null
     },
     initialize: function () {
+      // To sanitize data:image/gif types for css class
       this.set( "type_class", this.get("type").split("/")[0].replace(":", "_") );
     },
     initializeView: function () {

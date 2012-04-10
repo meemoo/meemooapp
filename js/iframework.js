@@ -14,11 +14,15 @@ $(function(){
         '<button class="button sourceapply" title="reloads the app">apply changes</button>'+
       '</div>'+
       '<div class="library">'+
-        '<button class="button close">close</button>'+
-        '<form class="addbyurl">'+
-          '<input class="addbyurlinput" name="addbyurlinput" placeholder="search or url" type="text" />'+
-          '<button class="addbyurlsubmit" type="submit">load</button>'+
-        '</form>'+
+        '<div class="controls">'+
+          '<button class="button close">close</button>'+
+          '<form class="addbyurl">'+
+            '<input class="addbyurlinput" name="addbyurlinput" placeholder="search or url" type="text" />'+
+            '<button class="addbyurlsubmit" type="submit">load</button>'+
+          '</form>'+
+        '</div>'+
+        '<div class="listing">'+
+        '</div>'+
       '</div>'+
     '</div>';
   
@@ -169,7 +173,7 @@ $(function(){
         .data( "autocomplete" )._renderItem = function( ul, item ) {
           return $( "<li></li>" )
             .data( "item.autocomplete", item )
-            .append( '<a title="'+item.value+'">' + item.title + '<br /><span class="autocomplete-desc">' + item.desc + "</span></a>" )
+            .append( '<a title="'+item.value+'"><span class="autocomplete-title">' + item.title + '</span><br /><span class="autocomplete-desc">' + item.desc + "</span></a>" )
             .appendTo( ul );
         };
     },
@@ -210,7 +214,7 @@ $(function(){
           .attr("placeholder", "loading...");
         window.setTimeout(function(){
           this.$(".addbyurlinput")
-            .attr("placeholder", "load by url");
+            .attr("placeholder", "search or url");
         },1000);
       }
       return false;

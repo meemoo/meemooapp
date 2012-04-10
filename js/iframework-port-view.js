@@ -278,6 +278,16 @@ $(function(){
         });
       }
 
+      // This input's options
+      console.log(this.model);
+      if (this.model.get("options") && this.model.get("options").length > 0) {
+        console.log(this.model.get("options"));
+        this.$('input').autocomplete({
+          minLength: 0,
+          source: this.model.get("options"),
+        });
+      }
+
       // Don't fire click on graph
       event.stopPropagation();
     },
