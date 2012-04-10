@@ -1,12 +1,12 @@
 $(function(){
 
   var portInTemplate = 
-    '<span class="hole hole-in hole-<%= name %>"></span>'+
+    '<span class="hole hole-in hole-<%= name %> hole-<%= type_class %>"></span>'+
     '<span class="label"><%= name %></span>';
     
   var portOutTemplate = 
     '<span class="label"><%= name %></span>'+
-    '<span class="hole hole-out hole-<%= name %>"></span>';
+    '<span class="hole hole-out hole-<%= name %> hole-<%= type_class %>"></span>';
     
   var popupTemplate =
     '<div class="edge-edit">'+
@@ -113,7 +113,9 @@ $(function(){
       Iframework.maskFrames();
       
       // Highlight all ins or outs
-      $("div.ports-"+(this.model.isIn ? "out" : "in")+" span.hole").addClass("highlight");
+      // $("div.ports-"+(this.model.isIn ? "out" : "in")+" span.hole").addClass("highlight");
+      $("div.ports-"+(this.model.isIn ? "out" : "in")+" span.hole-" + this.model.get('type_class'))
+        .addClass('highlight');
       
       // Edge preview
       var edgePreview = new Iframework.EdgeView();

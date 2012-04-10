@@ -8,6 +8,7 @@ $(function(){
       default: null
     },
     initialize: function () {
+      this.set( "type_class", this.get("type").split("/")[0].replace(":", "_") );
     },
     initializeView: function () {
       return this.view = new Iframework.PortView({model:this});
