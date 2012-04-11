@@ -258,6 +258,7 @@ div.ui-resizable-helper {
   display: inline-block;
   border: 1px black dotted;
 }
+
 div.ui-draggable-helper {
   display: inline-block;
   border: 1px black dotted;
@@ -394,6 +395,24 @@ div.panel {
       clear: left;
     }
 
+
+/* jQuery UI overrides */
+
+.ui-resizable-e {
+  height: auto;
+  bottom: 15px;
+}
+.ui-resizable-s {
+  width: auto;
+  right: 15px;
+}
+.ui-resizable-se {
+  bottom: -5px;
+  cursor: se-resize;
+  height: 18px;
+  right: -5px;
+  width: 18px;
+}
 
 
 
