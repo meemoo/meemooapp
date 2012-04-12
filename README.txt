@@ -41,3 +41,19 @@ Donations:
  Dwolla: https://www.dwolla.com/u/812-611-6468?action=send&memo=Support%20Meemoo%20development!&amount=2.00&repeats=0
  Flattr: http://flattr.com/thing/183497/Meemoo-web-media-wiring
  Paypal: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=K7UYG9Y6XLHHS
+
+
+       ________________
+     /\  _____________ \
+    /  \ \___________/\ \
+   / /\ \ \       / /\ \ \  w
+  / / /\ \ \_____/ / /\ \ \  a
+ / /_/__\ \ \_____/ /  \ \ \  t
+ \ \ \___\ \ \___/\ \   \ \ \
+  \ \ \   \ \ \__\ \ \___\_\ \
+   \ \ \   \ \____\ \ \_______\
+    \ \ \  / / ____\ \ \___   /
+     \ \ \/ / /     \ \ \/ / /
+      \ \/ / /_______\_\/ / /
+       \  / /___________\/ /
+        \/________________/
