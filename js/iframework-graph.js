@@ -53,7 +53,16 @@ $(function(){
       }
       this.usedIds.push( node.get('id') );
 
-      node.frameIndex = "frame_"+node.get('id')+"_"+(Iframework.frameCount++);
+      // Minimal security so nodes can't send messages to other nodes unless they have been wired to them
+      var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789---";
+      var minimalSecurity = "";
+      for (var i=0; i<5; i++) {
+        minimalSecurity += keyStr.charAt(Math.floor(Math.random()*keyStr.length));
+      }
+
+      // Iframework.frameCount works around a FF bug with recycling iframes with the same name
+      node.frameIndex = "frame_"+node.get('id')+"_"+(Iframework.frameCount++)+"_"+minimalSecurity;
+      console.log(node.frameIndex);
 
       this.get("nodes").add(node);
       node.graph = this;
