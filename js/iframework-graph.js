@@ -42,8 +42,9 @@ $(function(){
     },
     addNode: function (node) {
       var count = this.get("nodes").length;
-      // Give id if not defined
-      if (!node.get('id') || node.get('id') === "") {
+      // Give id if not defined or NaN
+      var nodeId = parseInt(node.get('id'), 10);
+      if (nodeId !== nodeId) {
         node.set({"id": count});
       }
       // Make sure node id is unique
