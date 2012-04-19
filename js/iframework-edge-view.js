@@ -17,6 +17,9 @@ $(function(){
       if (!this.model) {
         this.isPreview = true;
       }
+      if (this.model && this.model._color) {
+        this._color = this.model._color;
+      }
       this.render();
     },
     render: function () {

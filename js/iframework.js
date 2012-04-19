@@ -250,6 +250,6 @@ $(function(){
   window.addEventListener("message", Iframework.gotMessage, false);
   
   // Disable selection for better drag+drop
-  // $('body').disableSelection();
+  $('body').disableSelection();
 
 });

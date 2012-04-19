@@ -89,9 +89,10 @@ $(function(){
       this.drag();
       // Save position to model
       this.model.set({
-        x: ui.offset.left + 10,
-        y: ui.offset.top + 30
+        x: ui.offset.left + 10 + $('.graph').scrollLeft(),
+        y: ui.offset.top + 30 + $('.graph').scrollTop()
       });
+      this.model.graph.view.resizeEdgeSVG();
     },
     resizestart: function (event, ui) {
       // Add a mask so that iframes don't steal mouse
@@ -116,6 +117,7 @@ $(function(){
         width: newW - 20,
         height: newH - 40
       });
+      this.model.graph.view.resizeEdgeSVG();
       // Rerender related edges
       this.drag();
     },

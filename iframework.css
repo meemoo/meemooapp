@@ -98,7 +98,6 @@ div.module {
   top: 0;
   left: 0;
   z-index:2;
-  cursor: move;
 }
   div.module.active {
     border: 1px #333 solid;

@@ -44,7 +44,6 @@ $(function(){
       "dragstop .plugend":           "unplugstop",
       "drop":                        "drop",
       "click .disconnect":           "disconnect",
-      "click .armconnect":           "armconnect",
       "submit .manualinput":         "manualinput"
     },
     initialize: function () {
@@ -156,23 +155,33 @@ $(function(){
       event.stopPropagation();
     },
     drop: function (event, ui) {
-      var from = $(ui.draggable).data("model");
-      var to = this.model;
-      var source = (this.model.isIn ? from : to);
-      var target = (this.model.isIn ? to : from);
-      var edge = new Iframework.Edge({
-        source: [source.node.get("id"), source.get("name")],
-        target: [target.node.get("id"), target.get("name")]
-      });
-      edge.graph = this.model.graph;
-      if (edge.graph.addEdge(edge)){
-        edge.connect();
+      // HACK will drop always fire before dragstop?
+      if (this.armDelete) {
+        // Don't disconnect or reconnect wire dragged back to same port
+        this.armDelete = false;
+      } else {
+        var from = $(ui.draggable).data("model");
+        var to = this.model;
+        var source = (this.model.isIn ? from : to);
+        var target = (this.model.isIn ? to : from);
+        var edge = new Iframework.Edge({
+          source: [source.node.get("id"), source.get("name")],
+          target: [target.node.get("id"), target.get("name")]
+        });
+        edge.graph = this.model.graph;
+        if (Iframework.edgePreview) {
+          edge._color = Iframework.edgePreview._color;
+        }
+        if (edge.graph.addEdge(edge)){
+          edge.connect();
+        }
       }
-
       // Don't bubble
       event.stopPropagation();
     },
     unpluggingEdge: null,
+    armDeleteTimeout: null,
+    armDelete: false,
     unplugstart: function (event, ui) {
       // Add a mask so that iframes don't steal mouse
       Iframework.maskFrames();
@@ -207,16 +216,10 @@ $(function(){
       edgePreview.setColor(this.unpluggingEdge.view._color);
       Iframework.edgePreview = edgePreview;
 
-      // Arm delete
-      this.armDelete();
+      this.armDelete = true;
 
       // Don't drag module
       event.stopPropagation();
-    },
-    armDelete: function() {
-      // window.setTimeout( function(this){
-      //   this.$(".plugend").text("X");
-      // }, 500);
     },
     unplugdrag: function (event, ui) {
       if (Iframework.edgePreview && this.unpluggingEdge) {
@@ -240,8 +243,13 @@ $(function(){
       event.stopPropagation();
     },
     unplugstop: function (event, ui) {
-      this.$(".plugend").show();
-      this.unpluggingEdge.view.undim();
+      if (this.armDelete && this.unpluggingEdge) {
+        this.model.graph.removeEdge(this.unpluggingEdge);
+      } else {
+        this.$(".plugend").show();
+        this.unpluggingEdge.view.undim();
+      }
+      this.armDelete = false;
       this.unpluggingEdge = null;
 
       this.dragstop(event, ui);
@@ -417,10 +425,6 @@ $(function(){
       this.model.node.trigger("change");
       $('div.edge-edit').remove();
       return false;
-    },
-    armconnect: function (event) {
-      this.$(".armconnect_label .ui-button-text").text("now click other port");
-      Iframework.selectedPort = this.model;
     },
     disconnect: function (event) {
       //HACK

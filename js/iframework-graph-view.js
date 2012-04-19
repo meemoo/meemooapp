@@ -18,6 +18,8 @@ $(function(){
       Iframework.$el.prepend(this.el);
 
       this.model.get("nodes").each(this.addNode);
+
+      this.resizeEdgeSVG();
     },
     render: function () {
       this.$el.html(this.template(this.model.toJSON()));
@@ -60,6 +62,25 @@ $(function(){
       if (edge.target.view) {
         edge.target.view.resetRelatedEdges();
       }
+    },
+    resizeEdgeSVG: function () {
+      var width = 0;
+      var height = 0;
+      this.model.get('nodes').each(function(node){
+        var thisRight = node.get('x') + node.get('w');
+        if ( thisRight > width ) {
+          width = thisRight;
+        }
+        var thisBottom = node.get('y') + node.get('h');
+        if ( thisBottom > height ) {
+          height = thisBottom;
+        }
+      }, this);
+      width += 150;
+      this.$('#edgesSvg').css({
+        "width":width,
+        "height":height,
+      });
     }
     
   });
