@@ -78,7 +78,7 @@ div.edge-edit {
 
 div.edge-edit,
 div.module,
-div.ports div.port,
+div.ports div.portshown,
 div.showpanel {
   border: 1px #AAA solid;
   background-color: rgba(255, 255, 255, 0.85);
@@ -113,6 +113,10 @@ div.module {
     position: absolute;
     top: 2px;
     left: 10px;
+    right: 25px;
+
+    white-space: nowrap;
+    overflow: hidden;
     
     margin: 0;
     padding: 5px 0;
@@ -151,45 +155,52 @@ div.module {
   }
   div.module div.ports {
     cursor: default;
+    width: 99px;
   }
-    div.module.active div.port {
-      border: 1px #666 solid;
+    div.port {
+      position: relative;
+      width: 99px;
+      margin-top: -1px;
+    }
+    div.module.active div.portshown {
+      border-color: #666;
     }
   div.module div.ports-in {
     position: absolute;
-    left: -79px;
+    left: -99px;
     top: 0;
   }
-    div.ports-in div.port-in {
+    div.port-in div.portshown-in {
       position: relative;
+      right: -20px;
+
       border-top-left-radius: 3px; 
       border-bottom-left-radius: 3px; 
       border-right: none;
       width: 76px;
       height: 17px;
       padding: 1px 0 0 1px;
-      margin-top: -1px;
     }
-      div.port-in .hole{
+      div.portshown-in .hole{
         position: absolute;
         top: 1px;
         left: 1px;
       }
-      div.port-in .label{
+      div.portshown-in .label{
         position: absolute;
         top: 4px;
         left: 20px;
       }
-      div.port-in div.edge-edit{
+      div.portshown-in div.edge-edit{
         left: 2px;
         top: 15px;
       }
   div.module div.ports-out {
     position: absolute;
-    right: -79px;
+    right: -100px;
     bottom: -1px;
   }
-    div.ports-out div.port-out {
+    div.ports-out div.portshown-out {
       position: relative;
       text-align: right;
       border-top-right-radius: 3px; 
@@ -199,18 +210,19 @@ div.module {
       height: 17px;
       padding: 1px 0 0 0;
       margin-top: -1px;
+      margin-right: 20px;
     }
-      div.port-out .hole{
+      div.portshown-out .hole{
         position: absolute;
         top: 1px;
         right: 0px;
       }
-      div.port-out .label{
+      div.portshown-out .label{
         position: absolute;
         top: 4px;
         right: 22px;
       }
-      div.port-out div.edge-edit{
+      div.portshown-out div.edge-edit{
         left: 59px;
         top: 15px;
       }
@@ -218,7 +230,6 @@ div.module {
   div.port span.hole,
   span.holehelper {
     cursor: pointer;
-    border-radius: 3px;
     display: inline-block;
     width: 14px;
     height: 14px;
@@ -230,9 +241,34 @@ div.module {
   div.port.drophover span.hole {
     border-color: #090;
   }
+  span.plugend,
+  span.plugendhelper,
   span.holehelper {
-    border-color: #CCC;
+    cursor: pointer;
+    display: block;
+    width: 19px;
+    height: 13px;
+    background: url("img/plugs.png") no-repeat;
+    position: absolute;
   }
+    span.plugend-in,
+    span.plugendhelper-in,
+    span.holehelper-in {
+      background-position: 0px 0px;
+    }
+    span.plugend-in {
+      top: 3px;
+      left: 2px;
+    }
+    span.plugend-out,
+    span.plugendhelper-out,
+    span.holehelper-out {
+      background-position: 0px -13px;
+    }
+    span.plugend-out {
+      top: 3px;
+      right: 3px;
+    }
   div.port span.label {
     font-family: 'Nova Flat', monospace;
     color: #666;
@@ -285,6 +321,16 @@ div.edges {
     path.wire-shadow {
       stroke: #AAA;
     }
+
+#edgesSvg {
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:0;
+
+  width: 1500px;
+  height: 1000px;
+}
   
 div.showpanel {
   position: fixed;

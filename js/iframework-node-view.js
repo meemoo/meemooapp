@@ -35,7 +35,7 @@ $(function(){
     initialize: function () {
       this.render();
       this.$(".module")
-        .draggable()
+        .draggable({ handle: "h1" })
         .resizable();
       this.$(".showcontrols")
         .button({ icons: { primary: "ui-icon-carat-1-w" }, text: false });

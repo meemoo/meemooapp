@@ -1,7 +1,9 @@
 $(function(){
 
   var template = 
-    '<div class="edges" />'+
+    '<div class="edges">'+
+      '<svg id="edgesSvg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></svg>'+
+    '</div>'+
     '<div class="nodes" />';
 
   Iframework.GraphView = Backbone.View.extend({
@@ -14,7 +16,7 @@ $(function(){
     initialize: function () {
       this.render();
       Iframework.$el.prepend(this.el);
-      
+
       this.model.get("nodes").each(this.addNode);
     },
     render: function () {
@@ -33,7 +35,8 @@ $(function(){
       this.$(".nodes").append( node.initializeView().el );
     },
     addEdge: function (edge) {
-      this.$(".edges").append( edge.initializeView().el );
+      edge.initializeView();
+      // this.$(".edges").append( edge.initializeView().el );
     },
     removeNode: function (node) {
       if (node.view) {
@@ -42,7 +45,7 @@ $(function(){
     },
     removeEdge: function (edge) {
       if (edge.view) {
-        edge.view.$el.remove();
+        edge.view.remove();
       }
     }
     

@@ -1,12 +1,18 @@
 $(function(){
 
   var portInTemplate = 
-    '<span class="hole hole-in hole-<%= name %> hole-<%= type_class %>"></span>'+
-    '<span class="label"><%= name %></span>';
+    '<div class="portshown portshown-in">'+
+      '<span class="hole hole-in hole-<%= name %> hole-<%= type_class %>"></span>'+
+      '<span class="label"><%= name %></span>'+
+    '</div>'+
+    '<span class="plugend plugend-in"></span>';
     
   var portOutTemplate = 
-    '<span class="label"><%= name %></span>'+
-    '<span class="hole hole-out hole-<%= name %> hole-<%= type_class %>"></span>';
+    '<div class="portshown portshown-out">'+
+      '<span class="label"><%= name %></span>'+
+      '<span class="hole hole-out hole-<%= name %> hole-<%= type_class %>"></span>'+
+    '</div>'+
+    '<span class="plugend plugend-out"></span>';
     
   var popupTemplate =
     '<div class="edge-edit">'+
@@ -33,6 +39,9 @@ $(function(){
       "dragstart .hole":             "dragstart",
       "drag .hole, .holehelper":     "drag",
       "dragstop .hole, .holehelper": "dragstop",
+      "dragstart .plugend":          "unplugstart",
+      "drag .plugend":               "unplugdrag",
+      "dragstop .plugend":           "unplugstop",
       "drop":                        "drop",
       "click .disconnect":           "disconnect",
       "click .armconnect":           "armconnect",
@@ -46,20 +55,39 @@ $(function(){
       if (this.model.isIn) {
         this.$el.html( this.portInTemplate(this.model.toJSON()) );
         this.$el.addClass("port-in");
+        this.$(".hole")
+          .draggable({
+            helper: function (e) {
+              return $('<span class="holehelper holehelper-out" />');
+            }
+          })
+        this.$(".plugend")
+          .draggable({
+            helper: function (e) {
+              return $('<span class="plugendhelper plugendhelper-in" />');
+            }
+          })
       } else {
         this.$el.html( this.portOutTemplate(this.model.toJSON()) );
         this.$el.addClass("port-out");
+        this.$(".hole")
+          .draggable({
+            helper: function (e) {
+              return $('<span class="holehelper holehelper-in" />');
+            }
+          })
+        this.$(".plugend")
+          .draggable({
+            helper: function (e) {
+              return $('<span class="plugendhelper plugendhelper-out" />');
+            }
+          })
       }
 
       // Drag from hole
       this.$(".hole")
         .data({
           model: this.model
-        })
-        .draggable({
-          helper: function (e) {
-            return $('<span class="holehelper holehelper-in" />');
-          }
         })
         .button({
           icons: {
@@ -70,9 +98,11 @@ $(function(){
         
       // Drag to port
       this.$el.droppable({
-        accept: this.model.isIn ? ".hole-out" : ".hole-in",
+        accept: this.model.isIn ? ".hole-out, .plugend-in" : ".hole-in, .plugend-out",
         hoverClass: "drophover"
       });
+
+      this.$(".plugend").hide();
       
     },
     dragstart: function (event, ui) {
@@ -87,23 +117,22 @@ $(function(){
       // Edge preview
       var edgePreview = new Iframework.EdgeView();
       Iframework.edgePreview = edgePreview;
-      Iframework.shownGraph.view.$(".edges").append( edgePreview.el );
 
       // Don't drag module
       event.stopPropagation();
     },
     drag: function (event, ui) {
       if (Iframework.edgePreview) {
-        var dragX = ui.offset.left + 7;
-        var dragY = ui.offset.top + 7;
-        var thisX = this.$(".hole").offset().left + 7;
-        var thisY = this.$(".hole").offset().top + 7;
+        var dragX = ui.offset.left + $('.graph').scrollLeft();
+        var dragY = ui.offset.top + 6 + $('.graph').scrollTop();
+        var thisX = this.portOffsetLeft();
+        var thisY = this.portOffsetTop();
         
         // Edge preview
         var positions = {
-          fromX: (this.model.isIn ? dragX : thisX),
+          fromX: (this.model.isIn ? dragX-2 : thisX),
           fromY: (this.model.isIn ? dragY : thisY),
-          toX: (this.model.isIn ? thisX : dragX),
+          toX: (this.model.isIn ? thisX : dragX+20),
           toY: (this.model.isIn ? thisY : dragY)
         };
         Iframework.edgePreview.setPositions(positions);
@@ -119,7 +148,7 @@ $(function(){
       $(".hole").removeClass("highlight");
       
       // Edge preview
-      Iframework.shownGraph.view.$(".edges").children(".preview").remove();
+      Iframework.edgePreview.remove();
       Iframework.edgePreview = undefined;
 
       // Don't drag module
@@ -141,6 +170,80 @@ $(function(){
 
       // Don't bubble
       event.stopPropagation();
+    },
+    unpluggingEdge: null,
+    unplugstart: function (event, ui) {
+      // Add a mask so that iframes don't steal mouse
+      Iframework.maskFrames();
+
+      // Find top connected wire
+      var lastConnected;
+      var countConnected = 0;
+      this.model.graph.get("edges").each(function(edge){
+        if (edge.source === this.model || edge.target === this.model) {
+          countConnected++;
+          lastConnected = edge;
+        }
+      }, this);
+
+      if (!lastConnected) { return false; }
+
+      this.unpluggingEdge = lastConnected;
+      this.unpluggingEdge.view.dim();
+      if (countConnected===1) {
+        this.$(".plugend").hide();
+      }
+
+      var thatPort = this.model.isIn ? this.unpluggingEdge.source : this.unpluggingEdge.target;
+      this.$(".plugend").data("model", thatPort);
+      
+      // Highlight related ins or outs
+      $("div.ports-"+(this.model.isIn ? "in" : "out")+" span.hole-" + this.model.get('type_class'))
+        .addClass('highlight');
+      
+      // Edge preview
+      var edgePreview = new Iframework.EdgeView();
+      edgePreview.setColor(this.unpluggingEdge.view._color);
+      Iframework.edgePreview = edgePreview;
+
+      // Arm delete
+      this.armDelete();
+
+      // Don't drag module
+      event.stopPropagation();
+    },
+    armDelete: function() {
+      // window.setTimeout( function(this){
+      //   this.$(".plugend").text("X");
+      // }, 500);
+    },
+    unplugdrag: function (event, ui) {
+      if (Iframework.edgePreview && this.unpluggingEdge) {
+        var dragX = ui.offset.left + $('.graph').scrollLeft();
+        var dragY = ui.offset.top + 6 + $('.graph').scrollTop();
+        var thatPortView = this.model.isIn ? this.unpluggingEdge.source.view : this.unpluggingEdge.target.view;
+        var thatX = thatPortView.portOffsetLeft();
+        var thatY = thatPortView.portOffsetTop();
+        
+        // Edge preview
+        var positions = {
+          fromX: (this.model.isIn ? thatX : dragX-2),
+          fromY: (this.model.isIn ? thatY : dragY),
+          toX: (this.model.isIn ? dragX+20 : thatX),
+          toY: (this.model.isIn ? dragY : thatY)
+        };
+        Iframework.edgePreview.setPositions(positions);
+        Iframework.edgePreview.redraw();
+      }
+      // Don't drag module
+      event.stopPropagation();
+    },
+    unplugstop: function (event, ui) {
+      this.$(".plugend").show();
+      this.unpluggingEdge.view.undim();
+      this.unpluggingEdge = null;
+
+      this.dragstop(event, ui);
     },
     clickhole: function (event) {
       // Hide previous connected edges editor
@@ -279,7 +382,6 @@ $(function(){
       }
 
       // This input's options
-      console.log(this.model);
       if (this.model.get("options") && this.model.get("options").length > 0) {
         console.log(this.model.get("options"));
         this.$('input').autocomplete({

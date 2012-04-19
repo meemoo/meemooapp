@@ -1,47 +1,63 @@
 $(function(){
 
-  var template = 
-    '<svg class="wire" xmlns="http://www.w3.org/2000/svg" version="1.1" style="position:absolute;left:<%= svgX() %>px;top:<%= svgY() %>px;width:<%= svgW() %>px;height:<%= svgH() %>px;">'+
-      '<path class="wire-shadow" d="<%= svgPathShadow() %>" />'+
-      '<path class="wire" d="<%= svgPath() %>" stroke="<%= color() %>" />'+
-    '</svg>';
-
   Iframework.EdgeView = Backbone.View.extend({
     tagName: "div",
     className: "edge",
-    template: _.template(template),
-    positions: {},
+    // template: _.template(template),
+    positions: null,
+    graphSVGElement: null,
+    // This is the only view that doesn't follow the Backbone convention, for the sake of the universal SVG
+    elementGroup: null,
+    elementWire: null,
+    elementShadow: null,
+    isPreview: false,
     initialize: function () {
+      this.graphSVGElement = document.getElementById('edgesSvg');
+      this.positions = {};
+      if (!this.model) {
+        this.isPreview = true;
+      }
       this.render();
     },
     render: function () {
       this.calcPositions();
-      // Don't use .toJSON() because using .source and .target Node
-      this.$el.html(this.template(this));
-      // if (this.model) {
-      //   // Port insides
-      //   this.model.source.view.$("div.port-out span.hole-"+this.model.get("source")[1]).css("background-color", this.model.get("color"));
-      //   this.model.target.view.$("div.port-in span.hole-"+this.model.get("target")[1]).css("background-color", this.model.get("color"));
-      // } else {
-      if (!this.model) {
-        // While dragging to connect
-        this.$el.addClass("preview");
+
+      this.elementGroup = this.makeSVG('g', {
+        "transform": "translate("+this.svgX()+","+this.svgY()+")",
+        "class": "wire-group"+(this.isPreview ? " preview" : "")
+      });
+
+      this.elementShadow = this.makeSVG('path', {
+        "class": "wire-shadow",
+        "d": this.svgPathShadow()
+      });
+      this.elementWire = this.makeSVG('path', {
+        "class": "wire",
+        "d": this.svgPath(),
+        "stroke": this.color()
+      });
+
+      this.elementGroup.appendChild(this.elementShadow);
+      this.elementGroup.appendChild(this.elementWire);
+
+      this.graphSVGElement.appendChild(this.elementGroup);
+
+      // Unhide port plugends
+      if (this.model) {
+        this.model.source.view.$(".plugend").show();
+        this.model.target.view.$(".plugend").show();
       }
+
       return this;
     },
     redraw: function () {
       this.calcPositions();
-      this.$("svg").css({
-        "left": this.svgX(),
-        "top": this.svgY(),
-        "width": this.svgW(),
-        "height": this.svgH()
-      });
-      this.$("svg path.wire").attr("d", this.svgPath() );
-      this.$("svg path.wire-shadow").attr("d", this.svgPathShadow() );
+      $(this.elementGroup).attr( "transform", "translate("+this.svgX()+", "+this.svgY()+")" );
+      $(this.elementWire).attr( "d", this.svgPath() );
+      $(this.elementShadow).attr( "d", this.svgPathShadow() );
     },
     remove: function () {
-      this.$el.remove();
+      $(this.elementGroup).remove();
     },
     setPositions: function (_positions) {
       this.positions = _positions;
@@ -69,14 +85,16 @@ $(function(){
     svgH: function () {
       return Math.abs(this.positions.toY - this.positions.fromY) + 50;
     },
+    pathStraight: 35,
+    pathCurve: 60,
     svgPath: function () {
       var fromX = this.positions.fromX - this.svgX();
       var fromY = this.positions.fromY - this.svgY();
       var toX = this.positions.toX - this.svgX();
       var toY = this.positions.toY - this.svgY();
       return "M "+ fromX +" "+ fromY +
-        " L "+ (fromX+15) +" "+ fromY +
-        " C "+ (fromX+50) +" "+ fromY +" "+ (toX-50) +" "+ toY +" "+ (toX-15) +" "+ toY +
+        " L "+ (fromX+this.pathStraight) +" "+ fromY +
+        " C "+ (fromX+this.pathCurve) +" "+ fromY +" "+ (toX-this.pathCurve) +" "+ toY +" "+ (toX-this.pathStraight) +" "+ toY +
         " L "+ toX +" "+ toY;
     },
     svgPathShadow: function () {
@@ -86,8 +104,8 @@ $(function(){
       var toX = this.positions.toX - this.svgX();
       var toY = this.positions.toY - this.svgY() + 1;
       return "M "+ fromX +" "+ fromY +
-        " L "+ (fromX+15) +" "+ fromY +
-        " C "+ (fromX+50) +" "+ fromY +" "+ (toX-50) +" "+ toY +" "+ (toX-15) +" "+ toY +
+        " L "+ (fromX+this.pathStraight) +" "+ fromY +
+        " C "+ (fromX+this.pathCurve) +" "+ fromY +" "+ (toX-this.pathCurve) +" "+ toY +" "+ (toX-this.pathStraight) +" "+ toY +
         " L "+ toX +" "+ toY;
     },
     color: function () {
@@ -102,11 +120,35 @@ $(function(){
         return Iframework.wireColors[Iframework.wireColorIndex];
       }
     },
+    setColor: function(c) {
+      this._color = c;
+      $(this.elementWire).attr( "stroke", c );
+    },
     label: function () {
       return this.model.get("source")[0] +":"+ this.model.get("source")[1] + 
         '<span class="wiresymbol" style="color:' + this._color + '">&rarr;</span>' + 
         this.model.get("target")[0] +":"+ this.model.get("target")[1];
+    },
+    // Thanks bobince http://stackoverflow.com/a/3642265/592125
+    makeSVG: function(tag, attrs) {
+      var el= document.createElementNS('http://www.w3.org/2000/svg', tag);
+      for (var k in attrs) {
+        if (k === "xlink:href") {
+          // Pssh namespaces...
+          el.setAttributeNS('http://www.w3.org/1999/xlink','href', attrs[k]);
+        } else {
+          el.setAttribute(k, attrs[k]);
+        }
+      }
+      return el;
+    },
+    dim: function(){
+      $(this.elementGroup).attr("opacity", 0.2);
+    },
+    undim: function(){
+      $(this.elementGroup).attr("opacity", 1);
     }
+
 
   });
 
