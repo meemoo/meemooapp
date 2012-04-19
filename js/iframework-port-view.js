@@ -117,6 +117,7 @@ $(function(){
       // Edge preview
       var edgePreview = new Iframework.EdgeView();
       Iframework.edgePreview = edgePreview;
+      this.$('.plugend').show();
 
       // Don't drag module
       event.stopPropagation();
@@ -464,6 +465,7 @@ $(function(){
         } else {
           this.$(".plugend").hide();
         }
+        this.model.node.view.resetRelatedEdges();
       }
       return this._relatedEdges;
     },

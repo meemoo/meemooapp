@@ -35,12 +35,6 @@ $(function(){
       if (this.graph.view) {
         this.graph.view.addEdge(this);
       }
-      if (this.source.view) {
-        this.source.view.resetRelatedEdges();
-      }
-      if (this.target.view) {
-        this.target.view.resetRelatedEdges();
-      }
       return this;
     },
     disconnect: function () {
@@ -51,12 +45,6 @@ $(function(){
             target: [this.target.node.frameIndex, this.get("target")[1]]
           }
         });
-        if (this.source.view) {
-          this.source.view.resetRelatedEdges();
-        }
-        if (this.target.view) {
-          this.target.view.resetRelatedEdges();
-        }
       }
       if (this.view) {
         this.view.remove();

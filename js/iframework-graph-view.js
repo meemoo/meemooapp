@@ -36,7 +36,13 @@ $(function(){
     },
     addEdge: function (edge) {
       edge.initializeView();
-      // this.$(".edges").append( edge.initializeView().el );
+
+      if (edge.source.view) {
+        edge.source.view.resetRelatedEdges();
+      }
+      if (edge.target.view) {
+        edge.target.view.resetRelatedEdges();
+      }
     },
     removeNode: function (node) {
       if (node.view) {
@@ -46,6 +52,13 @@ $(function(){
     removeEdge: function (edge) {
       if (edge.view) {
         edge.view.remove();
+      }
+      
+      if (edge.source.view) {
+        edge.source.view.resetRelatedEdges();
+      }
+      if (edge.target.view) {
+        edge.target.view.resetRelatedEdges();
       }
     }
     

@@ -106,20 +106,23 @@ $(function(){
 
       this.get("nodes").remove(node);
 
-      this.eventsHistory
-        .add(new Iframework.Event({action: "removeNode", 
-                                   args: {"node": node, 
-                                          "edges": connected}}));
+      var removeEvent = new Iframework.Event({
+        action: "removeNode", 
+        args: {
+          "node": node, 
+          "edges": connected
+        }
+      });
+      this.eventsHistory.add( removeEvent );
 
       this.trigger("change");
     },
     removeEdge: function (edge) {
       edge.disconnect();
+      this.get("edges").remove(edge);
       if (this.view) {
         this.view.removeEdge(edge);
       }
-      this.get("edges").remove(edge);
-
       this.trigger("change");
     },
     checkLoaded: function () {
