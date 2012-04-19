@@ -248,8 +248,5 @@ $(function(){
   
   // Listen for /info messages from nodes
   window.addEventListener("message", Iframework.gotMessage, false);
-  
-  // Disable selection for better drag+drop
-  $('body').disableSelection();
 
 });

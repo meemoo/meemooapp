@@ -45,6 +45,10 @@ $(function(){
         .button({ icons: { primary: "ui-icon-arrowrefresh-1-s" }, text: false });
       this.$(".remove")
         .button({ icons: { primary: "ui-icon-trash" }, text: false });
+
+      // Disable selection for better drag+drop
+      $(this.el).disableSelection();
+
     },
     render: function () {
       this.$el.html(this.template(this.model));
