@@ -150,6 +150,9 @@ $(function(){
       // Edge preview
       Iframework.edgePreview.remove();
       Iframework.edgePreview = undefined;
+      if (this.relatedEdges().length < 1){
+        this.$('.plugend').hide();
+      }
 
       // Don't drag module
       event.stopPropagation();
@@ -160,6 +163,7 @@ $(function(){
         // Don't disconnect or reconnect wire dragged back to same port
         this.armDelete = false;
       } else {
+        // Connect wire
         var from = $(ui.draggable).data("model");
         var to = this.model;
         var source = (this.model.isIn ? from : to);
