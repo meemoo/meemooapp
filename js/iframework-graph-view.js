@@ -77,6 +77,7 @@ $(function(){
         }
       }, this);
       width += 150;
+      height += 50;
       this.$('#edgesSvg').css({
         "width":width,
         "height":height,
