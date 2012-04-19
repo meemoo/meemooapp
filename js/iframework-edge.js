@@ -32,14 +32,14 @@ $(function(){
           target: [this.target.node.frameIndex, this.get("target")[1]]
         }
       });
-      if (this.source.node.view) {
-        this.source.node.view._relatedEdges = null;
-      }
-      if (this.target.node.view) {
-        this.target.node.view._relatedEdges = null;
-      }
       if (this.graph.view) {
         this.graph.view.addEdge(this);
+      }
+      if (this.source.view) {
+        this.source.view.resetRelatedEdges();
+      }
+      if (this.target.view) {
+        this.target.view.resetRelatedEdges();
       }
       return this;
     },
@@ -51,11 +51,11 @@ $(function(){
             target: [this.target.node.frameIndex, this.get("target")[1]]
           }
         });
-        if (this.source.node.view) {
-          this.source.view._relatedEdges = null;
+        if (this.source.view) {
+          this.source.view.resetRelatedEdges();
         }
-        if (this.target.node.view) {
-          this.target.view._relatedEdges = null;
+        if (this.target.view) {
+          this.target.view.resetRelatedEdges();
         }
       }
       if (this.view) {

@@ -59,7 +59,6 @@ $(function(){
     },
     _relatedEdges: null,
     relatedEdges: function () {
-      // i10n? Don't have to filter through all edges, just ones connected to this node
       // Resets to null on dis/connect
       if ( this._relatedEdges === null ) {
         this._relatedEdges = this.model.graph.get("edges").filter( function (edge) {
@@ -67,6 +66,10 @@ $(function(){
         }, this);
       }
       return this._relatedEdges;
+    },
+    resetRelatedEdges: function () {
+      this._relatedEdges = null;
+      this.relatedEdges();
     },
     dragstart: function (event, ui) {
       // Add a mask so that iframes don't steal mouse

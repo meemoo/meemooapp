@@ -14,6 +14,7 @@ $(function(){
       edges: []
     },
     usedIds: [],
+    eventsHistory: [],
     initialize: function () {
       this.usedIds = [];
       // Convert arrays into Backbone Collections
@@ -35,6 +36,7 @@ $(function(){
           this.addEdge(edge);
         }
       }
+      this.eventsHistory = new Iframework.EventsHistory();
       this.view = new Iframework.GraphView({model:this});
 
       // Change event
@@ -103,6 +105,11 @@ $(function(){
       }
 
       this.get("nodes").remove(node);
+
+      this.eventsHistory
+        .add(new Iframework.Event({action: "removeNode", 
+                                   args: {"node": node, 
+                                          "edges": connected}}));
 
       this.trigger("change");
     },
