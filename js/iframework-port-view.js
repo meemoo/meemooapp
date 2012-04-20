@@ -2,17 +2,17 @@ $(function(){
 
   var portInTemplate = 
     '<div class="portshown portshown-in">'+
-      '<span class="hole hole-in hole-<%= name %> hole-<%= type_class %>"></span>'+
+      '<span class="hole hole-in hole-<%= type_class %>"></span>'+
       '<span class="label"><%= name %></span>'+
     '</div>'+
-    '<span class="plugend plugend-in"></span>';
+    '<span class="plugend plugend-in plugend-<%= type_class %>"></span>';
     
   var portOutTemplate = 
     '<div class="portshown portshown-out">'+
       '<span class="label"><%= name %></span>'+
-      '<span class="hole hole-out hole-<%= name %> hole-<%= type_class %>"></span>'+
+      '<span class="hole hole-out hole-<%= type_class %>"></span>'+
     '</div>'+
-    '<span class="plugend plugend-out"></span>';
+    '<span class="plugend plugend-out plugend-<%= type_class %>"></span>';
     
   var popupTemplate =
     '<div class="edge-edit">'+
@@ -95,10 +95,25 @@ $(function(){
           text: false
         });
         
-      // Drag to port
+      // The whole port is droppable
+      var accept = "";
+      if (this.model.get("type") === "all"){
+        if (this.model.isIn) {
+          accept = ".hole-out, .plugend-in";
+        } else {
+          accept = ".hole-in .plugend-out";
+        }
+      } else {
+        var type_class = this.model.get("type_class");
+        if (this.model.isIn) {
+          accept = ".hole-out.hole-all, .hole-out.hole-"+type_class+", .plugend-in.plugend-all, .plugend-in.plugend-"+type_class;
+        } else {
+          accept = ".hole-in.hole-all, .hole-in.hole-"+type_class+", .plugend-out.plugend-all, .plugend-out.plugend-"+type_class;
+        }
+      }
       this.$el.droppable({
-        accept: this.model.isIn ? ".hole-out, .plugend-in" : ".hole-in, .plugend-out",
-        hoverClass: "drophover"
+        "hoverClass": "drophover",
+        "accept": accept
       });
 
       this.$(".plugend").hide();
@@ -111,8 +126,7 @@ $(function(){
       // Add a mask so that iframes don't steal mouse
       Iframework.maskFrames();
       
-      // Highlight all ins or outs
-      // $("div.ports-"+(this.model.isIn ? "out" : "in")+" span.hole").addClass("highlight");
+      // Highlight matching ins or outs
       $("div.ports-"+(this.model.isIn ? "out" : "in")+" span.hole-" + this.model.get('type_class'))
         .addClass('highlight');
       
