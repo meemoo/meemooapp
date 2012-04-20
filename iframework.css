@@ -321,6 +321,11 @@ div.edges {
       stroke: #AAA;
     }
 
+    path.wire-shadow.highlight {
+      stroke-width: 13;
+      stroke: #FFE87C;
+    }
+
 #edgesSvg {
   position:absolute;
   top:0;
