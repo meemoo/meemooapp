@@ -106,14 +106,15 @@ $(function(){
 
       this.get("nodes").remove(node);
 
-      var removeEvent = new Iframework.Event({
-        action: "removeNode", 
-        args: {
-          "node": node, 
-          "edges": connected
-        }
-      });
-      this.eventsHistory.add( removeEvent );
+      this.eventsHistory.add( 
+        new Iframework.Event({
+          action: "removeNode", 
+          args: {
+            "node": node, 
+            "edges": connected
+          }
+        })
+      );
 
       this.trigger("change");
     },
