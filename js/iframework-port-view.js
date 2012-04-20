@@ -200,10 +200,10 @@ $(function(){
       this.model.graph.get("edges").each(function(edge){
         if (edge.source === this.model || edge.target === this.model) {
           countConnected++;
-        }
-        if (edge.view._z >= topZ) {
-          topZ = edge.view._z;
-          lastConnected = edge;
+          if (edge.view._z >= topZ) {
+            topZ = edge.view._z;
+            lastConnected = edge;
+          }
         }
       }, this);
 
