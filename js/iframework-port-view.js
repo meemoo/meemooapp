@@ -102,6 +102,9 @@ $(function(){
       });
 
       this.$(".plugend").hide();
+
+      // Disable selection for better drag+drop
+      this.$(".portshown").disableSelection();
       
     },
     dragstart: function (event, ui) {
@@ -396,7 +399,6 @@ $(function(){
 
       // This input's options
       if (this.model.get("options") && this.model.get("options").length > 0) {
-        console.log(this.model.get("options"));
         this.$('input').autocomplete({
           minLength: 0,
           source: this.model.get("options"),

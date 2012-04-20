@@ -56,10 +56,10 @@ $(function(){
         edge.view.remove();
       }
       
-      if (edge.source.view) {
+      if (edge.source && edge.source.view) {
         edge.source.view.resetRelatedEdges();
       }
-      if (edge.target.view) {
+      if (edge.target && edge.target.view) {
         edge.target.view.resetRelatedEdges();
       }
     },

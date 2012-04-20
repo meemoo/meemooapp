@@ -47,7 +47,7 @@ $(function(){
         .button({ icons: { primary: "ui-icon-trash" }, text: false });
 
       // Disable selection for better drag+drop
-      $(this.el).disableSelection();
+      this.$("h1").disableSelection();
 
     },
     render: function () {
