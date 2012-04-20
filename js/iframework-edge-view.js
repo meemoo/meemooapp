@@ -21,6 +21,19 @@ $(function(){
         this._color = this.model._color;
       }
       this.render();
+
+      if (this.model) {
+        // Used to know which wire is on top when pulling from plugend
+        this._z = this.model.graph.edgeCount++;
+
+        $(this.elementWire)
+          .data({
+            "model": this.model
+          })
+          .click( function(event){
+            $(event.target).data("model").view.click(event);
+          });
+      }
     },
     render: function () {
       this.calcPositions();
@@ -150,6 +163,20 @@ $(function(){
     },
     undim: function(){
       $(this.elementGroup).attr("opacity", 1);
+    },
+    click: function(event) {
+      // If not on top already
+      if (this._z < this.model.graph.edgeCount-1) {
+        // Bring to top (z-order of SVG can't be done with CSS)
+        this.graphSVGElement.appendChild(this.elementGroup);
+        this._z = this.model.graph.edgeCount++;
+      }
+      // Highlight edge and plugends
+      var shadow = $(this.elementShadow);
+      shadow.attr("class", "wire-shadow highlight");
+      setTimeout(function(){
+        shadow.attr("class", "wire-shadow");
+      }, 500);
     }
 
 

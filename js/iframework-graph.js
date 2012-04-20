@@ -14,6 +14,7 @@ $(function(){
       edges: []
     },
     usedIds: [],
+    edgeCount: 0,
     eventsHistory: [],
     initialize: function () {
       this.usedIds = [];
