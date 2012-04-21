@@ -268,6 +268,14 @@ div.module {
       top: 3px;
       right: 3px;
     }
+    span.plugend.highlight {
+      /*box-shadow: 10px 10px 5px #888;*/
+      border-style: solid;
+      border-color: #FFE87C;
+      border-width: 2px 0px;
+      margin-top: -2px;
+      background-color: #FFE87C;
+    }
   div.port span.label {
     font-family: 'Nova Flat', monospace;
     color: #666;

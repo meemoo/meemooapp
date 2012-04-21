@@ -13,7 +13,7 @@ $(function(){
     isPreview: false,
     initialize: function () {
       this.graphSVGElement = document.getElementById('edgesSvg');
-      this.positions = {};
+      this.positions = {fromX: 0, fromY: 0, toX: 0, toY: 0};
       if (!this.model) {
         this.isPreview = true;
       }
@@ -171,12 +171,21 @@ $(function(){
         this.graphSVGElement.appendChild(this.elementGroup);
         this._z = this.model.graph.edgeCount++;
       }
+      this.highlight();
+    },
+    highlight: function() {
       // Highlight edge and plugends
       var shadow = $(this.elementShadow);
       shadow.attr("class", "wire-shadow highlight");
       setTimeout(function(){
         shadow.attr("class", "wire-shadow");
-      }, 500);
+      }, 1000);
+      if (this.model.source.view) {
+        this.model.source.view.highlight();
+      }
+      if (this.model.target.view) {
+        this.model.target.view.highlight();
+      }
     }
 
 

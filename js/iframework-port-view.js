@@ -35,6 +35,7 @@ $(function(){
     popupTemplate: _.template(popupTemplate),
     edgeEditTemplate: _.template(edgeEditTemplate),
     events: {
+      "mousedown":                   "highlightEdge",
       "click .hole":                 "clickhole",
       "dragstart .hole":             "dragstart",
       "drag .hole, .holehelper":     "drag",
@@ -133,6 +134,7 @@ $(function(){
       // Edge preview
       var edgePreview = new Iframework.EdgeView();
       Iframework.edgePreview = edgePreview;
+      this.drag(event, ui);
       this.$('.plugend').show();
 
       // Don't drag module
@@ -500,6 +502,28 @@ $(function(){
     resetRelatedEdges: function () {
       this._relatedEdges = null;
       this.relatedEdges();
+    },
+    highlightEdge: function () {
+      if (this.relatedEdges().length > 0) {
+        // Find top connected wire
+        var lastConnected;
+        var topZ = 0;
+        _.each( this.relatedEdges(), function (edge) {
+          if (edge.view._z >= topZ) {
+            topZ = edge.view._z;
+            lastConnected = edge;
+          }
+        }, this);
+        lastConnected.view.highlight();
+      }
+    },
+    highlight: function () {
+      // Called by edge view
+      var plugend = this.$(".plugend");
+      plugend.addClass("highlight");
+      setTimeout(function(){
+        plugend.removeClass("highlight");
+      }, 1000);
     }
 
   });
