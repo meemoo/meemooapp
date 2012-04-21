@@ -205,29 +205,28 @@ $(function(){
     unpluggingEdge: null,
     armDeleteTimeout: null,
     armDelete: false,
+    topConnectedEdge: function () {
+      var topConnected;
+      var topZ = 0;
+      _.each(this.relatedEdges(), function(edge){
+        if (edge.view._z >= topZ) {
+          topZ = edge.view._z;
+          topConnected = edge;
+        }
+      }, this);
+      return topConnected;
+    },
     unplugstart: function (event, ui) {
       // Add a mask so that iframes don't steal mouse
       Iframework.maskFrames();
 
       // Find top connected wire
-      var lastConnected;
-      var countConnected = 0;
-      var topZ = 0;
-      this.model.graph.get("edges").each(function(edge){
-        if (edge.source === this.model || edge.target === this.model) {
-          countConnected++;
-          if (edge.view._z >= topZ) {
-            topZ = edge.view._z;
-            lastConnected = edge;
-          }
-        }
-      }, this);
-
+      var lastConnected = this.topConnectedEdge();
       if (!lastConnected) { return false; }
 
       this.unpluggingEdge = lastConnected;
       this.unpluggingEdge.view.dim();
-      if (countConnected===1) {
+      if (this.relatedEdges().length===1) {
         this.$(".plugend").hide();
       }
 
@@ -506,15 +505,7 @@ $(function(){
     highlightEdge: function () {
       if (this.relatedEdges().length > 0) {
         // Find top connected wire
-        var lastConnected;
-        var topZ = 0;
-        _.each( this.relatedEdges(), function (edge) {
-          if (edge.view._z >= topZ) {
-            topZ = edge.view._z;
-            lastConnected = edge;
-          }
-        }, this);
-        lastConnected.view.highlight();
+        this.topConnectedEdge().view.highlight();
       }
     },
     highlight: function () {
