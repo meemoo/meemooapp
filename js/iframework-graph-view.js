@@ -52,15 +52,14 @@ $(function(){
       }
     },
     removeEdge: function (edge) {
-      if (edge.view) {
-        edge.view.remove();
-      }
-      
       if (edge.source && edge.source.view) {
         edge.source.view.resetRelatedEdges();
       }
       if (edge.target && edge.target.view) {
         edge.target.view.resetRelatedEdges();
+      }
+      if (edge.view) {
+        edge.view.remove();
       }
     },
     resizeEdgeSVG: function () {

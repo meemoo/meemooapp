@@ -57,15 +57,14 @@ $(function(){
       }
       this.usedIds.push( node.get('id') );
 
-      // Minimal security so nodes can't send messages to other nodes unless they have been wired to them
-      var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789---";
-      var minimalSecurity = "";
+      var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      var randomKey = "";
       for (var i=0; i<5; i++) {
-        minimalSecurity += keyStr.charAt(Math.floor(Math.random()*keyStr.length));
+        randomKey += keyStr.charAt( Math.floor(Math.random()*keyStr.length) );
       }
 
       // Iframework.frameCount works around a FF bug with recycling iframes with the same name
-      node.frameIndex = "frame_"+node.get('id')+"_"+(Iframework.frameCount++)+"_"+minimalSecurity;
+      node.frameIndex = "frame_"+node.get('id')+"_"+(Iframework.frameCount++)+"_"+randomKey;
 
       this.get("nodes").add(node);
       node.graph = this;
@@ -90,19 +89,16 @@ $(function(){
       }
     },
     removeNode: function (node) {
+      var connected = [];
+
+      // Disconnect edges
+      _.each(node.view.relatedEdges(), function (edge) {
+        connected.push(edge);
+        edge.remove();
+      }, this);
+
       if (this.view) {
         this.view.removeNode(node);
-      }
-
-      // disconnect node's edges
-      var connected = [];
-      this.get("edges").each(function(edge){
-        if (edge.source.node == node || edge.target.node == node) {
-          connected.push(edge);
-        }
-      });
-      for (var i=0; i<connected.length; i++) {
-        connected[i].remove();
       }
 
       this.get("nodes").remove(node);
@@ -155,11 +151,8 @@ $(function(){
     connectEdges: function () {
       for(var i=0; i<this.get("edges").length; i++) {
         var edge = this.get("edges").at(i);
-        var from = this.get("nodes").get( edge.get("source")[0] );
-        var to = this.get("nodes").get( edge.get("target")[0] );
-        if (from && to) {
-          edge.connect();
-        } else {
+        var connected = edge.connect();
+        if (!connected) {
           edge.remove();
         }
       }

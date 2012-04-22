@@ -505,7 +505,10 @@ $(function(){
     highlightEdge: function () {
       if (this.relatedEdges().length > 0) {
         // Find top connected wire
-        this.topConnectedEdge().view.highlight();
+        var topConnected = this.topConnectedEdge();
+        if (topConnected && topConnected.view) {
+          topConnected.view.highlight();
+        }
       }
     },
     highlight: function () {

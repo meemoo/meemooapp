@@ -14,6 +14,7 @@ $(function(){
     source: null,
     target: null,
     connect: function () {
+      // Called from graph.connectEdges()
       // IDs from the graph
       for (var i=0; i<this.graph.get("nodes").length; i++) {
         if (this.graph.get("nodes").at(i).get("id") === this.get("source")[0]) {
@@ -24,6 +25,7 @@ $(function(){
         }
       }
       if (!this.source || !this.target) {
+        console.warn("Edge source or target port not found: "+this.toString());
         return false;
       }
       this.source.node.send({
@@ -38,6 +40,7 @@ $(function(){
       return this;
     },
     disconnect: function () {
+      // Called from graph.removeEdge()
       if (this.source && this.target) {
         this.source.node.send({
           disconnect: { 
@@ -52,6 +55,9 @@ $(function(){
     },
     remove: function(){
       this.graph.removeEdge(this);
+    },
+    toString: function(){
+      return this.get("source")[0]+":"+this.get("source")[1]+"->"+this.get("target")[0]+":"+this.get("target")[1];
     }
   });
   
