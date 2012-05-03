@@ -257,33 +257,11 @@ $(function(){
       var split = url.split("/") // ["https:", "", "gist.github.com", "2439102"]
       var gistid = parseInt(split[3]);
       if (split[2] === "gist.github.com" && gistid === gistid) {
-        // Load gist to json to app
-        $.ajax({
-          url: 'https://api.github.com/gists/'+gistid,
-          type: 'GET',
-          dataType: 'jsonp'
-        }).success( function(gistdata) {
-          var graphs = [];
-          for (file in gistdata.data.files) {
-            if (gistdata.data.files.hasOwnProperty(file)) {
-              graph = JSON.parse(gistdata.data.files[file].content);
-              // Insert a reference to the parent
-              if (!graph.info.parents || !graph.info.parents.push) {
-                graph.info.parents = [];
-              }
-              graph.info.parents.push(gistdata.data.html_url);
-              if (graph) {
-                graphs.push(graph);
-              }
-            }
-          }
-          if (graphs.length >= 1) {
-            Iframework.loadGraph(graphs[0]);
-            Iframework.showsource();
-          }
-        }).error( function(e) {
-          console.warn("gist load error", e);
-        });
+        if (this.router) {
+          this.router.navigate("/gist/"+gistid, {trigger: true});
+        } else {
+          this.loadFromGistId(gistid);
+        }
 
         // Input placeholder
         this.$(".loadfromgistinput")
@@ -295,6 +273,35 @@ $(function(){
         },1000);
       }
       return false;
+    },
+    loadFromGistId: function (gistid) {
+      // Load gist to json to app
+      $.ajax({
+        url: 'https://api.github.com/gists/'+gistid,
+        type: 'GET',
+        dataType: 'jsonp'
+      }).success( function(gistdata) {
+        var graphs = [];
+        for (file in gistdata.data.files) {
+          if (gistdata.data.files.hasOwnProperty(file)) {
+            graph = JSON.parse(gistdata.data.files[file].content);
+            // Insert a reference to the parent
+            if (!graph.info.parents || !graph.info.parents.push) {
+              graph.info.parents = [];
+            }
+            graph.info.parents.push(gistdata.data.html_url);
+            if (graph) {
+              graphs.push(graph);
+            }
+          }
+        }
+        if (graphs.length > 0) {
+          Iframework.loadGraph(graphs[0]);
+          Iframework.showsource();
+        }
+      }).error( function(e) {
+        console.warn("gist load error", e);
+      });
     }
 
   });

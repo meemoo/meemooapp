@@ -18,6 +18,7 @@ $(function(){
   var IframeworkRouter = Backbone.Router.extend({
     routes: {
       "example/:url": "loadExample", // #/example/url
+      "gist/:id":    "loadGist", // #/gist/id
       "*path":        "default"
     },
     loadExample: function(url) {
@@ -28,6 +29,13 @@ $(function(){
           return;
         }
       }
+    },
+    loadGist: function(id) {
+      var gistid = parseInt(id);
+      if (gistid===gistid) {
+        Iframework.loadFromGistId(gistid);
+      }
+      return;
     },
     default: function() {
       // Default example
