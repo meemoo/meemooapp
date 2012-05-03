@@ -366,16 +366,15 @@ div.panel {
   position: fixed;
   display: none;
 }
-  
+  div.choosepanel {
+    text-align: right;
+    padding: 5px;
+  }
+
   div.panel .load,
   div.panel .source,
   div.panel .library {
-    padding: 10px;
-  }
-
-  div.panel .close {
-    float: right;
-    clear: both;
+    padding: 5px 10px;
   }
 
   div.panel .source .sourceedit {
@@ -407,19 +406,23 @@ div.panel {
     }
     div.panel .library .listing {
       position: absolute;
-      top: 50px;
+      top: 75px;
       right: 10px;
       left: 10px;
       bottom: 10px;
       overflow: auto;
     }
-    div.panel .library form{
+    div.panel form {
       margin-bottom: 10px;
     }
 
-    div.panel .library input.addbyurlinput {
-      width: 225px;
-      margin-right: 5px;
+    div.panel form input {
+      width: 255px;
+      height: 18px;
+    }
+
+    div.panel form button {
+      float: right;
     }
 
     ul.ui-autocomplete {
