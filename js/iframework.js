@@ -2,16 +2,24 @@ $(function(){
   
   var template = 
     '<div class="showpanel">'+
-      '<button class="button showload">load app</button>'+
+      '<button class="button showload">load</button>'+
       '<button class="button showsource">source</button>'+
-      '<button class="button showlibrary">add module</button>'+
+      '<button class="button showlibrary">module</button>'+
     '</div>'+
     '<div class="panel">'+
-      '<div class="load">'+
+      '<div class="choosepanel">'+
+        '<button class="button showload">load</button>'+
+        '<button class="button showsource">source</button>'+
+        '<button class="button showlibrary">module</button>'+
         '<button class="button close">close</button>'+
       '</div>'+
+      '<div class="load">'+
+        '<form class="loadfromgist">'+
+          '<input class="loadfromgistinput" name="loadfromgistinput" placeholder="load app from gist url" type="text" />'+
+          '<button class="loadfromgistsubmit" type="submit">load</button>'+
+        '</form>'+
+      '</div>'+
       '<div class="source">'+
-        '<button class="button close">close</button>'+
         '<div class="sourceedit">'+
           '<textarea />'+
         '</div>'+
@@ -23,7 +31,6 @@ $(function(){
       '</div>'+
       '<div class="library">'+
         '<div class="controls">'+
-          '<button class="button close">close</button>'+
           '<form class="addbyurl">'+
             '<input class="addbyurlinput" name="addbyurlinput" placeholder="search or url" type="text" />'+
             '<button class="addbyurlsubmit" type="submit">load</button>'+
@@ -47,7 +54,8 @@ $(function(){
       "click .sourcerefresh":  "sourcerefresh",
       "click .sourcecompress": "sourcecompress",
       "click .sourceapply":    "sourceapply",
-      "submit .addbyurl":      "addbyurl"
+      "submit .addbyurl":      "addbyurl",
+      "submit .loadfromgist":  "loadfromgist"
     },
     initialize: function () {
       this.render();
@@ -63,7 +71,7 @@ $(function(){
       this.$(".showsource")
         .button({ icons: { primary: 'ui-icon-gear' } });
       this.$(".showload")
-        .button({ icons: { primary: 'ui-icon-disk' } });
+        .button({ icons: { primary: 'ui-icon-folder-open' } });
       this.$(".showlibrary")
         .button({ icons: { primary: 'ui-icon-plus' } });
       this.$(".sourcerefresh")
@@ -73,6 +81,8 @@ $(function(){
       this.$(".sourceapply")
         .button({ icons: { primary: 'ui-icon-check' } });
       this.$(".addbyurlsubmit")
+        .button({ icons: { primary: 'ui-icon-check' } });
+      this.$(".loadfromgistsubmit")
         .button({ icons: { primary: 'ui-icon-check' } });
 
     },
@@ -93,7 +103,7 @@ $(function(){
       }
       return color;
     },
-    showGraph: function (graph) {
+    loadGraph: function (graph) {
       if (this.shownGraph && this.shownGraph.view) {
         this.shownGraph.view.$el.remove();
         this.shownGraph.view = null;
@@ -222,7 +232,7 @@ $(function(){
     },
     sourceapply: function() {
       var newGraph = JSON.parse( $(".panel .sourceedit textarea").val() );
-      this.showGraph(newGraph);
+      this.loadGraph(newGraph);
       this.showsource();
     },
     addbyurl: function() {
@@ -236,6 +246,52 @@ $(function(){
         window.setTimeout(function(){
           this.$(".addbyurlinput")
             .attr("placeholder", "search or url");
+        },1000);
+      }
+      return false;
+    },
+    loadfromgist: function () {
+      $(".loadfromgistinput").blur();
+      // Translate https://gist.github.com/2439102 to https://api.github.com/gists/2439102?callback=loadfromgist
+      var url = this.$(".loadfromgistinput").val();
+      var split = url.split("/") // ["https:", "", "gist.github.com", "2439102"]
+      var gistid = parseInt(split[3]);
+      if (split[2] === "gist.github.com" && gistid === gistid) {
+        // Load gist to json to app
+        $.ajax({
+          url: 'https://api.github.com/gists/'+gistid,
+          type: 'GET',
+          dataType: 'jsonp'
+        }).success( function(gistdata) {
+          var graphs = [];
+          for (file in gistdata.data.files) {
+            if (gistdata.data.files.hasOwnProperty(file)) {
+              graph = JSON.parse(gistdata.data.files[file].content);
+              // Insert a reference to the parent
+              if (!graph.info.parents || !graph.info.parents.push) {
+                graph.info.parents = [];
+              }
+              graph.info.parents.push(gistdata.data.html_url);
+              if (graph) {
+                graphs.push(graph);
+              }
+            }
+          }
+          if (graphs.length >= 1) {
+            Iframework.loadGraph(graphs[0]);
+            Iframework.showsource();
+          }
+        }).error( function(e) {
+          console.warn("gist load error", e);
+        });
+
+        // Input placeholder
+        this.$(".loadfromgistinput")
+          .val("")
+          .attr("placeholder", "loading...");
+        window.setTimeout(function(){
+          this.$(".loadfromgistinput")
+            .attr("placeholder", "load app from gist url");
         },1000);
       }
       return false;

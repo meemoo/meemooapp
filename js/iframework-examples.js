@@ -23,7 +23,7 @@ $(function(){
     loadExample: function(url) {
       for (var i=0; i<exampleGraphs.length; i++) {
         if (exampleGraphs[i]["info"]["url"] === url) {
-          Iframework.showGraph(exampleGraphs[i]);
+          Iframework.loadGraph(exampleGraphs[i]);
           Iframework.closepanels();
           return;
         }
@@ -31,7 +31,7 @@ $(function(){
     },
     default: function() {
       // Default example
-      Iframework.showGraph(exampleGraphs[0]);
+      Iframework.loadGraph(exampleGraphs[0]);
     }
   });
   Iframework.router = new IframeworkRouter();
