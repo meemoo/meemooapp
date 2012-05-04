@@ -251,16 +251,12 @@ $(function(){
       return false;
     },
     loadfromgist: function () {
-      $(".loadfromgistinput").blur();
-      // Translate https://gist.github.com/2439102 to https://api.github.com/gists/2439102?callback=loadfromgist
-      var url = this.$(".loadfromgistinput").val();
-      var split = url.split("/") // ["https:", "", "gist.github.com", "2439102"]
-      var gistid = parseInt(split[3]);
-      if (split[2] === "gist.github.com" && gistid === gistid) {
+      var gistid = this.loadFromGistId( this.$(".loadfromgistinput").val() );
+      if ( gistid ) {
+        $(".loadfromgistinput").blur();
+
         if (this.router) {
-          this.router.navigate("/gist/"+gistid, {trigger: true});
-        } else {
-          this.loadFromGistId(gistid);
+          this.router.navigate("/gist/"+gistid);
         }
 
         // Input placeholder
@@ -271,10 +267,23 @@ $(function(){
           this.$(".loadfromgistinput")
             .attr("placeholder", "load app from gist url");
         },1000);
+
       }
+
       return false;
     },
     loadFromGistId: function (gistid) {
+      // "https://gist.github.com/2439102" or just "2439102"
+      var split = gistid.split("/") // ["https:", "", "gist.github.com", "2439102"]
+      if (split.length > 3 && split[2] === "gist.github.com") {
+        gistid = split[3];
+      }
+      gistid = parseInt(gistid);
+      if (gistid !== gistid) {
+        // NaN
+        return false;
+      }
+
       // Load gist to json to app
       $.ajax({
         url: 'https://api.github.com/gists/'+gistid,
@@ -284,7 +293,7 @@ $(function(){
         var graphs = [];
         for (file in gistdata.data.files) {
           if (gistdata.data.files.hasOwnProperty(file)) {
-            graph = JSON.parse(gistdata.data.files[file].content);
+            var graph = JSON.parse(gistdata.data.files[file].content);
             // Insert a reference to the parent
             if (!graph.info.parents || !graph.info.parents.push) {
               graph.info.parents = [];
@@ -302,6 +311,8 @@ $(function(){
       }).error( function(e) {
         console.warn("gist load error", e);
       });
+
+      return gistid;
     }
 
   });
