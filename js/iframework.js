@@ -294,11 +294,15 @@ $(function(){
         for (file in gistdata.data.files) {
           if (gistdata.data.files.hasOwnProperty(file)) {
             var graph = JSON.parse(gistdata.data.files[file].content);
+            var gisturl = gistdata.data.html_url;
             // Insert a reference to the parent
             if (!graph.info.parents || !graph.info.parents.push) {
               graph.info.parents = [];
             }
-            graph.info.parents.push(gistdata.data.html_url);
+            // Only if this gist url isn't already in graph's parents
+            if (graph.info.parents.indexOf(gisturl) === -1) {
+              graph.info.parents.push(gisturl);
+            }
             if (graph) {
               graphs.push(graph);
             }
