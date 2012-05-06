@@ -21,7 +21,7 @@ $(function(){
       '</div>'+
       '<div class="source">'+
         '<div class="sourceedit">'+
-          '<textarea />'+
+          '<textarea wrap="off" />'+
         '</div>'+
         '<div class="controls">'+
           '<button class="button sourcerefresh" title="refresh the source code">refresh</button>'+
@@ -218,17 +218,21 @@ $(function(){
     showsource: function() {
       this.showpanel();
       this.$(".panel .source").show();
-      this.$(".panel .source textarea").val( JSON.stringify(Iframework.shownGraph, null, "  ") );
+      this.sourcerefresh();
     },
     showlibrary: function() {
       this.showpanel();
       this.$(".panel .library").show();
     },
     sourcerefresh: function() {
-      this.$(".panel .source textarea").val( JSON.stringify(Iframework.shownGraph, null, "  ") );
+      this.$(".panel .source textarea")
+        .attr("wrap", "off")
+        .val( JSON.stringify(Iframework.shownGraph, null, "  ") );
     },
     sourcecompress: function() {
-      this.$(".panel .source textarea").val( JSON.stringify(Iframework.shownGraph, null, "") );
+      this.$(".panel .source textarea")
+        .attr("wrap", "")
+        .val( JSON.stringify(Iframework.shownGraph, null, "") );
     },
     sourceapply: function() {
       var newGraph = JSON.parse( $(".panel .sourceedit textarea").val() );
@@ -256,7 +260,7 @@ $(function(){
         $(".loadfromgistinput").blur();
 
         if (this.router) {
-          this.router.navigate("/gist/"+gistid);
+          this.router.navigate("gist/"+gistid);
         }
 
         // Input placeholder

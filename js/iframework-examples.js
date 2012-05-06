@@ -18,7 +18,7 @@ $(function(){
   var IframeworkRouter = Backbone.Router.extend({
     routes: {
       "example/:url": "loadExample", // #/example/url
-      "gist/https\://gist.github.com/:id": "loadGist",
+      "gist/https\://gist.github.com/:id": "loadGistUgly",
       "gist/:id":     "loadGist", // #/gist/id
       "*path":        "default"
     },
@@ -30,6 +30,9 @@ $(function(){
           return;
         }
       }
+    },
+    loadGistUgly: function (id) {
+      this.navigate("gist/"+id, {trigger: true});
     },
     loadGist: function(id) {
       Iframework.loadFromGistId(id);
@@ -48,7 +51,7 @@ $(function(){
   for (var i=0; i<exampleGraphs.length; i++) {
     var url = exampleGraphs[i]["info"]["url"];
     if (url) {
-      exampleLinks += '<a href="#/example/'+url+'" title="'+exampleGraphs[i]["info"]["title"]+": "+exampleGraphs[i]["info"]["description"]+'">'+url+'</a> <br />';
+      exampleLinks += '<a href="#example/'+url+'" title="'+exampleGraphs[i]["info"]["title"]+": "+exampleGraphs[i]["info"]["description"]+'">'+url+'</a> <br />';
     }
   }
   $(".panel .load").append(exampleLinks);

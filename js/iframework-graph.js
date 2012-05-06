@@ -7,8 +7,8 @@ $(function(){
         author: "",
         title: "",
         description: "",
-        parent: "",
-        permalink: ""
+        parents: [],
+        url: ""
       },
       nodes: [],
       edges: []
