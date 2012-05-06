@@ -27,16 +27,15 @@ $(function(){
         if (exampleGraphs[i]["info"]["url"] === url) {
           Iframework.loadGraph(exampleGraphs[i]);
           Iframework.closepanels();
-          return;
         }
       }
     },
     loadGistUgly: function (id) {
-      this.navigate("gist/"+id, {trigger: true});
+      this.navigate("gist/"+id, {replace: true});
+      this.loadGist(id);
     },
     loadGist: function(id) {
       Iframework.loadFromGistId(id);
-      return;
     },
     default: function() {
       // Default example
