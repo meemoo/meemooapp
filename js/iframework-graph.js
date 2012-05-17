@@ -23,7 +23,13 @@ $(function(){
         var nodes = this.attributes.nodes;
         this.attributes.nodes = new Iframework.Nodes();
         for (var i=0; i<nodes.length; i++) {
-          var node = new Iframework.Node(nodes[i]);
+          if (nodes[i].hasOwnProperty("src") && nodes[i]["src"].split(":")[0] === "meemoo") {
+            // Native type node
+            var node = new Iframework.Node(nodes[i]);
+          } else {
+            // Iframe type node
+            var node = new Iframework.NodeIframe(nodes[i]);
+          }
           node.graph = this;
           this.addNode(node);
         }

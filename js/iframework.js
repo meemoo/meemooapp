@@ -146,10 +146,7 @@ $(function(){
     maskFrames: function () {
       $(".module").each(function(){
         $(this).append(
-          $('<div class="iframemask" />').css({
-            "width": $(this).children(".frame").width()+2,
-            "height": $(this).children(".frame").height()+2
-          })
+          $('<div class="iframemask" />')
         );
       });
     },

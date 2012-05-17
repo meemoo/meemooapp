@@ -11,13 +11,12 @@ $(function(){
         '<button type="button" class="refresh">refresh</button>'+
         '<button type="button" class="hidecontrols">hide controls</button>'+
       '</div>'+
-      '<div class="frame node-out native-type">'+
-        '<canvas class="node-out-image"></canvas>'+
-        '<div class="node-out-info"></div>'+
+      '<div class="frame iframe-type">'+
+        '<iframe class="iframe" name="<%= frameIndex %>" src="<%= get("src") %>"></iframe>'+
       '</div>'+
     '</div>';
 
-  Iframework.NodeView = Backbone.View.extend({
+  Iframework.NodeIframeView = Iframework.NodeView.extend({
     tagName: "div",
     className: "node",
     template: _.template(template),
@@ -112,7 +111,10 @@ $(function(){
     resizestop: function (event, ui) {
       // Remove iframe masks
       Iframework.unmaskFrames();
-      
+
+      // Rerender related edges
+      this.resize(event, ui);
+
       // Set model w/h
       var newW = ui.size.width;
       var newH = ui.size.height;
@@ -120,13 +122,7 @@ $(function(){
         w: newW - 20,
         h: newH - 40
       });
-      // this.$(".frame").css({
-      //   width: newW - 20,
-      //   height: newH - 40
-      // });
       this.model.graph.view.resizeEdgeSVG();
-      // Rerender related edges
-      this.drag();
     },
     mousedown: function (event, ui) {
       // Deactivate others
@@ -163,7 +159,7 @@ $(function(){
       this.$(".controls").hide();
     },
     refresh: function () {
-      this.$(".frame")[0].src = this.model.get("src");
+      this.$("iframe")[0].src = this.model.get("src");
     },
     removeModel: function () {
       this.model.remove();

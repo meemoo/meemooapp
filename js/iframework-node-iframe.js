@@ -1,6 +1,6 @@
 $(function(){
 
-  Iframework.Node = Backbone.Model.extend({
+  Iframework.NodeIframe = Iframework.Node.extend({
     loaded: false,
     defaults: function() {
       return {
@@ -19,24 +19,18 @@ $(function(){
 
       // Change event
       this.on("change", this.nodeChanged);
-
-      // Don't need to wait for iframe load
-      this.loaded = true;
     },
     initializeView: function () {
       // Called from GraphView.addNode();
-      this.view = new Iframework.NodeView({model:this});
+      this.view = new Iframework.NodeIframeView({model:this});
       return this.view;
     },
     send: function (message) {
-      
-      // if (window.frames[this.frameIndex]) {
-      //   window.frames[this.frameIndex].postMessage(message, "*");
-      // } else {
-      //   console.error("wat "+this.id+" "+this.frameIndex);
-      // }
-    },
-    recieve: function (message) {
+      if (window.frames[this.frameIndex]) {
+        window.frames[this.frameIndex].postMessage(message, "*");
+      } else {
+        console.error("wat "+this.id+" "+this.frameIndex);
+      }
     },
     Info: {},
     infoLoaded: function (info) {
