@@ -25,13 +25,20 @@ $(function(){
         for (var i=0; i<nodes.length; i++) {
           if (nodes[i].hasOwnProperty("src") && nodes[i]["src"].split(":")[0] === "meemoo") {
             // Native type node
-            var node = new Iframework.Node(nodes[i]);
+            var id = nodes[i]["src"].split(":")[1];
+            if ( Iframework.NativeNodes.hasOwnProperty(id) ) {
+              var node = new Iframework.Node(nodes[i]);
+            } else {
+              console.warn("No matching native node: " + id);
+            }
           } else {
             // Iframe type node
             var node = new Iframework.NodeIframe(nodes[i]);
           }
-          node.graph = this;
-          this.addNode(node);
+          if (node) {
+            node.graph = this;
+            this.addNode(node);
+          }
         }
       }
       if (this.attributes.edges) {

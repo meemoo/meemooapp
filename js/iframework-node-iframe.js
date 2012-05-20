@@ -32,6 +32,9 @@ $(function(){
         console.error("wat "+this.id+" "+this.frameIndex);
       }
     },
+    recieve: function (message) {
+      this.send(message);
+    },
     Info: {},
     infoLoaded: function (info) {
       if (this.view) {

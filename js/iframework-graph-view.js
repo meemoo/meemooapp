@@ -35,6 +35,7 @@ $(function(){
     },
     addNode: function (node) {
       this.$(".nodes").append( node.initializeView().el );
+      node.initializePorts();
     },
     addEdge: function (edge) {
       edge.initializeView();

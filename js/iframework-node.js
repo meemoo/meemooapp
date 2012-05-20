@@ -17,26 +17,49 @@ $(function(){
       this.Inputs = new Iframework.Ports();
       this.Outputs = new Iframework.Ports();
 
+      // Native node type
+      var nodetype = this.get("src").split(":")[1];
+      if ( Iframework.NativeNodes.hasOwnProperty(nodetype) ) {
+        this.nativenode = new Iframework.NativeNodes[nodetype]({node:this});
+        this.loaded = true;
+      } else {
+        this.loaded = false;
+      }
+
       // Change event
       this.on("change", this.nodeChanged);
 
-      // Don't need to wait for iframe load
-      this.loaded = true;
     },
     initializeView: function () {
       // Called from GraphView.addNode();
       this.view = new Iframework.NodeView({model:this});
       return this.view;
     },
+    initializePorts: function () {
+      // Called from GraphView.addNode();
+      if (this.nativenode) {
+        this.nativenode.setInfo(this.nativenode.info);
+        for (var name in this.nativenode.inputs) {
+          if (this.nativenode.inputs.hasOwnProperty(name)) {
+            this.nativenode.addInput(name, this.nativenode.inputs[name]);
+          }
+        }
+        for (var name in this.nativenode.outputs) {
+          if (this.nativenode.outputs.hasOwnProperty(name)) {
+            this.nativenode.addOutput(name, this.nativenode.outputs[name]);
+          }
+        }
+      }
+    },
     send: function (message) {
-      
-      // if (window.frames[this.frameIndex]) {
-      //   window.frames[this.frameIndex].postMessage(message, "*");
-      // } else {
-      //   console.error("wat "+this.id+" "+this.frameIndex);
-      // }
+      if (this.nativenode) {
+        this.nativenode.recieve(message);
+      }
     },
     recieve: function (message) {
+      if (this.nativenode) {
+        this.nativenode.send(message);
+      };
     },
     Info: {},
     infoLoaded: function (info) {
@@ -58,6 +81,7 @@ $(function(){
       this.graph.checkLoaded();
     },
     addInput: function (info) {
+      // Called from this.nativenode.addInput();
       // Name must be unique
       var replace = this.Inputs.findByName(info.name);
       if (replace) {

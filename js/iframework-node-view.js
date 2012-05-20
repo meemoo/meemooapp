@@ -11,9 +11,7 @@ $(function(){
         '<button type="button" class="refresh">refresh</button>'+
         '<button type="button" class="hidecontrols">hide controls</button>'+
       '</div>'+
-      '<div class="frame node-out native-type">'+
-        '<canvas class="node-out-image"></canvas>'+
-        '<div class="node-out-info"></div>'+
+      '<div class="frame native-type">'+
       '</div>'+
     '</div>';
 
@@ -39,7 +37,7 @@ $(function(){
       this.render();
       this.$(".module")
         .draggable({ handle: "h1" })
-        .resizable();
+        .resizable({ minHeight: 100, minWidth: 100 });
       this.$(".showcontrols")
         .button({ icons: { primary: "ui-icon-carat-1-w" }, text: false });
       this.$(".hidecontrols")

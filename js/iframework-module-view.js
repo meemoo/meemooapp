@@ -26,11 +26,8 @@ $(function(){
       this.$el.html(this.template(this.model.toJSON()));
     },
     addnode: function() {
-      Iframework.shownGraph.addNode( 
-        new Iframework.Node({
-          "src": this.model.get("src")
-        })
-      );
+      Iframework.$(".addbyurlinput").val( this.model.get("src") );
+      Iframework.addbyurl();
     }
 
   });

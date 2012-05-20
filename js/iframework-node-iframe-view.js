@@ -38,7 +38,7 @@ $(function(){
       this.render();
       this.$(".module")
         .draggable({ handle: "h1" })
-        .resizable();
+        .resizable({ minHeight: 100, minWidth: 100 });
       this.$(".showcontrols")
         .button({ icons: { primary: "ui-icon-carat-1-w" }, text: false });
       this.$(".hidecontrols")
