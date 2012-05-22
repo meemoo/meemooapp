@@ -6,7 +6,8 @@ $(function(){
   var library = new Iframework.Modules(
     [
       {"src":"http://forresto.github.com/meemoo-modules/canvasarray.html","info":{"title":"canvas array","author":"forresto","description":"hold a stack of canvases for reuse, click sends it, arrows navigate to prev/next"},"inputs":[{"name":"image","type":"image","description":"","min":"","max":"","default":""}],"outputs":[{"name":"image","type":"image"}]},
-      {"src":"http://forresto.github.com/meemoo-image/combine.html","info":{"title":"combine","author":"forresto","description":"Combine a background image with a transformed foreground image (scale, translate, rotate)."},"inputs":[],"outputs":[]},
+      {"src":"http://forresto.github.com/meemoo-image/transform.html","info":{"title":"transform","author":"forresto","description":"scale, translate, and/or rotate image (centered)"},"inputs":[],"outputs":[]},
+      {"src":"http://forresto.github.com/meemoo-image/combine.html","info":{"title":"combine","author":"forresto","description":"combine image layers"},"inputs":[],"outputs":[]},
       {"src":"http://forresto.github.com/meemoo-image/spritesheet.html","info":{"title":"spritesheet","author":"forresto","description":"makes a single-image filmstrip sprite sheet"},"inputs":[],"outputs":[]},
       {"src":"http://forresto.github.com/meemoo-image/spritesplit.html","info":{"title":"spritesplit","author":"forresto","description":"separates images from filmstrip sprite sheet"},"inputs":[],"outputs":[]},
       {"src":"http://forresto.github.com/meemoo-blend/blend.html","info":{"title":"blend","author":"forresto","description":"blend imageData under and over with given mode"},"inputs":[],"outputs":[]},
