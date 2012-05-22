@@ -9,7 +9,7 @@ $(function(){
       '<div class="controls">'+
         '<button type="button" class="remove">remove</button>'+
         '<button type="button" class="refresh">refresh</button>'+
-        '<button type="button" class="fullwindow">full window</button>'+
+        // '<button type="button" class="fullwindow">full window</button>'+
         '<button type="button" class="hidecontrols">hide controls</button>'+
       '</div>'+
       '<div class="frame iframe-type">'+
