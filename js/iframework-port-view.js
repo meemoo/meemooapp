@@ -343,7 +343,7 @@ $(function(){
             "id": this.model.node.id + "_" + this.model.get("name"),
             "class": "manualinput"
           });
-        if (typeabbr === "int" || typeabbr === "num" ) {
+        if (typeabbr === "int" || typeabbr === "num" || typeabbr === "flo" ) {
           showForm = true;
           inputForm.append(
             $("<input />").attr({

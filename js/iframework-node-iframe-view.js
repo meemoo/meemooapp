@@ -9,6 +9,7 @@ $(function(){
       '<div class="controls">'+
         '<button type="button" class="remove">remove</button>'+
         '<button type="button" class="refresh">refresh</button>'+
+        '<button type="button" class="fullwindow">full window</button>'+
         '<button type="button" class="hidecontrols">hide controls</button>'+
       '</div>'+
       '<div class="frame iframe-type">'+
@@ -32,7 +33,8 @@ $(function(){
       "click .showcontrols": "showControls",
       "click .hidecontrols": "hideControls",
       "click .refresh":      "refresh",
-      "click .remove":       "removeModel"
+      "click .remove":       "removeModel",
+      "click .fullwindow":   "fullWindow"
     },
     initialize: function () {
       this.render();
@@ -165,6 +167,9 @@ $(function(){
       this.model.remove();
     },
     remove: function () {
+      this.$el.remove();
+    },
+    fullWindow: function () {
       this.$el.remove();
     }
 
