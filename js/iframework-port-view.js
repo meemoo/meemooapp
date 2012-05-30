@@ -102,7 +102,7 @@ $(function(){
         if (this.model.isIn) {
           accept = ".hole-out, .plugend-in";
         } else {
-          accept = ".hole-in .plugend-out";
+          accept = ".hole-in, .plugend-out";
         }
       } else {
         var type_class = this.model.get("type_class");
@@ -111,6 +111,14 @@ $(function(){
         } else {
           accept = ".hole-in.hole-all, .hole-in.hole-"+type_class+", .plugend-out.plugend-all, .plugend-out.plugend-"+type_class;
         }
+      }
+      if (this.model.isIn && this.model.get("type") === "string"){
+        // HACK to allow int and float -> string
+        accept += ", .hole-out.hole-int, .hole-out.hole-float, .plugend-in.plugend-int, .plugend-in.plugend-float";
+      }
+      if (!this.model.isIn && (this.model.get("type") === "int" || this.model.get("type") === "float")){
+        // HACK to allow int and float -> string
+        accept += ", .hole-in.hole-string, .plugend-out.plugend-string";
       }
       this.$el.droppable({
         "hoverClass": "drophover",
