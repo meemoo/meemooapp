@@ -1,0 +1,21 @@
+{
+  "version": "0.1",
+  "name": "Meemoo Iframework",
+  "description": "Meemoo is * a web-based creative tool maker * a layer between polished app and source code to make it easy for users (and developers) to open, hack, bend, rewire, fork, and mod creative web applications * an open-source framework that connects open-source modules * 100% of the web * focused on audio/visual interactive applications, but the potential uses are limitless.",
+  "launch_path": "/iframework/",
+  "icons": {
+    "16": "/iframework/img/meemoo-icon-16.png",
+    "48": "/iframework/img/meemoo-icon-48.png",
+    "128": "/iframework/img/meemoo-icon-128.png"
+  },
+  "developer": {
+    "name": "Forrest Oliphant",
+    "url": "http://meemoo.org"
+  },
+  "installs_allowed_from": [
+    "https://marketplace.mozilla.org",
+    "https://apps-preview.mozilla.org",
+    "http://meemoo.org"
+  ],
+  "default_locale": "en"
+}
