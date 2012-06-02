@@ -9,6 +9,7 @@ $(function(){
       '<div class="controls">'+
         '<button type="button" class="remove">remove</button>'+
         '<button type="button" class="refresh">refresh</button>'+
+        // '<button type="button" class="info">info</button>'+
         '<button type="button" class="hidecontrols">hide controls</button>'+
       '</div>'+
       '<div class="frame iframe-type">'+
@@ -47,6 +48,8 @@ $(function(){
         .button({ icons: { primary: "ui-icon-arrowrefresh-1-s" }, text: false });
       this.$(".remove")
         .button({ icons: { primary: "ui-icon-trash" }, text: false });
+      // this.$(".info")
+      //   .button({ icons: { primary: "ui-icon-info" }, text: false });
 
       // Disable selection for better drag+drop
       this.$("h1").disableSelection();
