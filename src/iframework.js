@@ -46,6 +46,7 @@ $(function(){
     className: "app",
     template: _.template(template),
     frameCount: 0, // HACK to not use same name in Firefox
+    NativeNodes: {},
     events: {
       "click .close" :         "closepanels",
       "click .showload" :      "showload",

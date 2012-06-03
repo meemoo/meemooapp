@@ -1,6 +1,6 @@
 $(function(){
 
-  Iframework.NativeNodes["image-combine"] = Iframework.NodeBox.extend({
+  Iframework.NativeNodes["image-combine"] = Iframework.NativeNodes["image"].extend({
 
     info: {
       title: "image-combine",
