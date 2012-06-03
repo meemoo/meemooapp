@@ -165,6 +165,9 @@ $(function(){
     },
     remove: function () {
       this.$el.remove();
+    },
+    refresh: function () {
+      //
     }
 
   });
