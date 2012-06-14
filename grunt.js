@@ -9,11 +9,36 @@ module.exports = function(grunt) {
         '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
         '<%= pkg.homepage ? "* " + pkg.homepage + "\n" : "" %>' +
         '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-        ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
+        ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> \n'+
+        '*/'
     },
     concat: {
       dist: {
-        src: ['<banner:meta.banner>', '<file_strip_banner:src/<%= pkg.name %>.js>'],
+        src: [
+          '<banner:meta.banner>', 
+          // Libs
+          'libs/jquery.hotkeys.js',
+          'libs/underscore.js',
+          'libs/backbone.js',
+          // Iframework
+          'src/iframework.js',
+          'src/graph.js',
+          'src/graph-view.js',
+          'src/node.js',
+          'src/node-view.js',
+          'src/node-box.js',
+          'src/node-box-view.js',
+          'src/node-box-iframe.js',
+          'src/node-box-iframe-view.js',
+          'src/port.js',
+          'src/port-view.js',
+          'src/module.js',
+          'src/module-view.js',
+          'src/edge.js',
+          'src/edge-view.js',
+          'src/router.js',
+          'src/eventshistory.js'
+        ],
         dest: 'dist/<%= pkg.name %>.js'
       }
     },
@@ -34,6 +59,7 @@ module.exports = function(grunt) {
       tasks: 'lint qunit'
     },
     jshint: {
+      files: '<config:concat.dist.src>',
       options: {
         curly: true,
         eqeqeq: true,

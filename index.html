@@ -26,6 +26,46 @@
     }
 
     if (testDataClone()) {
+
+      var debug = false;
+      var devFiles = [
+        // Libs
+        'libs/jquery.hotkeys.js',
+        'libs/underscore.js',
+        'libs/backbone.js',
+        // Iframework
+        'src/iframework.js',
+        'src/graph.js',
+        'src/graph-view.js',
+        'src/node.js',
+        'src/node-view.js',
+        'src/node-box.js',
+        'src/node-box-view.js',
+        'src/node-box-iframe.js',
+        'src/node-box-iframe-view.js',
+        'src/port.js',
+        'src/port-view.js',
+        'src/module.js',
+        'src/module-view.js',
+        'src/edge.js',
+        'src/edge-view.js',
+        'src/router.js',
+        'src/eventshistory.js',
+        // native nodes
+        // 'src/nodes/image.js',
+        // 'src/nodes/image/combine.js',
+        // load examples
+        'src/examples/module-library.js',
+        'src/examples/apps.js'
+      ];
+      var distFiles = [
+        // Iframework
+        'dist/meemoo-iframework.min.js',
+        // load examples
+        'src/examples/module-library.js',
+        'src/examples/apps.js'
+      ];
+
       yepnope([
         {
           // Try the CDN stuff first
@@ -48,36 +88,8 @@
           }
         },
         {
-          load: [
-            // Libs
-            'libs/jquery.hotkeys.js',
-            'libs/underscore.js',
-            'libs/backbone.js',
-            // Iframework
-            'src/iframework.js',
-            'src/graph.js',
-            'src/graph-view.js',
-            'src/node.js',
-            'src/node-view.js',
-            'src/node-box.js',
-            'src/node-box-view.js',
-            'src/node-box-iframe.js',
-            'src/node-box-iframe-view.js',
-            'src/port.js',
-            'src/port-view.js',
-            'src/module.js',
-            'src/module-view.js',
-            'src/edge.js',
-            'src/edge-view.js',
-            'src/router.js',
-            'src/eventshistory.js',
-            // native nodes
-            'src/nodes/image.js',
-            'src/nodes/image/combine.js',
-            // load examples
-            'src/examples/module-library.js',
-            'src/examples/apps.js'
-          ],
+          // Load all of the src/ files, or just the minified one
+          load: (debug ? devFiles : distFiles),
           complete: function(){
             // Yay!
           }
