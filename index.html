@@ -28,7 +28,7 @@
     if (testDataClone()) {
 
       var debug = true;
-      var devFiles = [
+      var debugFiles = [
         // Libs
         'libs/jquery.hotkeys.js',
         'libs/underscore.js',
@@ -58,9 +58,9 @@
         'src/examples/module-library.js',
         'src/examples/apps.js'
       ];
-      var distFiles = [
+      var buildFiles = [
         // Iframework
-        'dist/meemoo-iframework.min.js',
+        'build/meemoo-iframework.min.js',
         // load examples
         'src/examples/module-library.js',
         'src/examples/apps.js'
@@ -89,7 +89,7 @@
         },
         {
           // Load all of the src/ files, or just the minified one
-          load: (debug ? devFiles : distFiles),
+          load: (debug ? debugFiles : buildFiles),
           complete: function(){
             // Yay!
           }

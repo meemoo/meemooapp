@@ -39,13 +39,13 @@ module.exports = function(grunt) {
           'src/router.js',
           'src/eventshistory.js'
         ],
-        dest: 'dist/<%= pkg.name %>.js'
+        dest: 'build/<%= pkg.name %>.js'
       }
     },
     min: {
       dist: {
         src: '<config:concat.dist.src>',
-        dest: 'dist/<%= pkg.name %>.min.js'
+        dest: 'build/<%= pkg.name %>.min.js'
       }
     },
     qunit: {
