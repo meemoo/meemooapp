@@ -6,9 +6,7 @@ $(function(){
   Iframework.Module = Backbone.Model.extend({
     defaults: {
       "src": "",
-      "info": {},
-      "inputs": [],
-      "outputs": []
+      "info": {}
     },
     initialize: function () {
     },
@@ -21,9 +19,7 @@ $(function(){
     toJSON: function () {
       return {
         "src": this.get("src"),
-        "info": this.get("info"),
-        "inputs": this.get("inputs"),
-        "outputs": this.get("outputs")
+        "info": this.get("info")
       };
     }
   });

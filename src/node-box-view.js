@@ -8,17 +8,19 @@ $(function(){
       '<button type="button" class="showcontrols">show controls</button>'+
       '<div class="controls">'+
         '<button type="button" class="remove">remove</button>'+
-        '<button type="button" class="refresh">refresh</button>'+
         '<button type="button" class="hidecontrols">hide controls</button>'+
       '</div>'+
-      '<div class="frame native-type">'+
+      '<div class="inner">'+
       '</div>'+
     '</div>';
 
-  Iframework.NodeView = Backbone.View.extend({
+  var innerTemplate = '<div class="info" />';
+
+  Iframework.NodeBoxView = Iframework.NodeView.extend({
     tagName: "div",
     className: "node",
     template: _.template(template),
+    innerTemplate: _.template(innerTemplate),
     events: {
       "dragstart .module":   "dragstart",
       "drag .module":        "drag",
@@ -30,7 +32,6 @@ $(function(){
       "click .module, .title": "click",
       "click .showcontrols": "showControls",
       "click .hidecontrols": "hideControls",
-      "click .refresh":      "refresh",
       "click .remove":       "removeModel"
     },
     initialize: function () {
@@ -42,8 +43,6 @@ $(function(){
         .button({ icons: { primary: "ui-icon-carat-1-w" }, text: false });
       this.$(".hidecontrols")
         .button({ icons: { primary: "ui-icon-carat-1-e" }, text: false });
-      this.$(".refresh")
-        .button({ icons: { primary: "ui-icon-arrowrefresh-1-s" }, text: false });
       this.$(".remove")
         .button({ icons: { primary: "ui-icon-trash" }, text: false });
 
@@ -53,6 +52,7 @@ $(function(){
     },
     render: function () {
       this.$el.html(this.template(this.model));
+      this.$(".inner").append(this.innerTemplate(this.model));
       return this;
     },
     infoLoaded: function (info) {
@@ -160,14 +160,14 @@ $(function(){
       this.$(".showcontrols").show();
       this.$(".controls").hide();
     },
-    refresh: function () {
-      this.$(".frame")[0].src = this.model.get("src");
-    },
     removeModel: function () {
       this.model.remove();
     },
     remove: function () {
       this.$el.remove();
+    },
+    refresh: function () {
+      //
     }
 
   });

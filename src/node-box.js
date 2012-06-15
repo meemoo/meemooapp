@@ -1,6 +1,6 @@
 $(function(){
 
-  Iframework.Node = Backbone.Model.extend({
+  Iframework.NodeBox = Iframework.Node.extend({
     loaded: false,
     defaults: function() {
       return {
@@ -17,22 +17,13 @@ $(function(){
       this.Inputs = new Iframework.Ports();
       this.Outputs = new Iframework.Ports();
 
-      // Native node type
-      var nodetype = this.get("src").split(":")[1];
-      if ( Iframework.NativeNodes.hasOwnProperty(nodetype) ) {
-        this.nativenode = new Iframework.NativeNodes[nodetype]({node:this});
-        this.loaded = true;
-      } else {
-        this.loaded = false;
-      }
-
       // Change event
       this.on("change", this.nodeChanged);
 
     },
     initializeView: function () {
       // Called from GraphView.addNode();
-      this.view = new Iframework.NodeView({model:this});
+      this.view = new Iframework.NodeBoxView({model:this});
       return this.view;
     },
     initializePorts: function () {

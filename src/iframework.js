@@ -90,7 +90,7 @@ $(function(){
       this.$el.html(this.template());
       return this;
     },
-    shownGraph: undefined,
+    shownGraph: null,
     // Thanks http://www.madebypi.co.uk/labs/colorutils/examples.html :: red.equal(7, true);
     wireColors: ["#FF9292", "#00C2EE", "#DCA761", "#8BB0FF", "#96BD6D", "#E797D7", "#29C6AD"],
     wireColorIndex: 0,
@@ -190,6 +190,42 @@ $(function(){
             .appendTo( ul );
         };
     },
+    _exampleGraphs: [],
+    loadExampleApps: function (examples) {
+      this._exampleGraphs = this._exampleGraphs.concat(examples);
+
+      // Make example links:
+      var exampleLinks = "examples: <br /> "
+      for (var i=0; i<examples.length; i++) {
+        var url = examples[i]["info"]["url"];
+        if (url) {
+          exampleLinks += '<a href="#example/'+url+'" title="'+examples[i]["info"]["title"]+": "+examples[i]["info"]["description"]+'">'+url+'</a> <br />';
+        }
+      }
+      this.$(".panel .load").append(exampleLinks);
+
+      // None shown
+      if (!this.shownGraph){
+        if (this._loadedExample) {
+          // Router tried to load this already, try again
+          this.loadExample(this._loadedExample);
+        } else {
+          // Load first
+          Iframework.loadGraph(this._exampleGraphs[0]);
+        }
+      }
+    },
+    _loadedExample: null,
+    loadExample: function (url) {
+      this._loadedExample = url;
+      for (var i=0; i<this._exampleGraphs.length; i++) {
+        if (this._exampleGraphs[i]["info"]["url"] === url) {
+          this.loadGraph(this._exampleGraphs[i]);
+          this.closepanels();
+          return true;
+        }
+      }
+    },
     closepanels: function() {
       this.$(".showpanel").show();
       this.$(".panel").hide();
@@ -240,7 +276,7 @@ $(function(){
       $(".addbyurlinput").blur();
       var url = this.$(".addbyurlinput").val();
       if (url != "") {
-        this.shownGraph.addNode( new Iframework.NodeIframe({"src": url}) );
+        this.shownGraph.addNode( new Iframework.NodeBoxIframe({"src": url}) );
         this.$(".addbyurlinput")
           .val("")
           .attr("placeholder", "loading...");

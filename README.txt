@@ -3,15 +3,18 @@
 | | | | -_| -_|     | . | . |
 |_|_|_|___|___|_|_|_|___|___|
 
-
 ---
+
 http://meemoo.org/
 
 A flow-based visual programming framework for hackable web apps.
 
-by Forrest Oliphant, http://forresto.com/
- with help from Media Lab Helsinki, http://mlab.taik.fi/
- and Mozilla WebFWD, http://webfwd.org/
+by 
+ Forrest Oliphant, http://forresto.com/
+with help from 
+ Media Lab Helsinki, http://mlab.taik.fi/
+ NLnet Foundation, http://nlnet.nl/
+ The Shuttleworth Foundation, http://www.shuttleworthfoundation.org/
 
 demo: http://meemoo.org/iframework
 blog: http://meemoo.org/blog
@@ -28,11 +31,9 @@ wire        : edge  : window.postMessage()
 
 You may use any Meemoo project under the terms of either the MIT License or the GNU Affero General Public License (AGPL) Version 3.
 
-The MIT License is recommended for most projects using Meemoo. It is simple and easy to understand and it places almost no restrictions on what you can do with Meemoo.
-http://meemoo.org/iframework/LICENSE-MIT.txt
+The MIT License is recommended for most projects using Meemoo. It is simple and easy to understand and it places almost no restrictions on what you can do with Meemoo. http://meemoo.org/iframework/LICENSE-MIT.txt
 
-If the AGPL suits your project better you are also free to use Meemoo under that license.
-http://meemoo.org/iframework/LICENSE-AGPL.txt
+If the AGPL suits your project better you are also free to use Meemoo under that license. http://meemoo.org/iframework/LICENSE-AGPL.txt
 
 You don’t have to do anything special to choose one license or the other and you don’t have to notify anyone which license you are using. You are free to use Meemoo in commercial projects as long as the copyright header is left intact.
 

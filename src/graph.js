@@ -26,14 +26,33 @@ $(function(){
           if (nodes[i].hasOwnProperty("src") && nodes[i]["src"].split(":")[0] === "meemoo") {
             // Native type node
             var id = nodes[i]["src"].split(":")[1];
+            var path = id.split("/");
+            id = path.join("-");
+
+            // Load js if needed (doesn't work yet, think about complete function)
+            // HACK only for loading "group/node.js" to Iframework.NativeNodes[group-node]
+            // if (path[0] && path[1]) {
+            //   yepnope([
+            //     {
+            //       test: Iframework.NativeNodes.hasOwnProperty(path[0]),
+            //       nope: "src/nodes/"+path[0]+".js"
+            //     },
+            //     {
+            //       test: Iframework.NativeNodes.hasOwnProperty(id),
+            //       nope: "src/nodes/"+path[0]+"/"+path[1]+".js",
+            //       complete: function(){}
+            //     }
+            //   ]);
+            // }
+
             if ( Iframework.NativeNodes.hasOwnProperty(id) ) {
-              var node = new Iframework.Node(nodes[i]);
+              var node = new Iframework.NativeNodes[id](nodes[i]);
             } else {
               console.warn("No matching native node: " + id);
             }
           } else {
             // Iframe type node
-            var node = new Iframework.NodeIframe(nodes[i]);
+            var node = new Iframework.NodeBoxIframe(nodes[i]);
           }
           if (node) {
             node.graph = this;

@@ -4,39 +4,100 @@
 <head>
   <meta charset="utf-8" />
   <title>meemoo/iframework: modular web media wiring patching</title>
-  
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
 
-  <!--
-  <script src="lib/underscore.js"></script>
-  <script src="lib/backbone.js"></script>
-  <script src="lib/jquery.hotkeys.js"></script>
-  <script src="js/iframework.js"></script>
-  <script src="js/iframework-eventshistory.js"></script>
-  <script src="js/iframework-graph.js"></script>
-  <script src="js/iframework-graph-view.js"></script>
-  <script src="js/iframework-node.js"></script>
-  <script src="js/iframework-node-view.js"></script>
-  <script src="js/iframework-node-iframe.js"></script>
-  <script src="js/iframework-node-iframe-view.js"></script>
-  <script src="js/iframework-module.js"></script>
-  <script src="js/iframework-module-view.js"></script>
-  <script src="js/iframework-port.js"></script>
-  <script src="js/iframework-port-view.js"></script>
-  <script src="js/iframework-edge.js"></script>
-  <script src="js/iframework-edge-view.js"></script>
-  -->
-  
-  <script src="iframework-min.js"></script>
+  <script src="libs/yepnope.js"></script>
+  <script type="text/javascript">
+    // This tests to see if the browser can do data clone for postMessage
+    // We'll assume that if it can do that it can handle the rest
+    function testDataClone(){
+      if(!!window.postMessage) {
+        try {
+          // Spec states you can't transmit DOM nodes and it will throw an error
+          // postMessage implimentations that support cloned data will throw.
+          window.postMessage(document.createElement("a"),"*");
+          return false;
+        } catch(e) {
+          return e.DATA_CLONE_ERR ? true : false;
+        }
+      } else {
+        // No window.postMessage
+        return false;
+      }
+    }
 
-  <script src="js/iframework-module-library.js"></script>
-  <script src="js/iframework-examples.js"></script>
-  
-  <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
-  <link href='http://fonts.googleapis.com/css?family=Nova+Flat' rel='stylesheet' type='text/css'>
-  
-  <link href="iframework.css" rel="stylesheet" type="text/css" />
+    if (testDataClone()) {
+
+      var debug = true;
+      var debugFiles = [
+        // Libs
+        'libs/jquery.hotkeys.js',
+        'libs/underscore.js',
+        'libs/backbone.js',
+        // Iframework
+        'src/iframework.js',
+        'src/graph.js',
+        'src/graph-view.js',
+        'src/node.js',
+        'src/node-view.js',
+        'src/node-box.js',
+        'src/node-box-view.js',
+        'src/node-box-iframe.js',
+        'src/node-box-iframe-view.js',
+        'src/port.js',
+        'src/port-view.js',
+        'src/module.js',
+        'src/module-view.js',
+        'src/edge.js',
+        'src/edge-view.js',
+        'src/router.js',
+        'src/eventshistory.js',
+        // native nodes
+        // 'src/nodes/image.js',
+        // 'src/nodes/image/combine.js',
+        // load examples
+        'src/examples/module-library.js',
+        'src/examples/apps.js'
+      ];
+      var buildFiles = [
+        // Iframework
+        'build/meemoo-iframework.min.js',
+        // load examples
+        'src/examples/module-library.js',
+        'src/examples/apps.js'
+      ];
+
+      yepnope([
+        {
+          // Try the CDN stuff first
+          load: [
+            // Libs
+            'http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.min.js ',
+            'http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.20/jquery-ui.min.js',
+            // CSS
+            'http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.20/themes/smoothness/jquery-ui.css',
+            'http://fonts.googleapis.com/css?family=Nova+Flat&.css',
+            'iframework.css'
+          ],
+          complete: function(){
+            if (!window.jQuery) {
+              // CDN offline?
+              yepnope("libs/jquery.js");
+              yepnope("libs/jquery-ui/jquery-ui.js");
+              yepnope("libs/jquery-ui/jquery-ui.css");
+            }
+          }
+        },
+        {
+          // Load all of the src/ files, or just the minified one
+          load: (debug ? debugFiles : buildFiles),
+          complete: function(){
+            // Yay!
+          }
+        }
+      ]);
+    }
+
+  </script>  
   
 </head>
 <body>
@@ -44,7 +105,7 @@
   <footer>
     <a href="http://meemoo.org/" target="_blank">meemoo</a> &raquo; <a href="https://github.com/meemoo/iframework" target="_blank">source</a>
   </footer>
-  
+
   <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-274009-19']);

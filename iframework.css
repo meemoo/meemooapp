@@ -141,7 +141,7 @@ div.module {
       width: 18px;
       height: 18px;
     }
-  div.module .frame {
+  div.module .inner {
     border: 1px #AAA solid;
     position: absolute;
     top: 30px;
@@ -150,10 +150,10 @@ div.module {
     left: 10px;
     overflow: auto;
   }
-    div.module .frame.iframe-type {
+    div.module .inner.iframe-type {
       overflow: hidden;
     }
-    div.module .frame.iframe-type iframe {
+    div.module .inner.iframe-type iframe {
       width: 100%;
       height: 100%;
       border: none;
