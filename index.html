@@ -3,7 +3,7 @@
 <!-- <html manifest="iframework.appcache"> -->
 <head>
   <meta charset="utf-8" />
-  <title>meemoo/iframework: modular web media wiring patching</title>
+  <title>meemoo/iframework: hackable web apps</title>
 
   <script src="libs/yepnope.min.js"></script>
   <script type="text/javascript">
@@ -14,7 +14,11 @@
         try {
           // Spec states you can't transmit DOM nodes and it will throw an error
           // postMessage implimentations that support cloned data will throw.
-          window.postMessage(document.createElement("a"),"*");
+          var hmm = window.postMessage(document.createElement("a"),"*");
+          if (hmm === undefined) {
+            // HACK for Safari, doesn't throw: http://thecssninja.com/demo/sclones/test/
+            return true;
+          }
           return false;
         } catch(e) {
           return e.DATA_CLONE_ERR ? true : false;
