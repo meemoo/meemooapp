@@ -4,7 +4,7 @@ $(function(){
   var IframeworkRouter = Backbone.Router.extend({
     routes: {
       "example/:url": "loadExample", // #/example/url
-      "gist/https\://gist.github.com/:id": "loadGistUgly", // #gist/https://gist.github.com/id
+      "gist/https://gist.github.com/:id": "loadGistUgly", // #gist/https://gist.github.com/id
       "gist/:id":     "loadGist", // #/gist/id
       "*path":        "default"
     },
@@ -18,7 +18,7 @@ $(function(){
     loadGist: function(id) {
       Iframework.loadFromGistId(id);
     },
-    default: function() {
+    "default": function() {
       // Done in Iframework.loadExampleApps()
     }
   });

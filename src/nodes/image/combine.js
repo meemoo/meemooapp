@@ -7,7 +7,7 @@ $(function(){
       description: "native module test"
     },
     inputimage: function (i) {
-      console.log(this, i, Meemoo);
+      // console.log(this, i, Meemoo);
     },
     inputbang: function (i) {
       this.send("bang", i);

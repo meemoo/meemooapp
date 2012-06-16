@@ -60,13 +60,13 @@ $(function(){
             helper: function (e) {
               return $('<span class="holehelper holehelper-out" />');
             }
-          })
+          });
         this.$(".plugend")
           .draggable({
             helper: function (e) {
               return $('<span class="plugendhelper plugendhelper-in" />');
             }
-          })
+          });
       } else {
         this.$el.html( this.portOutTemplate(this.model.toJSON()) );
         this.$el.addClass("port-out");
@@ -75,13 +75,13 @@ $(function(){
             helper: function (e) {
               return $('<span class="holehelper holehelper-in" />');
             }
-          })
+          });
         this.$(".plugend")
           .draggable({
             helper: function (e) {
               return $('<span class="plugendhelper plugendhelper-out" />');
             }
-          })
+          });
       }
 
       // Drag from hole
@@ -300,13 +300,14 @@ $(function(){
   
       if ( Iframework.selectedPort && (isIn !== Iframework.selectedPort.isIn) ) {
         // Connect
+        var edge;
         if (isIn) {
-          var edge = new Iframework.Edge({
+          edge = new Iframework.Edge({
             source: [Iframework.selectedPort.node.get("id"), Iframework.selectedPort.get("name")],
             target: [this.model.node.get("id"), this.model.get("name")]
           });
         } else {
-          var edge = new Iframework.Edge({
+          edge = new Iframework.Edge({
             source: [this.model.node.get("id"), this.model.get("name")],
             target: [Iframework.selectedPort.node.get("id"), Iframework.selectedPort.get("name")]
           });
@@ -373,7 +374,7 @@ $(function(){
         } else if (typeabbr === "boo") {
           showForm = true;
           var val = this.model.node.get("state")[this.model.get("name")];
-          val = (Boolean(val) && val != "false");
+          val = (Boolean(val) && val !== "false");
           inputForm.append(
             $("<input />")
               .attr({
@@ -428,7 +429,7 @@ $(function(){
       if (this.model.get("options") && this.model.get("options").length > 0) {
         this.$('input').autocomplete({
           minLength: 0,
-          source: this.model.get("options"),
+          source: this.model.get("options")
         });
       }
 
@@ -446,9 +447,9 @@ $(function(){
         }
       }
       if (this.model.get("type") === "int") {
-        val = parseInt(val);
+        val = parseInt(val, 10);
       }
-      if (this.model.get("type") === "number") {
+      if (this.model.get("type") === "number" || this.model.get("type") === "float") {
         val = parseFloat(val);
       }
       var message = {};

@@ -41,7 +41,7 @@ $(function(){
       '</div>'+
     '</div>';
   
-  var iframework = Backbone.View.extend({
+  var IframeworkView = Backbone.View.extend({
     tagName: "div",
     className: "app",
     template: _.template(template),
@@ -195,7 +195,7 @@ $(function(){
       this._exampleGraphs = this._exampleGraphs.concat(examples);
 
       // Make example links:
-      var exampleLinks = "examples: <br /> "
+      var exampleLinks = "examples: <br /> ";
       for (var i=0; i<examples.length; i++) {
         var url = examples[i]["info"]["url"];
         if (url) {
@@ -275,7 +275,7 @@ $(function(){
     addbyurl: function() {
       $(".addbyurlinput").blur();
       var url = this.$(".addbyurlinput").val();
-      if (url != "") {
+      if (url !== "") {
         this.shownGraph.addNode( new Iframework.NodeBoxIframe({"src": url}) );
         this.$(".addbyurlinput")
           .val("")
@@ -311,11 +311,11 @@ $(function(){
     },
     loadFromGistId: function (gistid) {
       // "https://gist.github.com/2439102" or just "2439102"
-      var split = gistid.split("/") // ["https:", "", "gist.github.com", "2439102"]
+      var split = gistid.split("/"); // ["https:", "", "gist.github.com", "2439102"]
       if (split.length > 3 && split[2] === "gist.github.com") {
         gistid = split[3];
       }
-      gistid = parseInt(gistid);
+      gistid = parseInt(gistid, 10);
       if (gistid !== gistid) {
         // NaN
         return false;
@@ -328,7 +328,7 @@ $(function(){
         dataType: 'jsonp'
       }).success( function(gistdata) {
         var graphs = [];
-        for (file in gistdata.data.files) {
+        for (var file in gistdata.data.files) {
           if (gistdata.data.files.hasOwnProperty(file)) {
             var graph = JSON.parse(gistdata.data.files[file].content);
             var gisturl = gistdata.data.html_url;
@@ -359,7 +359,7 @@ $(function(){
   });
 
   // Start app
-  window.Iframework = new iframework();
+  window.Iframework = new IframeworkView();
   
   // Listen for /info messages from nodes
   window.addEventListener("message", Iframework.gotMessage, false);

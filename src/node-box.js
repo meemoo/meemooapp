@@ -11,7 +11,7 @@ $(function(){
         w: 200,
         h: 200,
         state: {}
-      }
+      };
     },
     initialize: function () {
       this.Inputs = new Iframework.Ports();
@@ -30,14 +30,14 @@ $(function(){
       // Called from GraphView.addNode();
       if (this.nativenode) {
         this.nativenode.setInfo(this.nativenode.info);
-        for (var name in this.nativenode.inputs) {
-          if (this.nativenode.inputs.hasOwnProperty(name)) {
-            this.nativenode.addInput(name, this.nativenode.inputs[name]);
+        for (var inputname in this.nativenode.inputs) {
+          if (this.nativenode.inputs.hasOwnProperty(inputname)) {
+            this.nativenode.addInput(inputname, this.nativenode.inputs[inputname]);
           }
         }
-        for (var name in this.nativenode.outputs) {
-          if (this.nativenode.outputs.hasOwnProperty(name)) {
-            this.nativenode.addOutput(name, this.nativenode.outputs[name]);
+        for (var outputname in this.nativenode.outputs) {
+          if (this.nativenode.outputs.hasOwnProperty(outputname)) {
+            this.nativenode.addOutput(outputname, this.nativenode.outputs[outputname]);
           }
         }
       }
@@ -50,7 +50,7 @@ $(function(){
     recieve: function (message) {
       if (this.nativenode) {
         this.nativenode.send(message);
-      };
+      }
     },
     Info: {},
     infoLoaded: function (info) {
@@ -88,8 +88,8 @@ $(function(){
       }
       // Set state to post defaults
       var currentState = this.get("state");
-      if ( info.hasOwnProperty("default") && info.default != "" && !currentState.hasOwnProperty(info.name) ) {
-        currentState[info.name] = info.default;
+      if ( info.hasOwnProperty("default") && info["default"] !== "" && !currentState.hasOwnProperty(info.name) ) {
+        currentState[info.name] = info["default"];
       }
     },
     addOutput: function (info) {

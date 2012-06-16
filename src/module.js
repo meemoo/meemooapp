@@ -30,7 +30,7 @@ $(function(){
       var module;
       module = this.find(function(module){
         return module.get("src") === node.get("src");
-      })
+      });
       if (!module) {
         module = new Iframework.Module({"node":node});
         this.add(module);

@@ -5,7 +5,7 @@ $(function(){
       name: "",
       type: "",
       description: "",
-      default: null
+      "default": null
     },
     initialize: function () {
       if (this.get("type")==="") {
@@ -26,7 +26,6 @@ $(function(){
       return this.find( function(_port){
         return _port.get("name")===name;
       });
-      return false;
     }
   });
 

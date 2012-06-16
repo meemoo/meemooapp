@@ -59,7 +59,6 @@ module.exports = function(grunt) {
       tasks: 'lint qunit'
     },
     jshint: {
-      files: '<config:concat.dist.src>',
       options: {
         curly: true,
         eqeqeq: true,
@@ -74,7 +73,12 @@ module.exports = function(grunt) {
         browser: true
       },
       globals: {
-        jQuery: true
+        // "console": true,
+        "_": true,
+        "$": true,
+        "jQuery": true,
+        "Backbone": true,
+        "Iframework": true
       }
     },
     uglify: {}

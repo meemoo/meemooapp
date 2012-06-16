@@ -23,6 +23,7 @@ $(function(){
         var nodes = this.attributes.nodes;
         this.attributes.nodes = new Iframework.Nodes();
         for (var i=0; i<nodes.length; i++) {
+          var node;
           if (nodes[i].hasOwnProperty("src") && nodes[i]["src"].split(":")[0] === "meemoo") {
             // Native type node
             var id = nodes[i]["src"].split(":")[1];
@@ -46,13 +47,13 @@ $(function(){
             // }
 
             if ( Iframework.NativeNodes.hasOwnProperty(id) ) {
-              var node = new Iframework.NativeNodes[id](nodes[i]);
+              node = new Iframework.NativeNodes[id](nodes[i]);
             } else {
               console.warn("No matching native node: " + id);
             }
           } else {
             // Iframe type node
-            var node = new Iframework.NodeBoxIframe(nodes[i]);
+            node = new Iframework.NodeBoxIframe(nodes[i]);
           }
           if (node) {
             node.graph = this;

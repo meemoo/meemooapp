@@ -4,8 +4,8 @@ $(function(){
     defaults: function () {
       return {
         action: "",
-        args: {},
-      }
+        args: {}
+      };
     },
     initialize: function () {
     }
@@ -31,15 +31,16 @@ $(function(){
       // add the node again
       graph.addNode(node);
       // add input and output ports
-      for (var i=0; i<node.Inputs.length; i++) {
+      var i;
+      for (i=0; i<node.Inputs.length; i++) {
         node.view.addInput(node.Inputs.at(i));
       }
-      for (var i=0; i<node.Outputs.length; i++) {
+      for (i=0; i<node.Outputs.length; i++) {
         node.view.addOutput(node.Outputs.at(i));
       }
       // add edges
       var edges = event.get("args").edges;
-      for (var i=0; i<edges.length; i++) {
+      for (i=0; i<edges.length; i++) {
         graph.addEdge(edges[i]);
       }
     }
