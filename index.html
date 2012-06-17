@@ -4,6 +4,17 @@
 <head>
   <meta charset="utf-8" />
   <title>meemoo/iframework: hackable web apps</title>
+</head>
+<body>
+  
+
+  <footer>
+    <a href="http://meemoo.org/" target="_blank">meemoo</a> &raquo; 
+    <a href="https://github.com/meemoo/iframework" target="_blank">source</a>
+    <span id="iframework-info">...</span>
+    <noscript>This web app uses JavaScript (and plenty of it).</noscript>
+  </footer>
+
 
   <script src="libs/yepnope.min.js"></script>
   <script type="text/javascript">
@@ -29,7 +40,10 @@
       }
     }
 
-    if (testDataClone()) {
+    if (!testDataClone()) {
+      document.getElementById("iframework-info").innerHTML = "You need a modern browser to run this.";
+    } else {
+      document.getElementById("iframework-info").innerHTML = "Loading libraries (1/2)...";
 
       var debug = true;
       var debugFiles = [
@@ -89,26 +103,25 @@
               yepnope("libs/jquery-ui/jquery-ui.js");
               yepnope("libs/jquery-ui/jquery-ui.css");
             }
+            document.getElementById("iframework-info").innerHTML = "Loading Meemoo (2/2)...";
           }
         },
         {
           // Load all of the src/ files, or just the minified one
           load: (debug ? debugFiles : buildFiles),
           complete: function(){
-            // Yay!
+            // All loaded
+            document.getElementById("iframework-info").innerHTML = "Loaded!";
+            window.setTimeout(function(){
+              document.getElementById("iframework-info").innerHTML = "";
+            }, 2000)
           }
         }
       ]);
     }
 
   </script>  
-  
-</head>
-<body>
-  
-  <footer>
-    <a href="http://meemoo.org/" target="_blank">meemoo</a> &raquo; <a href="https://github.com/meemoo/iframework" target="_blank">source</a>
-  </footer>
+
 
   <script type="text/javascript">
     var _gaq = _gaq || [];
@@ -122,5 +135,6 @@
     })();
   </script>
   
+
 </body>
 </html>

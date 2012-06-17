@@ -2,13 +2,13 @@ $(function(){
   
   var template = 
     '<div class="showpanel">'+
-      '<button class="button showload">load</button>'+
+      '<button class="button showload">file</button>'+
       '<button class="button showsource">source</button>'+
       '<button class="button showlibrary">module</button>'+
     '</div>'+
     '<div class="panel">'+
       '<div class="choosepanel">'+
-        '<button class="button showload">load</button>'+
+        '<button class="button showload">file</button>'+
         '<button class="button showsource">source</button>'+
         '<button class="button showlibrary">module</button>'+
         '<button class="button close">close</button>'+

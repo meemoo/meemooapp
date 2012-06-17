@@ -44,7 +44,7 @@ module.exports = function(grunt) {
     },
     min: {
       dist: {
-        src: '<config:concat.dist.src>',
+        src: ['<banner:meta.banner>', '<config:concat.dist.dest>'],
         dest: 'build/<%= pkg.name %>.min.js'
       }
     },
@@ -73,7 +73,7 @@ module.exports = function(grunt) {
         browser: true
       },
       globals: {
-        // "console": true,
+        "console": true,
         "_": true,
         "$": true,
         "jQuery": true,
@@ -85,6 +85,6 @@ module.exports = function(grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', 'lint qunit concat min');
+  grunt.registerTask('default', 'lint concat min');
 
 };
