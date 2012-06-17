@@ -21,7 +21,7 @@ $(function(){
       '</div>'+
       '<div class="source">'+
         '<div class="sourceedit">'+
-          '<textarea wrap="off" />'+
+          '<textarea />'+
         '</div>'+
         '<div class="controls">'+
           '<button class="button sourcerefresh" title="refresh the source code">refresh</button>'+
@@ -259,12 +259,10 @@ $(function(){
     },
     sourcerefresh: function() {
       this.$(".panel .source textarea")
-        .attr("wrap", "off")
         .val( JSON.stringify(Iframework.shownGraph, null, "  ") );
     },
     sourcecompress: function() {
       this.$(".panel .source textarea")
-        .attr("wrap", "")
         .val( JSON.stringify(Iframework.shownGraph, null, "") );
     },
     sourceapply: function() {
@@ -303,7 +301,7 @@ $(function(){
         window.setTimeout(function(){
           this.$(".loadfromgistinput")
             .attr("placeholder", "load app from gist url");
-        },1000);
+        }, 1500);
 
       }
 
@@ -347,7 +345,7 @@ $(function(){
         }
         if (graphs.length > 0) {
           Iframework.loadGraph(graphs[0]);
-          Iframework.showsource();
+          Iframework.closepanels();
         }
       }).error( function(e) {
         console.warn("gist load error", e);

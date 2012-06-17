@@ -8,11 +8,11 @@
 <body>
   
 
-  <footer>
+  <footer style="font-size: 10px; font-family: Monaco, monospace;">
     <a href="http://meemoo.org/" target="_blank">meemoo</a> &raquo; 
     <a href="https://github.com/meemoo/iframework" target="_blank">source</a>
-    <span id="iframework-info">...</span>
-    <noscript>This web app uses JavaScript (and plenty of it).</noscript>
+    <span id="iframework-info">&raquo; ...</span>
+    <noscript>&raquo; This web app uses JavaScript (and plenty of it).</noscript>
   </footer>
 
 
@@ -41,9 +41,9 @@
     }
 
     if (!testDataClone()) {
-      document.getElementById("iframework-info").innerHTML = "You need a modern browser to run this.";
+      document.getElementById("iframework-info").innerHTML = "&raquo; You need a modern browser to run this.";
     } else {
-      document.getElementById("iframework-info").innerHTML = "Loading libraries (1/2)...";
+      document.getElementById("iframework-info").innerHTML = "&raquo; 1/2: Loading libraries...";
 
       var debug = true;
       var debugFiles = [
@@ -103,7 +103,7 @@
               yepnope("libs/jquery-ui/jquery-ui.js");
               yepnope("libs/jquery-ui/jquery-ui.css");
             }
-            document.getElementById("iframework-info").innerHTML = "Loading Meemoo (2/2)...";
+            document.getElementById("iframework-info").innerHTML = "&raquo; 2/2: Loading Meemoo...";
           }
         },
         {
@@ -111,10 +111,14 @@
           load: (debug ? debugFiles : buildFiles),
           complete: function(){
             // All loaded
-            document.getElementById("iframework-info").innerHTML = "Loaded!";
-            window.setTimeout(function(){
-              document.getElementById("iframework-info").innerHTML = "";
-            }, 2000)
+            if (window.Iframework) {
+              document.getElementById("iframework-info").innerHTML = "&raquo; Loaded!";
+              window.setTimeout(function(){
+                document.getElementById("iframework-info").innerHTML = "";
+              }, 1500);
+            } else {
+              document.getElementById("iframework-info").innerHTML = "&raquo; Something didn't work (;_;)";
+            }
           }
         }
       ]);
