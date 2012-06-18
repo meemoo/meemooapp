@@ -401,7 +401,7 @@ $(function(){
     loadLocal: function (url) {
       this._loadedLocal = url;
       if (this._localapps) {
-        app = this._localapps.find(function(app){
+        var app = this._localapps.find(function(app){
           return app.get("graph")["info"]["url"] === url;
         });
         if (app) {
