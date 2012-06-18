@@ -26,6 +26,8 @@ $(function(){
     },
     loadapp: function() {
       Iframework.loadGraph(this.model.get("graph"));
+      var id = this.model.get("graph").info.url;
+      Iframework.router.navigate("local/"+id);
     }
 
   });

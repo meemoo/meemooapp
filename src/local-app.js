@@ -11,7 +11,20 @@ $(function(){
 
   Iframework.LocalApps = Backbone.Collection.extend({
     model: Iframework.LocalApp,
-    localStorage: new Backbone.LocalStorage("LocalApps")
+    localStorage: new Backbone.LocalStorage("LocalApps"),
+    updateOrCreate: function (graph) {
+      var app;
+      app = this.find(function(app){
+        return app.get("graph")["info"]["url"] === graph["info"]["url"];
+      });
+      if (!app) {
+        app = this.create({graph:graph});
+      } else {
+        app.save({graph:graph});
+      }
+      return app;
+    }
+
   });
     
 });

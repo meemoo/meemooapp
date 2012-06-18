@@ -21,12 +21,13 @@ $(function(){
           '</form>'+
         '</div>'+
         '<div class="listing">'+
-          '<div class="gistapps">'+
-          '</div>'+
-          '<div class="localapps">'+
-            '<h1>Local Storage</h1>'+
+          '<div class="currentapp">'+
+            '<h1>Current</h1>'+
             '<button class="savelocal">save</button>'+
             '<button class="saveaslocal">save as</button>'+
+          '</div>'+
+          '<div class="localapps">'+
+            '<h1>Saved Apps</h1>'+
           '</div>'+
           '<div class="examples">'+
             '<h1>Examples</h1>'+
@@ -234,8 +235,8 @@ $(function(){
         if (this._loadedExample) {
           // Router tried to load this already, try again
           this.loadExample(this._loadedExample);
-        } else {
-          // Load first
+        } else if (!this._loadedLocal) {
+          // Load first example
           Iframework.loadGraph(this._exampleGraphs[0]);
         }
       }
@@ -384,11 +385,37 @@ $(function(){
           Iframework._localapps.each(function(app){
             app.initializeView();
           });
+          // None shown
+          if (!Iframework.shownGraph){
+            if (Iframework._loadedLocal) {
+              // Router tried to load this already, try again
+              Iframework.loadLocal(Iframework._loadedLocal);
+            }
+          }
         },
         error: function (e) {
           console.warn("error loading local apps");
         }
       });
+    },
+    loadLocal: function (url) {
+      this._loadedLocal = url;
+      if (this._localapps) {
+        app = this._localapps.find(function(app){
+          return app.get("graph")["info"]["url"] === url;
+        });
+        if (app) {
+          this.loadGraph(app.get("graph"));
+          return true;
+        }
+        else {
+          // Didn't find matching url
+          return false;
+        }
+      } else {
+        // Local apps not loaded yet
+        return false;
+      }
     },
     setkey: function () {
       var key = window.prompt("Enter a url key");
@@ -402,15 +429,13 @@ $(function(){
           info: {}
         });
       }
-      if (!this.shownGraph.get("info").hasOwnProperty("url")) {
+      while (!this.shownGraph.get("info").hasOwnProperty("url") || this.shownGraph.get("info")["url"]==="") {
         this.setkey();
       }
-      var current = JSON.parse(JSON.stringify(this.shownGraph));
-      var key = current["info"]["url"];
-      this._localapps.create({
-        key: key,
-        graph: current
-      });
+      var currentAppGraph = JSON.parse(JSON.stringify(this.shownGraph));
+      var app = this._localapps.updateOrCreate(currentAppGraph);
+      var key = currentAppGraph["info"]["url"];
+      Iframework.router.navigate("local/"+key);
     },
     saveaslocal: function () {
       this.setkey();
