@@ -421,7 +421,7 @@ div.panel {
   }
     div.panel .library .controls {
     }
-    div.panel .library .listing {
+    div.panel .listing {
       position: absolute;
       top: 75px;
       right: 10px;
@@ -449,24 +449,30 @@ div.panel {
       font-size: 14px;
     }
 
+    .localapp h2,
+    .localapp p,
     div.panel .library h2,
     div.panel .library p{
       margin: 0;
       padding: 0;
     }
+    .localapp h2,
     div.panel .library h2{
       font-size: 14px;
       line-height: 14px;
     }
+    .localapp .description,
     div.panel .library .description{
       font-size: 10px;
       line-height: 14px;
     }
+    .localapp .src,
     div.panel .library .src{
       font-size: 10px;
       line-height: 10px;
       color: #999;
     }
+    .localapp .loadapp,
     div.panel .library .addnode {
       float: left;
       clear: left;

@@ -4,9 +4,7 @@ $(function(){
     '<button class="addnode" type="button">add node</button>' +
     '<h2 class="title"><%= info.title %></h2>' +
     '<p class="description"><%= info.description %></p>' +
-    '<p class="src"><%= src %></p>' +
-    '<ul class="inputs"></ul>' +
-    '<ul class="outputs"></ul>';
+    '<p class="src"><%= src %></p>';
 
   Iframework.ModuleView = Backbone.View.extend({
     tagName: "div",

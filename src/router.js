@@ -4,8 +4,10 @@ $(function(){
   var IframeworkRouter = Backbone.Router.extend({
     routes: {
       "example/:url": "loadExample", // #/example/url
-      "gist/https://gist.github.com/:id": "loadGistUgly", // #gist/https://gist.github.com/id
-      "gist/:id":     "loadGist", // #/gist/id
+      "unsaved":      "default",
+      "local/:url":   "loadLocal",
+      "gist/https://gist.github.com/:id": "loadGistUgly", 
+      "gist/:id":     "loadGist", 
       "*path":        "default"
     },
     loadExample: function(url) {
@@ -14,6 +16,9 @@ $(function(){
     loadGistUgly: function (id) {
       this.navigate("gist/"+id, {replace: true});
       this.loadGist(id);
+    },
+    loadLocal: function(id) {
+      Iframework.loadLocal(id);
     },
     loadGist: function(id) {
       Iframework.loadFromGistId(id);

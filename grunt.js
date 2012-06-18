@@ -12,7 +12,7 @@ module.exports = function(grunt) {
         ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> \n'+
         '*/'
     },
-    concat: {
+    min: {
       dist: {
         src: [
           '<banner:meta.banner>', 
@@ -20,8 +20,11 @@ module.exports = function(grunt) {
           'libs/jquery.hotkeys.js',
           'libs/underscore.js',
           'libs/backbone.js',
+          'libs/backbone.localStorage.js',
           // Iframework
           'src/iframework.js',
+          'src/local-app.js',
+          'src/local-app-view.js',
           'src/graph.js',
           'src/graph-view.js',
           'src/node.js',
@@ -39,12 +42,6 @@ module.exports = function(grunt) {
           'src/router.js',
           'src/eventshistory.js'
         ],
-        dest: 'build/<%= pkg.name %>.js'
-      }
-    },
-    min: {
-      dist: {
-        src: ['<banner:meta.banner>', '<config:concat.dist.dest>'],
         dest: 'build/<%= pkg.name %>.min.js'
       }
     },
@@ -85,6 +82,6 @@ module.exports = function(grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', 'lint concat min');
+  grunt.registerTask('default', 'lint min');
 
 };

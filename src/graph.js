@@ -76,6 +76,11 @@ $(function(){
       // Change event
       this.on("change", this.graphChanged);
     },
+    setInfo: function (key, val) {
+      var info = this.get("info");
+      info[key] = val;
+      this.trigger("change");
+    },
     addNode: function (node) {
       var count = this.get("nodes").length;
       // Give id if not defined or NaN

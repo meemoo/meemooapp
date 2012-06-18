@@ -51,8 +51,11 @@
         'libs/jquery.hotkeys.js',
         'libs/underscore.js',
         'libs/backbone.js',
+        'libs/backbone.localStorage.js',
         // Iframework
         'src/iframework.js',
+        'src/local-app.js',
+        'src/local-app-view.js',
         'src/graph.js',
         'src/graph-view.js',
         'src/node.js',
@@ -116,6 +119,8 @@
               window.setTimeout(function(){
                 document.getElementById("iframework-info").innerHTML = "";
               }, 1500);
+              // Start
+              Iframework.allLoaded();
             } else {
               document.getElementById("iframework-info").innerHTML = "&raquo; Something didn't work (;_;)";
             }

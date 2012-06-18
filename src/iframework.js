@@ -14,10 +14,24 @@ $(function(){
         '<button class="button close">close</button>'+
       '</div>'+
       '<div class="load">'+
-        '<form class="loadfromgist">'+
-          '<input class="loadfromgistinput" name="loadfromgistinput" placeholder="load app from gist url" type="text" />'+
-          '<button class="loadfromgistsubmit" type="submit">load</button>'+
-        '</form>'+
+        '<div class="controls">'+
+          '<form class="loadfromgist">'+
+            '<input class="loadfromgistinput" name="loadfromgistinput" placeholder="load app from gist url" type="text" />'+
+            '<button class="loadfromgistsubmit" type="submit">load</button>'+
+          '</form>'+
+        '</div>'+
+        '<div class="listing">'+
+          '<div class="gistapps">'+
+          '</div>'+
+          '<div class="localapps">'+
+            '<h1>Local Storage</h1>'+
+            '<button class="savelocal">save</button>'+
+            '<button class="saveaslocal">save as</button>'+
+          '</div>'+
+          '<div class="examples">'+
+            '<h1>Examples</h1>'+
+          '</div>'+
+        '</div>'+
       '</div>'+
       '<div class="source">'+
         '<div class="sourceedit">'+
@@ -55,7 +69,9 @@ $(function(){
       "click .sourcecompress": "sourcecompress",
       "click .sourceapply":    "sourceapply",
       "submit .addbyurl":      "addbyurl",
-      "submit .loadfromgist":  "loadfromgist"
+      "submit .loadfromgist":  "loadfromgist",
+      "click .savelocal":      "savelocal",
+      "click .saveaslocal":    "saveaslocal"
     },
     initialize: function () {
       this.render();
@@ -84,7 +100,14 @@ $(function(){
         .button({ icons: { primary: 'ui-icon-check' } });
       this.$(".loadfromgistsubmit")
         .button({ icons: { primary: 'ui-icon-check' } });
+      this.$(".savelocal")
+        .button({ icons: { primary: 'ui-icon-disk' } });
+      this.$(".saveaslocal")
+        .button({ icons: { primary: 'ui-icon-disk' } });
 
+    },
+    allLoaded: function () {
+      this.loadLocalApps();
     },
     render: function () {
       this.$el.html(this.template());
@@ -114,6 +137,7 @@ $(function(){
       if (graph["info"]["title"]) {
         document.title = "Meemoo: "+graph["info"]["title"];
       }
+      this.closepanels();
     },
     gotMessage: function (e) {
       if (Iframework.shownGraph) {
@@ -191,6 +215,7 @@ $(function(){
         };
     },
     _exampleGraphs: [],
+    _loadedExample: null,
     loadExampleApps: function (examples) {
       this._exampleGraphs = this._exampleGraphs.concat(examples);
 
@@ -202,7 +227,7 @@ $(function(){
           exampleLinks += '<a href="#example/'+url+'" title="'+examples[i]["info"]["title"]+": "+examples[i]["info"]["description"]+'">'+url+'</a> <br />';
         }
       }
-      this.$(".panel .load").append(exampleLinks);
+      this.$(".panel .load .examples").append(exampleLinks);
 
       // None shown
       if (!this.shownGraph){
@@ -215,13 +240,11 @@ $(function(){
         }
       }
     },
-    _loadedExample: null,
     loadExample: function (url) {
       this._loadedExample = url;
       for (var i=0; i<this._exampleGraphs.length; i++) {
         if (this._exampleGraphs[i]["info"]["url"] === url) {
           this.loadGraph(this._exampleGraphs[i]);
-          this.closepanels();
           return true;
         }
       }
@@ -352,7 +375,48 @@ $(function(){
       });
 
       return gistid;
+    },
+    loadLocalApps: function () {
+      // Load apps from local storage
+      this._localapps = new Iframework.LocalApps();
+      this._localapps.fetch({
+        success: function(e) {
+          Iframework._localapps.each(function(app){
+            app.initializeView();
+          });
+        },
+        error: function (e) {
+          console.warn("error loading local apps");
+        }
+      });
+    },
+    setkey: function () {
+      var key = window.prompt("Enter a url key");
+      key = key.toLowerCase().replace(" ", "-");
+      key = encodeURIComponent(key);
+      this.shownGraph.setInfo("url", key);
+    },
+    savelocal: function () {
+      if (!this.shownGraph.get("info")){
+        this.shownGraph.set({
+          info: {}
+        });
+      }
+      if (!this.shownGraph.get("info").hasOwnProperty("url")) {
+        this.setkey();
+      }
+      var current = JSON.parse(JSON.stringify(this.shownGraph));
+      var key = current["info"]["url"];
+      this._localapps.create({
+        key: key,
+        graph: current
+      });
+    },
+    saveaslocal: function () {
+      this.setkey();
+      this.savelocal();
     }
+
 
   });
 
