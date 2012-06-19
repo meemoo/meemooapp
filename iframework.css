@@ -489,7 +489,10 @@ div.panel {
   border-style: dotted;
   border-color: #AAA;
 }
-
+.panel .load .deletelocal {
+  float: right;
+  /*margin: 0 10px 10px 10px;*/
+}
 
 
 /* jQuery UI overrides */

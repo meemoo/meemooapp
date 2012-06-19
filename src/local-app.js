@@ -8,10 +8,11 @@ $(function(){
       return this.view;
     },
     load: function(){
+      
+      Iframework._loadedLocalApp = this;
       // Clone graph
       var graph = JSON.parse(JSON.stringify(this.get("graph")));
       Iframework.loadGraph(graph);
-      Iframework._loadedLocalApp = this;
 
       //DEBUG
       Iframework.showLoad();

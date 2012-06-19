@@ -55,14 +55,14 @@ $(function(){
 
   var currentTemplate = 
     '<h1>Current App</h1>'+
-    '<button class="deletelocal">delete</button>'+
     '<div class="info">'+
       '<h2 title="title, click to edit" class="settitle editable"><%= info.title %></h2>' +
       '<p title="url, click to edit" class="seturl editable"><%= info.url %></p>' +
       '<p title="description, click to edit" class="setdescription editable"><%= info.description %></p>' +
     '</div>'+
-    '<div class="controls">'+
+    '<div class="savecontrols">'+
       '<button class="savelocal">save</button>'+
+      '<button class="deletelocal">delete</button>'+
     '</div>';
   
   var IframeworkView = Backbone.View.extend({
@@ -150,25 +150,7 @@ $(function(){
       }
       this.closePanels();
 
-      // Current app info
-      this.$(".currentapp")
-        .html( this.currentTemplate(graph) );
-      this.$(".currentapp .savelocal")
-        .button({ icons: { primary: 'ui-icon-disk' } });
-      this.$(".currentapp .deletelocal")
-        .button({ icons: { primary: 'ui-icon-trash' } });
-      this.$(".currentapp .url")
-        .text(decodeURIComponent(graph["info"]["url"]));
-
-      this.$(".editable")
-        .attr("contenteditable", "true");
-
-      if (this._loadedLocalApp) {
-        this.$(".currentapp .deletelocal").show();
-      } else  {
-        this.$(".currentapp .deletelocal").hide();
-      }
-
+      this.updateCurrentInfo();
     },
     gotMessage: function (e) {
       if (Iframework.shownGraph) {
@@ -275,9 +257,10 @@ $(function(){
       this._loadedExample = url;
       for (var i=0; i<this._exampleGraphs.length; i++) {
         if (this._exampleGraphs[i]["info"]["url"] === url) {
-          this.loadGraph(this._exampleGraphs[i]);
           // reset localStorage version
           this._loadedLocalApp = null;
+          // load graph
+          this.loadGraph(this._exampleGraphs[i]);
           return true;
         }
       }
@@ -507,6 +490,7 @@ $(function(){
     deleteLocal: function () {
       if (this._loadedLocalApp) {
         this._loadedLocalApp.destroy();
+        this._loadedLocalApp = null;
       }
     },
     setTitle: function () {
@@ -526,6 +510,26 @@ $(function(){
       input = this.encodeKey(input);
       if (input !== this.shownGraph.get("info")["url"]) {
         this.shownGraph.setInfo("url", input);
+      }
+    },
+    updateCurrentInfo: function () {
+      var graph = this.shownGraph.toJSON();
+      this.$(".currentapp")
+        .html( this.currentTemplate(graph) );
+      this.$(".currentapp .savelocal")
+        .button({ icons: { primary: 'ui-icon-disk' } });
+      this.$(".currentapp .deletelocal")
+        .button({ icons: { primary: 'ui-icon-trash' }, text: false });
+      this.$(".currentapp .url")
+        .text(decodeURIComponent(graph["info"]["url"]));
+
+      this.$(".editable")
+        .attr("contenteditable", "true");
+
+      if (this._loadedLocalApp) {
+        this.$(".currentapp .deletelocal").show();
+      } else  {
+        this.$(".currentapp .deletelocal").hide();
       }
     }
 
