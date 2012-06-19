@@ -61,8 +61,12 @@ $(function(){
       '<p title="description, click to edit" class="setdescription editable"></p>' +
     '</div>'+
     '<div class="savecontrols">'+
-      '<button class="savelocal">save</button>'+
+      '<button class="savelocal">save local</button>'+
+      '<button class="savegist">save public</button>'+
       '<button class="deletelocal">delete</button>'+
+    '</div>'+
+    '<div class="permalink">'+
+      '<p title="last publicly saved version" class="permalink"></p>' +
     '</div>';
   
   var IframeworkView = Backbone.View.extend({
@@ -82,6 +86,7 @@ $(function(){
       "submit .addbyurl":      "addByUrl",
       "submit .loadfromgist":  "loadFromGist",
       "click .savelocal":      "saveLocal",
+      "click .savegist":       "saveGist",
       "click .deletelocal":    "deleteLocal",
       // "click .saveaslocal": "saveAsLocal",
       "blur .settitle":        "setTitle",
@@ -363,34 +368,72 @@ $(function(){
         url: 'https://api.github.com/gists/'+gistid,
         type: 'GET',
         dataType: 'jsonp'
-      }).success( function(gistdata) {
+      })
+      .success( function(gistdata) {
         var graphs = [];
         for (var file in gistdata.data.files) {
           if (gistdata.data.files.hasOwnProperty(file)) {
             var graph = JSON.parse(gistdata.data.files[file].content);
-            var gisturl = gistdata.data.html_url;
-            // Insert a reference to the parent
-            if (!graph.info.parents || !graph.info.parents.push) {
-              graph.info.parents = [];
-            }
-            // Only if this gist url isn't already in graph's parents
-            if (graph.info.parents.indexOf(gisturl) === -1) {
-              graph.info.parents.push(gisturl);
-            }
             if (graph) {
+              var gisturl = gistdata.data.html_url;
+              // Insert a reference to the parent
+              if (!graph.info.parents || !graph.info.parents.push) {
+                graph.info.parents = [];
+              }
+              // Only if this gist url isn't already in graph's parents
+              if (graph.info.parents.indexOf(gisturl) === -1) {
+                graph.info.parents.push(gisturl);
+              }
               graphs.push(graph);
             }
           }
         }
         if (graphs.length > 0) {
+          // reset localStorage version
+          this._loadedLocalApp = null;
+          // load graph
           Iframework.loadGraph(graphs[0]);
           Iframework.closePanels();
         }
-      }).error( function(e) {
+      })
+      .error( function(e) {
         console.warn("gist load error", e);
       });
 
       return gistid;
+    },
+    saveGist: function () {
+      // Save app to gist
+      var graph = this.shownGraph.toJSON();
+      var data = {
+        "description": "meemoo app: "+graph["info"]["title"],
+        "public": true
+      };
+      data["files"] = {};
+      var filename = graph["info"]["url"]+".json";
+      data["files"][filename] = {
+        "content": JSON.stringify(graph, null, "  ")
+      };
+      console.log(JSON.stringify(data));
+      $.ajax({
+        url: 'https://api.github.com/gists',
+        type: 'POST',
+        dataType: 'json',
+        data: JSON.stringify(data)
+      })
+      .success( function(e) {
+        // Save gist url to graph's info.parents
+        var info = Iframework.shownGraph.get("info");
+        if (!info.hasOwnProperty("parents") || !info.parents.push) {
+          graph.info.parents = [];
+        }
+        graph.info.parents.push(e.html_url);
+        // Show permalink
+        Iframework.$(".permalink").text("http://meemoo.org/iframework/#gist/"+e.id);
+      })
+      .error( function(e) {
+        console.warn("gist save error", e);
+      });
     },
     loadLocalApps: function () {
       // Load apps from local storage
@@ -517,6 +560,8 @@ $(function(){
         .html( this.currentTemplate(graph) );
       this.$(".currentapp .savelocal")
         .button({ icons: { primary: 'ui-icon-disk' } });
+      this.$(".currentapp .savegist")
+        .button({ icons: { primary: 'ui-icon-link' } });
       this.$(".currentapp .deletelocal")
         .button({ icons: { primary: 'ui-icon-trash' }, text: false });
 
@@ -529,6 +574,15 @@ $(function(){
 
       this.$(".editable")
         .attr("contenteditable", "true");
+
+      if (graph.info.hasOwnProperty("parents")) {
+        var parents = graph.info.parents;
+        var last = parents[parents.length-1];
+        var split = last.split("/");
+        var id = split[split.length-1];
+        this.$(".currentapp .permalink")
+          .text("http://meemoo.org/iframework/#gist/"+id);
+      }
 
       if (this._loadedLocalApp) {
         this.$(".currentapp .deletelocal").show();
