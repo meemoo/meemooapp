@@ -1,33 +1,38 @@
 $(function(){
 
   var template = 
-    '<button class="loadapp" type="button">load</button>' +
-    // '<button class="edit" type="button">edit</button>' +
-    '<h2 class="title"><%= graph.info.title %></h2>' +
-    '<p class="description"><%= graph.info.description %></p>' +
-    '<p class="url"><%= graph.info.url %></p>';
+    '<a class="url" href="#local/<%= graph.info.url %>"></a>'+
+    '<div class="info">'+
+      '<h2 class="title"><%= graph.info.title %></h2>' +
+      '<p class="description"><%= graph.info.description %></p>' +
+    '</div>';
 
   Iframework.LocalAppView = Backbone.View.extend({
     tagName: "div",
     className: "localapp",
     template: _.template(template),
     events: {
-      "click .loadapp": "loadapp"
     },
     initialize: function () {
       this.render();
       Iframework.$(".localapps").append( this.el );
-      this.$(".loadapp")
-        .button({ icons: { primary: 'ui-icon-copy' }, text: false });
+
+      this.model.on('change', this.update, this);
+      this.model.on('destroy', this.remove, this);
+
       return this;
     },
     render: function () {
       this.$el.html(this.template(this.model.toJSON()));
+      this.$(".url").text(decodeURIComponent(this.model.get("graph")["info"]["url"]));
+      this.$(".info").hide();
     },
-    loadapp: function() {
-      Iframework.loadGraph(this.model.get("graph"));
-      var id = this.model.get("graph").info.url;
-      Iframework.router.navigate("local/"+id);
+    update: function () {
+      this.render();
+      Iframework.updateCurrentInfo();
+    },
+    remove: function () {
+      this.$el.remove();
     }
 
   });

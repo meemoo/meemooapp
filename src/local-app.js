@@ -6,21 +6,38 @@ $(function(){
         this.view = new Iframework.LocalAppView({model:this});
       }
       return this.view;
+    },
+    load: function(){
+      // Clone graph
+      var graph = JSON.parse(JSON.stringify(this.get("graph")));
+      Iframework.loadGraph(graph);
+      Iframework._loadedLocalApp = this;
+
+      //DEBUG
+      Iframework.showLoad();
     }
   });
 
   Iframework.LocalApps = Backbone.Collection.extend({
     model: Iframework.LocalApp,
     localStorage: new Backbone.LocalStorage("LocalApps"),
+    getByUrl: function (url) {
+      var app = this.find(function(app){
+        return app.get("graph")["info"]["url"] === url;
+      });
+      return app;
+    },
     updateOrCreate: function (graph) {
       var app;
       app = this.find(function(app){
         return app.get("graph")["info"]["url"] === graph["info"]["url"];
       });
-      if (!app) {
-        app = this.create({graph:graph});
-      } else {
+      if (app) {
         app.save({graph:graph});
+        app.trigger("change");
+      } else {
+        app = this.create({graph:graph});
+        app.initializeView();
       }
       return app;
     }

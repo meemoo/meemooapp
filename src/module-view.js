@@ -25,7 +25,7 @@ $(function(){
     },
     addnode: function() {
       Iframework.$(".addbyurlinput").val( this.model.get("src") );
-      Iframework.addbyurl();
+      Iframework.addByUrl();
     }
 
   });

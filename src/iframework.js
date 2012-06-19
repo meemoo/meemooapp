@@ -22,9 +22,6 @@ $(function(){
         '</div>'+
         '<div class="listing">'+
           '<div class="currentapp">'+
-            '<h1>Current</h1>'+
-            '<button class="savelocal">save</button>'+
-            '<button class="saveaslocal">save as</button>'+
           '</div>'+
           '<div class="localapps">'+
             '<h1>Saved Apps</h1>'+
@@ -55,24 +52,41 @@ $(function(){
         '</div>'+
       '</div>'+
     '</div>';
+
+  var currentTemplate = 
+    '<h1>Current App</h1>'+
+    '<button class="deletelocal">delete</button>'+
+    '<div class="info">'+
+      '<h2 title="title, click to edit" class="settitle editable"><%= info.title %></h2>' +
+      '<p title="url, click to edit" class="seturl editable"><%= info.url %></p>' +
+      '<p title="description, click to edit" class="setdescription editable"><%= info.description %></p>' +
+    '</div>'+
+    '<div class="controls">'+
+      '<button class="savelocal">save</button>'+
+    '</div>';
   
   var IframeworkView = Backbone.View.extend({
     tagName: "div",
     className: "app",
     template: _.template(template),
+    currentTemplate: _.template(currentTemplate),
     frameCount: 0, // HACK to not use same name in Firefox
     events: {
-      "click .close" :         "closepanels",
-      "click .showload" :      "showload",
-      "click .showsource" :    "showsource",
-      "click .showlibrary":    "showlibrary",
-      "click .sourcerefresh":  "sourcerefresh",
-      "click .sourcecompress": "sourcecompress",
-      "click .sourceapply":    "sourceapply",
-      "submit .addbyurl":      "addbyurl",
-      "submit .loadfromgist":  "loadfromgist",
-      "click .savelocal":      "savelocal",
-      "click .saveaslocal":    "saveaslocal"
+      "click .close" :         "closePanels",
+      "click .showload" :      "showLoad",
+      "click .showsource" :    "showSource",
+      "click .showlibrary":    "showLibrary",
+      "click .sourcerefresh":  "sourceRefresh",
+      "click .sourcecompress": "sourceCompress",
+      "click .sourceapply":    "sourceApply",
+      "submit .addbyurl":      "addByUrl",
+      "submit .loadfromgist":  "loadFromGist",
+      "click .savelocal":      "saveLocal",
+      "click .deletelocal":    "deleteLocal",
+      // "click .saveaslocal": "saveAsLocal",
+      "blur .settitle":        "setTitle",
+      "blur .setdescription":  "setDescription",
+      "blur .seturl":          "setUrl"
     },
     initialize: function () {
       this.render();
@@ -101,10 +115,6 @@ $(function(){
         .button({ icons: { primary: 'ui-icon-check' } });
       this.$(".loadfromgistsubmit")
         .button({ icons: { primary: 'ui-icon-check' } });
-      this.$(".savelocal")
-        .button({ icons: { primary: 'ui-icon-disk' } });
-      this.$(".saveaslocal")
-        .button({ icons: { primary: 'ui-icon-disk' } });
 
     },
     allLoaded: function () {
@@ -138,7 +148,27 @@ $(function(){
       if (graph["info"]["title"]) {
         document.title = "Meemoo: "+graph["info"]["title"];
       }
-      this.closepanels();
+      this.closePanels();
+
+      // Current app info
+      this.$(".currentapp")
+        .html( this.currentTemplate(graph) );
+      this.$(".currentapp .savelocal")
+        .button({ icons: { primary: 'ui-icon-disk' } });
+      this.$(".currentapp .deletelocal")
+        .button({ icons: { primary: 'ui-icon-trash' } });
+      this.$(".currentapp .url")
+        .text(decodeURIComponent(graph["info"]["url"]));
+
+      this.$(".editable")
+        .attr("contenteditable", "true");
+
+      if (this._loadedLocalApp) {
+        this.$(".currentapp .deletelocal").show();
+      } else  {
+        this.$(".currentapp .deletelocal").hide();
+      }
+
     },
     gotMessage: function (e) {
       if (Iframework.shownGraph) {
@@ -221,7 +251,7 @@ $(function(){
       this._exampleGraphs = this._exampleGraphs.concat(examples);
 
       // Make example links:
-      var exampleLinks = "examples: <br /> ";
+      var exampleLinks = "";
       for (var i=0; i<examples.length; i++) {
         var url = examples[i]["info"]["url"];
         if (url) {
@@ -246,11 +276,13 @@ $(function(){
       for (var i=0; i<this._exampleGraphs.length; i++) {
         if (this._exampleGraphs[i]["info"]["url"] === url) {
           this.loadGraph(this._exampleGraphs[i]);
+          // reset localStorage version
+          this._loadedLocalApp = null;
           return true;
         }
       }
     },
-    closepanels: function() {
+    closePanels: function() {
       this.$(".showpanel").show();
       this.$(".panel").hide();
       this.$(".graph").css("right", "0px");
@@ -268,33 +300,33 @@ $(function(){
       this.$(".panel").show();
       this.$(".graph").css("right", "350px");
     },
-    showload: function() {
+    showLoad: function() {
       this.showpanel();
       this.$(".panel .load").show();
     },
-    showsource: function() {
+    showSource: function() {
       this.showpanel();
       this.$(".panel .source").show();
-      this.sourcerefresh();
+      this.sourceRefresh();
     },
-    showlibrary: function() {
+    showLibrary: function() {
       this.showpanel();
       this.$(".panel .library").show();
     },
-    sourcerefresh: function() {
+    sourceRefresh: function() {
       this.$(".panel .source textarea")
         .val( JSON.stringify(Iframework.shownGraph, null, "  ") );
     },
-    sourcecompress: function() {
+    sourceCompress: function() {
       this.$(".panel .source textarea")
         .val( JSON.stringify(Iframework.shownGraph, null, "") );
     },
-    sourceapply: function() {
+    sourceApply: function() {
       var newGraph = JSON.parse( $(".panel .sourceedit textarea").val() );
       this.loadGraph(newGraph);
-      this.showsource();
+      this.showSource();
     },
-    addbyurl: function() {
+    addByUrl: function() {
       $(".addbyurlinput").blur();
       var url = this.$(".addbyurlinput").val();
       if (url !== "") {
@@ -309,7 +341,7 @@ $(function(){
       }
       return false;
     },
-    loadfromgist: function () {
+    loadFromGist: function () {
       var gistid = this.loadFromGistId( this.$(".loadfromgistinput").val() );
       if ( gistid ) {
         $(".loadfromgistinput").blur();
@@ -369,7 +401,7 @@ $(function(){
         }
         if (graphs.length > 0) {
           Iframework.loadGraph(graphs[0]);
-          Iframework.closepanels();
+          Iframework.closePanels();
         }
       }).error( function(e) {
         console.warn("gist load error", e);
@@ -379,10 +411,10 @@ $(function(){
     },
     loadLocalApps: function () {
       // Load apps from local storage
-      this._localapps = new Iframework.LocalApps();
-      this._localapps.fetch({
+      this._localApps = new Iframework.LocalApps();
+      this._localApps.fetch({
         success: function(e) {
-          Iframework._localapps.each(function(app){
+          Iframework._localApps.each(function(app){
             app.initializeView();
           });
           // None shown
@@ -398,18 +430,19 @@ $(function(){
         }
       });
     },
+    _loadedLocal: null,
+    _loadedLocalApp: null,
     loadLocal: function (url) {
       this._loadedLocal = url;
-      if (this._localapps) {
-        var app = this._localapps.find(function(app){
-          return app.get("graph")["info"]["url"] === url;
-        });
+      if (this._localApps) {
+        var app = this._localApps.getByUrl(url);
         if (app) {
-          this.loadGraph(app.get("graph"));
+          app.load();
           return true;
         }
         else {
           // Didn't find matching url
+          console.warn("Didn't find local app with matching url.");
           return false;
         }
       } else {
@@ -417,31 +450,84 @@ $(function(){
         return false;
       }
     },
-    setkey: function () {
-      var key = window.prompt("Enter a url key");
+    setKey: function (current) {
+      var key = window.prompt("Enter a url key", current);
+      if (key) {
+        key = this.encodeKey(key);
+        this.shownGraph.setInfo("url", key);
+      }
+    },
+    encodeKey: function (key) {
       key = key.toLowerCase().replace(" ", "-");
       key = encodeURIComponent(key);
-      this.shownGraph.setInfo("url", key);
+      return key;
     },
-    savelocal: function () {
+    saveLocal: function () {
+
       if (!this.shownGraph.get("info")){
         this.shownGraph.set({
           info: {}
         });
       }
       while (!this.shownGraph.get("info").hasOwnProperty("url") || this.shownGraph.get("info")["url"]==="") {
-        this.setkey();
+        var d = new Date().getTime();
+        this.setKey(d);
       }
       var currentAppGraph = JSON.parse(JSON.stringify(this.shownGraph));
-      var app = this._localapps.updateOrCreate(currentAppGraph);
       var key = currentAppGraph["info"]["url"];
-      Iframework.router.navigate("local/"+key);
-    },
-    saveaslocal: function () {
-      this.setkey();
-      this.savelocal();
-    }
+      var app;
+      if (this._loadedLocalApp) {
+        console.log(key, (this._localApps.getByUrl(key) ? this._localApps.getByUrl(key).id : "..."), this._loadedLocalApp.id);
+        if (this._localApps.getByUrl(key) && this._localApps.getByUrl(key) !== this._loadedLocalApp) {
+          if (window.confirm("\""+key+"\" already exists as a local app. Do you want to replace it?")) {
+            app = this._localApps.updateOrCreate(currentAppGraph);
+          } else {
+            return false;
+          }
+        } else {
+          // New name
+          app = this._loadedLocalApp;
+          app.save({graph:currentAppGraph});
+          app.trigger("change");
+        }
+      } else {
+        // Overwrite?
+        if (this._localApps.getByUrl(key) && !window.confirm("\""+key+"\" already exists as a local app. Do you want to replace it?")) {
+          return false;
+        }
+        app = this._localApps.updateOrCreate(currentAppGraph);
+      }
 
+      this._loadedLocalApp = app;
+
+      // URL hash
+      Iframework.router.navigate("local/"+key);
+      return app;
+    },
+    deleteLocal: function () {
+      if (this._loadedLocalApp) {
+        this._loadedLocalApp.destroy();
+      }
+    },
+    setTitle: function () {
+      var input = this.$(".currentapp .info .settitle").text();
+      if (input !== this.shownGraph.get("info")["title"]) {
+        this.shownGraph.setInfo("title", input);
+      }
+    },
+    setDescription: function () {
+      var input = this.$(".currentapp .info .setdescription").text();
+      if (input !== this.shownGraph.get("info")["description"]) {
+        this.shownGraph.setInfo("description", input);
+      }
+    },
+    setUrl: function () {
+      var input = this.$(".currentapp .info .seturl").text();
+      input = this.encodeKey(input);
+      if (input !== this.shownGraph.get("info")["url"]) {
+        this.shownGraph.setInfo("url", input);
+      }
+    }
 
   });
 

@@ -46,6 +46,24 @@
       document.getElementById("iframework-info").innerHTML = "&raquo; 1/2: Loading libraries...";
 
       var debug = true;
+      var debugLibs = [
+        // Libs
+        'libs/jquery.js',
+        'libs/jquery-ui/jquery-ui.js',
+        // CSS
+        'libs/jquery-ui/jquery-ui.css',
+        'http://fonts.googleapis.com/css?family=Nova+Flat&.css',
+        'iframework.css'
+      ];
+      var buildLibs = [
+        // Libs
+        'http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.min.js ',
+        'http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.20/jquery-ui.min.js',
+        // CSS
+        'http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.20/themes/smoothness/jquery-ui.css',
+        'http://fonts.googleapis.com/css?family=Nova+Flat&.css',
+        'iframework.css'
+      ];
       var debugFiles = [
         // Libs
         'libs/jquery.hotkeys.js',
@@ -90,15 +108,7 @@
       yepnope([
         {
           // Try the CDN stuff first
-          load: [
-            // Libs
-            'http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.min.js ',
-            'http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.20/jquery-ui.min.js',
-            // CSS
-            'http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.20/themes/smoothness/jquery-ui.css',
-            'http://fonts.googleapis.com/css?family=Nova+Flat&.css',
-            'iframework.css'
-          ],
+          load: (debug ? debugLibs : buildLibs),
           complete: function(){
             if (!window.jQuery) {
               // CDN offline?

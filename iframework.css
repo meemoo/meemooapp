@@ -478,6 +478,19 @@ div.panel {
       clear: left;
     }
 
+.panel .load .label {
+  margin: 0px;
+}
+.editable {
+  border: 1px solid transparent;
+  border-width: 1px 0px;
+}
+.editable:hover {
+  border-style: dotted;
+  border-color: #AAA;
+}
+
+
 
 /* jQuery UI overrides */
 
