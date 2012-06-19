@@ -56,9 +56,9 @@ $(function(){
   var currentTemplate = 
     '<h1>Current App</h1>'+
     '<div class="info">'+
-      '<h2 title="title, click to edit" class="settitle editable"><%= info.title %></h2>' +
-      '<p title="url, click to edit" class="seturl editable"><%= info.url %></p>' +
-      '<p title="description, click to edit" class="setdescription editable"><%= info.description %></p>' +
+      '<h2 title="url, click to edit" class="seturl editable"></h2>' +
+      '<p title="title, click to edit" class="settitle editable"></p>' +
+      '<p title="description, click to edit" class="setdescription editable"></p>' +
     '</div>'+
     '<div class="savecontrols">'+
       '<button class="savelocal">save</button>'+
@@ -441,7 +441,7 @@ $(function(){
       }
     },
     encodeKey: function (key) {
-      key = key.toLowerCase().replace(" ", "-");
+      key = key.toLowerCase().replace(/ /g, "-");
       key = encodeURIComponent(key);
       return key;
     },
@@ -460,7 +460,6 @@ $(function(){
       var key = currentAppGraph["info"]["url"];
       var app;
       if (this._loadedLocalApp) {
-        console.log(key, (this._localApps.getByUrl(key) ? this._localApps.getByUrl(key).id : "..."), this._loadedLocalApp.id);
         if (this._localApps.getByUrl(key) && this._localApps.getByUrl(key) !== this._loadedLocalApp) {
           if (window.confirm("\""+key+"\" already exists as a local app. Do you want to replace it?")) {
             app = this._localApps.updateOrCreate(currentAppGraph);
@@ -520,8 +519,13 @@ $(function(){
         .button({ icons: { primary: 'ui-icon-disk' } });
       this.$(".currentapp .deletelocal")
         .button({ icons: { primary: 'ui-icon-trash' }, text: false });
-      this.$(".currentapp .url")
+
+      this.$(".currentapp .seturl")
         .text(decodeURIComponent(graph["info"]["url"]));
+      this.$(".currentapp .settitle")
+        .text(graph["info"]["title"]);
+      this.$(".currentapp .setdescription")
+        .text(graph["info"]["description"]);
 
       this.$(".editable")
         .attr("contenteditable", "true");

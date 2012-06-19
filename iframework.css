@@ -478,8 +478,8 @@ div.panel {
       clear: left;
     }
 
-.panel .load .label {
-  margin: 0px;
+.panel .load .editable {
+  margin: 0 0 5px 0;
 }
 .editable {
   border: 1px solid transparent;
