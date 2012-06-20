@@ -15,7 +15,7 @@ $(function(){
     },
     initialize: function () {
       this.render();
-      Iframework.$(".panel .library .listing").append( this.el );
+      // Iframework.$(".panel .library .listing").append( this.el );
       this.$(".addnode")
         .button({ icons: { primary: 'ui-icon-plus' }, text: false });
       return this;

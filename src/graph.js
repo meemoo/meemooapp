@@ -4,9 +4,9 @@ $(function(){
     loaded: false,
     defaults: {
       info: {
-        author: "",
-        title: "",
-        description: "",
+        author: "meemoo",
+        title: "untitled",
+        description: "Meemoo app description",
         parents: [],
         url: ""
       },

@@ -491,7 +491,12 @@ div.panel {
 }
 .panel .load .deletelocal {
   float: right;
-  /*margin: 0 10px 10px 10px;*/
+  margin-right: 5px;
+}
+
+.panel .load .newblank {
+  float: right;
+  margin: 10px 5px 10px 10px;
 }
 
 

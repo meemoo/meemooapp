@@ -21,6 +21,7 @@ $(function(){
           '</form>'+
         '</div>'+
         '<div class="listing">'+
+          '<button class="button newblank" title="new blank app">new</button>'+
           '<div class="currentapp">'+
           '</div>'+
           '<div class="localapps">'+
@@ -88,6 +89,7 @@ $(function(){
       "click .savelocal":      "saveLocal",
       "click .savegist":       "saveGist",
       "click .deletelocal":    "deleteLocal",
+      "click .newblank":       "newBlank",
       // "click .saveaslocal": "saveAsLocal",
       "blur .settitle":        "setTitle",
       "blur .setdescription":  "setDescription",
@@ -120,6 +122,8 @@ $(function(){
         .button({ icons: { primary: 'ui-icon-check' } });
       this.$(".loadfromgistsubmit")
         .button({ icons: { primary: 'ui-icon-check' } });
+      this.$(".newblank")
+        .button({ icons: { primary: 'ui-icon-document' } });
 
     },
     allLoaded: function () {
@@ -206,19 +210,42 @@ $(function(){
       }, this);
     },
     loadLibrary: function (library) {
-      this.Library = library;
+      this.Library = new Iframework.Modules();
+
       var autocompleteData = [];
-      Iframework.Library.each(function(module){
-        module.initializeView();
-        // this.$(".panel .library").append( module.view.el );
-        var autocompleteDataItem = {
-          value: module.get("src"),
-          label: module.get("info").title + " by " + module.get("info").author + " - " + module.get("info").description + " " + module.get("src"),
-          title: module.get("info").title,
-          desc: module.get("info").description
-        };
-        autocompleteData.push(autocompleteDataItem);
-      }, this);
+
+      var accordion = $("<div></div>");
+
+      for (var category in library) {
+        if (!library.hasOwnProperty(category)){continue;}
+        // section title
+        accordion.append( $('<h3><a href="#">'+category+"</a></h3>") );
+
+        // section items
+        var section = $("<div></div>");
+        var modules = library[category];
+        for (var i = 0; i<modules.length; i++) {
+          var module = new Iframework.Module(modules[i]);
+          this.Library.add(module);
+
+          module.initializeView();
+          section.append(module.view.$el);
+
+          var autocompleteDataItem = {
+            value: module.get("src"),
+            label: module.get("info").title + " by " + module.get("info").author + " - " + module.get("info").description + " " + module.get("src"),
+            title: module.get("info").title,
+            desc: module.get("info").description
+          };
+          autocompleteData.push(autocompleteDataItem);
+        }
+        accordion.append( section );
+      }
+
+      this.$('.panel .library .listing').append(accordion);
+      accordion.accordion({
+        autoHeight: false
+      });
 
       this.$('.addbyurlinput')
         .autocomplete({
@@ -428,6 +455,8 @@ $(function(){
           graph.info.parents = [];
         }
         graph.info.parents.push(e.html_url);
+        // Save local with new gist reference
+        Iframework.saveLocal();
         // Show permalink
         Iframework.$(".permalink").text("http://meemoo.org/iframework/#gist/"+e.id);
       })
@@ -496,8 +525,13 @@ $(function(){
         });
       }
       while (!this.shownGraph.get("info").hasOwnProperty("url") || this.shownGraph.get("info")["url"]==="") {
-        var d = new Date().getTime();
-        this.setKey(d);
+        var keysuggestion;
+        if (this.shownGraph.get("info").hasOwnProperty("title") && this.shownGraph.get("info")["title"]!=="") {
+          keysuggestion = this.shownGraph.get("info")["title"];
+        } else {
+          keysuggestion = "app-" + new Date().getTime();
+        }
+        this.setKey(keysuggestion);
       }
       var currentAppGraph = JSON.parse(JSON.stringify(this.shownGraph));
       var key = currentAppGraph["info"]["url"];
@@ -577,11 +611,15 @@ $(function(){
 
       if (graph.info.hasOwnProperty("parents")) {
         var parents = graph.info.parents;
-        var last = parents[parents.length-1];
-        var split = last.split("/");
-        var id = split[split.length-1];
-        this.$(".currentapp .permalink")
-          .text("http://meemoo.org/iframework/#gist/"+id);
+        if (parents.length > 0) {
+          var last = parents[parents.length-1];
+          var split = last.split("/");
+          if (split.length > 0) {
+            var id = split[split.length-1];
+            this.$(".currentapp .permalink")
+              .text("http://meemoo.org/iframework/#gist/"+id);
+          }
+        }
       }
 
       if (this._loadedLocalApp) {
@@ -589,6 +627,13 @@ $(function(){
       } else  {
         this.$(".currentapp .deletelocal").hide();
       }
+    },
+    newBlank: function () {
+      this.loadGraph(new Iframework.Graph().toJSON());
+      // reset localStorage version
+      this._loadedLocalApp = null;
+
+      this.showLibrary();
     }
 
   });
