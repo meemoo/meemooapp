@@ -218,18 +218,20 @@ $(function(){
 
       for (var category in library) {
         if (!library.hasOwnProperty(category)){continue;}
+        var section = $('<div class="library-section"></div>');
+
         // section title
-        accordion.append( $('<h3><a href="#">'+category+"</a></h3>") );
+        section.append( $('<h3><a href="#">'+category+"</a></h3>") );
 
         // section items
-        var section = $("<div></div>");
+        var sectionDiv = $("<div></div>");
         var modules = library[category];
         for (var i = 0; i<modules.length; i++) {
           var module = new Iframework.Module(modules[i]);
           this.Library.add(module);
 
           module.initializeView();
-          section.append(module.view.$el);
+          sectionDiv.append(module.view.$el);
 
           var autocompleteDataItem = {
             value: module.get("src"),
@@ -239,13 +241,22 @@ $(function(){
           };
           autocompleteData.push(autocompleteDataItem);
         }
+        section.append( sectionDiv );
         accordion.append( section );
       }
 
       this.$('.panel .library .listing').append(accordion);
-      accordion.accordion({
-        autoHeight: false
-      });
+      accordion.children(".library-section")
+        .accordion({
+          animated: false,
+          header: "h3",
+          autoHeight: false,
+          collapsible: true,
+          create: function(event) {
+            // start closed
+            $(event.target).accordion( "activate", false );
+          }
+        });
 
       this.$('.addbyurlinput')
         .autocomplete({

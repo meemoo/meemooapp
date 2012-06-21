@@ -449,6 +449,10 @@ div.panel {
       font-size: 14px;
     }
 
+    .library-module {
+      margin-bottom: 7px;
+    }
+
     .localapp h2,
     .localapp p,
     div.panel .library h2,
@@ -499,6 +503,16 @@ div.panel {
   margin: 10px 5px 10px 10px;
 }
 
+.addnode-drag-helper {
+  width: 100px; 
+  height: 100px; 
+  z-index:1000; 
+  background-color:rgba(0,0,0,0.1);
+  border: 1px solid rgba(0,0,0,0.2);
+  font-size: 10px;
+}
+
+
 
 /* jQuery UI overrides */
 
@@ -516,6 +530,9 @@ div.panel {
   height: 18px;
   right: -5px;
   width: 18px;
+}
+.ui-accordion .ui-accordion-content {
+  padding: 10px 10px 10px 15px;
 }
 
 

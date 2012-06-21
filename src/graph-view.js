@@ -11,13 +11,19 @@ $(function(){
     className: "graph",
     template: _.template(template),
     events: {
-      "click": "click"
+      "click": "click",
+      "drop":  "drop"
     },
     initialize: function () {
       this.render();
       Iframework.$el.prepend(this.el);
 
       this.model.get("nodes").each(this.addNode);
+
+      // Drag helper from module library
+      this.$el.droppable({ 
+        accept: ".addnode" 
+      });
 
       this.resizeEdgeSVG();
     },
@@ -32,6 +38,12 @@ $(function(){
       
       // Unactivate modules
       $("div.module").removeClass("active");
+    },
+    drop: function (event, ui) {
+      var module = ui.draggable.data("module");
+      var x = this.$el.scrollLeft() + ui.offset.left + 10;
+      var y = this.$el.scrollTop() + ui.offset.top + 35;
+      module.view.dragAddNode({x:x,y:y});
     },
     addNode: function (node) {
       this.$(".nodes").append( node.initializeView().el );
