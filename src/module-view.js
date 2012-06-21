@@ -1,31 +1,53 @@
 $(function(){
 
   var template = 
-    '<button class="addnode" type="button">add node</button>' +
+    '<div class="addnode" type="button">drag to graph</div>' +
     '<h2 class="title"><%= info.title %></h2>' +
     '<p class="description"><%= info.description %></p>' +
     '<p class="src"><%= src %></p>';
 
   Iframework.ModuleView = Backbone.View.extend({
     tagName: "div",
-    className: "librarymodule",
+    className: "library-module",
     template: _.template(template),
     events: {
-      "click .addnode": "addnode"
+      "click .addnode":     "addNode",
+      "dragstart .addnode": "dragStart",
+      "dragstop .addnode":  "dragStop"
     },
     initialize: function () {
       this.render();
-      // Iframework.$(".panel .library .listing").append( this.el );
+
       this.$(".addnode")
-        .button({ icons: { primary: 'ui-icon-plus' }, text: false });
+        .data({module: this.model})
+        .button({ icons: { primary: 'ui-icon-document-b' }, text: false })
+        .draggable({
+          helper: function () {
+            var h = $('<div class="addnode-drag-helper" />')
+              .text($(this).data("module").get("info")["title"]);
+            $(".app").append(h);
+            return h;
+          }
+        });
       return this;
     },
     render: function () {
       this.$el.html(this.template(this.model.toJSON()));
     },
-    addnode: function() {
+    addNode: function(options) {
       Iframework.$(".addbyurlinput").val( this.model.get("src") );
-      Iframework.addByUrl();
+      Iframework.addByUrl(options);
+    },
+    dragAddNode: function(options) {
+      // options has x and y from GraphView.drop()
+      options.src = this.model.get("src");
+      Iframework.shownGraph.addNode( new Iframework.NodeBoxIframe(options) );
+    },
+    dragStart: function() {
+      Iframework.maskFrames();
+    },
+    dragStop: function() {
+      Iframework.unmaskFrames();
     }
 
   });

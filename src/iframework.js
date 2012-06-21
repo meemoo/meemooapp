@@ -218,7 +218,7 @@ $(function(){
 
       for (var category in library) {
         if (!library.hasOwnProperty(category)){continue;}
-        var section = $('<div class="librarySection"></div>');
+        var section = $('<div class="library-section"></div>');
 
         // section title
         section.append( $('<h3><a href="#">'+category+"</a></h3>") );
@@ -246,7 +246,7 @@ $(function(){
       }
 
       this.$('.panel .library .listing').append(accordion);
-      accordion.children(".librarySection")
+      accordion.children(".library-section")
         .accordion({
           animated: false,
           header: "h3",
@@ -257,11 +257,6 @@ $(function(){
             $(event.target).accordion( "activate", false );
           }
         });
-      // Not-quite accordion:
-      // accordion.children("h3").click(function() {
-      //   $(this).next().toggle();
-      //   return false;
-      // }).next().hide();
 
       this.$('.addbyurlinput')
         .autocomplete({
