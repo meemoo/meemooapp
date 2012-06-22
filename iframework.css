@@ -6,6 +6,7 @@ html, body {
   height: 100%;
 }
 div.graph {
+  background-image: url(img/meemoo-bg-graph.png);
   position: fixed;
   top: 0;
   left: 0;
