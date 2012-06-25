@@ -66,8 +66,7 @@ $(function(){
       '<button class="savegist">save public</button>'+
       '<button class="deletelocal">delete</button>'+
     '</div>'+
-    '<div class="permalink">'+
-      '<p title="last publicly saved version" class="permalink"></p>' +
+    '<div class="permalink" title="last publicly saved version">'+
     '</div>';
   
   var IframeworkView = Backbone.View.extend({
@@ -627,8 +626,43 @@ $(function(){
           var split = last.split("/");
           if (split.length > 0) {
             var id = split[split.length-1];
+            var gisturl = "http://meemoo.org/iframework/#gist/"+id;
+            var gisturlE = encodeURIComponent(gisturl);
+            var titleE = encodeURIComponent(graph["info"]["title"]);
+
+            var gistUrlSelect = $('<span />')
+              .text(gisturl)
+              .click(function(e){
+                // Click-to-select from http://stackoverflow.com/a/987376/592125
+                var range;
+                if (document.body.createTextRange) { // ms
+                  range = document.body.createTextRange();
+                  range.moveToElementText(e.target);
+                  range.select();
+                } else if (window.getSelection) {
+                  var selection = window.getSelection();
+                  range = document.createRange();
+                  range.selectNodeContents(e.target);
+                  selection.removeAllRanges();
+                  selection.addRange(range);
+                }
+              });
+
+            var fbLink = $('<a title="share on facebook" target="_blank" class="share">fb</a>')
+              .attr("href", 'https://www.facebook.com/sharer.php?u='+gisturlE+'&t='+titleE);
+            var tweet = gisturl + " " + graph["info"]["title"] + " #meemoo " + graph["info"]["description"];
+            // url is shortened, so can be longer than 140
+            if (tweet.length >= 158) {
+              tweet = tweet.substr(0,155) + "...";
+            }
+            var twitterLink = $('<a title="post to twitter" target="_blank" class="share">tw</a>')
+              .attr("href", 'https://twitter.com/intent/tweet?text='+encodeURIComponent(tweet));
+
             this.$(".currentapp .permalink")
-              .text("http://meemoo.org/iframework/#gist/"+id);
+              .empty()
+              .append(gistUrlSelect).append(" ")
+              .append(fbLink).append(" ")
+              .append(twitterLink);
           }
         }
       }

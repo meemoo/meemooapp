@@ -494,11 +494,22 @@ div.panel {
 .editable:hover {
   border-style: dotted;
   border-color: #AAA;
+  background-color: #FFFFD3;
 }
 .panel .load .deletelocal {
   float: right;
   margin-right: 5px;
 }
+
+.panel .load .permalink {
+  margin-top: 10px;
+}
+  .panel .load .permalink .share {
+    opacity: 0.2;
+  }
+  .panel .load .permalink:hover .share {
+    opacity: 1;
+  }
 
 .panel .load .newblank {
   float: right;
