@@ -12,38 +12,48 @@
     <span id="debug-info"></span>
     <a href="http://meemoo.org/" target="_blank">meemoo</a> &raquo; 
     <a href="https://github.com/meemoo/iframework" target="_blank">source</a>
-    <span id="iframework-info">&raquo; ...</span>
+    <span id="iframework-info"></span>
     <noscript>&raquo; This web app uses JavaScript (and plenty of it).</noscript>
   </footer>
 
 
   <script src="libs/yepnope.min.js"></script>
   <script type="text/javascript">
+
     // This tests to see if the browser can do data clone for postMessage
     // We'll assume that if it can do that it can handle the rest
-    function testDataClone(){
-      if(!!window.postMessage) {
-        try {
-          // Spec states you can't transmit DOM nodes and it will throw an error
-          // postMessage implimentations that support cloned data will throw.
-          var hmm = window.postMessage(document.createElement("a"),"*");
-          if (hmm === undefined) {
-            // HACK for Safari, doesn't throw: http://thecssninja.com/demo/sclones/test/
-            return true;
+    // Adapted from http://thecssninja.com/demo/sclones/
+    if(!!window.postMessage) {
+      try {
+        // Safari 5.1 will sometimes throw an exception and sometimes won't, lolwut?
+        // When it doesn't we capture the message event and check the
+        // internal [[Class]] property of the message being passed through.
+        // Safari will pass through DOM nodes as Null, gotcha.
+        window.onmessage = function(e){
+          var safariCompatible = Object.prototype.toString.call(e.data).indexOf("Null") != -1 ? true : false;
+          if (!window.Iframework) {
+            meemooInitialize(safariCompatible);
           }
-          return false;
-        } catch(e) {
-          return e.DATA_CLONE_ERR ? true : false;
+          // Only keep the onmessage function for the one test
+          window.onmessage = null;
         }
-      } else {
-        // No window.postMessage
-        return false;
+        // Spec states you can't transmit DOM nodes and it will throw an error
+        // postMessage implimentations that support cloned data will throw.
+        window.postMessage(document.createElement("a"),"*");
+      } catch(e) {
+        var validCompatible = e.DATA_CLONE_ERR ? true : false;
+        meemooInitialize(validCompatible);
       }
+    } else {
+      meemooInitialize(false);
     }
 
-    if (!testDataClone()) {
-      document.getElementById("iframework-info").innerHTML = "&raquo; You need a modern browser to run this.";
-    } else {
+    function meemooInitialize(compatible) {
+      if (!compatible) {
+        document.getElementById("iframework-info").innerHTML = "&raquo; You need a modern browser to run this. ";
+        document.getElementById("iframework-info").innerHTML += '<a href="#" onclick="meemooInitialize(true);return false;">Try anyway?</a>';
+        return false;
+      }
       document.getElementById("iframework-info").innerHTML = "&raquo; 1/2: Loading libraries...";
 
       /*
