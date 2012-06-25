@@ -640,11 +640,15 @@ $(function(){
       }
     },
     newBlank: function () {
-      this.loadGraph(new Iframework.Graph().toJSON());
+      // HACK maybe a better way to load a blank graph with defaults?
+      this.loadGraph({"info":{"author":"meemoo","title":"Untitled","description":"Meemoo app description","parents":[],"url":""},"nodes":[],"edges":[]});
       // reset localStorage version
       this._loadedLocalApp = null;
 
       this.showLibrary();
+
+      // URL hash
+      Iframework.router.navigate("new");
     }
 
   });

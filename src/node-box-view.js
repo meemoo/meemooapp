@@ -49,6 +49,9 @@ $(function(){
       // Disable selection for better drag+drop
       this.$("h1").disableSelection();
 
+      // Bring newest to top
+      this.mousedown();
+
     },
     render: function () {
       this.$el.html(this.template(this.model));

@@ -6,8 +6,9 @@ html, body {
   height: 100%;
 }
 div.graph {
-  background-image: url(img/meemoo-bg-graph.png);
-  position: fixed;
+  background: #EEE url(img/meemoo-bg-graph.png) scroll repeat;
+  background-attachment: scroll;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0px;

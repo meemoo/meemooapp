@@ -40,9 +40,10 @@ $(function(){
       $("div.module").removeClass("active");
     },
     drop: function (event, ui) {
+      console.log("drop");
       var module = ui.draggable.data("module");
-      var x = this.$el.scrollLeft() + ui.offset.left + 10;
-      var y = this.$el.scrollTop() + ui.offset.top + 35;
+      var x = Math.round(this.$el.scrollLeft() + ui.offset.left + 10);
+      var y = Math.round(this.$el.scrollTop() + ui.offset.top + 35);
       module.view.dragAddNode({x:x,y:y});
     },
     addNode: function (node) {

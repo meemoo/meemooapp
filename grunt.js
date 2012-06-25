@@ -23,6 +23,7 @@ module.exports = function(grunt) {
           'libs/backbone.localStorage.js',
           // Iframework
           'src/iframework.js',
+          'src/eventshistory.js',
           'src/local-app.js',
           'src/local-app-view.js',
           'src/graph.js',
@@ -39,8 +40,7 @@ module.exports = function(grunt) {
           'src/module-view.js',
           'src/edge.js',
           'src/edge-view.js',
-          'src/router.js',
-          'src/eventshistory.js'
+          'src/router.js'
         ],
         dest: 'build/<%= pkg.name %>.min.js'
       }

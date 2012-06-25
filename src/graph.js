@@ -5,7 +5,7 @@ $(function(){
     defaults: {
       info: {
         author: "meemoo",
-        title: "untitled",
+        title: "Untitled",
         description: "Meemoo app description",
         parents: [],
         url: ""
@@ -199,7 +199,7 @@ $(function(){
       if (Iframework.$(".source").is(":visible")) {
         // HACK
         window.setTimeout(function(){
-          Iframework.sourcerefresh();
+          Iframework.sourceRefresh();
         }, 100);
       }
     }
