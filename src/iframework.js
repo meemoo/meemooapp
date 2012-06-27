@@ -471,6 +471,7 @@ $(function(){
         Iframework.$(".permalink").text("http://meemoo.org/iframework/#gist/"+e.id);
       })
       .error( function(e) {
+        Iframework.$(".permalink").text("github api is down (;_;) try again later");
         console.warn("gist save error", e);
       });
     },

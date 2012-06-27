@@ -30,6 +30,7 @@ $(function(){
       {"src":"http://forresto.github.com/meemoo-image/spritesplit.html","info":{"title":"spritesplit","author":"forresto","description":"separates images from filmstrip sprite sheet"}}
     ],
     util: [
+      {"src":"http://forresto.github.com/meemoo-math/math.html","info":{"title":"math","author":"silentmatt + forresto","description":"math equation evaluator"}},
       {"src":"http://forresto.github.com/meemoo-modules/color-hsla.html","info":{"title":"color-hsla","author":"forresto","description":"make hsla() css color (hue, saturation, lightness, alpha)"}},
       {"src":"http://forresto.github.com/meemoo-modules/color-rgba.html","info":{"title":"color-rgba","author":"forresto","description":"make rgba() css color (red, green, blue, alpha)"}},
       {"src":"http://forresto.github.com/meemoo-modules/string-join.html","info":{"title":"string-join","author":"forresto","description":"join text strings into one string"}}
