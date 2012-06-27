@@ -7,7 +7,7 @@ html, body {
 }
 div.graph {
   background: #EEE url(img/meemoo-bg-graph.png) scroll repeat;
-  background-attachment: scroll;
+  background-attachment: local;
   position: absolute;
   top: 0;
   left: 0;

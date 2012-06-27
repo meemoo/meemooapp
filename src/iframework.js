@@ -521,6 +521,7 @@ $(function(){
         key = this.encodeKey(key);
         this.shownGraph.setInfo("url", key);
       }
+      return key;
     },
     encodeKey: function (key) {
       key = key.toLowerCase().replace(/ /g, "-");
@@ -541,7 +542,10 @@ $(function(){
         } else {
           keysuggestion = "app-" + new Date().getTime();
         }
-        this.setKey(keysuggestion);
+        if(!this.setKey(keysuggestion)){
+          // cancel
+          return false;
+        }
       }
       var currentAppGraph = JSON.parse(JSON.stringify(this.shownGraph));
       var key = currentAppGraph["info"]["url"];
