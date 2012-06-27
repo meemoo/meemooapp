@@ -471,7 +471,7 @@ $(function(){
         Iframework.$(".permalink").text("http://meemoo.org/iframework/#gist/"+e.id);
       })
       .error( function(e) {
-        Iframework.$(".permalink").text("github api is down (;_;) try again later");
+        Iframework.$(".permalink").text('api is down (;_;) copy your app source code to <a href="https://gist.github.com/?description=meemoo+app:+" target="_blank">gist.github.com</a>');
         console.warn("gist save error", e);
       });
     },
