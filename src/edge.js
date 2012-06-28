@@ -13,6 +13,7 @@ $(function(){
     },
     source: null,
     target: null,
+    connectTryCount: 5,
     connect: function () {
       // Called from graph.connectEdges()
       // IDs from the graph
@@ -25,7 +26,11 @@ $(function(){
         }
       }
       if (!this.source || !this.target) {
-        console.warn("Edge source or target port not found: "+this.toString());
+        console.warn("Edge source or target port not found, try #"+this.connectTryCount+": "+this.toString());
+        if (this.connectTryCount > 0) {
+          this.connectTryCount--;
+          _.delay(_.bind(this.connect, this), 1000);
+        }
         return false;
       }
       this.source.node.send({

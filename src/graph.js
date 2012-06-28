@@ -189,10 +189,7 @@ $(function(){
     connectEdges: function () {
       for(var i=0; i<this.get("edges").length; i++) {
         var edge = this.get("edges").at(i);
-        var connected = edge.connect();
-        if (!connected) {
-          edge.remove();
-        }
+        edge.connect();
       }
     },
     graphChanged: function () {
