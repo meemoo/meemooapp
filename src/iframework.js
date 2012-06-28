@@ -467,11 +467,13 @@ $(function(){
         graph.info.parents.push(e.html_url);
         // Save local with new gist reference
         Iframework.saveLocal();
-        // Show permalink
-        Iframework.$(".permalink").text("http://meemoo.org/iframework/#gist/"+e.id);
+        // Show new permalink
+        Iframework.updateCurrentInfo();
+        // Iframework.$(".permalink").text("http://meemoo.org/iframework/#gist/"+e.id);
       })
       .error( function(e) {
-        Iframework.$(".permalink").text('api is down (;_;) copy your app source code to <a href="https://gist.github.com/?description=meemoo+app:+" target="_blank">gist.github.com</a>');
+        var description = "meemoo app: " + Iframework.shownGraph.toJSON()["info"]["title"];
+        Iframework.$(".permalink").html('api is down (;_;) copy your app source code to <a href="https://gist.github.com/?description='+encodeURIComponent(description)+'" target="_blank">gist.github.com</a>');
         console.warn("gist save error", e);
       });
     },

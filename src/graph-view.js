@@ -40,7 +40,6 @@ $(function(){
       $("div.module").removeClass("active");
     },
     drop: function (event, ui) {
-      console.log("drop");
       var module = ui.draggable.data("module");
       var x = Math.round(this.$el.scrollLeft() + ui.offset.left + 10);
       var y = Math.round(this.$el.scrollTop() + ui.offset.top + 35);
