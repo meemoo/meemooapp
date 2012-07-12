@@ -63,7 +63,7 @@ $(function(){
     '</div>'+
     '<div class="savecontrols">'+
       '<button class="savelocal">save local</button>'+
-      '<button class="savegist">save public</button>'+
+      '<button class="savegist" title="save app to gist.github.com anonymously">save public</button>'+
       '<button class="deletelocal">delete</button>'+
     '</div>'+
     '<div class="permalink" title="last publicly saved version">'+
@@ -451,14 +451,21 @@ $(function(){
       data["files"][filename] = {
         "content": JSON.stringify(graph, null, "  ")
       };
-      console.log(JSON.stringify(data));
+
+      // Button
+      this.$(".savegist")
+        .button({ 
+          disabled: true,
+          label: "saving..."
+        });
+
       $.ajax({
         url: 'https://api.github.com/gists',
         type: 'POST',
         dataType: 'json',
         data: JSON.stringify(data)
       })
-      .success( function(e) {
+      .success(function(e){
         // Save gist url to graph's info.parents
         var info = Iframework.shownGraph.get("info");
         if (!info.hasOwnProperty("parents") || !info.parents.push) {
@@ -471,10 +478,18 @@ $(function(){
         Iframework.updateCurrentInfo();
         // Iframework.$(".permalink").text("http://meemoo.org/iframework/#gist/"+e.id);
       })
-      .error( function(e) {
+      .error(function(e){
         var description = "meemoo app: " + Iframework.shownGraph.toJSON()["info"]["title"];
         Iframework.$(".permalink").html('api is down (;_;) copy your app source code to <a href="https://gist.github.com/?description='+encodeURIComponent(description)+'" target="_blank">gist.github.com</a>');
         console.warn("gist save error", e);
+      })
+      .complete(function(e){
+        // Button
+        this.$(".savegist")
+          .button({ 
+            disabled: false,
+            label: "save public"
+          });
       });
     },
     loadLocalApps: function () {
@@ -655,6 +670,8 @@ $(function(){
                 }
               });
 
+            var gistLink = $('<a title="your saved gist" target="_blank" class="share">gist</a>')
+              .attr("href", last);
             var fbLink = $('<a title="share on facebook" target="_blank" class="share">fb</a>')
               .attr("href", 'https://www.facebook.com/sharer.php?u='+gisturlE+'&t='+titleE);
             var tweet = gisturl + " " + graph["info"]["title"] + " #meemoo " + graph["info"]["description"];
@@ -668,6 +685,7 @@ $(function(){
             this.$(".currentapp .permalink")
               .empty()
               .append(gistUrlSelect).append(" ")
+              .append(gistLink).append(" ")
               .append(fbLink).append(" ")
               .append(twitterLink);
           }
