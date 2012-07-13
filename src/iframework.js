@@ -104,25 +104,25 @@ $(function(){
 
       // Panel buttons
       this.$(".close")
-        .button({ icons: { primary: 'ui-icon-close' }, text: false });
+        .button({ icons: { primary: 'icon-cancel' }, text: false });
       this.$(".showsource")
-        .button({ icons: { primary: 'ui-icon-gear' } });
+        .button({ icons: { primary: 'icon-cog' } });
       this.$(".showload")
-        .button({ icons: { primary: 'ui-icon-folder-open' } });
+        .button({ icons: { primary: 'icon-folder-open' } });
       this.$(".showlibrary")
-        .button({ icons: { primary: 'ui-icon-plus' } });
+        .button({ icons: { primary: 'icon-plus' } });
       this.$(".sourcerefresh")
-        .button({ icons: { primary: 'ui-icon-arrowrefresh-1-s' } });
+        .button({ icons: { primary: 'icon-cw' } });
       this.$(".sourcecompress")
-        .button({ icons: { primary: 'ui-icon-suitcase' } });
+        .button({ icons: { primary: 'icon-bag' } });
       this.$(".sourceapply")
-        .button({ icons: { primary: 'ui-icon-check' } });
+        .button({ icons: { primary: 'icon-ok' } });
       this.$(".addbyurlsubmit")
-        .button({ icons: { primary: 'ui-icon-check' } });
+        .button({ icons: { primary: 'icon-ok' } });
       this.$(".loadfromgistsubmit")
-        .button({ icons: { primary: 'ui-icon-check' } });
+        .button({ icons: { primary: 'icon-ok' } });
       this.$(".newblank")
-        .button({ icons: { primary: 'ui-icon-document' } });
+        .button({ icons: { primary: 'icon-doc' } });
 
     },
     allLoaded: function () {
@@ -625,11 +625,11 @@ $(function(){
       this.$(".currentapp")
         .html( this.currentTemplate(graph) );
       this.$(".currentapp .savelocal")
-        .button({ icons: { primary: 'ui-icon-disk' } });
+        .button({ icons: { primary: 'icon-install' } });
       this.$(".currentapp .savegist")
-        .button({ icons: { primary: 'ui-icon-link' } });
+        .button({ icons: { primary: 'icon-globe-1' } });
       this.$(".currentapp .deletelocal")
-        .button({ icons: { primary: 'ui-icon-trash' }, text: false });
+        .button({ icons: { primary: 'icon-trash' }, text: false });
 
       this.$(".currentapp .seturl")
         .text(decodeURIComponent(graph["info"]["url"]));
@@ -670,23 +670,23 @@ $(function(){
                 }
               });
 
-            var gistLink = $('<a title="your saved gist" target="_blank" class="share">gist</a>')
+            var gistLink = $('<a title="your saved gist" target="_blank" class="share icon-github"></a>')
               .attr("href", last);
-            var fbLink = $('<a title="share on facebook" target="_blank" class="share">fb</a>')
+            var fbLink = $('<a title="share on facebook" target="_blank" class="share icon-facebook-rect"></a>')
               .attr("href", 'https://www.facebook.com/sharer.php?u='+gisturlE+'&t='+titleE);
             var tweet = gisturl + " " + graph["info"]["title"] + " #meemoo " + graph["info"]["description"];
             // url is shortened, so can be longer than 140
             if (tweet.length >= 158) {
               tweet = tweet.substr(0,155) + "...";
             }
-            var twitterLink = $('<a title="post to twitter" target="_blank" class="share">tw</a>')
+            var twitterLink = $('<a title="post to twitter" target="_blank" class="share icon-twitter-bird"></a>')
               .attr("href", 'https://twitter.com/intent/tweet?text='+encodeURIComponent(tweet));
 
             this.$(".currentapp .permalink")
               .empty()
               .append(gistUrlSelect).append(" ")
               .append(gistLink).append(" ")
-              .append(fbLink).append(" ")
+              .append(fbLink)
               .append(twitterLink);
           }
         }

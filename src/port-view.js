@@ -2,7 +2,7 @@ $(function(){
 
   var portInTemplate = 
     '<div class="portshown portshown-in">'+
-      '<span class="hole hole-in hole-<%= type_class %>"></span>'+
+      '<span class="hole hole-in hole-<%= type_class %> icon-login"></span>'+
       '<span class="label"><%= name %></span>'+
     '</div>'+
     '<span class="plugend plugend-in plugend-<%= type_class %>"></span>';
@@ -10,7 +10,7 @@ $(function(){
   var portOutTemplate = 
     '<div class="portshown portshown-out">'+
       '<span class="label"><%= name %></span>'+
-      '<span class="hole hole-out hole-<%= type_class %>"></span>'+
+      '<span class="hole hole-out hole-<%= type_class %> icon-logout"></span>'+
     '</div>'+
     '<span class="plugend plugend-out plugend-<%= type_class %>"></span>';
     
@@ -88,12 +88,6 @@ $(function(){
       this.$(".hole")
         .data({
           model: this.model
-        })
-        .button({
-          icons: {
-            primary: "ui-icon-arrow-1-e"
-          },
-          text: false
         });
         
       // The whole port is droppable
@@ -136,6 +130,8 @@ $(function(){
       Iframework.maskFrames();
       
       // Highlight matching ins or outs
+      $("div.ports-"+(this.model.isIn ? "out" : "in")+" span.hole")
+        .addClass('fade');
       $("div.ports-"+(this.model.isIn ? "out" : "in")+" span.hole-" + this.model.get('type_class'))
         .addClass('highlight');
       
@@ -151,7 +147,7 @@ $(function(){
     drag: function (event, ui) {
       if (Iframework.edgePreview) {
         var dragX = ui.offset.left + $('.graph').scrollLeft();
-        var dragY = ui.offset.top + 6 + $('.graph').scrollTop();
+        var dragY = ui.offset.top + 8 + $('.graph').scrollTop();
         var thisX = this.portOffsetLeft();
         var thisY = this.portOffsetTop();
         
@@ -172,7 +168,7 @@ $(function(){
       // Remove iframe masks
       Iframework.unmaskFrames();
 
-      $(".hole").removeClass("highlight");
+      $(".hole").removeClass("fade highlight");
       
       // Edge preview
       Iframework.edgePreview.remove();
@@ -335,7 +331,7 @@ $(function(){
       popupEl.children("button.close")
         .button({
           icons: {
-            primary: "ui-icon-close"
+            primary: "icon-cancel"
           },
           text: false
         })
@@ -397,7 +393,7 @@ $(function(){
               })
               .button({
                 icons: {
-                  primary: "ui-icon-check"
+                  primary: "icon-ok"
                 },
                 text: false
               })
@@ -419,7 +415,7 @@ $(function(){
         }, this);
         $(".disconnect").button({
           icons: {
-            primary: "ui-icon-scissors"
+            primary: "icon-scissors"
           },
           text: false
         });
@@ -485,7 +481,7 @@ $(function(){
       var holeoffset = this.$('.hole').offset();
       if (holeoffset) {
         // HACK
-        return holeoffset.top + 7 + $('.graph').scrollTop();
+        return holeoffset.top + 10 + $('.graph').scrollTop();
       } else {
         return 0;
       }

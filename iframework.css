@@ -133,6 +133,10 @@ div.module {
     top: 5px;
     right: 5px;
   }
+    div.module button.showcontrols .ui-icon,
+    div.module div.controls .ui-icon {
+      font-size: 10px;
+    }
   div.module div.controls {
     display: none;
     text-align: right;
@@ -197,13 +201,13 @@ div.module {
     }
       div.portshown-in .hole{
         position: absolute;
-        top: 1px;
+        top: -2px;
         left: 1px;
       }
       div.portshown-in .label{
         position: absolute;
         top: 4px;
-        left: 20px;
+        left: 18px;
       }
       div.portshown-in div.edge-edit{
         left: 2px;
@@ -228,32 +232,38 @@ div.module {
     }
       div.portshown-out .hole{
         position: absolute;
-        top: 1px;
+        top: -2px;
         right: 0px;
       }
       div.portshown-out .label{
         position: absolute;
         top: 4px;
-        right: 22px;
+        right: 15px;
       }
       div.portshown-out div.edge-edit{
         left: 59px;
         top: 15px;
       }
   
+  span.hole:before {
+    font-size: 14px;
+    color: #666;
+  }
   div.port span.hole,
   span.holehelper {
     cursor: pointer;
     display: inline-block;
     width: 14px;
     height: 14px;
-    overflow: hidden;
   }
-  div.port span.hole.highlight {
-    border-color: #C00;
+  div.port span.fade.hole:before {
+    color: #CCC;
   }
-  div.port.drophover span.hole {
-    border-color: #090;
+  div.port span.highlight.hole:before {
+    color: #090;
+  }
+  div.port.drophover span.hole:before {
+    color: #060;
   }
   span.plugend,
   span.plugendhelper,
@@ -294,9 +304,8 @@ div.module {
     font-family: 'Nova Flat', Monaco, monospace;
     color: #666;
     font-size: 10px;
-    line-height: 10px
     overflow: hidden;
-    width: 50px;
+    width: 58px;
     display: inline-block;
   }
     div.port-in span.label {
@@ -505,10 +514,15 @@ div.panel {
   margin-top: 10px;
 }
   .panel .load .permalink .share {
+    color: #999;
     opacity: 0.2;
+    text-decoration: none;
   }
   .panel .load .permalink:hover .share {
     opacity: 1;
+  }
+  .panel .load .permalink:hover .share:hover {
+    color: #666;
   }
 
 .panel .load .newblank {
@@ -547,6 +561,70 @@ div.panel {
 .ui-accordion .ui-accordion-content {
   padding: 10px 10px 10px 15px;
 }
+
+[class^="icon-"],
+[class*=" icon-"] {
+  /* to override jqueryui icons for font icons */
+  background: none !important;
+  background-image: none !important;
+  text-indent: 0 !important;
+  /*padding: .2em 0 0 .2em !important;*/
+}
+
+/* icons thanks to http://fontello.com/ and the included icon sets */
+
+@charset "UTF-8";
+
+@font-face {
+  font-family: 'meemoo-icons';
+  src: url("icons/font/meemoo-icons.eot");
+  src: url("icons/font/meemoo-icons.eot?#iefix") format('embedded-opentype'), url("icons/font/meemoo-icons.woff") format('woff'), url("icons/font/meemoo-icons.ttf") format('truetype'), url("icons/font/meemoo-icons.svg#meemoo-icons") format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  font-family: 'meemoo-icons';
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: 0.2em;
+  text-align: center;
+  opacity: 0.7;
+  /* Uncomment for 3D effect */
+   text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); 
+  /* fix buttons height */
+  line-height: 1em;
+  font-size: 140%; 
+}
+
+.icon-plus:before { content: '\2b'; } /* '+' */
+.icon-cog:before { content: '\2699'; } /* '⚙' */
+.icon-scissors:before { content: '\2702'; } /* '✂' */
+.icon-ok:before { content: '\2713'; } /* '✓' */
+.icon-cancel:before { content: '\2715'; } /* '✕' */
+.icon-cw:before { content: '\27f3'; } /* '⟳' */
+.icon-trash:before { content: '\e729'; } /* '' */
+.icon-doc:before { content: '\e730'; } /* '' */
+.icon-login:before { content: '\e740'; } /* '' */
+.icon-logout:before { content: '\e741'; } /* '' */
+.icon-window:before { content: '\e74e'; } /* '' */
+.icon-down-open:before { content: '\e75c'; } /* '' */
+.icon-left-open:before { content: '\e75d'; } /* '' */
+.icon-right-open:before { content: '\e75e'; } /* '' */
+.icon-up-open:before { content: '\e75f'; } /* '' */
+.icon-install:before { content: '\e778'; } /* '' */
+.icon-bag:before { content: '\e78a'; } /* '' */
+.icon-facebook-rect:before { content: '\f301'; } /* '' */
+.icon-twitter-bird:before { content: '\f303'; } /* '' */
+.icon-github:before { content: '\f308'; } /* '' */
+.icon-tumblr:before { content: '\f311'; } /* '' */
+.icon-globe-1:before { content: '🌍'; } /* '\1f30d' */
+.icon-folder-open:before { content: '📂'; } /* '\1f4c2' */
+.icon-link:before { content: '🔗'; } /* '\1f517' */
 
 
 

@@ -20,7 +20,7 @@ $(function(){
 
       this.$(".addnode")
         .data({module: this.model})
-        .button({ icons: { primary: 'ui-icon-document-b' }, text: false })
+        .button({ icons: { primary: 'icon-window' }, text: false })
         .draggable({
           helper: function () {
             var h = $('<div class="addnode-drag-helper" />')

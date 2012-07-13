@@ -40,11 +40,11 @@ $(function(){
         .draggable({ handle: "h1" })
         .resizable({ minHeight: 100, minWidth: 100 });
       this.$(".showcontrols")
-        .button({ icons: { primary: "ui-icon-carat-1-w" }, text: false });
+        .button({ icons: { primary: "icon-left-open" }, text: false });
       this.$(".hidecontrols")
-        .button({ icons: { primary: "ui-icon-carat-1-e" }, text: false });
+        .button({ icons: { primary: "icon-right-open" }, text: false });
       this.$(".remove")
-        .button({ icons: { primary: "ui-icon-trash" }, text: false });
+        .button({ icons: { primary: "icon-trash" }, text: false });
 
       // Disable selection for better drag+drop
       this.$("h1").disableSelection();

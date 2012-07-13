@@ -12,7 +12,7 @@ $(function(){
       this.$("button.remove")
         .after(
           $('<button type="button" class="refresh">refresh</button>')
-            .button({ icons: { primary: "ui-icon-arrowrefresh-1-s" }, text: false })
+            .button({ icons: { primary: "icon-cw" }, text: false })
         );
       // Add refresh event
       this.events["click .refresh"] = "refresh";
