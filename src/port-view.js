@@ -355,6 +355,7 @@ $(function(){
               "type": "number",
               "min": hole.data("min"),
               "max": hole.data("max"),
+              "step": "any",
               "value": this.model.node.get("state")[this.model.get("name")]
             })
           );
