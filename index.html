@@ -19,7 +19,8 @@
 
   <script src="libs/yepnope.min.js"></script>
   <script type="text/javascript">
-
+  (function(){
+    "use strict";
     // This tests to see if the browser can do data clone for postMessage
     // We'll assume that if it can do that it can handle the rest
     // Adapted from http://thecssninja.com/demo/sclones/
@@ -30,13 +31,13 @@
         // internal [[Class]] property of the message being passed through.
         // Safari will pass through DOM nodes as Null, gotcha.
         window.onmessage = function(e){
-          var safariCompatible = Object.prototype.toString.call(e.data).indexOf("Null") != -1 ? true : false;
+          var safariCompatible = Object.prototype.toString.call(e.data).indexOf("Null") !== -1 ? true : false;
           if (!window.Iframework) {
             meemooInitialize(safariCompatible);
           }
           // Only keep the onmessage function for the one test
           window.onmessage = null;
-        }
+        };
         // Spec states you can't transmit DOM nodes and it will throw an error
         // postMessage implimentations that support cloned data will throw.
         window.postMessage(document.createElement("a"),"*");
@@ -49,17 +50,22 @@
     }
 
     function meemooInitialize(compatible) {
+      if (window.Iframework){
+        // Already initialized
+        return false;
+      }
       if (!compatible) {
         document.getElementById("iframework-info").innerHTML = "&raquo; You need a modern browser to run this. ";
-        document.getElementById("iframework-info").innerHTML += '<a href="#" onclick="meemooInitialize(true);return false;">Try anyway?</a>';
+        document.getElementById("iframework-info").innerHTML += '<a href="#" onclick="_meemooInitialize(true);return false;">Try anyway?</a>';
+        window._meemooInitialize = meemooInitialize;
         return false;
       }
       document.getElementById("iframework-info").innerHTML = "&raquo; 1/2: Loading libraries...";
 
       /*
-      * Important! Change debug to false to deploy:
+      * Remeber to debug with ?DEBUG
       */
-      var debug = false;
+      var debug = (window.location.search && window.location.search === "?DEBUG");
       /*
       * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
       */
@@ -161,6 +167,7 @@
       ]);
     }
 
+  })();
   </script>  
 
 
