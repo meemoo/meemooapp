@@ -29,9 +29,11 @@
         // Safari 5.1 will sometimes throw an exception and sometimes won't, lolwut?
         // When it doesn't we capture the message event and check the
         // internal [[Class]] property of the message being passed through.
-        // Safari will pass through DOM nodes as Null, gotcha.
+        // Safari will pass through DOM nodes as Null
+        // iOS Safari on the other hand passes it through as DOMWindow
         window.onmessage = function(e){
-          var safariCompatible = Object.prototype.toString.call(e.data).indexOf("Null") !== -1 ? true : false;
+          var type = Object.prototype.toString.call(e.data);
+          var safariCompatible = (type.indexOf("Null") != -1 || type.indexOf("DOMWindow") != -1) ? true : false;
           if (!window.Iframework) {
             meemooInitialize(safariCompatible);
           }
@@ -42,7 +44,9 @@
         // postMessage implimentations that support cloned data will throw.
         window.postMessage(document.createElement("a"),"*");
       } catch(e) {
-        var validCompatible = e.DATA_CLONE_ERR ? true : false;
+        // BBOS6 throws but doesn't pass through the correct exception
+        // so check error message
+        var validCompatible = (e.DATA_CLONE_ERR || e.message == "Cannot post cyclic structures.") ? true : false;
         meemooInitialize(validCompatible);
       }
     } else {
