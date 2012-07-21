@@ -28,16 +28,17 @@ $(function(){
     },
     initializePorts: function () {
       // Called from GraphView.addNode();
-      if (this.nativenode) {
-        this.nativenode.setInfo(this.nativenode.info);
-        for (var inputname in this.nativenode.inputs) {
-          if (this.nativenode.inputs.hasOwnProperty(inputname)) {
-            this.nativenode.addInput(inputname, this.nativenode.inputs[inputname]);
+      if (this.hasOwnProperty("inputs")) {
+        console.log(this.inputs);
+        // this.nativenode.setInfo(this.nativenode.info);
+        for (var inputname in this.inputs) {
+          if (this.inputs.hasOwnProperty(inputname)) {
+            this.addInput(inputname, this.inputs[inputname]);
           }
         }
-        for (var outputname in this.nativenode.outputs) {
-          if (this.nativenode.outputs.hasOwnProperty(outputname)) {
-            this.nativenode.addOutput(outputname, this.nativenode.outputs[outputname]);
+        for (var outputname in this.outputs) {
+          if (this.outputs.hasOwnProperty(outputname)) {
+            this.addOutput(outputname, this.outputs[outputname]);
           }
         }
       }

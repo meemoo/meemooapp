@@ -75,6 +75,7 @@ module.exports = function(grunt) {
         "$": true,
         "jQuery": true,
         "Backbone": true,
+        "yepnope": true,
         "Iframework": true
       }
     },

@@ -22,6 +22,11 @@ $(function(){
       if (this.attributes.nodes) {
         var nodes = this.attributes.nodes;
         this.attributes.nodes = new Iframework.Nodes();
+        var loadComplete = function() {
+          _.defer(function(){
+            Iframework.shownGraph.testLoaded();
+          });
+        };
         for (var i=0; i<nodes.length; i++) {
           var node;
           if (nodes[i].hasOwnProperty("src") && nodes[i]["src"].split(":")[0] === "meemoo") {
@@ -30,33 +35,30 @@ $(function(){
             var path = id.split("/");
             id = path.join("-");
 
-            // Load js if needed (doesn't work yet, think about complete function)
-            // HACK only for loading "group/node.js" to Iframework.NativeNodes[group-node]
-            // if (path[0] && path[1]) {
-            //   yepnope([
-            //     {
-            //       test: Iframework.NativeNodes.hasOwnProperty(path[0]),
-            //       nope: "src/nodes/"+path[0]+".js"
-            //     },
-            //     {
-            //       test: Iframework.NativeNodes.hasOwnProperty(id),
-            //       nope: "src/nodes/"+path[0]+"/"+path[1]+".js",
-            //       complete: function(){}
-            //     }
-            //   ]);
-            // }
-
-            if ( Iframework.NativeNodes.hasOwnProperty(id) ) {
-              node = new Iframework.NativeNodes[id](nodes[i]);
-            } else {
-              console.warn("No matching native node: " + id);
+            // Load js if needed
+            // HACK only for loading group-node.js to Iframework.NativeNodes[group-node]
+            if (path[0] && path[1]) {
+              yepnope([
+                {
+                  test: Iframework.NativeNodes.hasOwnProperty(path[0]),
+                  nope: "src/nodes/"+path[0]+".js"
+                },
+                {
+                  test: Iframework.NativeNodes.hasOwnProperty(id),
+                  nope: "src/nodes/"+path[0]+"-"+path[1]+".js",
+                  complete: loadComplete
+                }
+              ]);
             }
+
+            // Placeholder node
+            node = new Iframework.Node(nodes[i]);
+            node.lazyLoadType = id;
           } else {
             // Iframe type node
             node = new Iframework.NodeBoxIframe(nodes[i]);
           }
           if (node) {
-            node.graph = this;
             this.addNode(node);
           }
         }
@@ -71,10 +73,37 @@ $(function(){
         }
       }
       this.eventsHistory = new Iframework.EventsHistory();
-      this.view = new Iframework.GraphView({model:this});
+
+      _.defer(function(){
+        Iframework.shownGraph.testLoaded();
+      });
 
       // Change event
       this.on("change", this.graphChanged);
+    },
+    testLoaded: function(){
+      var allLoaded = true;
+      this.get("nodes").each(function(node){
+        if (node.hasOwnProperty("lazyLoadType")) {
+          var id = node.lazyLoadType;
+          if (Iframework.NativeNodes.hasOwnProperty(id)) {
+            // Convert placeholder node to new type
+            var nodes = this.get("nodes");
+            nodes.remove(node);
+            this.addNode( new Iframework.NativeNodes[id](node.toJSON()) );
+          }
+          else {
+            allLoaded = false;
+          }
+        }
+      }, this);
+      if (!this.view && allLoaded) {
+        this.initializeView();
+      }
+      return allLoaded;
+    },
+    initializeView: function() {
+      this.view = new Iframework.GraphView({model:this});
     },
     setInfo: function (key, val) {
       var info = this.get("info");
@@ -82,6 +111,8 @@ $(function(){
       this.trigger("change");
     },
     addNode: function (node) {
+      node.graph = this;
+
       var count = this.get("nodes").length;
       // Give id if not defined or NaN
       var nodeId = parseInt(node.get('id'), 10);
@@ -105,7 +136,6 @@ $(function(){
       node.frameIndex = "frame_"+node.get('id')+"_"+(Iframework.frameCount++)+"_"+randomKey;
 
       this.get("nodes").add(node);
-      node.graph = this;
 
       if (this.view) {
         this.view.addNode(node);

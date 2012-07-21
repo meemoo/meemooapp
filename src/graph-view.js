@@ -46,8 +46,10 @@ $(function(){
       module.view.dragAddNode({x:x,y:y});
     },
     addNode: function (node) {
-      this.$(".nodes").append( node.initializeView().el );
-      node.initializePorts();
+      if (node.initializeView) {
+        this.$(".nodes").append( node.initializeView().el );
+        node.initializePorts();
+      }
     },
     addEdge: function (edge) {
       edge.initializeView();

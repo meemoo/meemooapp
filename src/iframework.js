@@ -75,6 +75,7 @@ $(function(){
     template: _.template(template),
     currentTemplate: _.template(currentTemplate),
     frameCount: 0, // HACK to not use same name in Firefox
+    NativeNodes: {},
     events: {
       "click .close" :         "closePanels",
       "click .showload" :      "showLoad",
@@ -99,8 +100,7 @@ $(function(){
       $('body').append(this.el);
       
       // Hide panels
-      this.$(".panel .source").hide();
-      this.$(".panel .library").hide();
+      this.closePanels();
 
       // Panel buttons
       this.$(".close")

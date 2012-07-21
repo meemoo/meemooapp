@@ -15,7 +15,7 @@ $(function(){
       Iframework.loadGraph(graph);
 
       //DEBUG
-      Iframework.showLoad();
+      // Iframework.showLoad();
     }
   });
 
