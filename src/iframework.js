@@ -715,9 +715,9 @@ $(function(){
       // URL hash
       Iframework.router.navigate("new");
     },
-    analyze: function(1,2,3) {
+    analyze: function (group, type, id) {
       // Google analytics
-      _gaq.push(['_trackEvent', 1, 2, 3]);
+      _gaq.push(['_trackEvent', group, type, id]);
     }
 
   });
