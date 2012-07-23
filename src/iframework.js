@@ -303,6 +303,7 @@ $(function(){
           this._loadedLocalApp = null;
           // load graph
           this.loadGraph(this._exampleGraphs[i]);
+          this.analyze("load", "example", url);
           return true;
         }
       }
@@ -437,6 +438,8 @@ $(function(){
         console.warn("gist load error", e);
       });
 
+      this.analyze("load", "gist", gistid);
+
       return gistid;
     },
     saveGist: function () {
@@ -476,7 +479,8 @@ $(function(){
         Iframework.saveLocal();
         // Show new permalink
         Iframework.updateCurrentInfo();
-        // Iframework.$(".permalink").text("http://meemoo.org/iframework/#gist/"+e.id);
+
+        Iframework.analyze("save", "gist", e.id);
       })
       .error(function(e){
         var description = "meemoo app: " + Iframework.shownGraph.toJSON()["info"]["title"];
@@ -590,6 +594,8 @@ $(function(){
       }
 
       this._loadedLocalApp = app;
+
+      this.analyze("save", "local", "x");
 
       // URL hash
       Iframework.router.navigate("local/"+key);
@@ -708,6 +714,10 @@ $(function(){
 
       // URL hash
       Iframework.router.navigate("new");
+    },
+    analyze: function(1,2,3) {
+      // Google analytics
+      _gaq.push(['_trackEvent', 1, 2, 3]);
     }
 
   });
