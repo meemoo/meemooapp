@@ -7,24 +7,17 @@ $(function(){
       return this.view;
     },
     send: function (message) {
+      // Send to connected ports
+    },
+    recieve: function (message) {
       if (window.frames[this.frameIndex]) {
         window.frames[this.frameIndex].postMessage(message, "*");
       } else {
         console.error("wat "+this.id+" "+this.frameIndex);
       }
     },
-    recieve: function (message) {
-      this.send(message);
-    },
-    Info: {},
-    infoLoaded: function (info) {
-      if (this.view) {
-        this.Info = info;
-        this.view.infoLoaded(info);
-      }
-    },
     setState: function (state) {
-      this.send({setState: state});
+      this.recieve({setState: state});
     },
     stateReady: function () {
       // Set state

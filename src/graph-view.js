@@ -48,6 +48,7 @@ $(function(){
     addNode: function (node) {
       if (node.initializeView) {
         this.$(".nodes").append( node.initializeView().el );
+        // For native nodes
         node.initializePorts();
       }
     },

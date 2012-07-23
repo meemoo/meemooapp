@@ -49,6 +49,11 @@ $(function(){
       // Disable selection for better drag+drop
       this.$("h1").disableSelection();
 
+      // Native nodes
+      if (this.info) {
+        this.infoLoaded(this.info);
+      }
+
       // Bring newest to top
       this.mousedown();
 
@@ -62,7 +67,7 @@ $(function(){
       this.$('h1')
         .text(this.model.get("id") + ": " + info.title)
         .attr({
-          title: "by "+info.author+": "+info.description
+          title: (info.author ? "by "+info.author+": " : "" ) + info.description
         });
     },
     _relatedEdges: null,

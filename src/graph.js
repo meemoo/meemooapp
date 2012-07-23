@@ -29,14 +29,17 @@ $(function(){
         };
         for (var i=0; i<nodes.length; i++) {
           var node;
-          if (nodes[i].hasOwnProperty("src") && nodes[i]["src"].split(":")[0] === "meemoo") {
+          var srcSplit = nodes[i]["src"].split(":");
+          if (nodes[i].hasOwnProperty("src") && srcSplit[0] === "meemoo") {
             // Native type node
-            var id = nodes[i]["src"].split(":")[1];
+            var id = srcSplit[srcSplit.length-1];
             var path = id.split("/");
             id = path.join("-");
 
             // Load js if needed
-            // HACK only for loading group-node.js to Iframework.NativeNodes[group-node]
+            // HACK only for loading meemoo:module:group/node
+            // from src/nodes/group-node.js 
+            // to Iframework.NativeNodes[group-node]
             if (path[0] && path[1]) {
               yepnope([
                 {

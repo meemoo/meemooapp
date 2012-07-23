@@ -22,41 +22,44 @@ $(function(){
 
     },
     initializeView: function () {
-      // Called from GraphView.addNode();
+      // Called from GraphView.addNode
       this.view = new Iframework.NodeBoxView({model:this});
       return this.view;
     },
-    initializePorts: function () {
-      // Called from GraphView.addNode();
-      if (this.hasOwnProperty("inputs")) {
-        console.log(this.inputs);
-        // this.nativenode.setInfo(this.nativenode.info);
-        for (var inputname in this.inputs) {
-          if (this.inputs.hasOwnProperty(inputname)) {
-            this.addInput(inputname, this.inputs[inputname]);
+    initializePorts: function() {
+      // For native nodes
+      // Called from GraphView.addNode
+      if (this.view.inputs) {
+        for (var inputname in this.view.inputs) {
+          if (this.view.inputs.hasOwnProperty(inputname)) {
+            var inInfo = this.view.inputs[inputname];
+            inInfo.name = inputname;
+            this.addInput(inInfo);
           }
         }
-        for (var outputname in this.outputs) {
-          if (this.outputs.hasOwnProperty(outputname)) {
-            this.addOutput(outputname, this.outputs[outputname]);
+      }
+      if (this.view.outputs) {
+        for (var outputname in this.view.outputs) {
+          if (this.view.outputs.hasOwnProperty(outputname)) {
+            var outInfo = this.view.outputs[outputname];
+            outInfo.name = outputname;
+            this.addOutput(outInfo);
           }
         }
       }
     },
     send: function (message) {
-      if (this.nativenode) {
-        this.nativenode.recieve(message);
-      }
+      // Send message out to connected modules
     },
     recieve: function (message) {
-      if (this.nativenode) {
-        this.nativenode.send(message);
+      for (var name in message) {
+        if (this.view["input"+name]){
+          this.view["input"+name](message[name]);
+        }
       }
     },
-    Info: {},
     infoLoaded: function (info) {
       if (this.view) {
-        this.Info = info;
         this.view.infoLoaded(info);
       }
     },
@@ -73,7 +76,6 @@ $(function(){
       this.graph.checkLoaded();
     },
     addInput: function (info) {
-      // Called from this.nativenode.addInput();
       // Name must be unique
       var replace = this.Inputs.findByName(info.name);
       if (replace) {

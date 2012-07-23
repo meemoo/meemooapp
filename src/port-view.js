@@ -451,10 +451,10 @@ $(function(){
       }
       var message = {};
       message[inputname] = val;
-      this.model.node.send(message);
+      this.model.node.recieve(message);
       this.model.node.get("state")[inputname] = val;
       this.model.node.trigger("change");
-      $('div.edge-edit').remove();
+      // $('div.edge-edit').remove();
       return false;
     },
     disconnect: function (event) {
