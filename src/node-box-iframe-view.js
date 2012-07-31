@@ -20,6 +20,11 @@ $(function(){
       // .inner style for css
       this.$(".inner").addClass("iframe-type");
     },
+    render: function () {
+      this.$el.html(this.template(this.model));
+      this.$(".inner").html(this.innerTemplate(this.model));
+      return this;
+    },
     refresh: function () {
       this.$("iframe")[0].src = this.model.get("src");
     }

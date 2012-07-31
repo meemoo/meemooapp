@@ -13,7 +13,6 @@ $(function(){
       this.Outputs.get(message.output).send(message.value);
     },
     recieve: function (message) {
-      console.log(message);
       if (window.frames[this.frameIndex]) {
         window.frames[this.frameIndex].postMessage(message, "*");
       } else {

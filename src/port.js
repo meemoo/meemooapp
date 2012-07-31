@@ -38,7 +38,6 @@ $(function(){
       var m = {};
       m[this.id] = message;
       this.node.recieve(m); 
-      // this.node.recieve(m);
     }
   });
   

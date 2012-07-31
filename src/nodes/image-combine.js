@@ -2,17 +2,6 @@ $(function(){
 
   Iframework.NativeNodes["image-combine"] = Iframework.NativeNodes["image"].extend({
 
-    initializeView: function () {
-      // Called from GraphView.addNode();
-      this.view = new Iframework.NativeNodes["image-combine-view"]({model:this});
-      return this.view;
-    }
-
-  });
-
-
-  Iframework.NativeNodes["image-combine-view"] = Iframework.NativeNodes["image-view"].extend({
-
     info: {
       title: "image-combine",
       description: "native module test"

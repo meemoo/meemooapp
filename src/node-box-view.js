@@ -14,13 +14,13 @@ $(function(){
       '</div>'+
     '</div>';
 
-  var innerTemplate = '<div class="info" />';
+  // var innerTemplate = '<div class="info" />';
 
   Iframework.NodeBoxView = Iframework.NodeView.extend({
     tagName: "div",
     className: "node",
     template: _.template(template),
-    innerTemplate: _.template(innerTemplate),
+    // innerTemplate: _.template(innerTemplate),
     events: {
       "dragstart .module":   "dragstart",
       "drag .module":        "drag",
@@ -58,9 +58,19 @@ $(function(){
       this.mousedown();
 
     },
+    initializeNative: function () {
+      // Called from GraphView.addNode
+      if (!this.Native) {
+        this.Native = new Iframework.NativeNodes[this.model.lazyLoadType]({model:this.model});
+        this.$(".inner").append( this.Native.initialize().$el );
+
+        // XXXXXXXXXXXXXXXX
+        //infoLoaded & initializePorts
+        
+      }
+    },
     render: function () {
       this.$el.html(this.template(this.model));
-      this.$(".inner").append(this.innerTemplate(this.model));
       return this;
     },
     infoLoaded: function (info) {

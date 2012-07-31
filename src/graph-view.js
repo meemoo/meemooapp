@@ -46,19 +46,19 @@ $(function(){
       module.view.dragAddNode({x:x,y:y});
     },
     addNode: function (node) {
-      if (node.initializeView) {
-        this.$(".nodes").append( node.initializeView().el );
-        // For native nodes
-        node.initializePorts();
+      this.$(".nodes").append( node.initializeView().el );
+      // Render the native view
+      if (node.lazyLoadType) {
+        node.view.initializeNative();
       }
     },
     addEdge: function (edge) {
       edge.initializeView();
 
-      if (edge.Source.view) {
+      if (!!edge.Source.view) {
         edge.Source.view.resetRelatedEdges();
       }
-      if (edge.Target.view) {
+      if (!!edge.Target.view) {
         edge.Target.view.resetRelatedEdges();
       }
     },

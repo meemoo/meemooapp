@@ -32,6 +32,7 @@ module.exports = function(grunt) {
           'src/node-view.js',
           'src/node-box.js',
           'src/node-box-view.js',
+          'src/node-box-native-view.js',
           'src/node-box-iframe.js',
           'src/node-box-iframe-view.js',
           'src/port.js',
@@ -40,7 +41,8 @@ module.exports = function(grunt) {
           'src/module-view.js',
           'src/edge.js',
           'src/edge-view.js',
-          'src/router.js'
+          'src/router.js',
+          'src/iframework-last.js'
         ],
         dest: 'build/<%= pkg.name %>.min.js'
       }

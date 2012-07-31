@@ -55,7 +55,7 @@ $(function(){
             }
 
             // Placeholder node
-            node = new Iframework.Node(nodes[i]);
+            node = new Iframework.NodeBox(nodes[i]);
             node.lazyLoadType = id;
           } else {
             // Iframe type node
@@ -88,14 +88,8 @@ $(function(){
       var allLoaded = true;
       this.get("nodes").each(function(node){
         if (node.hasOwnProperty("lazyLoadType")) {
-          var id = node.lazyLoadType;
-          if (Iframework.NativeNodes.hasOwnProperty(id)) {
-            // Convert placeholder node to new type
-            var nodes = this.get("nodes");
-            nodes.remove(node);
-            this.addNode( new Iframework.NativeNodes[id](node.toJSON()) );
-          }
-          else {
+          if (!Iframework.NativeNodes.hasOwnProperty(node.lazyLoadType)) {
+            // That nativenode's js hasn't loaded yet
             allLoaded = false;
           }
         }
@@ -204,8 +198,6 @@ $(function(){
       
       // Disconnect then connect edges
       this.reconnectEdges();
-
-      Iframework.addModulesToLibrary();
       
       return true;
     },
@@ -227,7 +219,6 @@ $(function(){
     },
     graphChanged: function () {
       if (Iframework.$(".source").is(":visible")) {
-        // HACK
         window.setTimeout(function(){
           Iframework.sourceRefresh();
         }, 100);

@@ -1,0 +1,6 @@
+$(function(){
+
+  // Start
+  Iframework.allLoaded();
+
+});

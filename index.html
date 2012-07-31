@@ -104,6 +104,7 @@
         'src/node-view.js',
         'src/node-box.js',
         'src/node-box-view.js',
+        'src/node-box-native-view.js',
         'src/node-box-iframe.js',
         'src/node-box-iframe-view.js',
         'src/port.js',
@@ -113,12 +114,15 @@
         'src/edge.js',
         'src/edge-view.js',
         'src/router.js',
-        // load examples
+        // All Iframework loaded
+        'src/iframework-last.js',
+
+        // Load examples
         'src/examples/module-library.js',
         'src/examples/apps.js'
       ];
       var buildFiles = [
-        // Iframework
+        // Iframework compressed
         'build/meemoo-iframework.min.js',
         // load examples
         'src/examples/module-library.js',
@@ -153,8 +157,6 @@
               window.setTimeout(function(){
                 document.getElementById("iframework-info").innerHTML = "";
               }, 1500);
-              // Start
-              Iframework.allLoaded();
             } else {
               document.getElementById("iframework-info").innerHTML = "&raquo; Something didn't work (;_;)";
             }
