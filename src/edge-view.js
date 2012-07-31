@@ -60,8 +60,8 @@ $(function(){
 
       // Unhide port plugends
       if (this.model) {
-        this.model.source.view.$(".plugend").show();
-        this.model.target.view.$(".plugend").show();
+        this.model.Source.view.$(".plugend").show();
+        this.model.Target.view.$(".plugend").show();
       }
 
       return this;
@@ -83,10 +83,10 @@ $(function(){
         // Connected edge
         var sourceName = this.model.get("source")[1];
         var targetName = this.model.get("target")[1];
-        this.positions.fromX = this.model.source.view.portOffsetLeft('out', sourceName);
-        this.positions.fromY = this.model.source.view.portOffsetTop('out', sourceName);
-        this.positions.toX = this.model.target.view.portOffsetLeft('in', targetName);
-        this.positions.toY = this.model.target.view.portOffsetTop('in', targetName);
+        this.positions.fromX = this.model.Source.view.portOffsetLeft('out', sourceName);
+        this.positions.fromY = this.model.Source.view.portOffsetTop('out', sourceName);
+        this.positions.toX = this.model.Target.view.portOffsetLeft('in', targetName);
+        this.positions.toY = this.model.Target.view.portOffsetTop('in', targetName);
       }
     },
     svgX: function () {
@@ -180,11 +180,11 @@ $(function(){
       setTimeout(function(){
         shadow.attr("class", "wire-shadow");
       }, 1000);
-      if (this.model.source.view) {
-        this.model.source.view.highlight();
+      if (this.model.Source.view) {
+        this.model.Source.view.highlight();
       }
-      if (this.model.target.view) {
-        this.model.target.view.highlight();
+      if (this.model.Target.view) {
+        this.model.Target.view.highlight();
       }
     }
 

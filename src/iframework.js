@@ -183,6 +183,9 @@ $(function(){
                 case "set":
                   node.setValue(info);
                   break;
+                case "message":
+                  node.sendFromFrame(info);
+                  break;
                 default:
                   break;
               }

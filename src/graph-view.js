@@ -55,11 +55,11 @@ $(function(){
     addEdge: function (edge) {
       edge.initializeView();
 
-      if (edge.source.view) {
-        edge.source.view.resetRelatedEdges();
+      if (edge.Source.view) {
+        edge.Source.view.resetRelatedEdges();
       }
-      if (edge.target.view) {
-        edge.target.view.resetRelatedEdges();
+      if (edge.Target.view) {
+        edge.Target.view.resetRelatedEdges();
       }
     },
     removeNode: function (node) {
@@ -68,11 +68,11 @@ $(function(){
       }
     },
     removeEdge: function (edge) {
-      if (edge.source && edge.source.view) {
-        edge.source.view.resetRelatedEdges();
+      if (edge.Source && edge.Source.view) {
+        edge.Source.view.resetRelatedEdges();
       }
-      if (edge.target && edge.target.view) {
-        edge.target.view.resetRelatedEdges();
+      if (edge.Target && edge.Target.view) {
+        edge.Target.view.resetRelatedEdges();
       }
       if (edge.view) {
         edge.view.remove();

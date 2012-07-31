@@ -234,7 +234,7 @@ $(function(){
         this.$(".plugend").hide();
       }
 
-      var thatPort = this.model.isIn ? this.unpluggingEdge.source : this.unpluggingEdge.target;
+      var thatPort = this.model.isIn ? this.unpluggingEdge.Source : this.unpluggingEdge.Target;
       this.$(".plugend").data("model", thatPort);
       
       // Highlight related ins or outs
@@ -255,7 +255,7 @@ $(function(){
       if (Iframework.edgePreview && this.unpluggingEdge) {
         var dragX = ui.offset.left + $('.graph').scrollLeft();
         var dragY = ui.offset.top + 6 + $('.graph').scrollTop();
-        var thatPortView = this.model.isIn ? this.unpluggingEdge.source.view : this.unpluggingEdge.target.view;
+        var thatPortView = this.model.isIn ? this.unpluggingEdge.Source.view : this.unpluggingEdge.Target.view;
         var thatX = thatPortView.portOffsetLeft();
         var thatY = thatPortView.portOffsetTop();
         
@@ -435,7 +435,10 @@ $(function(){
     },
     manualinput: function (event) {
       var inputname = this.model.get("name");
-      var val = this.$(".manualinput").children("input") ? this.$(".manualinput").children("input").val() : "bang!";
+      var val;
+      if (this.$(".manualinput").children("input")){
+        val = this.$(".manualinput").children("input").val();
+      }
       if (this.$(".manualinput").children("input:checkbox").length > 0) {
         if (this.$(".manualinput").children("input:checkbox").is(':checked')) {
           val = true;
@@ -448,6 +451,9 @@ $(function(){
       }
       if (this.model.get("type") === "number" || this.model.get("type") === "float") {
         val = parseFloat(val);
+      }
+      if (!val) {
+        val = "!";
       }
       var message = {};
       message[inputname] = val;
@@ -492,7 +498,7 @@ $(function(){
       // Resets to null on dis/connect
       if ( this._relatedEdges === null ) {
         this._relatedEdges = this.model.graph.get("edges").filter( function (edge) {
-          return ( edge.source === this.model || edge.target === this.model );
+          return ( edge.Source === this.model || edge.Target === this.model );
         }, this);
         // Toggle plugends
         if (this._relatedEdges.length >= 1) {

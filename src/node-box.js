@@ -53,9 +53,12 @@ $(function(){
       var m = {};
       m[name] = message;
     },
+    sendFromFrame: function (info) {
+
+    },
     recieve: function (message) {
       for (var name in message) {
-        if (this.view["input"+name]){
+        if (!!this.view["input"+name]){
           this.view["input"+name](message[name]);
         }
       }

@@ -6,10 +6,14 @@ $(function(){
       this.view = new Iframework.NodeBoxIframeView({model:this});
       return this.view;
     },
-    send: function (message) {
-      // Send to connected ports
+    // send: function (message) {
+    //   // Send to connected ports
+    // },
+    sendFromFrame: function (message) {
+      this.Outputs.get(message.output).send(message.value);
     },
     recieve: function (message) {
+      console.log(message);
       if (window.frames[this.frameIndex]) {
         window.frames[this.frameIndex].postMessage(message, "*");
       } else {
