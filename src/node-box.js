@@ -114,6 +114,12 @@ $(function(){
     },
     remove: function () {
       this.graph.removeNode(this);
+    },
+    setValue: function(info) {
+      for (var name in info) {
+        this.get("state")[name] = info[name];
+      }
+      this.nodeChanged();
     }
 
   });
