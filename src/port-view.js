@@ -452,7 +452,7 @@ $(function(){
       if (this.model.get("type") === "number" || this.model.get("type") === "float") {
         val = parseFloat(val);
       }
-      if (!val) {
+      if (val === undefined) {
         val = "!";
       }
       var message = {};
