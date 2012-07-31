@@ -401,11 +401,6 @@ $(function(){
       if (split.length > 3 && split[2] === "gist.github.com") {
         gistid = split[3];
       }
-      gistid = parseInt(gistid, 10);
-      if (gistid !== gistid) {
-        // NaN
-        return false;
-      }
 
       // Load gist to json to app
       $.ajax({
