@@ -22,6 +22,7 @@ $(function(){
     },
     inputbang: function (i) {
       this.$(".info").text("bang!");
+      this.send("bang", "!");
     },
     inputs: {
       image: {

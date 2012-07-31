@@ -136,7 +136,7 @@ $(function(){
       }
 
       // Iframework.frameCount works around a FF bug with recycling iframes with the same name
-      node.frameIndex = "frame_"+node.get('id')+"_"+(Iframework.frameCount++)+"_"+randomKey;
+      node.frameIndex = "frame_"+node.get('id')+"_"+(Iframework.frameCount++)+randomKey+"_through";
 
       this.get("nodes").add(node);
 

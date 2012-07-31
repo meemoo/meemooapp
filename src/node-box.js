@@ -48,8 +48,10 @@ $(function(){
         }
       }
     },
-    send: function (message) {
+    send: function (name, message) {
       // Send message out to connected modules
+      var m = {};
+      m[name] = message;
     },
     recieve: function (message) {
       for (var name in message) {
@@ -76,9 +78,12 @@ $(function(){
       this.graph.checkLoaded();
     },
     addInput: function (info) {
+      // Set id to name
+      info.id = info.name;
       // Name must be unique
       var replace = this.Inputs.findByName(info.name);
       if (replace) {
+        replace.set(info);
         return;
       }
       var newPort = new Iframework.Port(info);
@@ -96,9 +101,12 @@ $(function(){
       }
     },
     addOutput: function (info) {
+      // Set id to name
+      info.id = info.name;
       // Name must be unique
       var replace = this.Outputs.findByName(info.name);
       if (replace) {
+        replace.set(info);
         return;
       }
       var newPort = new Iframework.Port(info);
