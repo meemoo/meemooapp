@@ -180,6 +180,9 @@ $(function(){
                 case "stateReady":
                   node.stateReady();
                   break;
+                case "set":
+                  node.setValue(info);
+                  break;
                 default:
                   break;
               }
