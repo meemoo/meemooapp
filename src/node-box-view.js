@@ -59,6 +59,9 @@ $(function(){
         this.Native = new Iframework.NativeNodes[this.model.lazyLoadType]({model:this.model});
         this.$(".inner").append( this.Native.initialize().$el );
       }
+
+      // Check if all modules are loaded
+      this.model.stateReady();
     },
     render: function () {
       this.$el.html(this.template(this.model));

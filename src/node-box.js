@@ -46,16 +46,16 @@ $(function(){
         this.view.infoLoaded(info);
       }
     },
-    setState: function (state) {
-      this.send({setState: state});
+    setState: function () {
+      // TODO set local state
+      // this.send({setState: state});
     },
     stateReady: function () {
+      // Called from NodeBoxView.initializeNative()
       // Set state
-      if (this.get("state")) {
-        this.setState(this.get("state"));
-      }
-      this.loaded = true;
+      this.setState();
       // Check if all modules are loaded
+      this.loaded = true;
       this.graph.checkLoaded();
     },
     addInput: function (info) {

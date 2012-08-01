@@ -189,6 +189,7 @@ $(function(){
       this.trigger("change");
     },
     checkLoaded: function () {
+      // Called from NodeBox.stateReady()
       for (var i=0; i<this.get("nodes").length; i++) {
         if (this.get("nodes").at(i).loaded === false) { 
           return false; 

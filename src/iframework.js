@@ -97,7 +97,7 @@ $(function(){
     },
     initialize: function () {
       this.render();
-      $('body').append(this.el);
+      $('body').prepend(this.el);
       
       // Hide panels
       this.closePanels();
@@ -525,6 +525,7 @@ $(function(){
         else {
           // Didn't find matching url
           console.warn("Didn't find local app with matching url.");
+          this.newBlank();
           return false;
         }
       } else {

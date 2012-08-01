@@ -7,10 +7,10 @@ $(function(){
       description: "native module test"
     },
     inputimage: function (image) {
-      // console.log(this, i, Meemoo);
+      // console.log(image.constructor === ImageData);
     },
     inputbang: function (i) {
-      this.$(".info").append("!");
+      this.$(".info").append("! ");
       this.send("bang", "!");
     },
     inputs: {

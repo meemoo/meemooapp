@@ -22,17 +22,11 @@ $(function(){
         console.error("wat "+this.id+" "+this.frameIndex);
       }
     },
-    setState: function (state) {
-      this.recieve({setState: state});
-    },
-    stateReady: function () {
-      // Set state
-      if (this.get("state")) {
-        this.setState(this.get("state"));
+    setState: function () {
+      var state = this.get("state");
+      if (state) {
+        this.recieve({setState: state});
       }
-      this.loaded = true;
-      // Check if all modules are loaded
-      this.graph.checkLoaded();
     }
 
   });
