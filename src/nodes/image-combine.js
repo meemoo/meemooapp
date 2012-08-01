@@ -10,7 +10,7 @@ $(function(){
       // console.log(this, i, Meemoo);
     },
     inputbang: function (i) {
-      this.$(".info").text("bang!");
+      this.$(".info").append("!");
       this.send("bang", "!");
     },
     inputs: {

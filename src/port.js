@@ -29,7 +29,9 @@ $(function(){
     // Output ports send messages
     send: function (message) {
       this.Edges.each(function(edge){
-        edge.Target.recieve(message);
+        _.defer(function(){
+          edge.Target.recieve(message);
+        });
       });
     },
     // Input ports get message
