@@ -6,9 +6,6 @@ $(function(){
       this.view = new Iframework.NodeBoxIframeView({model:this});
       return this.view;
     },
-    // send: function (message) {
-    //   // Send to connected ports
-    // },
     sendFromFrame: function (message) {
       var output = this.Outputs.get(message.output);
       if (!!output) {
@@ -27,6 +24,10 @@ $(function(){
       if (state) {
         this.recieve({setState: state});
       }
+    },
+    iframeLoaded: function () {
+      this.loaded = true;
+      this.graph.checkLoaded();
     }
 
   });

@@ -41,10 +41,7 @@ $(function(){
       return this;
     },
     send: function (name, value) {
-      var output = this.model.Outputs.get(name);
-      if (!!output) {
-        output.send(value);
-      }
+      this.model.send(name, value);
     }
 
   });

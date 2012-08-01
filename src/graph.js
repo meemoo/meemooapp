@@ -189,7 +189,7 @@ $(function(){
       this.trigger("change");
     },
     checkLoaded: function () {
-      // Called from NodeBox.stateReady()
+      // Called from NodeBoxView.initializeNative()
       for (var i=0; i<this.get("nodes").length; i++) {
         if (this.get("nodes").at(i).loaded === false) { 
           return false; 
@@ -213,10 +213,15 @@ $(function(){
       }, 500);
     },
     connectEdges: function () {
-      for(var i=0; i<this.get("edges").length; i++) {
-        var edge = this.get("edges").at(i);
+      // Connect edges
+      this.get("edges").each(function(edge){
         edge.connect();
-      }
+      });
+
+      // Set state of nodes
+      this.get("nodes").each(function(node){
+        node.setState();
+      });
     },
     graphChanged: function () {
       if (Iframework.$(".source").is(":visible")) {

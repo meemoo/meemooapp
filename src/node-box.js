@@ -26,13 +26,12 @@ $(function(){
       this.view = new Iframework.NodeBoxView({model:this});
       return this.view;
     },
-    send: function (name, message) {
+    send: function (name, value) {
       // Send message out to connected modules
-      var m = {};
-      m[name] = message;
-    },
-    sendFromFrame: function (info) {
-
+      var output = this.Outputs.get(name);
+      if (!!output) {
+        output.send(value);
+      }
     },
     recieve: function (message) {
       for (var name in message) {
@@ -47,16 +46,14 @@ $(function(){
       }
     },
     setState: function () {
-      // TODO set local state
-      // this.send({setState: state});
-    },
-    stateReady: function () {
-      // Called from NodeBoxView.initializeNative()
-      // Set state
-      this.setState();
-      // Check if all modules are loaded
-      this.loaded = true;
-      this.graph.checkLoaded();
+      var state = this.get("state");
+      if (state){
+        for (var name in state) {
+          if (!!this.view.Native["input"+name]){
+            this.view.Native["input"+name](state[name]);
+          }
+        }
+      }
     },
     addInput: function (info) {
       // Set id to name

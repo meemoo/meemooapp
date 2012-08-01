@@ -61,7 +61,8 @@ $(function(){
       }
 
       // Check if all modules are loaded
-      this.model.stateReady();
+      this.model.loaded = true;
+      this.model.graph.checkLoaded();
     },
     render: function () {
       this.$el.html(this.template(this.model));

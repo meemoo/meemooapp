@@ -180,7 +180,7 @@ $(function(){
                   node.addOutput(info);
                   break;
                 case "stateReady":
-                  node.stateReady();
+                  node.iframeLoaded();
                   break;
                 case "set":
                   node.setValue(info);

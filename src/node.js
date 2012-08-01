@@ -6,7 +6,11 @@ $(function(){
     },
     recieve: function (message) {
       // Get message from another node
-    }
+    },
+    //iframe only
+    sendFromFrame: function(){},
+    iframeLoaded: function(){}
+
   });
   
   Iframework.Nodes = Backbone.Collection.extend({
