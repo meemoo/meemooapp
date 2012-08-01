@@ -26,28 +26,6 @@ $(function(){
       this.view = new Iframework.NodeBoxView({model:this});
       return this.view;
     },
-    initializePorts: function() {
-      // For native nodes
-      // Called from GraphView.addNode
-      if (this.view.inputs) {
-        for (var inputname in this.view.inputs) {
-          if (this.view.inputs.hasOwnProperty(inputname)) {
-            var inInfo = this.view.inputs[inputname];
-            inInfo.name = inputname;
-            this.addInput(inInfo);
-          }
-        }
-      }
-      if (this.view.outputs) {
-        for (var outputname in this.view.outputs) {
-          if (this.view.outputs.hasOwnProperty(outputname)) {
-            var outInfo = this.view.outputs[outputname];
-            outInfo.name = outputname;
-            this.addOutput(outInfo);
-          }
-        }
-      }
-    },
     send: function (name, message) {
       // Send message out to connected modules
       var m = {};

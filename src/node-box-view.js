@@ -49,11 +49,6 @@ $(function(){
       // Disable selection for better drag+drop
       this.$("h1").disableSelection();
 
-      // Native nodes
-      if (this.info) {
-        this.infoLoaded(this.info);
-      }
-
       // Bring newest to top
       this.mousedown();
 
@@ -63,10 +58,6 @@ $(function(){
       if (!this.Native) {
         this.Native = new Iframework.NativeNodes[this.model.lazyLoadType]({model:this.model});
         this.$(".inner").append( this.Native.initialize().$el );
-
-        // XXXXXXXXXXXXXXXX
-        //infoLoaded & initializePorts
-        
       }
     },
     render: function () {

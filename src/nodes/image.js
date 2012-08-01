@@ -4,8 +4,7 @@ $(function(){
 
   Iframework.NativeNodes["image"] = Iframework.NodeBoxNativeView.extend({
 
-    template: _.template(innerTemplate),
-
+    template: _.template(innerTemplate)
 
   });
 
