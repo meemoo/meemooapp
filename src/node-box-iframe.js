@@ -10,7 +10,10 @@ $(function(){
     //   // Send to connected ports
     // },
     sendFromFrame: function (message) {
-      this.Outputs.get(message.output).send(message.value);
+      var output = this.Outputs.get(message.output);
+      if (!!output) {
+        output.send(message.value);
+      }
     },
     recieve: function (message) {
       if (window.frames[this.frameIndex]) {

@@ -2,13 +2,13 @@ $(function(){
   
   var template = 
     '<div class="showpanel">'+
-      '<button class="button showload">file</button>'+
+      '<button class="button showload">app</button>'+
       '<button class="button showsource">source</button>'+
       '<button class="button showlibrary">module</button>'+
     '</div>'+
     '<div class="panel">'+
       '<div class="choosepanel">'+
-        '<button class="button showload">file</button>'+
+        '<button class="button showload">app</button>'+
         '<button class="button showsource">source</button>'+
         '<button class="button showlibrary">module</button>'+
         '<button class="button close">close</button>'+
@@ -156,7 +156,6 @@ $(function(){
       if (graph["info"]["title"]) {
         document.title = "Meemoo: "+graph["info"]["title"];
       }
-      this.closePanels();
 
       this.updateCurrentInfo();
     },
@@ -168,6 +167,9 @@ $(function(){
             if (e.data.hasOwnProperty(name)) {
               var info = e.data[name];
               switch (name) {
+                case "message":
+                  node.sendFromFrame(info);
+                  break;
                 case "info":
                   node.infoLoaded(info);
                   break;
@@ -182,9 +184,6 @@ $(function(){
                   break;
                 case "set":
                   node.setValue(info);
-                  break;
-                case "message":
-                  node.sendFromFrame(info);
                   break;
                 default:
                   break;
@@ -345,9 +344,13 @@ $(function(){
         .val( JSON.stringify(Iframework.shownGraph, null, "") );
     },
     sourceApply: function() {
-      var newGraph = JSON.parse( $(".panel .sourceedit textarea").val() );
-      this.loadGraph(newGraph);
-      this.showSource();
+      try {
+        var newGraph = JSON.parse( $(".panel .sourceedit textarea").val() );
+        this.loadGraph(newGraph);
+        this.showSource();
+      } catch (e) {
+        console.warn("json parse error: "+e);
+      }
     },
     addByUrl: function() {
       $(".addbyurlinput").blur();

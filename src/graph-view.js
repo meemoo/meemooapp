@@ -18,6 +18,11 @@ $(function(){
       this.render();
       Iframework.$el.prepend(this.el);
 
+      // HACK Panel visible?
+      if ( Iframework.$(".panel").is(":visible") ){
+        this.$el.css("right", "350px");
+      }
+
       this.model.get("nodes").each(this.addNode);
 
       // Drag helper from module library
