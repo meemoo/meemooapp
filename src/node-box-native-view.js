@@ -6,6 +6,12 @@ $(function(){
     tagName: "div",
     className: "nativenode",
     template: _.template(template),
+    info: {
+      title: "native-node",
+      description: "extend me"
+    },
+    inputs: {},
+    outputs: {},
     initialize: function () {
       this.render();
 
@@ -34,12 +40,12 @@ $(function(){
       this.$el.html(this.template(this.model));
       return this;
     },
-    info: {
-      title: "native-node",
-      description: "extend me"
-    },
-    inputs: {},
-    outputs: {}
+    send: function (name, value) {
+      var output = this.model.Outputs.get(name);
+      if (!!output) {
+        output.send(value);
+      }
+    }
 
   });
 

@@ -48,7 +48,7 @@ $(function(){
     addNode: function (node) {
       this.$(".nodes").append( node.initializeView().el );
       // Render the native view
-      if (node.lazyLoadType) {
+      if (!!node.lazyLoadType) {
         node.view.initializeNative();
       }
     },

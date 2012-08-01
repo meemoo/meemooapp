@@ -36,8 +36,8 @@ $(function(){
     },
     recieve: function (message) {
       for (var name in message) {
-        if (!!this.view["input"+name]){
-          this.view["input"+name](message[name]);
+        if (!!this.view.Native["input"+name]){
+          this.view.Native["input"+name](message[name]);
         }
       }
     },
