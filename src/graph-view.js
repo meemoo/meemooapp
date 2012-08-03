@@ -31,10 +31,22 @@ $(function(){
       });
 
       this.resizeEdgeSVG();
+
+      // requestAnimationFrame on all nodes
+      window.requestAnimationFrame(this.renderAnimationFrame);
     },
     render: function () {
       this.$el.html(this.template(this.model.toJSON()));
       return this;
+    },
+    renderAnimationFrame: function (timestamp) {
+      var self = Iframework.shownGraph.view;
+      window.requestAnimationFrame(self.renderAnimationFrame);
+      self.model.get("nodes").each(function(node){
+        if (node.view.Native) {
+          node.view.Native.renderAnimationFrame();
+        }
+      });
     },
     click: function (event) {
       // Hide dis/connection boxes

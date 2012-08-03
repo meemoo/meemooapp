@@ -7,7 +7,21 @@ $(function(){
       description: "native module test"
     },
     inputimage: function (image) {
-      // console.log(image.constructor === ImageData);
+      // This should happen in port eventually
+      switch(Iframework.util.type(image)) {
+        case "ImageData" :
+          this.context.putImageData(image, 0, 0);
+          break;
+        case "HTMLCanvasElement" :
+          this.context.drawImage(image, 0, 0);
+          break;
+        default :
+          break;
+      }
+      this.send("image", this.canvas);
+    },
+    renderAnimationFrame: function () {
+      //
     },
     inputbang: function (i) {
       this.$(".info").append("! ");

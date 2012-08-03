@@ -512,6 +512,7 @@ div.panel {
 
 .panel .load .permalink {
   margin-top: 10px;
+  line-height: 18px;
 }
   .panel .load .permalink .share {
     color: #999;

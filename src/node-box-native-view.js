@@ -34,11 +34,23 @@ $(function(){
         }
       }
 
+      this.initializeCategory();
+      this.initializeModule();
+
       return this;
+    },
+    initializeCategory: function(){
+      // for example, override in nodes/image.js
+    },
+    initializeModule: function(){
+      // for example, override in nodes/image-combine.js
     },
     render: function () {
       this.$el.html(this.template(this.model));
       return this;
+    },
+    renderAnimationFrame: function () {
+      // Get a tick from GraphView.renderAnimationFrame()
     },
     send: function (name, value) {
       this.model.send(name, value);

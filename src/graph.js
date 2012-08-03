@@ -16,6 +16,7 @@ $(function(){
     usedIds: [],
     edgeCount: 0,
     eventsHistory: [],
+    // loadingNodes: [],
     initialize: function () {
       this.usedIds = [];
       // Convert arrays into Backbone Collections
@@ -52,6 +53,7 @@ $(function(){
                   complete: loadComplete
                 }
               ]);
+              // this.loadingNodes.push(id);
             }
 
             // Placeholder node

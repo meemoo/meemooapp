@@ -23,6 +23,7 @@ module.exports = function(grunt) {
           'libs/backbone.localStorage.js',
           // Iframework
           'src/iframework.js',
+          'src/iframework-utils.js',
           'src/eventshistory.js',
           'src/local-app.js',
           'src/local-app-view.js',

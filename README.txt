@@ -40,6 +40,7 @@ You don’t have to do anything special to choose one license or the other and y
 ---
 
 Donations: 
+ Gittip: https://www.gittip.com/forresto/
  Dwolla: https://www.dwolla.com/u/812-611-6468?action=send&memo=Support%20Meemoo%20development!&amount=2.00&repeats=0
  Flattr: http://flattr.com/thing/183497/Meemoo-web-media-wiring
  Paypal: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=K7UYG9Y6XLHHS

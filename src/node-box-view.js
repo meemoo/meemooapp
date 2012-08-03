@@ -79,9 +79,18 @@ $(function(){
     relatedEdges: function () {
       // Resets to null on dis/connect
       if ( this._relatedEdges === null ) {
-        this._relatedEdges = this.model.graph.get("edges").filter( function (edge) {
-          return ( edge.get("source")[0] === this.model.get("id") || edge.get("target")[0] === this.model.get("id") );
-        }, this);
+        var edges = [];
+        this.model.Inputs.each(function(port){
+          port.Edges.each(function(edge){
+            edges.push(edge);
+          });
+        });
+        this.model.Outputs.each(function(port){
+          port.Edges.each(function(edge){
+            edges.push(edge);
+          });
+        });
+        this._relatedEdges = edges;
       }
       return this._relatedEdges;
     },
