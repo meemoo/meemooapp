@@ -28,9 +28,31 @@ $(function(){
     },
     // Output ports send messages
     send: function (message) {
+      // Make internal canvas to pass
+      if (this.get("type")==="image" && Iframework.util.type(message)==="ImageData") {
+        if (!this.canvas) {
+          this.canvas = document.createElement("canvas");
+          this.context = this.canvas.getContext('2d');
+        }
+        if (this.canvas.width !== message.width || this.canvas.height !== message.height) {
+          this.canvas.width = message.width;
+          this.canvas.height = message.height;
+        }
+        this.context.putImageData(message, 0, 0);
+      }
+      var self = this;
       this.Edges.each(function(edge){
         _.defer(function(){
-          edge.Target.recieve(message);
+          if(self.get("type")==="image" && edge.Target.node.view.Native) {
+            // Send canvas ref to native nodes
+            edge.Target.recieve(self.canvas);
+          } else if (self.get("type")==="image" && !edge.Target.node.view.Native && Iframework.util.type(message)==="HTMLCanvasElement") {
+            // Send image data to iframe nodes
+            var d = message.getContext("2d").getImageData(0, 0, message.width, message.height);
+            edge.Target.recieve(d);
+          } else {
+            edge.Target.recieve(message);            
+          }
         });
       });
     },

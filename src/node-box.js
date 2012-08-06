@@ -41,6 +41,8 @@ $(function(){
       for (var name in message) {
         if (!!this.view.Native["input"+name]){
           this.view.Native["input"+name](message[name]);
+        } else {
+          this.view.Native["_"+name] = message[name];
         }
       }
     },
