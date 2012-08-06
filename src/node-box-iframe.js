@@ -6,6 +6,10 @@ $(function(){
       this.view = new Iframework.NodeBoxIframeView({model:this});
       return this.view;
     },
+    info: {
+      title: "iframe-node",
+      description: "extend me"
+    },
     sendFromFrame: function (message) {
       var output = this.Outputs.get(message.output);
       if (!!output) {
@@ -28,6 +32,13 @@ $(function(){
     iframeLoaded: function () {
       this.loaded = true;
       this.graph.checkLoaded();
+    },
+    toString: function() {
+      if (!!this.info) {
+        return "Iframe node "+this.get("id")+": "+this.info.title;
+      } else {
+        return "Iframe node "+this.get("id");
+      }
     }
 
   });

@@ -7,7 +7,7 @@ $(function(){
     className: "nativenode",
     template: _.template(template),
     info: {
-      title: "native-node",
+      title: "native-node-view",
       description: "extend me"
     },
     inputs: {},
@@ -54,6 +54,9 @@ $(function(){
     },
     send: function (name, value) {
       this.model.send(name, value);
+    },
+    toString: function() {
+      return "Native view: "+this.model.get("id")+": "+this.info.title;
     }
 
   });

@@ -1,3 +1,5 @@
+// extends src/nodes/image.js which extends src/node-box-native-view.js
+
 $(function(){
 
   Iframework.NativeNodes["image-combine"] = Iframework.NativeNodes["image"].extend({
@@ -5,6 +7,9 @@ $(function(){
     info: {
       title: "image-combine",
       description: "native module test"
+    },
+    initializeModule: function(){
+      
     },
     inputimage: function (image) {
       // This should happen in port eventually

@@ -1,3 +1,5 @@
+// extends src/node-box-native-view.js
+
 $(function(){
 
   var innerTemplate = 

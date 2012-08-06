@@ -44,10 +44,10 @@ $(function(){
       Iframework.shownGraph.addNode( new Iframework.NodeBoxIframe(options) );
     },
     dragStart: function() {
-      Iframework.maskFrames();
+      Iframework.shownGraph.view.maskFrames();
     },
     dragStop: function() {
-      Iframework.unmaskFrames();
+      Iframework.shownGraph.view.unmaskFrames();
     }
 
   });

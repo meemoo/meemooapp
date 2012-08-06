@@ -12,7 +12,9 @@ $(function(){
     template: _.template(template),
     events: {
       "click": "click",
-      "drop":  "drop"
+      "drop":  "drop",
+      "selectablestart": "selectableStart",
+      "selectablestop":  "selectableStop"
     },
     initialize: function () {
       this.render();
@@ -26,9 +28,13 @@ $(function(){
       this.model.get("nodes").each(this.addNode);
 
       // Drag helper from module library
-      this.$el.droppable({ 
-        accept: ".addnode" 
-      });
+      this.$el
+        .droppable({ 
+          accept: ".addnode" 
+        })
+        .selectable({
+          filter: ".module"
+        });
 
       this.resizeEdgeSVG();
 
@@ -114,6 +120,40 @@ $(function(){
         "width": width,
         "height": height
       });
+    },
+    selectableStart: function () {
+      // Add a mask so that iframes don't steal mouse
+      this.maskFrames();
+
+    },
+    _selected: [],
+    selectableStop: function () {
+      // Remove iframe masks
+      this.unmaskFrames();
+
+      this._selected = [];
+      var uiselected = $(".module.ui-selected");
+      for (var i=0; i<uiselected.length; i++) {
+        this._selected.push({
+          el: uiselected[i],
+          offset: $(uiselected[i]).offset(),
+          view: $(uiselected[i]).data("view")
+        });
+      }
+    },
+    selectAll: function () {
+      $(".module").addClass("ui-selected");
+      this.selectableStop();
+    },
+    maskFrames: function () {
+      this.$(".module").each(function(){
+        $(this).append(
+          $('<div class="iframemask" />')
+        );
+      });
+    },
+    unmaskFrames: function () {
+      this.$(".iframemask").remove();
     }
     
   });

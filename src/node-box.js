@@ -13,6 +13,10 @@ $(function(){
         state: {}
       };
     },
+    info: {
+      title: "native-node",
+      description: "extend me"
+    },
     initialize: function () {
       this.Inputs = new Iframework.Ports();
       this.Outputs = new Iframework.Ports();
@@ -41,6 +45,7 @@ $(function(){
       }
     },
     infoLoaded: function (info) {
+      this.info = info;
       if (this.view) {
         this.view.infoLoaded(info);
       }
@@ -109,6 +114,13 @@ $(function(){
         this.get("state")[name] = info[name];
       }
       this.nodeChanged();
+    },
+    toString: function() {
+      if (!!this.info) {
+        return "Native node "+this.get("id")+": "+this.info.title;
+      } else {
+        return "Native node "+this.get("id");
+      }
     }
 
   });

@@ -127,7 +127,7 @@ $(function(){
     },
     dragstart: function (event, ui) {
       // Add a mask so that iframes don't steal mouse
-      Iframework.maskFrames();
+      this.model.node.graph.view.maskFrames();
       
       // Highlight matching ins or outs
       $("div.ports-"+(this.model.isIn ? "out" : "in")+" span.hole")
@@ -166,7 +166,7 @@ $(function(){
     },
     dragstop: function (event, ui) {
       // Remove iframe masks
-      Iframework.unmaskFrames();
+      this.model.node.graph.view.unmaskFrames();
 
       $(".hole").removeClass("fade highlight");
       

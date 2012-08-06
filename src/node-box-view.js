@@ -32,11 +32,14 @@ $(function(){
       "click .module, .title": "click",
       "click .showcontrols": "showControls",
       "click .hidecontrols": "hideControls",
-      "click .remove":       "removeModel"
+      "click .remove":       "removeModel",
+      "selectableselected .module": "selected",
+      "selectableunselected .module": "unselected"
     },
     initialize: function () {
       this.render();
       this.$(".module")
+        .data({view: this})
         .draggable({ handle: "h1" })
         .resizable({ minHeight: 100, minWidth: 100 });
       this.$(".showcontrols")
@@ -98,9 +101,22 @@ $(function(){
       this._relatedEdges = null;
       this.relatedEdges();
     },
+    _delta: {},
     dragstart: function (event, ui) {
       // Add a mask so that iframes don't steal mouse
-      Iframework.maskFrames();
+      this.model.graph.view.maskFrames();
+
+      // 
+      if (!this.$(".module").hasClass("ui-selected")) {
+        // Deselect others and select this one
+        $("div.module.ui-selected").removeClass("ui-selected");
+        this.$(".module").addClass("ui-selected");
+      }
+
+      // Reset offsets of selected
+      this.model.graph.view.selectableStop();
+
+      this._delta = this.$(".module").offset();
     },
     drag: function (event, ui) {
       _.each(this.relatedEdges(), function(edge){
@@ -108,22 +124,52 @@ $(function(){
           edge.view.redraw();
         }
       });
+
+      if (event) {
+        // Drag is coming from this module
+        // Move other modules
+        var others = this.model.graph.view._selected;
+        var deltaL = this._delta.left - ui.offset.left;
+        var deltaT = this._delta.top - ui.offset.top;
+        for (var i=0; i<others.length; i++) {
+          if (this.$(".module")[0] !== others[i].el) {
+            // Move other selected module
+            $(others[i].el).css({
+              left: (others[i].offset.left - deltaL) + "px",
+              top: (others[i].offset.top - deltaT) + "px"
+            });
+            // Redraw edges
+            others[i].view.drag();
+          }
+        }
+      }
     },
     dragstop: function (event, ui) {
-      // Remove iframe masks
-      Iframework.unmaskFrames();
       // Redraw edges once more
       this.drag();
       // Save position to model
       this.model.set({
-        x: ui.offset.left + 10 + $('.graph').scrollLeft(),
-        y: ui.offset.top + 30 + $('.graph').scrollTop()
+        x: this.$(".module").offset().left + 10 + $('.graph').scrollLeft(),
+        y: this.$(".module").offset().top + 30 + $('.graph').scrollTop()
       });
-      this.model.graph.view.resizeEdgeSVG();
+      if (event) {
+        // Remove iframe masks
+        this.model.graph.view.unmaskFrames();
+        // Set other modules
+        var others = this.model.graph.view._selected;
+        for (var i=0; i<others.length; i++) {
+          if (this.$(".module")[0] !== others[i].el) {
+            // Call this dragstop on the other modules
+            others[i].view.dragstop();
+          }
+        }
+        // Resize edges container
+        this.model.graph.view.resizeEdgeSVG();
+      }
     },
     resizestart: function (event, ui) {
       // Add a mask so that iframes don't steal mouse
-      Iframework.maskFrames();
+      this.model.graph.view.maskFrames();
     },
     resize: function (event, ui) {
       // Rerender related edges
@@ -131,7 +177,7 @@ $(function(){
     },
     resizestop: function (event, ui) {
       // Remove iframe masks
-      Iframework.unmaskFrames();
+      this.model.graph.view.unmaskFrames();
       
       // Set model w/h
       var newW = ui.size.width;
@@ -149,22 +195,41 @@ $(function(){
       this.drag();
     },
     mousedown: function (event, ui) {
-      // Deactivate others
-      $("div.module").removeClass("active");
-      
       // Bring to top
       var topZ = 0;
-      $("div.nodes div.module").each(function(){
+      $("div.module").each(function(){
         var thisZ = Number($(this).css("z-index"));
         if (thisZ > topZ) { 
           topZ = thisZ; 
         }
       });
       this.$(".module")
-        .css("z-index", topZ+1)
-        .addClass("active");
+        .css("z-index", topZ+1);
+
     },
     click: function (event) {
+      // With help from idFlood http://stackoverflow.com/a/8643716/592125
+      if (event && event.hasOwnProperty("metaKey")) {
+        if (event.metaKey === false) {
+          // Command key isn't pressed, deselect others and select this one
+          $("div.module.ui-selected").removeClass("ui-selected");
+          this.$(".module").addClass("ui-selected");
+        } else {
+          // Command key is pressed, toggle selection
+          if (this.$(".module").hasClass("ui-selected")) {
+            this.$(".module").removeClass("ui-selected");
+          }
+          else {
+            this.$(".module").addClass("ui-selected");
+          }
+        }
+      }
+
+      // Rebuild selected on graph view
+      if (this.model.graph.view) {
+        this.model.graph.view.selectableStop();
+      }
+
       // Don't fire click on graph
       event.stopPropagation();
     },
@@ -190,6 +255,12 @@ $(function(){
     },
     refresh: function () {
       //
+    },
+    selected: function(){
+      console.log("sel", this.model);
+    },
+    unselected: function(){
+      console.log("unsel", this.model);
     }
 
   });

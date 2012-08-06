@@ -101,7 +101,8 @@ div.module {
   left: 0;
   z-index:2;
 }
-  div.module.active {
+  div.module.ui-selected,
+  div.module.ui-selecting {
     border: 1px #333 solid;
     background-color: #FFF;
   }
@@ -123,7 +124,7 @@ div.module {
     padding: 5px 0;
     cursor: move;
   }
-    div.module.active h1.title {
+    div.module.ui-selected h1.title {
       color: #333;
     }
   div.module button.showcontrols,
@@ -180,7 +181,7 @@ div.module {
       width: 99px;
       margin-top: -1px;
     }
-    div.module.active div.portshown {
+    div.module.ui-selected div.portshown {
       border-color: #666;
     }
   div.module div.ports-in {

@@ -193,16 +193,6 @@ $(function(){
         }
       }
     },
-    maskFrames: function () {
-      $(".module").each(function(){
-        $(this).append(
-          $('<div class="iframemask" />')
-        );
-      });
-    },
-    unmaskFrames: function () {
-      $(".iframemask").remove();
-    },
     Library: null,
     loadLibrary: function (library) {
       this.Library = new Iframework.Modules();
