@@ -222,7 +222,7 @@ $(function(){
     },
     unplugstart: function (event, ui) {
       // Add a mask so that iframes don't steal mouse
-      Iframework.maskFrames();
+      this.model.node.graph.view.maskFrames();
 
       // Find top connected wire
       var lastConnected = this.topConnectedEdge();
