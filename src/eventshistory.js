@@ -16,7 +16,7 @@ $(function(){
   });
   
   // binding undo to ctrl+z
-  $("body").bind("keydown", "ctrl+z", function () {
+  Mousetrap.bind(['command+z', 'ctrl+z'], function(e) {
     // actual graph shown by iframework
     var graph = window.Iframework.shownGraph;
     // get the last event (stack top)

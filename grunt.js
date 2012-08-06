@@ -17,10 +17,10 @@ module.exports = function(grunt) {
         src: [
           '<banner:meta.banner>', 
           // Libs
-          'libs/jquery.hotkeys.js',
           'libs/underscore.js',
           'libs/backbone.js',
           'libs/backbone.localStorage.js',
+          'libs/mousetrap.js',
           // Iframework
           'src/iframework.js',
           'src/iframework-utils.js',
@@ -80,7 +80,8 @@ module.exports = function(grunt) {
         "Backbone": true,
         "yepnope": true,
         "Iframework": true,
-        "_gaq": true
+        "_gaq": true,
+        "Mousetrap": true
       }
     },
     uglify: {}
