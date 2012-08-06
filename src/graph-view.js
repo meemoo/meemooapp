@@ -47,12 +47,14 @@ $(function(){
     },
     renderAnimationFrame: function (timestamp) {
       var self = Iframework.shownGraph.view;
-      window.requestAnimationFrame(self.renderAnimationFrame);
-      self.model.get("nodes").each(function(node){
-        if (node.view.Native) {
-          node.view.Native.renderAnimationFrame();
-        }
-      });
+      if (!!self) {
+        window.requestAnimationFrame(self.renderAnimationFrame);
+        self.model.get("nodes").each(function(node){
+          if (node.view.Native) {
+            node.view.Native.renderAnimationFrame();
+          }
+        });
+      }
     },
     click: function (event) {
       // Hide dis/connection boxes
@@ -127,9 +129,11 @@ $(function(){
 
     },
     _selected: [],
-    selectableStop: function () {
-      // Remove iframe masks
-      this.unmaskFrames();
+    selectableStop: function (event) {
+      if (event) {
+        // Remove iframe masks
+        this.unmaskFrames();
+      }
 
       this._selected = [];
       var uiselected = $(".module.ui-selected");
@@ -146,14 +150,10 @@ $(function(){
       this.selectableStop();
     },
     maskFrames: function () {
-      this.$(".module").each(function(){
-        $(this).append(
-          $('<div class="iframemask" />')
-        );
-      });
+      $(".module").append( '<div class="iframemask" />' );
     },
     unmaskFrames: function () {
-      this.$(".iframemask").remove();
+      $(".iframemask").remove();
     }
     
   });

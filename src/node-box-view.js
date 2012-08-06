@@ -106,7 +106,7 @@ $(function(){
       // Add a mask so that iframes don't steal mouse
       this.model.graph.view.maskFrames();
 
-      // 
+      // Start dragging a deselected module
       if (!this.$(".module").hasClass("ui-selected")) {
         // Deselect others and select this one
         $("div.module.ui-selected").removeClass("ui-selected");
@@ -129,8 +129,8 @@ $(function(){
         // Drag is coming from this module
         // Move other modules
         var others = this.model.graph.view._selected;
-        var deltaL = this._delta.left - ui.offset.left;
-        var deltaT = this._delta.top - ui.offset.top;
+        var deltaL = this._delta.left - ui.offset.left - $('.graph').scrollLeft();
+        var deltaT = this._delta.top - ui.offset.top - $('.graph').scrollTop();
         for (var i=0; i<others.length; i++) {
           if (this.$(".module")[0] !== others[i].el) {
             // Move other selected module

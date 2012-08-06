@@ -101,15 +101,18 @@ div.module {
   left: 0;
   z-index:2;
 }
-  div.module.ui-selected,
-  div.module.ui-selecting {
+  div.module.ui-selected {
     border: 1px #333 solid;
     background-color: #FFF;
+  }
+  div.module.ui-selecting {
+    border: 1px #333 solid;
+    background-color: #FFFFE9;
   }
   div.module h1.title {
     font-family: 'Nova Flat', Monaco, monospace;
     font-weight: 400;
-    color: #666;
+    color: #808080;
     font-size: 14px;
     
     position: absolute;
@@ -124,7 +127,8 @@ div.module {
     padding: 5px 0;
     cursor: move;
   }
-    div.module.ui-selected h1.title {
+    div.module.ui-selected h1.title,
+    div.module.ui-selecting h1.title {
       color: #333;
     }
   div.module button.showcontrols,
