@@ -15,8 +15,19 @@ $(function(){
       this._background = image;
       this.process();
     },
+    inputfill: function (color) {
+      this._fill = color;
+      this.context.fillStyle = this._fill;
+      this.process();
+    },
     inputstroke: function (color) {
       this._stroke = color;
+      this.context.strokeStyle = this._stroke;
+      this.process();
+    },
+    inputstrokewidth: function (w) {
+      this._strokewidth = w;
+      this.context.lineWidth = this._strokewidth;
       this.process();
     },
     process: function(){
@@ -33,7 +44,7 @@ $(function(){
         this.context.fillRect(this._x, this._y, this._w, this._h);  
       }
       // Stroke
-      if (this._stroke && this._stroke!=="" && this._strokeWidth && this._strokeWidth>0) {
+      if (this._stroke && this._stroke!=="" && this._strokewidth && this._strokewidth>0) {
         this.context.strokeRect(this._x, this._y, this._w, this._h);  
       }
       this.inputsend();
