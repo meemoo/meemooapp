@@ -29,11 +29,11 @@ $(function(){
         this.context.drawImage(this._background, 0, 0);
       }
       // Rectangle
-      if (this._color && this._color !=="") {
+      if (this._fill && this._fill!=="") {
         this.context.fillRect(this._x, this._y, this._w, this._h);  
       }
       // Stroke
-      if (this._stroke && this._stroke !=="" && this._strokeWidth && this._strokeWidth>0) {
+      if (this._stroke && this._stroke!=="" && this._strokeWidth && this._strokeWidth>0) {
         this.context.strokeRect(this._x, this._y, this._w, this._h);  
       }
       this.inputsend();
@@ -69,7 +69,7 @@ $(function(){
         description: "rectangle height",
         "default": 350
       },
-      color: {
+      fill: {
         type: "string",
         description: "fill color",
         "default": "red"
