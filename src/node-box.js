@@ -56,8 +56,10 @@ $(function(){
       var state = this.get("state");
       if (state){
         for (var name in state) {
-          if (!!this.view.Native["input"+name]){
+          if (this.view.Native["input"+name]){
             this.view.Native["input"+name](state[name]);
+          } else {
+            this.view.Native["_"+name] = state[name];
           }
         }
       }

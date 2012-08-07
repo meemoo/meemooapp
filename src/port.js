@@ -43,7 +43,7 @@ $(function(){
       var self = this;
       this.Edges.each(function(edge){
         _.defer(function(){
-          if(self.get("type")==="image" && edge.Target.node.view.Native) {
+          if(self.canvas && edge.Target.node.view.Native) {
             // Send canvas ref to native nodes
             edge.Target.recieve(self.canvas);
           } else if (self.get("type")==="image" && !edge.Target.node.view.Native && Iframework.util.type(message)==="HTMLCanvasElement") {

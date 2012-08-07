@@ -17,20 +17,19 @@ $(function(){
     inputimage: function (image) {
       this._image = image;
       this.process();
-      // // This should happen in port eventually
-      // switch(Iframework.util.type(image)) {
-      //   case "ImageData" :
-      //     this.context.putImageData(image, 0, 0);
-      //     break;
-      //   case "HTMLCanvasElement" :
-      //     this.context.drawImage(image, 0, 0);
-      //     break;
-      //   default :
-      //     break;
-      // }
-      // this.send("image", this.canvas);
+    },
+    inputrotate: function (percent) {
+      this._rotate = Math.PI * 2 * percent;
     },
     process: function(){
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      if (this._background) {
+        if (this.canvas.width !== this._background.width || this.canvas.height !== this._background.height) {
+          this.canvas.width = this._background.width;
+          this.canvas.height = this._background.height;
+        }
+        this.context.drawImage(this._background, 0, 0);
+      }
       if (this._image) {
         var width = this._image.width * this._scale;
         var height = this._image.height * this._scale;
@@ -46,14 +45,13 @@ $(function(){
         this.context.translate(-x, -y);
       }
 
-      this.send("image", this.canvas);
+      this.inputsend();
     },
     renderAnimationFrame: function () {
       // this.process();
     },
-    inputbang: function (i) {
-      this.$(".info").append("! ");
-      this.send("bang", "!");
+    inputsend: function () {
+      this.send("image", this.canvas);
     },
     inputs: {
       background: {
