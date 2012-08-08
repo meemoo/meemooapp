@@ -28,10 +28,24 @@ $(function(){
             Iframework.shownGraph.testLoaded();
           });
         };
+        var imageTypes = ["png", "gif", "jpg", "jpeg", "webp"];
         for (var i=0; i<nodes.length; i++) {
           var node;
+          // Test if image
+          var fileTypeSplit = nodes[i]["src"].split(".");
+          var fileType = fileTypeSplit[fileTypeSplit.length-1];
+          if (imageTypes.indexOf(fileType) > -1) {
+            // Probably an image
+            var src = nodes[i].src;
+            nodes[i].src = "meemoo:file/image";
+            if (!nodes[i].state){
+              nodes[i].state = {};
+            }
+            nodes[i].state.url = src;
+          }
+          // Test if native
           var srcSplit = nodes[i]["src"].split(":");
-          if (nodes[i].hasOwnProperty("src") && srcSplit[0] === "meemoo") {
+          if (srcSplit[0] === "meemoo") {
             // Native type node
             var id = srcSplit[srcSplit.length-1];
             var path = id.split("/");
@@ -56,7 +70,7 @@ $(function(){
               // this.loadingNodes.push(id);
             }
 
-            // Placeholder node
+            // Native node
             node = new Iframework.NodeBox(nodes[i]);
             node.lazyLoadType = id;
           } else {

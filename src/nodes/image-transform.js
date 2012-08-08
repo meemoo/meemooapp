@@ -19,7 +19,7 @@ $(function(){
       this.process();
     },
     inputrotate: function (percent) {
-      this._rotate = Math.PI * 2 * percent;
+      this._rotate = percent * 2 * Math.PI;
     },
     process: function(){
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);

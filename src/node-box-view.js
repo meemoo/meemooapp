@@ -218,8 +218,7 @@ $(function(){
           // Command key is pressed, toggle selection
           if (this.$(".module").hasClass("ui-selected")) {
             this.$(".module").removeClass("ui-selected");
-          }
-          else {
+          } else {
             this.$(".module").addClass("ui-selected");
           }
         }
