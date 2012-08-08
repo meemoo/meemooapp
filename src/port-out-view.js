@@ -263,34 +263,6 @@ $(function(){
       // Show connected edges editor
       var isIn = this.model.isIn;
       var portName = this.model.get("name");
-  
-      if ( Iframework.selectedPort && (isIn !== Iframework.selectedPort.isIn) ) {
-        // Connect
-        var edge;
-        if (isIn) {
-          edge = new Iframework.Edge({
-            source: [Iframework.selectedPort.node.get("id"), Iframework.selectedPort.get("name")],
-            target: [this.model.node.get("id"), this.model.get("name")]
-          });
-        } else {
-          edge = new Iframework.Edge({
-            source: [this.model.node.get("id"), this.model.get("name")],
-            target: [Iframework.selectedPort.node.get("id"), Iframework.selectedPort.get("name")]
-          });
-        }
-        edge.graph = Iframework.shownGraph;
-        if (edge.graph.addEdge(edge)){
-          edge.connect();
-        }
-        // Tap-connect edge preview
-        if ( Iframework.edgePreview ) {
-          Iframework.shownGraph.view.$(".edges").children(".preview").remove();
-          Iframework.edgePreview = undefined;
-        }
-        // Don't show popup
-        Iframework.selectedPort = null;
-        return;
-      } 
       
       // var popupEl = $('<div class="edge-edit" />');
       var popupEl = this.popupTemplate(this.model.toJSON());
@@ -311,67 +283,7 @@ $(function(){
         });
 
       var typeabbr = this.model.get("type").substring(0,3);
-      if (isIn) {
-        var showForm = false;
-        var inputForm = $('<form />')
-          .attr({
-            "id": this.model.node.id + "_" + this.model.get("name"),
-            "class": "manualinput"
-          });
-        if (typeabbr === "int" || typeabbr === "num" || typeabbr === "flo" ) {
-          showForm = true;
-          inputForm.append(
-            $("<input />").attr({
-              "type": "number",
-              "min": hole.data("min"),
-              "max": hole.data("max"),
-              "step": "any",
-              "value": this.model.node.get("state")[this.model.get("name")]
-            })
-          );
-        } else if (typeabbr === "col" || typeabbr === "str") {
-          showForm = true;
-          inputForm.append(
-            $("<input />").attr({
-              "type": "text",
-              "maxlength": hole.data("max"),
-              "value": this.model.node.get("state")[this.model.get("name")]
-            })
-          );
-        } else if (typeabbr === "boo") {
-          showForm = true;
-          var val = this.model.node.get("state")[this.model.get("name")];
-          val = (Boolean(val) && val !== "false");
-          inputForm.append(
-            $("<input />")
-              .attr({
-                "type": "checkbox",
-                "checked": val
-              })
-          );
-        } else if (typeabbr === "ban") {
-          inputForm.append("<label>Send bang:</label> ");
-          showForm = true;
-        }
-        if (showForm) {
-          inputForm.append(
-            $("<button></button>")
-              .html("send")
-              .attr({
-                "type": "submit",
-                "class": "send",
-                "title": "send value to module"
-              })
-              .button({
-                icons: {
-                  primary: "icon-ok"
-                },
-                text: false
-              })
-          );
-          popupEl.append(inputForm);
-        }
-      }
+      
       $("#select_"+this.model.id)
         .button({
           icons: {
