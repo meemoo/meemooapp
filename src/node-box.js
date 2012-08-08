@@ -18,8 +18,8 @@ $(function(){
       description: "extend me"
     },
     initialize: function () {
-      this.Inputs = new Iframework.Ports();
-      this.Outputs = new Iframework.Ports();
+      this.Inputs = new Iframework.PortsIn();
+      this.Outputs = new Iframework.PortsOut();
 
       // Change event
       this.on("change", this.nodeChanged);
@@ -68,12 +68,12 @@ $(function(){
       // Set id to name
       info.id = info.name;
       // Name must be unique
-      var replace = this.Inputs.findByName(info.name);
+      var replace = this.Inputs.get(info.name);
       if (replace) {
         replace.set(info);
         return;
       }
-      var newPort = new Iframework.Port(info);
+      var newPort = new Iframework.PortIn(info);
       newPort.isIn = true;
       newPort.node = this;
       newPort.graph = this.graph;
@@ -91,12 +91,25 @@ $(function(){
       // Set id to name
       info.id = info.name;
       // Name must be unique
-      var replace = this.Outputs.findByName(info.name);
+      var replace = this.Outputs.get(info.name);
       if (replace) {
         replace.set(info);
         return;
       }
-      var newPort = new Iframework.Port(info);
+      var newPort;
+      if (info.type === "image") {
+        newPort = new Iframework.PortOutImage(info);
+      } else {
+        newPort = new Iframework.PortOut(info);
+      }
+      // switch (info.type) {
+      //   case "image" :
+      //     newPort = new Iframework.PortOutImage(info);
+      //     break;
+      //   default :
+      //     newPort = new Iframework.PortOut(info);
+      //     break;
+      // }
       newPort.isIn = false;
       newPort.node = this;
       newPort.graph = this.graph;

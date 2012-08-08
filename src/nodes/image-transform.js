@@ -5,7 +5,7 @@ $(function(){
   Iframework.NativeNodes["image-transform"] = Iframework.NativeNodes["image"].extend({
 
     info: {
-      title: "image-transform",
+      title: "transform",
       description: "scale, translate, and/or rotate image"
     },
     initializeModule: function(){

@@ -5,7 +5,7 @@ $(function(){
   Iframework.NativeNodes["image-rectangle"] = Iframework.NativeNodes["image"].extend({
 
     info: {
-      title: "image-rectangle",
+      title: "rectangle",
       description: "draw a rectangle"
     },
     initializeModule: function(){

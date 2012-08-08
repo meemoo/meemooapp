@@ -1,18 +1,4 @@
 $(function(){
-
-  var portInTemplate = 
-    '<div class="portshown portshown-in">'+
-      '<span class="hole hole-in hole-<%= type_class %> icon-login"></span>'+
-      '<span class="label"><%= name %></span>'+
-    '</div>'+
-    '<span class="plugend plugend-in plugend-<%= type_class %>"></span>';
-    
-  var portOutTemplate = 
-    '<div class="portshown portshown-out">'+
-      '<span class="label"><%= name %></span>'+
-      '<span class="hole hole-out hole-<%= type_class %> icon-logout"></span>'+
-    '</div>'+
-    '<span class="plugend plugend-out plugend-<%= type_class %>"></span>';
     
   var popupTemplate =
     '<div class="edge-edit">'+
@@ -30,8 +16,6 @@ $(function(){
   Iframework.PortView = Backbone.View.extend({
     tagName: "div",
     className: "port",
-    portInTemplate: _.template(portInTemplate),
-    portOutTemplate: _.template(portOutTemplate),
     popupTemplate: _.template(popupTemplate),
     edgeEditTemplate: _.template(edgeEditTemplate),
     events: {
@@ -50,80 +34,6 @@ $(function(){
     initialize: function () {
       this.render();
       return this;
-    },
-    render: function () {
-      if (this.model.isIn) {
-        this.$el.html( this.portInTemplate(this.model.toJSON()) );
-        this.$el.addClass("port-in");
-        this.$(".hole")
-          .draggable({
-            helper: function (e) {
-              return $('<span class="holehelper holehelper-out" />');
-            }
-          });
-        this.$(".plugend")
-          .draggable({
-            helper: function (e) {
-              return $('<span class="plugendhelper plugendhelper-in" />');
-            }
-          });
-      } else {
-        this.$el.html( this.portOutTemplate(this.model.toJSON()) );
-        this.$el.addClass("port-out");
-        this.$(".hole")
-          .draggable({
-            helper: function (e) {
-              return $('<span class="holehelper holehelper-in" />');
-            }
-          });
-        this.$(".plugend")
-          .draggable({
-            helper: function (e) {
-              return $('<span class="plugendhelper plugendhelper-out" />');
-            }
-          });
-      }
-
-      // Drag from hole
-      this.$(".hole")
-        .data({
-          model: this.model
-        });
-        
-      // The whole port is droppable
-      var accept = "";
-      if (this.model.get("type") === "all"){
-        if (this.model.isIn) {
-          accept = ".hole-out, .plugend-in";
-        } else {
-          accept = ".hole-in, .plugend-out";
-        }
-      } else {
-        var type_class = this.model.get("type_class");
-        if (this.model.isIn) {
-          accept = ".hole-out.hole-all, .hole-out.hole-"+type_class+", .plugend-in.plugend-all, .plugend-in.plugend-"+type_class;
-        } else {
-          accept = ".hole-in.hole-all, .hole-in.hole-"+type_class+", .plugend-out.plugend-all, .plugend-out.plugend-"+type_class;
-        }
-      }
-      if (this.model.isIn && this.model.get("type") === "string"){
-        // HACK to allow int and float -> string
-        accept += ", .hole-out.hole-int, .hole-out.hole-float, .plugend-in.plugend-int, .plugend-in.plugend-float";
-      }
-      if (!this.model.isIn && (this.model.get("type") === "int" || this.model.get("type") === "float")){
-        // HACK to allow int and float -> string
-        accept += ", .hole-in.hole-string, .plugend-out.plugend-string";
-      }
-      this.$el.droppable({
-        "hoverClass": "drophover",
-        "accept": accept
-      });
-
-      this.$(".plugend").hide();
-
-      // Disable selection for better drag+drop
-      this.$(".portshown").disableSelection();
-      
     },
     dragstart: function (event, ui) {
       // Add a mask so that iframes don't steal mouse
