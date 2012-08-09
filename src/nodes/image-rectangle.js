@@ -13,24 +13,21 @@ $(function(){
     },
     inputbackground: function (image) {
       this._background = image;
-      this.process();
     },
     inputfill: function (color) {
       this._fill = color;
       this.context.fillStyle = this._fill;
-      this.process();
     },
     inputstroke: function (color) {
       this._stroke = color;
       this.context.strokeStyle = this._stroke;
-      this.process();
     },
     inputstrokewidth: function (w) {
       this._strokewidth = w;
       this.context.lineWidth = this._strokewidth;
-      this.process();
     },
     process: function(){
+      // Called from NodeBoxNativeView.renderAnimationFrame()
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
       if (this._background) {
         if (this.canvas.width !== this._background.width || this.canvas.height !== this._background.height) {
@@ -48,9 +45,6 @@ $(function(){
         this.context.strokeRect(this._x, this._y, this._w, this._h);  
       }
       this.inputsend();
-    },
-    renderAnimationFrame: function () {
-      // this.process();
     },
     inputsend: function () {
       this.send("image", this.canvas);

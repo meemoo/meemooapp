@@ -11,22 +11,22 @@ $(function(){
     initializeModule: function(){
       
     },
+    _backgroundChanged: false,
     inputbackground: function (image) {
       this._background = image;
-    },
-    inputimage: function (image) {
-      this._image = image;
-      this.process();
+      this._backgroundChanged = true;
     },
     inputrotate: function (percent) {
       this._rotate = percent * 2 * Math.PI;
     },
     process: function(){
+      // Called from NodeBoxNativeView.renderAnimationFrame()
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
       if (this._background) {
-        if (this.canvas.width !== this._background.width || this.canvas.height !== this._background.height) {
+        if (this._backgroundChanged && (this.canvas.width !== this._background.width || this.canvas.height !== this._background.height)) {
           this.canvas.width = this._background.width;
           this.canvas.height = this._background.height;
+          this._backgroundChanged = false;
         }
         this.context.drawImage(this._background, 0, 0);
       }
@@ -47,9 +47,9 @@ $(function(){
 
       this.inputsend();
     },
-    renderAnimationFrame: function () {
-      // this.process();
-    },
+    // renderAnimationFrame: function () {
+    //   // this.process();
+    // },
     inputsend: function () {
       this.send("image", this.canvas);
     },

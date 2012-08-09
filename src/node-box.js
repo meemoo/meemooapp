@@ -45,6 +45,8 @@ $(function(){
           this.view.Native["_"+name] = message[name];
         }
       }
+      // Will trigger a NodeBoxNativeView.process() on next renderAnimationFrame
+      this.view.Native._valueChanged = true;
     },
     infoLoaded: function (info) {
       this.info = info;

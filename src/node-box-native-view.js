@@ -49,8 +49,17 @@ $(function(){
       this.$el.html(this.template(this.model));
       return this;
     },
+    process: function () {
+      // Do everything that will cause a redraw here
+    },
+    _valueChanged: false,
     renderAnimationFrame: function () {
       // Get a tick from GraphView.renderAnimationFrame()
+      // this._valueChanged is set by NodeBox.recieve()
+      if (this._valueChanged) {
+        this._valueChanged = false;
+        this.process();
+      }
     },
     send: function (name, value) {
       this.model.send(name, value);
