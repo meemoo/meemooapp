@@ -14,7 +14,7 @@ $(function(){
     send: function (message) {
       this.Edges.each(function(edge){
         _.defer(function(){
-          edge.Target.recieve(message);            
+          edge.Target.receive(message);            
         });
       });
     }

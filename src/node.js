@@ -4,7 +4,7 @@ $(function(){
     send: function (message) {
       // Send message out to connected nodes
     },
-    recieve: function (message) {
+    receive: function (message) {
       // Get message from another node
     },
     //iframe only

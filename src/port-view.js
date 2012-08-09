@@ -367,7 +367,7 @@ $(function(){
       }
       var message = {};
       message[inputname] = val;
-      this.model.node.recieve(message);
+      this.model.node.receive(message);
       this.model.node.get("state")[inputname] = val;
       this.model.node.trigger("change");
       // $('div.edge-edit').remove();

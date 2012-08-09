@@ -11,11 +11,11 @@ $(function(){
       return this.view = new Iframework.PortInView({model:this});
     },
     // Input ports get message
-    recieve: function (message) {
+    receive: function (message) {
       // TODO type conversions
       var m = {};
       m[this.id] = message;
-      this.node.recieve(m); 
+      this.node.receive(m); 
     }
   });
   

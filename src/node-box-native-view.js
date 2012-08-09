@@ -55,7 +55,7 @@ $(function(){
     _valueChanged: false,
     renderAnimationFrame: function () {
       // Get a tick from GraphView.renderAnimationFrame()
-      // this._valueChanged is set by NodeBox.recieve()
+      // this._valueChanged is set by NodeBox.receive()
       if (this._valueChanged) {
         this._valueChanged = false;
         this.process();

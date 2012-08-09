@@ -16,7 +16,7 @@ $(function(){
         output.send(message.value);
       }
     },
-    recieve: function (message) {
+    receive: function (message) {
       if (window.frames[this.frameIndex]) {
         window.frames[this.frameIndex].postMessage(message, "*");
       } else {
@@ -26,7 +26,7 @@ $(function(){
     setState: function () {
       var state = this.get("state");
       if (state) {
-        this.recieve({setState: state});
+        this.receive({setState: state});
       }
     },
     iframeLoaded: function () {

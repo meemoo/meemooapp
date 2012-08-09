@@ -29,16 +29,16 @@ $(function(){
             if (!updatedCanvas) {
               updatedCanvas = self.drawToCanvas(message);
             }
-            edge.Target.recieve(updatedCanvas);
+            edge.Target.receive(updatedCanvas);
           } else if (!edge.Target.node.view.Native && messageType==="HTMLCanvasElement") {
             // Send image data to iframe nodes
             if (!imagedata) {
               imagedata = message.getContext("2d").getImageData(0, 0, message.width, message.height);
             }
-            edge.Target.recieve(imagedata);
+            edge.Target.receive(imagedata);
           } else {
             // Don't convert for native->native or iframe->iframe
-            edge.Target.recieve(message);            
+            edge.Target.receive(message);            
           }
         });
       });

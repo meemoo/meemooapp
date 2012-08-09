@@ -37,7 +37,7 @@ $(function(){
         output.send(value);
       }
     },
-    recieve: function (message) {
+    receive: function (message) {
       for (var name in message) {
         if (!!this.view.Native["input"+name]){
           this.view.Native["input"+name](message[name]);

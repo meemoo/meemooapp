@@ -35,7 +35,7 @@ $(function(){
       }
       this.Source.connect(this);
       this.Target.connect(this);
-      this.Source.node.recieve({
+      this.Source.node.receive({
         connect: { 
           source: [this.Source.node.id, this.Source.id],
           target: [this.Target.node.id, this.Target.id]
@@ -51,7 +51,7 @@ $(function(){
       if (this.Source && this.Target) {
         this.Source.disconnect(this);
         this.Target.disconnect(this);
-        this.Source.node.recieve({
+        this.Source.node.receive({
           disconnect: { 
             source: [this.Source.node.id, this.Source.id],
             target: [this.Target.node.id, this.Target.id]

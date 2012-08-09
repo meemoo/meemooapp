@@ -4,8 +4,8 @@ $(function(){
     send: function(message) {
       this.model.send(message);
     },
-    recieve: function(message) {
-      this.model.recieve(message);
+    receive: function(message) {
+      this.model.receive(message);
     }
   });
 
