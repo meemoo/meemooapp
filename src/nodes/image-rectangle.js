@@ -83,7 +83,7 @@ $(function(){
       fill: {
         type: "string",
         description: "fill color",
-        "default": "red"
+        "default": ""
       },
       stroke: {
         type: "string",

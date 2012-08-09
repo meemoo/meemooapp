@@ -346,7 +346,12 @@ $(function(){
       $(".addbyurlinput").blur();
       var url = this.$(".addbyurlinput").val();
       if (url !== "") {
-        this.shownGraph.addNode( new Iframework.NodeBoxIframe({"src": url}) );
+        var graphEl = this.$(".graph");
+        this.shownGraph.addNode({
+          "src": url,
+          "x": graphEl.scrollLeft() + graphEl.width()/2 - 100,
+          "y": graphEl.scrollTop() + graphEl.height()/2 - 100
+        });
         this.$(".addbyurlinput")
           .val("")
           .attr("placeholder", "loading...");
@@ -537,7 +542,6 @@ $(function(){
       return key;
     },
     saveLocal: function () {
-
       if (!this.shownGraph.get("info")){
         this.shownGraph.set({
           info: {}

@@ -41,7 +41,7 @@ $(function(){
     dragAddNode: function(options) {
       // options has x and y from GraphView.drop()
       options.src = this.model.get("src");
-      Iframework.shownGraph.addNode( new Iframework.NodeBoxIframe(options) );
+      Iframework.shownGraph.addNode( options );
     },
     dragStart: function() {
       Iframework.shownGraph.view.maskFrames();

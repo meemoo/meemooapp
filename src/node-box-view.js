@@ -58,14 +58,13 @@ $(function(){
     },
     initializeNative: function () {
       // Called from GraphView.addNode
-      if (!this.Native) {
+      if (!this.Native && Iframework.NativeNodes.hasOwnProperty(this.model.lazyLoadType)) {
         this.Native = new Iframework.NativeNodes[this.model.lazyLoadType]({model:this.model});
         this.$(".inner").append( this.Native.initialize().$el );
+        // Check if all modules are loaded
+        this.model.loaded = true;
+        this.model.graph.checkLoaded();
       }
-
-      // Check if all modules are loaded
-      this.model.loaded = true;
-      this.model.graph.checkLoaded();
     },
     render: function () {
       this.$el.html(this.template(this.model));

@@ -55,6 +55,11 @@ $(function(){
       {"src":"http://forresto.github.com/meemoo-modules/audioarray.html","info":{"title":"audioarray","author":"forresto","description":"hold and address a stack of audio objects"}},
       {"src":"http://forresto.github.com/meemoo-modules/speech2text.html","info":{"title":"speech2text","author":"forresto","description":"speech to text with x-webkit-speech"}},
       {"src":"http://forresto.github.com/meemoo-speak.js/text2speech.html","info":{"title":"text2speech","author":"forresto","description":"text to speech with speak.js"}}
+    ],
+    "native---experimental": [
+      {"src":"meemoo:image/transform","info":{"title":"transform","author":"forresto","description":"scale, translate, and/or rotate image (centered)"}},
+      {"src":"meemoo:image/rectangle","info":{"title":"rectangle","author":"forresto","description":"draw a rectangle"}},
+      {"src":"meemoo:file/image","info":{"title":"image-in","author":"forresto","description":"Public image url to get the canvas pixel data."}}
     ]
   };
   

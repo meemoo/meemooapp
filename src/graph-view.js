@@ -39,7 +39,7 @@ $(function(){
       this.resizeEdgeSVG();
 
       // requestAnimationFrame on all nodes
-      window.requestAnimationFrame(this.renderAnimationFrame);
+      // window.requestAnimationFrame(this.renderAnimationFrame);
     },
     render: function () {
       this.$el.html(this.template(this.model.toJSON()));

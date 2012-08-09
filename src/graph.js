@@ -23,60 +23,8 @@ $(function(){
       if (this.attributes.nodes) {
         var nodes = this.attributes.nodes;
         this.attributes.nodes = new Iframework.Nodes();
-        var loadComplete = function() {
-          _.defer(function(){
-            Iframework.shownGraph.testLoaded();
-          });
-        };
-        var imageTypes = ["png", "gif", "jpg", "jpeg", "webp"];
         for (var i=0; i<nodes.length; i++) {
-          var node;
-          // Test if image
-          var fileTypeSplit = nodes[i]["src"].split(".");
-          var fileType = fileTypeSplit[fileTypeSplit.length-1];
-          if (imageTypes.indexOf(fileType) > -1) {
-            // Probably an image
-            var src = nodes[i].src;
-            nodes[i].src = "meemoo:file/image";
-            if (!nodes[i].state){
-              nodes[i].state = {};
-            }
-            nodes[i].state.url = src;
-          }
-          // Test if native
-          var srcSplit = nodes[i]["src"].split(":");
-          if (srcSplit[0] === "meemoo") {
-            // Native type node
-            var id = srcSplit[srcSplit.length-1];
-            var path = id.split("/");
-            id = path.join("-");
-
-            // Load js if needed
-            // HACK only for loading meemoo:module:group/node
-            // from src/nodes/group-node.js 
-            // to Iframework.NativeNodes[group-node]
-            if (path[0] && path[1]) {
-              yepnope([
-                {
-                  test: Iframework.NativeNodes.hasOwnProperty(path[0]),
-                  nope: "src/nodes/"+path[0]+".js"
-                },
-                {
-                  test: Iframework.NativeNodes.hasOwnProperty(id),
-                  nope: "src/nodes/"+path[0]+"-"+path[1]+".js",
-                  complete: loadComplete
-                }
-              ]);
-              // this.loadingNodes.push(id);
-            }
-
-            // Native node
-            node = new Iframework.NodeBox(nodes[i]);
-            node.lazyLoadType = id;
-          } else {
-            // Iframe type node
-            node = new Iframework.NodeBoxIframe(nodes[i]);
-          }
+          var node = this.makeNode(nodes[i]);
           if (node) {
             this.addNode(node);
           }
@@ -107,23 +55,94 @@ $(function(){
           if (!Iframework.NativeNodes.hasOwnProperty(node.lazyLoadType)) {
             // That nativenode's js hasn't loaded yet
             allLoaded = false;
+          } else {
+            if (node.view && !node.Native) {
+              node.view.initializeNative();
+            }
           }
         }
       }, this);
-      if (!this.view && allLoaded) {
+      if (allLoaded) {
         this.initializeView();
       }
       return allLoaded;
     },
     initializeView: function() {
-      this.view = new Iframework.GraphView({model:this});
+      if (!this.view) {
+        this.view = new Iframework.GraphView({model:this});
+      }
     },
     setInfo: function (key, val) {
       var info = this.get("info");
       info[key] = val;
       this.trigger("change");
     },
+    makeNode: function (info) {
+      if (!info.src){
+        return false;
+      }
+      var node;
+      // Test if image
+      if (Iframework.util.isImageURL(info.src)) {
+        // Probably an image
+        var src = info.src;
+        info.src = "meemoo:file/image";
+        if (!info.state){
+          info.state = {};
+        }
+        info.state.url = src;
+      }
+      // Test if native
+      var srcSplit = info.src.split(":");
+      if (srcSplit.length < 2) {
+        // No protocol
+        return false;
+      }
+      if (srcSplit[0] === "meemoo") {
+        // Native type node
+        var id = srcSplit[srcSplit.length-1];
+        var path = id.split("/");
+        id = path.join("-");
+
+        // Load js if needed
+        // HACK only for loading meemoo:module:group/node
+        //   from src/nodes/group-node.js 
+        //   to Iframework.NativeNodes[group-node]
+        if (path[0] && path[1]) {
+          yepnope([
+            {
+              test: Iframework.NativeNodes.hasOwnProperty(path[0]),
+              nope: "src/nodes/"+path[0]+".js"
+            },
+            {
+              test: Iframework.NativeNodes.hasOwnProperty(path[0]+"-"+path[1]),
+              nope: "src/nodes/"+path[0]+"-"+path[1]+".js",
+              complete: function() {
+                _.defer(function(){
+                  Iframework.shownGraph.testLoaded();
+                });
+              }
+            }
+          ]);
+        }
+        // Native node
+        node = new Iframework.NodeBox(info);
+        node.lazyLoadType = id;
+      } else {
+        // Iframe type node
+        node = new Iframework.NodeBoxIframe(info);
+      }
+      return node;
+    },
     addNode: function (node) {
+      if (!node.cid) {
+        // input is not a Iframework.Node model
+        node = this.makeNode(node);
+        if (!node) {
+          return false;
+        }
+      }
+
       node.graph = this;
 
       var count = this.get("nodes").length;

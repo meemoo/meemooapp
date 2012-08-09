@@ -17,6 +17,15 @@ $(function(){
     },
     type: function(o) {
       return this.types[typeof o] || this.types[Object.prototype.toString.call(o)] || (o ? 'object' : 'null');
+    },
+    imageTypes: ["png", "gif", "jpg", "jpeg", "webp"],
+    isImageURL: function(url) {
+      var fileTypeSplit = url.split(".");
+      if (fileTypeSplit.length > 1) {
+        var fileType = fileTypeSplit[fileTypeSplit.length-1];
+        return (this.imageTypes.indexOf(fileType) > -1);
+      }
+      return false;
     }
     
   };
