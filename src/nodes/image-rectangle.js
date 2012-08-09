@@ -11,8 +11,10 @@ $(function(){
     initializeModule: function(){
       
     },
+    _backgroundChanged: false,
     inputbackground: function (image) {
       this._background = image;
+      this._backgroundChanged = true;
     },
     inputfill: function (color) {
       this._fill = color;
@@ -30,9 +32,10 @@ $(function(){
       // Called from NodeBoxNativeView.renderAnimationFrame()
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
       if (this._background) {
-        if (this.canvas.width !== this._background.width || this.canvas.height !== this._background.height) {
+        if (this._backgroundChanged && (this.canvas.width !== this._background.width || this.canvas.height !== this._background.height)) {
           this.canvas.width = this._background.width;
           this.canvas.height = this._background.height;
+          this._backgroundChanged = false;
         }
         this.context.drawImage(this._background, 0, 0);
       }
