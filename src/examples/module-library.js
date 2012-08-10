@@ -59,7 +59,9 @@ $(function(){
     "native---experimental": [
       {"src":"meemoo:image/transform","info":{"title":"transform","author":"forresto","description":"scale, translate, and/or rotate image (centered)"}},
       {"src":"meemoo:image/rectangle","info":{"title":"rectangle","author":"forresto","description":"draw a rectangle"}},
-      {"src":"meemoo:file/image","info":{"title":"image-in","author":"forresto","description":"Public image url to get the canvas pixel data."}}
+      {"src":"meemoo:file/image","info":{"title":"image-in","author":"forresto","description":"Public image url to get the canvas pixel data."}},
+      {"src":"meemoo:time/tween","info":{"title":"tween","author":"sole","description":"Interpolate between two values."}},
+      {"src":"meemoo:util/stats","info":{"title":"stats.js","author":"mr.doob","description":"Memory and fps stats graphs."}}
     ]
   };
   
