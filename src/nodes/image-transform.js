@@ -13,13 +13,13 @@ $(function(){
     },
     _backgroundChanged: false,
     inputbackground: function (image) {
-      this._triggerRedraw = true;
       this._background = image;
       this._backgroundChanged = true;
+      this._triggerRedraw = true;
     },
     inputrotate: function (percent) {
-      this._triggerRedraw = true;
       this._rotate = percent * 2 * Math.PI;
+      this._triggerRedraw = true;
     },
     redraw: function(){
       // Called from NodeBoxNativeView.renderAnimationFrame()
@@ -81,10 +81,10 @@ $(function(){
         description: "rotate percentage",
         "default": 0
       },
-      clear: {
-        type: "bang",
-        description: "clear the canvas"
-      },
+      // clear: {
+      //   type: "bang",
+      //   description: "clear the canvas"
+      // },
       send: {
         type: "bang",
         description: "send the image"

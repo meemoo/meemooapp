@@ -96,10 +96,10 @@ $(function(){
         description: "stroke width",
         "default": 1
       },
-      clear: {
-        type: "bang",
-        description: "clear the canvas"
-      },
+      // clear: {
+      //   type: "bang",
+      //   description: "clear the canvas"
+      // },
       send: {
         type: "bang",
         description: "send the combined canvas"

@@ -46,6 +46,8 @@ $(function(){
       return this;
     },
     renderAnimationFrame: function (timestamp) {
+      // Safari doesn't pass timestamp
+      timestamp = timestamp !== undefined ? timestamp : Date.now();
       var self = Iframework.shownGraph.view;
       if (!!self) {
         window.requestAnimationFrame(self.renderAnimationFrame);
