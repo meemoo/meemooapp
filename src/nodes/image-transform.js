@@ -13,13 +13,15 @@ $(function(){
     },
     _backgroundChanged: false,
     inputbackground: function (image) {
+      this._triggerRedraw = true;
       this._background = image;
       this._backgroundChanged = true;
     },
     inputrotate: function (percent) {
+      this._triggerRedraw = true;
       this._rotate = percent * 2 * Math.PI;
     },
-    process: function(){
+    redraw: function(){
       // Called from NodeBoxNativeView.renderAnimationFrame()
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
       if (this._background) {
@@ -47,9 +49,6 @@ $(function(){
 
       this.inputsend();
     },
-    // renderAnimationFrame: function () {
-    //   // this.process();
-    // },
     inputsend: function () {
       this.send("image", this.canvas);
     },

@@ -6,8 +6,9 @@ $(function(){
 
   var template = 
     // '<canvas id="canvas-<%= id %>" class="canvas" width="500" height="500" style="max-width:100%;" />'+
-    '<div class="function"></div>'+
+    '<div><span class="function"></span> <span class="loop"></span></div>'+
     '<div class="info">from:<span class="tween-in"></span>, to:<span class="tween-out"></span>, duration:<span class="tween-duration"></span></div>'+
+    '<div class="progressbar"></div>'+
     '<div class="tween-value"></div>';
 
   Iframework.NativeNodes["time-tween"] = Iframework.NativeNodes["time"].extend({
@@ -20,7 +21,7 @@ $(function(){
     initializeModule: function(){
       var self = this;
       if (window.TWEEN) {
-        this.inputstart();
+        // this.setupTween();
       } else {
         yepnope({
           load: "libs/Tween.js",
@@ -29,6 +30,7 @@ $(function(){
           }
         });
       }
+      // this.progressbar(".progressbar");
     },
     _tween: null,
     _tweenVals: {},
@@ -38,7 +40,7 @@ $(function(){
       }
       if (!!window.TWEEN && TWEEN.Easing.hasOwnProperty(this._type) && TWEEN.Easing[this._type].hasOwnProperty(this._ease)) {
         // Stop if exists
-        // this.inputstop();
+        this.inputstop();
 
         var tweeningFunction = TWEEN.Easing[this._type][this._ease];
 
@@ -49,41 +51,86 @@ $(function(){
 
         this._tweenVals.x = this._from;
         var self = this;
-        this._tween = new TWEEN.Tween( this._tweenVals )
-          .to( { x: this._to }, this._duration*1000 )
+        this._tween = new TWEEN.Tween( self._tweenVals )
+          .to( { x: self._to }, self._duration*1000 )
           .easing( tweeningFunction )
           .onComplete( function () {
             self.send("complete", "!");
             self.inputstop();
+            if (self._pingpong) {
+              self.reverse();
+            } else if (self._loop) {
+              self.inputstart();
+            }
           });
+        // this.inputstart();
       }
     },
+    reverse: function(){
+      var oldFrom = this._from;
+      this._from = this._to;
+      this._to = oldFrom;
+      this.setupTween();
+      this.inputstart();
+    },
+    _deferStart: false,
     inputstart: function(){
+      if (!window.TWEEN) {
+        this._deferStart = true;
+        return;
+      }
       if (!this._tween) {
         this.setupTween();
       }
       if (this._tween) {
+        // Reset
+        this._tweenVals.x = this._from;
         this._tween.start();
+        this._tween.playing = true;
       }
     },
     inputstop: function(){
       if (this._tween) {
         this._tween.stop();
-        // this._tween = null;
+        this._tween.playing = false;
       }
     },
-    process: function(){
-      //
+    inputpingpong: function(boo){
+      this._pingpong = boo;
+      if (boo) {
+        this.$(".loop").text("(pingpong)");
+      } else {
+        this.$(".loop").text(this._loop ? "(loop)" : "");
+      }
     },
-    renderAnimationFrame: function () {
+    inputloop: function(boo){
+      this._loop = boo;
+      if (!this._pingpong) {
+        if (boo) {
+          this.$(".loop").text("(loop)");
+        } else {
+          this.$(".loop").text("");
+        }
+      }
+    },
+    redraw: function(){
+    },
+    renderAnimationFrame: function (timestamp) {
       // Get a tick from GraphView.renderAnimationFrame()
       // this._valueChanged is set by NodeBox.receive()
-      if (this._valueChanged) {
-        this._valueChanged = false;
-        this.setupTween();
+      if (this._triggerRedraw) {
+        // Changing settings sets up a new tween
+        if (window.TWEEN) {
+          this._triggerRedraw = false;
+          this.setupTween();
+          if (this._deferStart) {
+            this._deferStart = false;
+            this.inputstart();
+          }
+        }
       }
-      if (!!window.TWEEN && this._tween && this._tweenVals.x) {
-        TWEEN.update();
+      if (!!window.TWEEN && this._tween && this._tween.playing) {
+        this._tween.update(timestamp);
         if (this._lastValue !== this._tweenVals.x) {
           this.$(".tween-value").text(this._tweenVals.x);
           this.send("value", this._tweenVals.x);
@@ -118,6 +165,14 @@ $(function(){
         description: "In, Out, or InOut for all except Linear, which is None. For a visual explanation see: http://sole.github.com/tween.js/examples/03_graphs.html",
         options: "None In Out InOut".split(" "),
         "default": "InOut"
+      },
+      loop: {
+        type: "boolean",
+        description: "restart the tween on completion"
+      },
+      pingpong: {
+        type: "boolean",
+        description: "reverse the tween on completion"
       },
       start: {
         type: "bang",

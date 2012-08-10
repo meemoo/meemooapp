@@ -51,7 +51,7 @@ $(function(){
         window.requestAnimationFrame(self.renderAnimationFrame);
         self.model.get("nodes").each(function(node){
           if (node.view.Native) {
-            node.view.Native.renderAnimationFrame();
+            node.view.Native.renderAnimationFrame(timestamp);
           }
         });
       }

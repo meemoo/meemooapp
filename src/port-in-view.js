@@ -407,6 +407,7 @@ $(function(){
     manualinput: function (event) {
       var inputname = this.model.get("name");
       var val;
+      var saveToState = true;
       if (this.$(".manualinput").children("input")){
         val = this.$(".manualinput").children("input").val();
       }
@@ -424,13 +425,18 @@ $(function(){
         val = parseFloat(val);
       }
       if (val === undefined) {
+        // Bang
         val = "!";
+        saveToState = false;
       }
       var message = {};
       message[inputname] = val;
       this.model.node.receive(message);
-      this.model.node.get("state")[inputname] = val;
-      this.model.node.trigger("change");
+      if (saveToState) {
+        var o = {};
+        o[inputname] = val;
+        this.model.node.setValue(o);
+      }
       // $('div.edge-edit').remove();
       return false;
     },

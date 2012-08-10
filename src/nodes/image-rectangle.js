@@ -13,22 +13,26 @@ $(function(){
     },
     _backgroundChanged: false,
     inputbackground: function (image) {
+      this._triggerRedraw = true;
       this._background = image;
       this._backgroundChanged = true;
     },
     inputfill: function (color) {
+      this._triggerRedraw = true;
       this._fill = color;
       this.context.fillStyle = this._fill;
     },
     inputstroke: function (color) {
+      this._triggerRedraw = true;
       this._stroke = color;
       this.context.strokeStyle = this._stroke;
     },
     inputstrokewidth: function (w) {
+      this._triggerRedraw = true;
       this._strokewidth = w;
       this.context.lineWidth = this._strokewidth;
     },
-    process: function(){
+    redraw: function(){
       // Called from NodeBoxNativeView.renderAnimationFrame()
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
       if (this._background) {

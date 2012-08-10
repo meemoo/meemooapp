@@ -9,6 +9,15 @@ $(function(){
 
     template: _.template(template),
     initializeCategory: function() {
+    },
+    setupProgressbar: function(el, value) {
+      this._progressbar = this.$(el).progressbar({ value: value });
+      return this._progressbar;
+    },
+    progress: function(value) {
+      if (this._progressbar) {
+        this._progressbar.progressbar("value", value);
+      }
     }
 
   });

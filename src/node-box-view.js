@@ -58,12 +58,16 @@ $(function(){
     },
     initializeNative: function () {
       // Called from GraphView.addNode
-      if (!this.Native && Iframework.NativeNodes.hasOwnProperty(this.model.lazyLoadType)) {
-        this.Native = new Iframework.NativeNodes[this.model.lazyLoadType]({model:this.model});
-        this.$(".inner").append( this.Native.initialize().$el );
-        // Check if all modules are loaded
-        this.model.loaded = true;
-        this.model.graph.checkLoaded();
+      if (!this.Native){
+        if (Iframework.NativeNodes.hasOwnProperty(this.model.lazyLoadType)) {
+          this.Native = new Iframework.NativeNodes[this.model.lazyLoadType]({model:this.model});
+          this.$(".inner").append( this.Native.initialize().$el );
+          // Check if all modules are loaded
+          this.model.loaded = true;
+          this.model.graph.checkLoaded();
+        } else {
+          console.warn("No native node found.");
+        }
       }
     },
     render: function () {
