@@ -113,7 +113,14 @@ $(function(){
         }
       }
     },
+    _lastDisplay: "",
     redraw: function(){
+      // Only display to .00001
+      var display = Math.round(this._tweenVals.x*100000)/100000;
+      if (display !== this._lastDisplay) {
+        this.$(".tween-value").text(display);
+        this._lastDisplay = display;
+      }
     },
     renderAnimationFrame: function (timestamp) {
       // Get a tick from GraphView.renderAnimationFrame()
@@ -132,8 +139,8 @@ $(function(){
       if (!!window.TWEEN && this._tween && this._tween.playing) {
         this._tween.update(timestamp);
         if (this._lastValue !== this._tweenVals.x) {
-          this.$(".tween-value").text(this._tweenVals.x);
           this.send("value", this._tweenVals.x);
+          this.redraw();
         }
         this._lastValue = this._tweenVals.x;
       }

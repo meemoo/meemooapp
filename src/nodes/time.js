@@ -11,7 +11,9 @@ $(function(){
     initializeCategory: function() {
     },
     setupProgressbar: function(el, value) {
-      this._progressbar = this.$(el).progressbar({ value: value });
+      this._progressbar = this.$(el)
+        .progressbar({ value: value })
+        .css({"height": "1em"});
       return this._progressbar;
     },
     progress: function(value) {
