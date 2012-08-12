@@ -5,7 +5,8 @@
 $(function(){
 
   var template = 
-    // '<canvas id="canvas-<%= id %>" class="canvas" width="500" height="500" style="max-width:100%;" />'+
+    // '<canvas id="canvas-<%= id %>" class="canvas" width="180" height="100" style="max-width:100%;" />'+
+    '<img id="view-<%= id %>" class="tween-view" width="180" height="100" style="max-width:100%;" />'+
     '<div><span class="function"></span> <span class="loop"></span></div>'+
     '<div class="info">from:<span class="tween-in"></span>, to:<span class="tween-out"></span>, duration:<span class="tween-duration"></span></div>'+
     '<div class="progressbar"></div>'+
@@ -48,30 +49,34 @@ $(function(){
         this.$(".tween-in").text(this._from);
         this.$(".tween-out").text(this._to);
         this.$(".tween-duration").text(this._duration);
+        this.$(".tween-view").attr({src:"libs/Tween/"+this._type+"."+this._ease+".png"});
 
-        this._tweenVals.x = this._from;
+        this._tweenVals.x = this._reversing ? this._to : this._from;
         var self = this;
         this._tween = new TWEEN.Tween( self._tweenVals )
-          .to( { x: self._to }, self._duration*1000 )
+          .to( { x: (self._reversing ? self._from : self._to) }, self._duration*1000 )
           .easing( tweeningFunction )
           .onComplete( function () {
             self.send("complete", "!");
             self.inputstop();
-            if (self._pingpong) {
-              self.reverse();
-            } else if (self._loop) {
-              self.inputstart();
-            }
+            // Reverse or loop if set
+            self.loop();
           });
-        // this.inputstart();
       }
     },
+    _reversing: false,
     reverse: function(){
-      var oldFrom = this._from;
-      this._from = this._to;
-      this._to = oldFrom;
+      this._reversing = !this._reversing;
       this.setupTween();
       this.inputstart();
+    },
+    loop: function(){
+      // Reverse, loop, or stop
+      if (this._pingpong) {
+        this.reverse();
+      } else if (this._loop) {
+        this.inputstart();
+      }
     },
     _deferStart: false,
     inputstart: function(){
@@ -84,7 +89,7 @@ $(function(){
       }
       if (this._tween) {
         // Reset
-        this._tweenVals.x = this._from;
+        this._tweenVals.x = this._reversing ? this._to : this._from;
         this._tween.start();
         this._tween.playing = true;
       }

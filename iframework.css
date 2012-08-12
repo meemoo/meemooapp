@@ -160,6 +160,8 @@ div.module {
     bottom: 10px;
     left: 10px;
     overflow: auto;
+
+    font-size: 10px;
   }
     div.module .inner.iframe-type {
       overflow: hidden;
