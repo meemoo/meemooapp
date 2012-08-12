@@ -32,9 +32,9 @@ $(function(){
       "click .module, .title": "click",
       "click .showcontrols": "showControls",
       "click .hidecontrols": "hideControls",
-      "click .remove":       "removeModel",
-      "selectableselected .module": "selected",
-      "selectableunselected .module": "unselected"
+      "click .remove":       "removeModel"//,
+      // "selectableselected .module": "selected",
+      // "selectableunselected .module": "unselected"
     },
     initialize: function () {
       this.render();
@@ -257,13 +257,13 @@ $(function(){
     },
     refresh: function () {
       //
-    },
-    selected: function(){
-      console.log("sel", this.model);
-    },
-    unselected: function(){
-      console.log("unsel", this.model);
-    }
+    }//,
+    // selected: function(){
+    //   console.log("sel", this.model);
+    // },
+    // unselected: function(){
+    //   console.log("unsel", this.model);
+    // }
 
   });
 

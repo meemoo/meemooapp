@@ -1,0 +1,3 @@
+[submodule "libs/Seriously.js"]
+	path = libs/Seriously.js
+	url = git://github.com/brianchirls/Seriously.js.git

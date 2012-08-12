@@ -23,7 +23,6 @@ $(function(){
 
       // Change event
       this.on("change", this.nodeChanged);
-
     },
     initializeView: function () {
       // Called from GraphView.addNode
