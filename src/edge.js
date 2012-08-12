@@ -16,21 +16,18 @@ $(function(){
     connectTryCount: 5,
     connect: function () {
       // Called from graph.connectEdges()
-      // IDs from the graph
-      for (var i=0; i<this.graph.get("nodes").length; i++) {
-        if (this.graph.get("nodes").at(i).get("id") === this.get("source")[0]) {
-          this.Source = this.graph.get("nodes").at(i).Outputs.get( this.get("source")[1] );
-        }
-        if (this.graph.get("nodes").at(i).get("id") === this.get("target")[0]) {
-          this.Target = this.graph.get("nodes").at(i).Inputs.get( this.get("target")[1] );
-        }
-      }
-      if (!this.Source || !this.Target) {
+      try {
+        this.Source = this.graph.get("nodes").get( this.get("source")[0] ).Outputs.get( this.get("source")[1] );
+        this.Target = this.graph.get("nodes").get( this.get("target")[0] ).Inputs.get( this.get("target")[1] );
+      } catch (e) {
         console.warn("Edge source or target port not found, try #"+this.connectTryCount+": "+this.toString());
         if (this.connectTryCount > 0) {
           this.connectTryCount--;
           _.delay(_.bind(this.connect, this), 1000);
         }
+        return false;
+      }
+      if (!this.Source || !this.Target) {
         return false;
       }
       this.Source.connect(this);
