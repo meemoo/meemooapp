@@ -161,7 +161,7 @@ div.module {
     left: 10px;
     overflow: auto;
 
-    font-size: 10px;
+    font-size: 12px;
   }
     div.module .inner.iframe-type {
       overflow: hidden;

@@ -108,9 +108,6 @@ $(function(){
     outputs: {
       image: {
         type: "image"
-      },
-      bang: {
-        type: "bang"
       }
     }
 
