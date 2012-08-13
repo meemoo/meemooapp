@@ -40,8 +40,13 @@ $(function(){
         this._ease = "None";
       }
       if (!!window.TWEEN && TWEEN.Easing.hasOwnProperty(this._type) && TWEEN.Easing[this._type].hasOwnProperty(this._ease)) {
-        // Stop if exists
-        this.inputstop();
+        // Restart tween if currently playing
+        var restart = false;
+        if (this._tween && this._tween.playing) {
+          // Stop if exists
+          this.inputstop();
+          restart = true;
+        }
 
         var tweeningFunction = TWEEN.Easing[this._type][this._ease];
 
@@ -62,6 +67,11 @@ $(function(){
             // Reverse or loop if set
             self.loop();
           });
+
+        if (restart) {
+          // Restart
+          this.inputstart();
+        }
       }
     },
     _reversing: false,
