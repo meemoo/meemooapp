@@ -62,7 +62,8 @@ $(function(){
       {"src":"meemoo:file/image","info":{"title":"image-in","author":"forresto","description":"Public image url to get the canvas pixel data."}},
       {"src":"meemoo:time/tween","info":{"title":"tween","author":"sole","description":"Interpolate between two values."}},
       {"src":"meemoo:time/countdown","info":{"title":"countdown","author":"forresto","description":"Countdown to a bang."}},
-      {"src":"meemoo:util/stats","info":{"title":"stats.js","author":"mr.doob","description":"Memory and fps stats graphs."}}
+      {"src":"meemoo:util/stats","info":{"title":"stats.js","author":"mr.doob","description":"fps stats graph"}},
+      {"src":"meemoo:util/color-hsla","info":{"title":"color-hsla","author":"meemoo","description":"make hsla() css color (hue, saturation, lightness, alpha)"}}
     ]
   };
   
