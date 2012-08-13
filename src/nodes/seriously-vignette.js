@@ -25,12 +25,17 @@ $(function(){
     inputimage: function (image) {
       if (image !== this._image) {
         this._image = image;
+        if (this.canvas.width !== this._image.width || this.canvas.height !== this._image.height) {
+          this.canvas.width = this._image.width;
+          this.canvas.height = this._image.height;
+        }
       }
       if (this._ready) {
         if (this._vignette) {
           // Render frame
-          // this._vignette.render();
           // this._seriously.render();
+          // this._vignette.render();
+          // this._target.render();
         } else {
           this._source = this._seriously.source(this._image);
           this._target = this._seriously.target(this.canvas);
