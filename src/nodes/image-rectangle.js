@@ -82,12 +82,12 @@ $(function(){
         "default": 350
       },
       fill: {
-        type: "string",
+        type: "color",
         description: "fill color",
         "default": ""
       },
       stroke: {
-        type: "string",
+        type: "color",
         description: "stroke color",
         "default": "black"
       },
