@@ -33,9 +33,7 @@ $(function(){
       if (this._ready) {
         if (this._vignette) {
           // Render frame
-          // this._seriously.render();
-          // this._vignette.render();
-          // this._target.render();
+          this._triggerRedraw = true;
         } else {
           this._source = this._seriously.source(this._image);
           this._target = this._seriously.target(this.canvas);
@@ -62,7 +60,10 @@ $(function(){
     inputsend: function () {
       this.send("image", this.canvas);
     },
-    redraw: function(){
+    redraw: function(timestamp){
+      if (this._source) {
+        this._source.original.currentTime = timestamp;
+      }
     },
     inputs: {
       image: {
