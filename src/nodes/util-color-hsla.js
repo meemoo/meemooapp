@@ -31,7 +31,7 @@ $(function(){
     _color: "",
     redraw: function(timestamp){
       // Called from NodeBoxNativeView.renderAnimationFrame()
-      var newColor = "hsla("+(this._hue*360)+", "+(this._saturation*100)+"%, "+(this._lightness*100)+"%, "+this._alpha+")";
+      var newColor = "hsla("+(this._hue*360).toFixed(3)+", "+(this._saturation*100)+"%, "+(this._lightness*100)+"%, "+this._alpha+")";
       if (this._color !== newColor) {
         this._color = newColor;
         this.sampleEl.css({"background-color": this._color});

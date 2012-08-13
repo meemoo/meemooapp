@@ -4,7 +4,7 @@
 
 $(function(){
 
-  Iframework.NativeNodes["image-vignette"] = Iframework.NativeNodes["image"].extend({
+  Iframework.NativeNodes["seriously-vignette"] = Iframework.NativeNodes["seriously"].extend({
 
     info: {
       title: "vignette",
@@ -12,24 +12,16 @@ $(function(){
     },
     _ready: false,
     initializeModule: function(){
-      if (window.Seriously) {
-        if (!Iframework._seriously) {
-          // Only one Seriously object
-          Iframework._seriously = new Seriously();
-        }
-        this._seriously = Iframework._seriously;
+      if (this._seriously) {
         this._ready = true;
+        if (this._deferStart && this._image) {
+          this.inputimage(this._image);
+        }
       } else {
-        var self = this;
-        yepnope({
-          // load: "libs/seriously.min.js",
-          load: ["libs/Seriously.js/seriously.js","libs/Seriously.js/effects/seriously.vignette.js"],
-          complete: function () {
-            self.initializeModule();
-          }
-        });
+        // Iframework.NativeNodes["seriously"] will call this again.
       }
     },
+    _deferStart: false,
     inputimage: function (image) {
       if (image !== this._image) {
         this._image = image;
@@ -52,7 +44,9 @@ $(function(){
             this._vignette.amount = this._amount;
           }
         }
-      } 
+      } else {
+        this._deferStart = true;
+      }
     },
     inputamount: function (f) {
       this._amount = f;

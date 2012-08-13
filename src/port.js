@@ -13,7 +13,8 @@ $(function(){
         this.set("type", "all");
       }
       // To sanitize data:image/gif types for css class
-      this.set( "type_class", this.get("type").split("/")[0].replace(":", "_") );
+      // this.set( "type_class", this.get("type").split("/")[0].replace(":", "_") );
+      this.set( "type_class", this.get("type").split(":")[0] );
       this.Edges = new Iframework.Edges();
     },
     // Ports keep track of connected edges
