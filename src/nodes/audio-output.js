@@ -2,7 +2,8 @@
 
 $(function(){
 
-  var template = '<div id="audio-output"></div>';
+  // TODO: maybe a volume analyzer as audio-output view?
+  var template = '<div id="audio-output">audio output</div>';
 
   Iframework.NativeNodes["audio-output"] = Iframework.NativeNodes["audio"].extend({
     template: _.template(template),
@@ -13,27 +14,34 @@ $(function(){
     initializeModule: function(){
       try {
         if (!Iframework.audioContext) {
+          // create the Audio Context and internalize
           Iframework.audioContext = new webkitAudioContext();
+          this.audioContext = Iframework.audioContext;
+          this.audioNode = this.audioContext.destination;
         }
       } catch(e) {
-        alert("Web Audio API is not supported in this browser.");
+        console.log("Web Audio API is not supported in this browser.");
       }
 
       if (!Iframework.audioContext.createOscillator) {
-        alert('Oscillators not supported - you may need to run Chrome Canary.');
+        console.log('Oscillators not supported - you may need to run Chrome Canary.');      
       }
-      
-      var dest = document.getElementById("audio-output");
-      dest.audioNode = Iframework.audioContext.destination;
     },
+
+    inputaudio: function (source) {
+      source.connect(this.audioNode);
+    },
+
+    // TODO: every audio node has those in/outs? if yes, put on audio.js
     inputs: {
-      input: {
+      audio: {
         type: "audio",
         description: "audio input"
-      },
+      }
     },
+
     outputs: {
-      output: {
+      audio: {
         type: "audio"
       }
     }

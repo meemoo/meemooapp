@@ -7,11 +7,12 @@ $(function(){
   Iframework.NativeNodes["audio"] = Iframework.NodeBoxNativeView.extend({
 
     template: _.template(template),
-    info: {
-      title: "audio",
-      description: "extend me"
-    },
+    // every audio mode has an Web Audio's AudioNode
+    audioNode: null,
+    // and maybe we can store the global audio context too
+    audioContext: null,
     initializeCategory: function() {
+      
     }
 
   });
