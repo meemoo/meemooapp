@@ -37,7 +37,7 @@ $(function(){
 
     outputs: {
       audio: {
-        type: "audio",
+        type: "audio"
       }
     }
   });

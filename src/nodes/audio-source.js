@@ -38,11 +38,11 @@ $(function(){
         Iframework.audioContext.decodeAudioData(request.response, function(b) {
           buffer = b;
         });
-      }
+      };
       
       request.onerror = function() {
         console.log('Error while loading the Audio Buffer');
-      }
+      };
       
       request.send();
     },
@@ -69,7 +69,7 @@ $(function(){
 
     outputs: {
       audio: {
-        type: "audio",
+        type: "audio"
       }
     }
   });
