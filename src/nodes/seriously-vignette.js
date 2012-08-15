@@ -18,17 +18,18 @@ $(function(){
           this.inputimage(this._image);
         }
       } else {
-        // Iframework.NativeNodes["seriously"] will call this again.
+        // Iframework.NativeNodes["seriously"] will call initializeModule() again.
       }
     },
     _deferStart: false,
     inputimage: function (image) {
       if (image !== this._image) {
+        // Need to reset Seriously
         this._image = image;
-        if (this.canvas.width !== this._image.width || this.canvas.height !== this._image.height) {
-          this.canvas.width = this._image.width;
-          this.canvas.height = this._image.height;
-        }
+      }
+      if (this.canvas.width !== this._image.width || this.canvas.height !== this._image.height) {
+        this.canvas.width = this._image.width;
+        this.canvas.height = this._image.height;
       }
       if (this._ready) {
         if (this._vignette) {
@@ -41,11 +42,13 @@ $(function(){
 
           this._vignette.source = this._source;
           this._target.source = this._vignette;
-          this._seriously.go();
+          // No Seriously.go() because Meemoo has own loop
 
           if (this._amount) {
             this._vignette.amount = this._amount;
           }
+
+          this._triggerRedraw = true;
         }
       } else {
         this._deferStart = true;
@@ -56,19 +59,24 @@ $(function(){
       if (this._vignette) {
         this._vignette.amount = this._amount;
       }
+      // Render frame
+      this._triggerRedraw = true;
     },
     inputsend: function () {
       this.send("image", this.canvas);
     },
     redraw: function(timestamp){
       if (this._source) {
-        this._source.original.currentTime = timestamp;
+        this._source.update();
+        this._target.render();
+        this.send("image", this.canvas);
       }
     },
     inputs: {
       image: {
         type: "image",
-        description: "input image"
+        description: "input image",
+        maxEdges: 1
       },
       amount: {
         type: "float",

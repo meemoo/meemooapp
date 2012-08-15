@@ -21,19 +21,8 @@ $(function(){
     initializeCategory: function() {
       if (window.Seriously) {
         this.canvas = this.$(".canvas")[0];
-        // Get canvas ready
-        // this.canvas = document.createElement("canvas");
-        // this.canvas.width = 500;
-        // this.canvas.height = 500;
-        // // this.context = this.canvas.getContext('2d');
-        // this.showCanvas();
-
-        // Initialize Seriously
-        if (!Iframework._seriously) {
-          // Only one Seriously object
-          Iframework._seriously = new Seriously();
-        }
-        this._seriously = Iframework._seriously;
+        
+        this._seriously = new Seriously();
         this.initializeModule();
       } else {
         var self = this;
@@ -45,6 +34,8 @@ $(function(){
         });
       }
     },
+    // loadSeriouslyEffect: function(effect) {
+    // },
     scale: function(){
       // canvas is shown at this scaling factor
       // useful for absolute positioning other elements over the canvas
