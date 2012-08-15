@@ -44,6 +44,7 @@ $(function(){
         }
         // HACKish
         this.effectName = this.info.title;
+        this._params = {};
       } else {
         // Iframework.NativeNodes["seriously"] will call initializeModule() again.
       }
@@ -91,7 +92,6 @@ $(function(){
         this._deferStart = true;
       }
     },
-    _params: {},
     setParam: function (name, val) {
       this._params[name] = val;
       if (this._effect) {
