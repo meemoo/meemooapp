@@ -255,6 +255,8 @@ $(function(){
     remove: function () {
       this.$el.remove();
     },
+    detach: function () {
+    },
     refresh: function () {
       //
     }//,

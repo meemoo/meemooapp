@@ -10,7 +10,8 @@ $(function(){
         z: 0,
         w: 200,
         h: 210,
-        state: {}
+        state: {},
+        detachWindow: null
       };
     },
     info: {

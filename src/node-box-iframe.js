@@ -19,6 +19,10 @@ $(function(){
     receive: function (message) {
       if (window.frames[this.frameIndex]) {
         window.frames[this.frameIndex].postMessage(message, "*");
+        // if there is some detached window, also send the message to it
+        if (this.get("detachWindow")) {
+          this.get("detachWindow").postMessage(message, "*");
+        }
       } else {
         console.error("wat "+this.id+" "+this.frameIndex);
       }
