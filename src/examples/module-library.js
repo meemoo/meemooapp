@@ -63,7 +63,11 @@ $(function(){
       {"src":"meemoo:time/tween","info":{"title":"tween","author":"sole","description":"Interpolate between two values."}},
       {"src":"meemoo:time/countdown","info":{"title":"countdown","author":"forresto","description":"Countdown to a bang."}},
       {"src":"meemoo:util/stats","info":{"title":"stats.js","author":"mr.doob","description":"fps stats graph"}},
-      {"src":"meemoo:util/color-hsla","info":{"title":"color-hsla","author":"meemoo","description":"make hsla() css color (hue, saturation, lightness, alpha)"}}
+      {"src":"meemoo:util/color-hsla","info":{"title":"color-hsla","author":"meemoo","description":"make hsla() css color (hue, saturation, lightness, alpha)"}},
+      {"src":"meemoo:audio/source","info":{"title":"audio source","author":"meemoo","description":"audio source"}},
+      {"src":"meemoo:audio/output","info":{"title":"audio output","author":"meemoo","description":"audio output"}},
+      {"src":"meemoo:audio/delay","info":{"title":"audio delay","author":"meemoo","description":"audio delay"}},
+      {"src":"meemoo:audio/gain","info":{"title":"audio gain","author":"meemoo","description":"audio gain"}}
     ]
   };
   
