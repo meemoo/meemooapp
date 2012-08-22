@@ -69,6 +69,12 @@ $(function(){
     },
     resize: function(w,h) {
       // Called from NodeBoxView.resizestop()
+    },
+    connectEdge: function(edge) {
+      // Called from Edge.connect();
+    },
+    disconnectEdge: function(edge) {
+      // Called from Edge.disconnect();
     }
 
   });

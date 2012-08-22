@@ -41,6 +41,9 @@ $(function(){
       if (this.graph.view) {
         this.graph.view.addEdge(this);
       }
+      if (this.Target.node.view && this.Target.node.view.Native) {
+        this.Target.node.view.Native.connectEdge(this);
+      }
       return this;
     },
     disconnect: function () {
@@ -54,6 +57,9 @@ $(function(){
             target: [this.Target.node.id, this.Target.id]
           }
         });
+        if (this.Target.node.view && this.Target.node.view.Native) {
+          this.Target.node.view.Native.disconnectEdge(this);
+        }
       }
       if (this.view) {
         this.view.remove();

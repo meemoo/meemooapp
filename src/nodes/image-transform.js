@@ -21,6 +21,17 @@ $(function(){
       this._rotate = percent * 2 * Math.PI;
       this._triggerRedraw = true;
     },
+    disconnectEdge: function(edge) {
+      // Called from Edge.disconnect();
+      if (edge.Target.id === "background") {
+        this._background = null;
+        this._triggerRedraw = true;
+      }
+      if (edge.Target.id === "image") {
+        this._image = null;
+        this._triggerRedraw = true;
+      }
+    },
     redraw: function(){
       // Called from NodeBoxNativeView.renderAnimationFrame()
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
