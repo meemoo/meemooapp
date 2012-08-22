@@ -19,7 +19,7 @@ $(function(){
       var self = this;
       this.$(".slider")
         .slider({
-          value: this._value,
+          value: this._value === null ? 0 : this._value,
           min: this._min,
           max: this._max,
           step: this._step === 0 ? 0.001 : this._step,
@@ -29,6 +29,7 @@ $(function(){
           }
         });
     },
+    _value: null,
     inputvalue: function(val){
       this._value = val;
       this.$(".slider").slider({
