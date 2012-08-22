@@ -171,6 +171,10 @@ div.module {
       height: 100%;
       border: none;
     }
+  div.nativenode {
+    position: absolute;
+    top:0;right:0;bottom:0;left:0;
+  }
   div.module div.iframemask {
     position: absolute;
     top: 29px;
