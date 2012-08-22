@@ -7,7 +7,7 @@ $(function(){
   var template = 
     '<div class="xypad" style="position:absolute; overflow:hidden; top:0;right:0;bottom:0;left:0;">'+
       '<span class="info" style="font-size:10px;">(0.5,0.5)</span>'+
-      '<div class="xy" style="position:absolute; font-size:20px; top:50%;left:50%; cursor:default;">+</div>'+
+      '<div class="xy" style="position:absolute; font-size:20px; top:50%;left:50%; cursor:default; height:20px;width:20px;">+</div>'+
     '</div>';
 
   Iframework.NativeNodes["ui-xy"] = Iframework.NativeNodes["ui"].extend({
@@ -40,23 +40,31 @@ $(function(){
           },
           drag: function(e, ui){
             self.sendPosition(ui.position);
-          }
+          },
+          containment: "parent"
+        });
+    },
+    resize: function(){
+      this.$(".xy")
+        .css({
+          left: this._xPercent * 0.9 * 100 + "%",
+          top: this._yPercent * 0.9 * 100 + "%"
         });
     },
     sendPosition: function(pos){
-      var xPercent = (pos.left - 10) / (this._width - 30);
-      xPercent = Math.max(0, xPercent);
-      xPercent = Math.min(1.0, xPercent);
-      var xPercentRound = Math.round(xPercent*1000)/1000;
-      var yPercent = (pos.top - 10) / (this._height - 30);
-      yPercent = Math.max(0, yPercent);
-      yPercent = Math.min(1.0, yPercent);
-      var yPercentRound = Math.round(yPercent*1000)/1000;
+      this._xPercent = (pos.left - 10) / (this._width - 30);
+      this._xPercent = Math.max(0, this._xPercent);
+      this._xPercent = Math.min(1.0, this._xPercent);
+      var xPercentRound = Math.round(this._xPercent*1000)/1000;
+      this._yPercent = (pos.top - 10) / (this._height - 30);
+      this._yPercent = Math.max(0, this._yPercent);
+      this._yPercent = Math.min(1.0, this._yPercent);
+      var yPercentRound = Math.round(this._yPercent*1000)/1000;
       // Display
       this.$(".info").text("("+xPercentRound+","+yPercentRound+")");
       // Send
-      this.send("x", xPercent);
-      this.send("y", yPercent);
+      this.send("x", this._xPercent);
+      this.send("y", this._yPercent);
     },
     outputs: {
       x: {
