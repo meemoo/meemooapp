@@ -12,7 +12,7 @@ $(function(){
     template: _.template(template),
     info: {
       title: "button",
-      description: "a button sends a bang, and you can attach a keyboard keydown"
+      description: "a button sends a bang, and you can attach a keyboard key"
     },
     initializeModule: function(){
       var self = this;

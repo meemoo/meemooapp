@@ -63,7 +63,11 @@ $(function(){
       {"src":"meemoo:time/tween","info":{"title":"tween","author":"sole","description":"Interpolate between two values."}},
       {"src":"meemoo:time/countdown","info":{"title":"countdown","author":"forresto","description":"Countdown to a bang."}},
       {"src":"meemoo:util/stats","info":{"title":"stats.js","author":"mr.doob","description":"fps stats graph"}},
-      {"src":"meemoo:util/color-hsla","info":{"title":"color-hsla","author":"meemoo","description":"make hsla() css color (hue, saturation, lightness, alpha)"}}
+      {"src":"meemoo:util/color-hsla","info":{"title":"color-hsla","author":"meemoo","description":"make hsla() css color (hue, saturation, lightness, alpha)"}},
+      {"src":"meemoo:ui/button","info":{"title":"button","author":"meemoo","description":"a button sends a bang, and you can attach a keyboard key"}},
+      {"src":"meemoo:ui/hslider","info":{"title":"hslider","author":"meemoo","description":"horizontal slider"}},
+      {"src":"meemoo:ui/vslider","info":{"title":"vslider","author":"meemoo","description":"vertical slider"}},
+      {"src":"meemoo:ui/xy","info":{"title":"xy pad","author":"meemoo","description":"sends coordinates as percentage"}}
     ]
   };
   
