@@ -66,6 +66,9 @@ $(function(){
     },
     toString: function() {
       return "Native view: "+this.model.get("id")+": "+this.info.title;
+    },
+    resize: function(w,h) {
+      // Called from NodeBoxView.resizestop()
     }
 
   });

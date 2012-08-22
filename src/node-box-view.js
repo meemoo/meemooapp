@@ -193,6 +193,9 @@ $(function(){
       //   width: newW - 20,
       //   height: newH - 40
       // });
+      if (this.Native) {
+        this.Native.resize(newW,newH);
+      }
       this.model.graph.view.resizeEdgeSVG();
       // Rerender related edges
       this.drag();

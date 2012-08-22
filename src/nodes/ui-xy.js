@@ -5,9 +5,9 @@
 $(function(){
 
   var template = 
-    '<div class="xypad" style="position:absolute; overflow:hidden; top:0;right:0;bottom:0;left:0; background:red;">'+
-      '<span class="info" style="font-size:10px; color:white;">(0.5,0.5)</span>'+
-      '<div class="xy" style="position:absolute; font-size:20px; top:50%;left:50%; color:white;">+</div>'+
+    '<div class="xypad" style="position:absolute; overflow:hidden; top:0;right:0;bottom:0;left:0;">'+
+      '<span class="info" style="font-size:10px;">(0.5,0.5)</span>'+
+      '<div class="xy" style="position:absolute; font-size:20px; top:50%;left:50%; cursor:default;">+</div>'+
     '</div>';
 
   Iframework.NativeNodes["ui-xy"] = Iframework.NativeNodes["ui"].extend({

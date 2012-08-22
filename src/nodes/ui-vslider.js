@@ -5,7 +5,7 @@
 $(function(){
 
   var template = 
-    '<div class="slider" style="position:absolute; top:15px;bottom:15px;left:15px;"></div>';
+    '<div class="slider" style="position:absolute; top:15px;left:15px;"></div>';
 
   Iframework.NativeNodes["ui-vslider"] = Iframework.NativeNodes["ui"].extend({
 
@@ -17,6 +17,9 @@ $(function(){
     initializeModule: function(){
       var self = this;
       this.$(".slider")
+        .css({
+          height: this.$el.height()-30
+        })
         .slider({
           orientation: "vertical",
           value: this._value,
@@ -42,6 +45,12 @@ $(function(){
     redraw: function(){
       // Actually just sets up the slider again
       this.initializeModule();
+    },
+    resize: function(){
+      this.$(".slider")
+        .css({
+          height: this.$el.height()-30
+        });
     },
     inputs: {
       value: {
