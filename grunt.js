@@ -21,6 +21,7 @@ module.exports = function(grunt) {
           'libs/backbone.js',
           'libs/backbone.localStorage.js',
           'libs/mousetrap.js',
+          'libs/jquery.ui.touch-punch.js',
           // Iframework
           'src/iframework.js',
           'src/iframework-utils.js',
