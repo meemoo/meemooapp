@@ -5,7 +5,8 @@
 $(function(){
 
   var template = 
-    '<div class="slider" style="position:absolute; top:15px;left:15px;"></div>';
+    '<div class="slider" style="position:absolute; top:15px;left:15px;"></div>'+
+    '<div class="info" style="position:absolute; top:15px;left:45px; max-width:100px;overflow:hidden;" />';
 
   Iframework.NativeNodes["ui-vslider"] = Iframework.NativeNodes["ui"].extend({
 
@@ -41,6 +42,8 @@ $(function(){
     },
     sendValue: function(){
       this.send("value", this._value);
+      // HACK toFixed() (should just hide overflow)
+      this.$(".info").text(this._value.toFixed(3));
     },
     redraw: function(){
       // Actually just sets up the slider again

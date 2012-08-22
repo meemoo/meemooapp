@@ -5,7 +5,8 @@
 $(function(){
 
   var template = 
-    '<div class="slider" style="position:absolute; top:15px;right:15px;left:15px;"></div>';
+    '<div class="slider" style="position:absolute; top:15px;right:15px;left:15px;"></div>'+
+    '<div class="info" style="position:absolute; top:45px;left:15px" />';
 
   Iframework.NativeNodes["ui-hslider"] = Iframework.NativeNodes["ui"].extend({
 
@@ -37,6 +38,7 @@ $(function(){
     },
     sendValue: function(){
       this.send("value", this._value);
+      this.$(".info").text(this._value);
     },
     redraw: function(){
       // Actually just sets up the slider again
