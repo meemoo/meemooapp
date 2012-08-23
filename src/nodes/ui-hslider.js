@@ -17,9 +17,13 @@ $(function(){
     },
     initializeModule: function(){
       var self = this;
+      if (this._value === undefined) { this._value = 0; }
+      if (this._min === undefined) { this._min = 0; }
+      if (this._max === undefined) { this._max = 1; }
+      if (this._step === undefined) { this._step = 0; }
       this.$(".slider")
         .slider({
-          value: this._value === null ? 0 : this._value,
+          value: this._value,
           min: this._min,
           max: this._max,
           step: this._step === 0 ? 0.001 : this._step,
@@ -28,8 +32,10 @@ $(function(){
             self.sendValue();
           }
         });
+      this.$el.css({
+        overflow: "hidden"
+      });
     },
-    _value: null,
     inputvalue: function(val){
       this._value = val;
       this.$(".slider").slider({

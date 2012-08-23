@@ -6,7 +6,7 @@ $(function(){
 
   var template = 
     '<div class="slider" style="position:absolute; top:15px;left:15px;"></div>'+
-    '<div class="info" style="position:absolute; top:15px;left:45px; max-width:100px;overflow:hidden;" />';
+    '<div class="info" style="position:absolute; top:15px;left:45px;" />';
 
   Iframework.NativeNodes["ui-vslider"] = Iframework.NativeNodes["ui"].extend({
 
@@ -17,13 +17,14 @@ $(function(){
     },
     initializeModule: function(){
       var self = this;
+      if (this._value === undefined) { this._value = 0; }
+      if (this._min === undefined) { this._min = 0; }
+      if (this._max === undefined) { this._max = 1; }
+      if (this._step === undefined) { this._step = 0; }
       this.$(".slider")
-        .css({
-          height: this.$el.height()-30
-        })
         .slider({
           orientation: "vertical",
-          value: this._value === null ? 0 : this._value,
+          value: this._value,
           min: this._min,
           max: this._max,
           step: this._step === 0 ? 0.001 : this._step,
@@ -31,9 +32,14 @@ $(function(){
             self._value = ui.value;
             self.sendValue();
           }
+        })
+        .css({
+          height: this.$el.height()-30
         });
+      this.$el.css({
+        overflow: "hidden"
+      });
     },
-    _value: null,
     inputvalue: function(val){
       this._value = val;
       this.$(".slider").slider({
@@ -43,8 +49,7 @@ $(function(){
     },
     sendValue: function(){
       this.send("value", this._value);
-      // HACK toFixed() (should just hide overflow)
-      this.$(".info").text(this._value.toFixed(3));
+      this.$(".info").text(this._value);
     },
     redraw: function(){
       // Actually just sets up the slider again
