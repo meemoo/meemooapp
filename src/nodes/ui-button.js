@@ -64,6 +64,13 @@ $(function(){
         });
       }
     },
+    remove: function(){
+      console.log(this._key);
+      if (this._key && this._key !== "") {
+        Mousetrap.unbind(this._key, 'keydown');
+      }
+      this._key = "";
+    },
     inputs: {
       bang: {
         type: "bang",

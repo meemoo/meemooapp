@@ -91,7 +91,7 @@ $(function(){
     },
     removeNode: function (node) {
       if (node.view) {
-        node.view.$el.remove();
+        node.view.remove();
       }
     },
     removeEdge: function (edge) {

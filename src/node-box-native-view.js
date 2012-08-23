@@ -75,6 +75,9 @@ $(function(){
     },
     disconnectEdge: function(edge) {
       // Called from Edge.disconnect();
+    },
+    remove: function(){
+      // Called from NodeBoxView.remove();
     }
 
   });

@@ -256,6 +256,9 @@ $(function(){
       this.model.remove();
     },
     remove: function () {
+      if (this.Native) {
+        this.Native.remove();
+      }
       this.$el.remove();
     },
     refresh: function () {
