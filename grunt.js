@@ -61,8 +61,8 @@ module.exports = function(grunt) {
       files: ['grunt.js', 'src/**/*.js', 'test/**/*.js']
     },
     watch: {
-      // files: '<config:lint.files>',
-      // tasks: 'lint qunit'
+      files: '<config:lint.files>',
+      tasks: 'lint'
     },
     jshint: {
       options: {
@@ -95,6 +95,6 @@ module.exports = function(grunt) {
 
   // Default task.
   grunt.registerTask('default', 'lint min');
-  grunt.registerTask('serve', 'server watch');
+  grunt.registerTask('dev', 'server watch');
 
 };
