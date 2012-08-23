@@ -33,7 +33,8 @@ $(function(){
           accept: ".addnode" 
         })
         .selectable({
-          filter: ".module"
+          filter: ".module",
+          delay: 20
         });
 
       this.resizeEdgeSVG();
