@@ -32,6 +32,13 @@ $(function(){
       this._strokewidth = w;
       this.context.lineWidth = this._strokewidth;
     },
+    disconnectEdge: function(edge) {
+      // Called from Edge.disconnect();
+      if (edge.Target.id === "background") {
+        this._background = null;
+        this._triggerRedraw = true;
+      }
+    },
     redraw: function(){
       // Called from NodeBoxNativeView.renderAnimationFrame()
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
