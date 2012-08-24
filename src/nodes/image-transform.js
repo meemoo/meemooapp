@@ -9,7 +9,7 @@ $(function(){
       description: "scale, translate, and/or rotate image"
     },
     initializeModule: function(){
-      
+      // this.showResizer(20,20,0.5);
     },
     _backgroundChanged: false,
     inputbackground: function (image) {

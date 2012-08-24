@@ -41,7 +41,37 @@ $(function(){
       });      
       this.$el.prepend(this.canvas);
     }
-    //,
+    // showResizer: function(translateX, translateY, scale, rotate){
+    //   if (!this.resizer) {
+    //     this.resizer = $('<div class="resizer">');
+    //     this.$el.append(this.resizer);        
+    //   }
+    //   var sizedScale = this.scale();
+    //   this.resizer
+    //     .css({
+    //       position: "absolute",
+    //       border: "1px solid black",
+    //       top: translateX * sizedScale,
+    //       left: translateY * sizedScale,
+    //       width: 20,
+    //       height: 20
+    //     });
+    //     // .hide();
+    //   var self = this;
+    //   // $(this.canvas)
+    //   //   .mouseover(function(){
+    //   //     self.resizer.show();
+    //   //   })
+    //   //   .mouseout(function(){
+    //   //     self.resizer.hide();
+    //   //   });
+    //   if (translateX || translateY) {
+    //     this.resizer.draggable({});
+    //   }
+    //   if (scale) {
+    //     this.resizer.resizable({});
+    //   }
+    // }
     // togglePreview: function(e){
     //   if (e.target.checked) {
     //     this.$el.prepend(this.canvas);
