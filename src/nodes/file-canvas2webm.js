@@ -11,6 +11,7 @@ $(function(){
     initializeModule: function(){      
       var self = this;
       if (window.Whammy) {
+        this.$('.info').text("ready");
         this._ready = true;
       } else {
         yepnope({
@@ -50,8 +51,11 @@ $(function(){
       this.$el.append(videoEl);
 
       // Info
-      var info = "Compiled "+this._frameCount+" frames to video in " + (end_time - start_time) + "ms, file size: " + Math.ceil(output.size / 1024) + "KB ";
-      info += '<a href="'+url+'" target="_blank">Download</a>';
+      var info = '<p>'+
+          'Compiled '+ this._frameCount +' frames to video in ' + (end_time - start_time) + 'ms, '+
+          'file size: '+ Math.ceil(output.size / 1024) +'KB '+
+          '<a href="'+url+'" target="_blank">Download</a> (add .webm)'+
+        '</p>';
       this.$el.append(info);
 
       // Set encoder to null, ready for next
