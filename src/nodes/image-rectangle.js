@@ -11,12 +11,6 @@ $(function(){
     initializeModule: function(){
       
     },
-    _backgroundChanged: false,
-    inputbackground: function (image) {
-      this._triggerRedraw = true;
-      this._background = image;
-      this._backgroundChanged = true;
-    },
     inputfill: function (color) {
       this._triggerRedraw = true;
       this._fill = color;
@@ -39,18 +33,41 @@ $(function(){
         this._triggerRedraw = true;
       }
     },
+    canvasSettings: function () {
+      this.context.fillStyle = this._fill;
+      this.context.strokeStyle = this._stroke;
+      this.context.lineWidth = this._strokewidth;
+    },
     redraw: function(){
       // Called from NodeBoxNativeView.renderAnimationFrame()
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      var setSettings = false;
       if (this._background) {
-        if (this._backgroundChanged && (this.canvas.width !== this._background.width || this.canvas.height !== this._background.height)) {
+        if (this.canvas.width !== this._background.width || this.canvas.height !== this._background.height) {
           this.canvas.width = this._background.width;
           this.canvas.height = this._background.height;
-          this._backgroundChanged = false;
+          setSettings = true;
         }
+      } else {
+        var width = this._w + 2*this._x;
+        if (this.canvas.width !== width) {
+          this.canvas.width = this._w + 2*this._x;
+          setSettings = true;
+        }
+        var height = this._h + 2*this._y;
+        if (this.canvas.height !== height) {
+          this.canvas.height = this._h + 2*this._y;
+          setSettings = true;
+        }
+      }
+      if (setSettings) {
+        this.canvasSettings();
+      }
+      // BG
+      if (this._background) {
         this.context.drawImage(this._background, 0, 0);
       }
-      // Rectangle
+      // Fill
       if (this._fill && this._fill!=="") {
         this.context.fillRect(this._x, this._y, this._w, this._h);  
       }
