@@ -4,3 +4,6 @@
 [submodule "libs/whammy"]
 	path = libs/whammy
 	url = git://github.com/antimatter15/whammy.git
+[submodule "libs/js-expression-eval"]
+	path = libs/js-expression-eval
+	url = git://github.com/silentmatt/js-expression-eval.git
