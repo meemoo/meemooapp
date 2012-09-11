@@ -9,8 +9,15 @@ $(function(){
       description: "webcam (HTML5 getUserMedia with Flash backup)"
     },
     initializeModule: function(){
+      // Mirror preview
+      $(this.canvas).css({
+        "-webkit-transform": "scale(-1, 1)",
+        "-moz-transform": "scale(-1, 1)",
+        "-o-transform": "scale(-1, 1)",
+        "transform": "scale(-1, 1)"        
+      });
       var self = this;
-      this.$(".info").append('<button class="startcamera">start camera</button>');
+      this.$el.prepend('<button class="startcamera">start camera</button>');
       this.$(".startcamera")
         .button()
         .click(function(){
@@ -24,14 +31,8 @@ $(function(){
 
       if (!this._video) {
         this._video = document.createElement("video");
-        // Will change if getUserMedia returns size
-        this._video.width = 640;
-        this._video.height = 480;
-        // Otherwise just one frame
         this._video.autoplay = true;
       }
-
-      this.setSizes();
 
       if ( !window.URL ) {
         window.URL = window.webkitURL || window.msURL || window.oURL;
@@ -41,17 +42,28 @@ $(function(){
       }
       if (navigator.getUserMedia) {
         var self = this;
+        $(this._video).on("loadedmetadata", function(e){
+          // Here we find the webcam's reported size
+          e.target.width = e.target.videoWidth;
+          e.target.height = e.target.videoHeight;
+          self.setSizes();
+        });
         navigator.getUserMedia( { video: true, audio: false }, function(stream){
-          if (window.URL.createObjectURL) {
-            self._video.src = window.URL.createObjectURL(stream);
-          } else {
+          if (navigator.mozGetUserMedia) {
+            // HACK for ff
             self._video.src = stream;
+            self._video.play();
+          } else {
+            if (window.URL.createObjectURL) {
+              self._video.src = window.URL.createObjectURL(stream);
+            } else {
+              self._video.src = stream;
+            }
           }
+          // Sets up frame draw interval
+          self.inputfps(self._fps);
           self._camStarted = true;
           self._triggerRedraw = true;
-          self._interval = window.setInterval( function(){
-            self.drawFrame();
-          }, 1000/20);
         }, function(error){
           console.error('An error occurred: [CODE ' + error.code + ']');
         });
@@ -59,28 +71,37 @@ $(function(){
     },
     videoCrop: { left:0, top:0, width:640, height:480 },
     setSizes: function(){
+      // Called from this._video loadedmetadata
       var w = this._width;
       var h = this._height;
       this.canvas.width = w;
       this.canvas.height = h;
-
       var ratio = w/h;
 
-      // Will change if getUserMedia returns size
-      if (ratio >= 4/3) {
-        this.videoCrop.width = 640;
-        this.videoCrop.height = 640/ratio;
+      var camRatio, vidWidth, vidHeight;
+      if (this._video && this._video.height) {
+        vidWidth = this._video.width;
+        vidHeight = this._video.height;
+        $(".info").text("Cam resolution: "+vidWidth+"x"+vidHeight+", output: "+w+"x"+h);
       } else {
-        this.videoCrop.width = 480*ratio;
-        this.videoCrop.height = 480;
+        vidWidth = 640;
+        vidHeight = 480;
       }
-      this.videoCrop.left = Math.floor((640-this.videoCrop.width)/2);
-      this.videoCrop.top = Math.floor((480-this.videoCrop.height)/2);
+      camRatio = vidWidth/vidHeight;
+
+      if (ratio >= camRatio) {
+        this.videoCrop.width = vidWidth;
+        this.videoCrop.height = vidWidth/ratio;
+      } else {
+        this.videoCrop.width = vidHeight*ratio;
+        this.videoCrop.height = vidHeight;
+      }
+      this.videoCrop.left = Math.floor((vidWidth-this.videoCrop.width)/2);
+      this.videoCrop.top = Math.floor((vidHeight-this.videoCrop.height)/2);
 
     },
     drawFrame: function(){
-      // Video seems locked to 4:3, so crop when drawing to canvas
-      // drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh)
+      if (!this._camStarted) { return false; }
       this.context.drawImage(this._video, this.videoCrop.left, this.videoCrop.top, this.videoCrop.width, this.videoCrop.height, 0, 0, this._width, this._height);
       this.send("stream", this.canvas);
       if (this.sendNext) {
@@ -102,6 +123,18 @@ $(function(){
       this._height = h;
       this.resetSizes = true;
       this._triggerRedraw = true;
+    },
+    inputfps: function(f){
+      if (f > 0 && f <= this.inputs.fps.max) {
+        this._fps = f;
+        if (this._interval) {
+          clearInterval(this._interval);
+        }
+        var self = this;
+        this._interval = window.setInterval( function(){
+          self.drawFrame();
+        }, 1000/this._fps);
+      }
     },
     disconnectEdge: function(edge) {
       // Called from Edge.disconnect();
@@ -131,6 +164,13 @@ $(function(){
         min: 1,
         max: 1080,
         "default": 240
+      },
+      fps: {
+        type: "number",
+        description: "frames per second to update the canvas",
+        min: 0,
+        max: 30,
+        "default": 20
       },
       send: {
         type: "bang",
