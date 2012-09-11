@@ -82,7 +82,7 @@ $(function(){
       if (this._video && this._video.height) {
         vidWidth = this._video.width;
         vidHeight = this._video.height;
-        $(".info").text("Cam resolution: "+vidWidth+"x"+vidHeight+", output: "+w+"x"+h);
+        this.$(".info").text("Cam resolution: "+vidWidth+"x"+vidHeight+", output: "+w+"x"+h);
       } else {
         vidWidth = 640;
         vidHeight = 480;
