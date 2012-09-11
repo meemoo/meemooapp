@@ -43,9 +43,6 @@ $(function(){
       if (navigator.getUserMedia) {
         var self = this;
         $(this._video).on("loadedmetadata", function(e){
-          // Here we find the webcam's reported size
-          e.target.width = e.target.videoWidth;
-          e.target.height = e.target.videoHeight;
           self.setSizes();
         });
         navigator.getUserMedia( { video: true, audio: false }, function(stream){
@@ -71,6 +68,22 @@ $(function(){
     },
     videoCrop: { left:0, top:0, width:640, height:480 },
     setSizes: function(){
+      if (this._video) {
+        // Here we find the webcam's reported size
+        this._video.width = this._video.videoWidth;
+        this._video.height = this._video.videoHeight;
+        if (!this._video.height) {
+          // Firefox takes its time; try again in 0.5s
+          var self = this;
+          window.setTimeout(function(){
+            self.setSizes();
+          }, 500);
+          return false;
+        }
+      } else {
+        return false;        
+      }
+
       // Called from this._video loadedmetadata
       var w = this._width;
       var h = this._height;
@@ -78,16 +91,11 @@ $(function(){
       this.canvas.height = h;
       var ratio = w/h;
 
-      var camRatio, vidWidth, vidHeight;
-      if (this._video && this._video.height) {
-        vidWidth = this._video.width;
-        vidHeight = this._video.height;
-        this.$(".info").text("Cam resolution: "+vidWidth+"x"+vidHeight+", output: "+w+"x"+h);
-      } else {
-        vidWidth = 640;
-        vidHeight = 480;
-      }
-      camRatio = vidWidth/vidHeight;
+      var vidWidth = this._video.width;
+      var vidHeight = this._video.height;
+      this.$(".info").text("Cam resolution: "+vidWidth+"x"+vidHeight+", output: "+w+"x"+h);
+
+      var camRatio = vidWidth/vidHeight;
 
       if (ratio >= camRatio) {
         this.videoCrop.width = vidWidth;
@@ -101,7 +109,7 @@ $(function(){
 
     },
     drawFrame: function(){
-      if (!this._camStarted) { return false; }
+      if (!this._camStarted || !this._video || !this._video.height) { return false; }
       this.context.drawImage(this._video, this.videoCrop.left, this.videoCrop.top, this.videoCrop.width, this.videoCrop.height, 0, 0, this._width, this._height);
       this.send("stream", this.canvas);
       if (this.sendNext) {
