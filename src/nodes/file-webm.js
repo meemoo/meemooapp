@@ -2,10 +2,10 @@
 
 $(function(){
 
-  Iframework.NativeNodes["file-canvas2webm"] = Iframework.NativeNodes["file"].extend({
+  Iframework.NativeNodes["file-webm"] = Iframework.NativeNodes["file"].extend({
 
     info: {
-      title: "canvas2webm",
+      title: "webm",
       description: "encode canvases to WebM video (requires WebP = Chrome only for now)"
     },
     initializeModule: function(){      
