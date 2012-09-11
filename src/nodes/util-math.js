@@ -15,7 +15,7 @@ $(function(){
     initializeModule: function(){
       var self = this;
       // WTF Firefox has an empty Parser object?
-      if (Parser && Parser.parse) {
+      if (window.Parser && Parser.parse) {
         // Ready
         if (this._equation) {
           this.inputequation(this._equation);
@@ -31,7 +31,7 @@ $(function(){
     },
     _expression: null,
     inputequation: function(s) {
-      if (Parser && Parser.parse) {
+      if (window.Parser && Parser.parse) {
         try {
           this._expression = Parser.parse(s);
           // For some reason immediate evaluate() without values causes this to throw 
