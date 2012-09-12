@@ -63,7 +63,7 @@ $(function(){
           self._triggerRedraw = true;
         }, function(error){
           console.error("Browser doesn't support getUserMedia webcam.");
-          this.setupPlaceholderVideo();
+          self.setupPlaceholderVideo();
         });
       } else {
         this.setupPlaceholderVideo();
