@@ -27,11 +27,15 @@ $(function(){
     },
     _camStarted: false,
     startCam: function(){
+      var self = this;
       this.$(".startcamera").remove();
 
       if (!this._video) {
         this._video = document.createElement("video");
         this._video.autoplay = true;
+        $(this._video).on("loadedmetadata", function(e){
+          self.setSizes();
+        });
       }
 
       if ( !window.URL ) {
@@ -41,10 +45,6 @@ $(function(){
         navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || false;
       }
       if (navigator.getUserMedia) {
-        var self = this;
-        $(this._video).on("loadedmetadata", function(e){
-          self.setSizes();
-        });
         navigator.getUserMedia( { video: true, audio: false }, function(stream){
           if (navigator.mozGetUserMedia) {
             // HACK for ff
@@ -62,9 +62,28 @@ $(function(){
           self._camStarted = true;
           self._triggerRedraw = true;
         }, function(error){
-          console.error('An error occurred: [CODE ' + error.code + ']');
+          console.error("Browser doesn't support getUserMedia webcam.");
+          this.setupPlaceholderVideo();
         });
+      } else {
+        this.setupPlaceholderVideo();
       }
+    },
+    setupPlaceholderVideo: function(){
+      // Video file instead of webcam
+      $(this._video).attr({
+        "autoplay": "true",
+        "loop": "true",
+        "src": "img/no-webcam.webm"
+      }).on('ended', function(){
+        this.play();
+      });
+      // Sets up frame draw interval
+      this.inputfps(20);
+      this._camStarted = true;
+      this._triggerRedraw = true;
+
+      console.log(this._video);
     },
     videoCrop: { left:0, top:0, width:640, height:480 },
     setSizes: function(){
