@@ -62,10 +62,11 @@ $(function(){
           self._camStarted = true;
           self._triggerRedraw = true;
         }, function(error){
-          console.error("Browser doesn't support getUserMedia webcam.");
+          console.warn("User denied webcam access.");
           self.setupPlaceholderVideo();
         });
       } else {
+        console.warn("Browser doesn't support getUserMedia webcam.");
         this.setupPlaceholderVideo();
       }
     },
@@ -82,8 +83,6 @@ $(function(){
       this.inputfps(20);
       this._camStarted = true;
       this._triggerRedraw = true;
-
-      console.log(this._video);
     },
     videoCrop: { left:0, top:0, width:640, height:480 },
     setSizes: function(){
