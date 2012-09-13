@@ -49,7 +49,7 @@ $(function(){
       this.$el.html(this.template(this.model));
       return this;
     },
-    redraw: function () {
+    redraw: function (timestamp) {
       // Do everything that will cause a redraw here
     },
     _triggerRedraw: false,
