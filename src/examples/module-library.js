@@ -59,7 +59,8 @@ $(function(){
     "native---experimental": [
       {"src":"meemoo:image/transform","info":{"title":"transform","author":"forresto","description":"scale, translate, and/or rotate image (centered)"}},
       {"src":"meemoo:image/rectangle","info":{"title":"rectangle","author":"forresto","description":"draw a rectangle"}},
-      {"src":"meemoo:image/cam","info":{"title":"cam","author":"forresto","description":"(Chrome only) HTML5 webcam with getUserMedia."}},
+      {"src":"meemoo:image/cam","info":{"title":"cam","author":"forresto","description":"HTML5 webcam with getUserMedia."}},
+      {"src":"meemoo:image/grid","info":{"title":"grid","author":"forresto","description":"images stack up in a grid"}},
       {"src":"meemoo:file/image","info":{"title":"image-in","author":"forresto","description":"Public image url to get the canvas pixel data."}},
       {"src":"meemoo:file/webm","info":{"title":"webm","author":"antimatter15","description":"(Chrome only) Canvas to WebM video encoder thanks to antimatter15/whammy."}},
       {"src":"meemoo:time/tween","info":{"title":"tween","author":"sole","description":"Interpolate between two values."}},
