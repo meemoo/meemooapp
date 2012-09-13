@@ -11,14 +11,19 @@ $(function(){
     initializeModule: function(){
       // this.showResizer(20,20,0.5);
     },
-    _backgroundChanged: false,
-    inputbackground: function (image) {
-      this._background = image;
-      this._backgroundChanged = true;
-      this._triggerRedraw = true;
-    },
     inputrotate: function (percent) {
       this._rotate = percent * 2 * Math.PI;
+      this._triggerRedraw = true;
+    },
+    _sizeChanged: false,
+    inputwidth: function (i) {
+      this._width = i;
+      this._sizeChanged = true;
+      this._triggerRedraw = true;
+    },
+    inputheight: function (i) {
+      this._height = i;
+      this._sizeChanged = true;
       this._triggerRedraw = true;
     },
     disconnectEdge: function(edge) {
@@ -34,13 +39,17 @@ $(function(){
     },
     redraw: function(){
       // Called from NodeBoxNativeView.renderAnimationFrame()
+      if (this._sizeChanged) {
+        if (this.canvas.width !== this._width) {
+          this.canvas.width = this._width;
+        }
+        if (this.canvas.height !== this._height) {
+          this.canvas.height = this._height;
+        }
+        this._sizeChanged = false;
+      }
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
       if (this._background) {
-        if (this._backgroundChanged && (this.canvas.width !== this._background.width || this.canvas.height !== this._background.height)) {
-          this.canvas.width = this._background.width;
-          this.canvas.height = this._background.height;
-          this._backgroundChanged = false;
-        }
         this.context.drawImage(this._background, 0, 0);
       }
       if (this._image) {
@@ -71,6 +80,18 @@ $(function(){
       image: {
         type: "image",
         description: "image to center and transform"
+      },
+      width: {
+        type: "int",
+        description: "canvas width",
+        min: 1,
+        "default": 500
+      },
+      height: {
+        type: "int",
+        description: "canvas height",
+        min: 1,
+        "default": 500
       },
       scale: {
         type: "float",

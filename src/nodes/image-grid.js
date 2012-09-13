@@ -71,10 +71,14 @@ $(function(){
     },
     _regrid: false,
     regrid: function() {
-      if (this.canvas.width !== this._width || this.canvas.height !== this._height) {
+      // Canvas size size
+      if (this.canvas.width !== this._width) {
         this.canvas.width = this._width;
+      }
+      if (this.canvas.height !== this._height) {
         this.canvas.height = this._height;
       }
+      // Reset tile sizes
       this._tileWidth = Math.floor(this._width / this._columns);
       this._tileHeight = Math.floor(this._height / this._rows);
       this._tileCount = this._rows * this._columns;
@@ -90,7 +94,7 @@ $(function(){
         this.regrid();
       }
       if (this._clear) {
-        this.context.clearRect(0, 0, this._width, this._height);
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this._clear = false;
       }
       if (this._image) {
@@ -134,11 +138,13 @@ $(function(){
       width: {
         type: "int",
         description: "grid width",
+        min: 1,
         "default": 500
       },
       height: {
         type: "int",
         description: "grid height",
+        min: 1,
         "default": 500
       },
       rows: {
