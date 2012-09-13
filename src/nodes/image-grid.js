@@ -81,7 +81,7 @@ $(function(){
       if (this._tiles.length>this._tileCount) {
         this._tiles = this._tiles.splice(0,this._tileCount);
       }
-      this._clear = true;
+      this.inputclear();
       this._regrid = false;
     },
     redraw: function(){
