@@ -18,9 +18,17 @@ $(function(){
     inputimage: function (image) {
       this._image = image;
       var data = image.getContext('2d').getImageData(0, 0, this._tileWidth, this._tileHeight);
-      this._tiles.unshift(data);
+      if (this._reverse) {
+        this._tiles.unshift(data);
+      } else {
+        this._tiles.push(data);
+      }
       if (this._tiles.length>this._tileCount) {
-        this._tiles.pop();
+        if (this._reverse) {
+          this._tiles.pop();
+        } else {
+          this._tiles.shift();
+        }
       }
       this._triggerRedraw = true;
     },
@@ -44,6 +52,20 @@ $(function(){
       this._regrid = true;
       this._triggerRedraw = true;
     },
+    _reverse: false,
+    inputreverse: function (boo) {
+      if (boo !== this._reverse) {
+        this._tiles = this._tiles.reverse();
+      }
+      this._reverse = boo;
+      this._triggerRedraw = true;
+    },
+    _clear: false,
+    inputclear: function () {
+      this._clear = true;
+      this._tiles = [];
+      this._triggerRedraw = true;
+    },
     inputsend: function () {
       this.send("image", this.canvas);
     },
@@ -59,12 +81,17 @@ $(function(){
       if (this._tiles.length>this._tileCount) {
         this._tiles = this._tiles.splice(0,this._tileCount);
       }
+      this._clear = true;
       this._regrid = false;
     },
     redraw: function(){
       // Called from NodeBoxNativeView.renderAnimationFrame()
       if (this._regrid) {
         this.regrid();
+      }
+      if (this._clear) {
+        this.context.clearRect(0, 0, this._width, this._height);
+        this._clear = false;
       }
       if (this._image) {
         // Too expensive
@@ -123,6 +150,15 @@ $(function(){
         type: "int",
         description: "grid column count",
         "default": 10
+      },
+      reverse: {
+        type: "boolean",
+        description: "if true, most recent in upper-left",
+        "default": false
+      },
+      clear: {
+        type: "bang",
+        description: "clear the image and tiles"
       },
       send: {
         type: "bang",
