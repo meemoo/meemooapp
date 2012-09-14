@@ -41,6 +41,7 @@ module.exports = function(grunt) {
           'src/port-view.js',
           'src/port-in.js',
           'src/port-in-view.js',
+          'src/port-in-image.js',
           'src/port-out.js',
           'src/port-out-view.js',
           'src/port-out-image.js',

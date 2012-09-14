@@ -77,7 +77,12 @@ $(function(){
         replace.set(info);
         return;
       }
-      var newPort = new Iframework.PortIn(info);
+      var newPort;
+      if (info.type === "image") {
+        newPort = new Iframework.PortInImage(info); 
+      } else {
+        newPort = new Iframework.PortIn(info);
+      }
       newPort.isIn = true;
       newPort.node = this;
       newPort.graph = this.graph;

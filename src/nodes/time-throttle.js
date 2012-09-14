@@ -16,11 +16,14 @@ $(function(){
       this.$(".info").text(fps+"fps, "+Math.round(this._ms*100)/100+"ms");
     },
     _lastTime: 0,
-    redraw: function(timestamp){
+    inputdata: function(data){
+      var timestamp = Date.now();
       if(timestamp-this._lastTime >= this._ms) {
-        this.send("data", this._data);
+        this.send("data", data);
         this._lastTime = timestamp;
       }
+    },
+    redraw: function(timestamp){
     },
     inputs: {
       data: {
