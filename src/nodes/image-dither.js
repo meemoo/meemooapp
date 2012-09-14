@@ -44,7 +44,8 @@ $(function(){
 
     info: {
       title: "dither",
-      description: "atkinson dither thanks to flickr https://github.com/flickr/FlickrDithr/blob/master/dither.js"
+      author: "ticky",
+      description: "atkinson halftone dither thanks to ticky https://github.com/ticky/canvas-dither/blob/master/canvas-image-worker.js"
     },
     initializeModule: function(){
       
