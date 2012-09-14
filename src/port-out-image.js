@@ -61,7 +61,6 @@ $(function(){
           //   edge.Target.receive(updatedCanvas);
           } else {
             // Don't convert for native->native or iframe->iframe
-            // TODO webgl context? http://www.khronos.org/message_boards/viewtopic.php?f=43&t=3124
             edge.Target.receive(message);            
           }
         });
