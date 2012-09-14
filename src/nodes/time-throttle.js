@@ -1,5 +1,3 @@
-/*global TWEEN:true*/
-
 // extends src/nodes/time.js which extends src/node-box-native-view.js
 
 $(function(){
@@ -19,7 +17,6 @@ $(function(){
     },
     _lastTime: 0,
     redraw: function(timestamp){
-      // timestamp = Date.now();
       if(timestamp-this._lastTime >= this._ms) {
         this.send("data", this._data);
         this._lastTime = timestamp;
