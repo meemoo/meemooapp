@@ -57,9 +57,10 @@ $(function(){
       {"src":"http://forresto.github.com/meemoo-speak.js/text2speech.html","info":{"title":"text2speech","author":"forresto","description":"text to speech with speak.js"}}
     ],
     "native---experimental": [
-      {"src":"meemoo:image/transform","info":{"title":"transform","author":"forresto","description":"scale, translate, and/or rotate image (centered)"}},
-      {"src":"meemoo:image/rectangle","info":{"title":"rectangle","author":"forresto","description":"draw a rectangle"}},
-      {"src":"meemoo:image/cam","info":{"title":"cam","author":"forresto","description":"HTML5 webcam with getUserMedia."}},
+      {"src":"meemoo:image/transform","info":{"title":"transform","author":"meemoo","description":"scale, translate, and/or rotate image (centered)"}},
+      {"src":"meemoo:image/fit","info":{"title":"fit","author":"meemoo","description":"scale and crop an image to fit the given size. easy way to make thumbnails."}},
+      {"src":"meemoo:image/rectangle","info":{"title":"rectangle","author":"meemoo","description":"draw a rectangle"}},
+      {"src":"meemoo:image/cam","info":{"title":"cam","author":"meemoo","description":"HTML5 webcam with getUserMedia."}},
       {"src":"meemoo:image/grid","info":{"title":"grid","author":"forresto","description":"images stack up in a grid"}},
       {"src":"meemoo:image/monochrome","info":{"title":"monochrome","author":"ticky+flickr+forresto","description":"monochrome by atkinson, bayer, floydsteinberg, or no dither"}},
       {"src":"meemoo:file/image","info":{"title":"image-in","author":"forresto","description":"Public image url to get the canvas pixel data."}},

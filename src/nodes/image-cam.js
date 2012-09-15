@@ -16,6 +16,7 @@ $(function(){
         "-o-transform": "scale(-1, 1)",
         "transform": "scale(-1, 1)"        
       });
+      this._crop = { left:0, top:0, width:640, height:480 };
       var self = this;
       this.$el.prepend('<button class="startcamera">start camera</button>');
       this.$(".startcamera")
@@ -84,7 +85,6 @@ $(function(){
       this._camStarted = true;
       this._triggerRedraw = true;
     },
-    videoCrop: { left:0, top:0, width:640, height:480 },
     setSizes: function(){
       if (this._video) {
         // Here we find the webcam's reported size
@@ -116,19 +116,20 @@ $(function(){
       var camRatio = vidWidth/vidHeight;
 
       if (ratio >= camRatio) {
-        this.videoCrop.width = vidWidth;
-        this.videoCrop.height = vidWidth/ratio;
+        this._crop.width = vidWidth;
+        this._crop.height = vidWidth/ratio;
+        this._crop.left = 0;
+        this._crop.top = Math.floor((vidHeight-this._crop.height)/2);
       } else {
-        this.videoCrop.width = vidHeight*ratio;
-        this.videoCrop.height = vidHeight;
+        this._crop.width = vidHeight*ratio;
+        this._crop.height = vidHeight;
+        this._crop.left = Math.floor((vidWidth-this._crop.width)/2);
+        this._crop.top = 0;
       }
-      this.videoCrop.left = Math.floor((vidWidth-this.videoCrop.width)/2);
-      this.videoCrop.top = Math.floor((vidHeight-this.videoCrop.height)/2);
-
     },
     drawFrame: function(){
       if (!this._camStarted || !this._video || !this._video.height) { return false; }
-      this.context.drawImage(this._video, this.videoCrop.left, this.videoCrop.top, this.videoCrop.width, this.videoCrop.height, 0, 0, this._width, this._height);
+      this.context.drawImage(this._video, this._crop.left, this._crop.top, this._crop.width, this._crop.height, 0, 0, this._width, this._height);
       this.send("stream", this.canvas);
       if (this.sendNext) {
         this.send("image", this.canvas);

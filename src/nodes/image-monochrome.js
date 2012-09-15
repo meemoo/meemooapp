@@ -13,13 +13,29 @@ $(function(){
     [ 16,  8, 14,  6 ]
   ];
 
+  var bayerThresholdMap = [
+    [  15, 135,  45, 165 ],
+    [ 195,  75, 225, 105 ],
+    [  60, 180,  30, 150 ],
+    [ 240, 120, 210,  90 ]
+  ];
+
+  var lumR = [];
+  var lumG = [];
+  var lumB = [];
+  for (var i=0; i<256; i++) {
+    lumR[i] = i*0.299;
+    lumG[i] = i*0.587;
+    lumB[i] = i*0.114;
+  }
+
   function monochrome(imageData, threshold, type){
 
     var imageDataLength = imageData.data.length;
 
     // Greyscale luminance (sets r pixels to luminance of rgb)
     for (var i = 0; i <= imageDataLength; i += 4) {
-      imageData.data[i] = Math.floor(imageData.data[i] * 0.299 + imageData.data[i+1] * 0.587 + imageData.data[i+2] * 0.114);
+      imageData.data[i] = Math.floor(lumR[imageData.data[i]] + lumG[imageData.data[i+1]] + lumB[imageData.data[i+2]]);
     }
 
     var w = imageData.width;
@@ -34,11 +50,11 @@ $(function(){
         // 4x4 Bayer ordered dithering algorithm
         var x = currentPixel/4 % w;
         var y = Math.floor(currentPixel/4 / w);
-        var map = bayerMap[x%4][y%4]; // 1
-        imageData.data[currentPixel] = Math.floor(imageData.data[currentPixel]) < Math.floor(map/17*threshold*2) ? 0 : 255;
+        var map = Math.floor( (imageData.data[currentPixel] + bayerThresholdMap[x%4][y%4]) / 2 );
+        imageData.data[currentPixel] = (map < threshold) ? 0 : 255;
       } else if (type === "floydsteinberg") {
         // Floyd–Steinberg dithering algorithm
-        newPixel = imageData.data[currentPixel] < threshold ? 0 : 255;
+        newPixel = imageData.data[currentPixel] < 129 ? 0 : 255;
         err = Math.floor((imageData.data[currentPixel] - newPixel) / 16);
         imageData.data[currentPixel] = newPixel;
 
@@ -75,6 +91,10 @@ $(function(){
       description: "monochrome by atkinson, bayer, floydsteinberg, or no dither"
     },
     initializeModule: function(){
+      // Don't do max-width:100%, messes up look of dither
+      $(this.canvas).attr({
+        "style": ""
+      });
     },
     disconnectEdge: function(edge) {
       // Called from Edge.disconnect();
