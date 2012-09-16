@@ -90,6 +90,9 @@ $(function(){
         edge.Target.view.resetRelatedEdges();
       }
     },
+    remove: function(){
+      this.$el.remove();
+    },
     removeNode: function (node) {
       if (node.view) {
         node.view.remove();

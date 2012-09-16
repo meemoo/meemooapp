@@ -132,8 +132,18 @@ $(function(){
         this.graph.trigger("change");
       }
     },
-    remove: function () {
-      this.graph.removeNode(this);
+    remove: function (fromView) {
+      if (fromView) {
+        // Called from NodeBoxView.removeModel
+        // User initiated undo, so make it undoable
+        this.graph.removeNode(this);
+      } else {
+        // Called from Graph.remove
+        // Just remove it
+        if (this.view) {
+          this.view.remove();
+        }
+      }
     },
     setValue: function(info) {
       for (var name in info) {

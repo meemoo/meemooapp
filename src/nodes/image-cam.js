@@ -27,6 +27,7 @@ $(function(){
       // this.startCam();
     },
     _camStarted: false,
+    _placeholderWarning: null,
     startCam: function(){
       var self = this;
       this.$(".startcamera").remove();
@@ -47,6 +48,7 @@ $(function(){
       }
       if (navigator.getUserMedia) {
         navigator.getUserMedia( { video: true, audio: false }, function(stream){
+          self._stream = stream;
           if (navigator.mozGetUserMedia) {
             // HACK for ff
             self._video.src = stream;
@@ -63,11 +65,11 @@ $(function(){
           self._camStarted = true;
           self._triggerRedraw = true;
         }, function(error){
-          console.warn("User denied webcam access.");
+          self._placeholderWarning = "(denied webcam access)";
           self.setupPlaceholderVideo();
         });
       } else {
-        console.warn("Browser doesn't support getUserMedia webcam.");
+        this._placeholderWarning = "(browser doesn't support getUserMedia webcam)";
         this.setupPlaceholderVideo();
       }
     },
@@ -111,7 +113,11 @@ $(function(){
 
       var vidWidth = this._video.width;
       var vidHeight = this._video.height;
-      this.$(".info").text("Cam resolution: "+vidWidth+"x"+vidHeight+", output: "+w+"x"+h);
+      var info = "Cam resolution: "+vidWidth+"x"+vidHeight+", output: "+w+"x"+h;
+      if (this._placeholderWarning) {
+        info += " "+this._placeholderWarning;
+      }
+      this.$(".info").text(info);
 
       var camRatio = vidWidth/vidHeight;
 
@@ -168,6 +174,14 @@ $(function(){
       if (edge.Target.id === "background") {
         this._background = null;
         this._triggerRedraw = true;
+      }
+    },
+    remove: function(){
+      if (this._stream) {
+        this._stream.stop();
+      }
+      if (this._interval) {
+        clearInterval(this._interval);
       }
     },
     redraw: function(){

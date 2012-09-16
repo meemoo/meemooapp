@@ -188,6 +188,15 @@ $(function(){
         return this.get("edges").add(edge);
       }
     },
+    remove: function() {
+      // Called from IframeworkView.loadGraph
+      this.get("nodes").each(function(node){
+        node.remove(false);
+      });
+      if (this.view) {
+        this.view.remove();
+      }
+    },
     removeNode: function (node) {
       var connected = [];
 

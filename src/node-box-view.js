@@ -253,9 +253,10 @@ $(function(){
       this.$(".controls").hide();
     },
     removeModel: function () {
-      this.model.remove();
+      this.model.remove(true);
     },
     remove: function () {
+      // Called from GraphView.removeNode
       if (this.Native) {
         this.Native.remove();
       }

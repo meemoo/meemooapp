@@ -146,9 +146,8 @@ $(function(){
       return color;
     },
     loadGraph: function (graph) {
-      if (this.shownGraph && this.shownGraph.view) {
-        this.shownGraph.view.$el.remove();
-        this.shownGraph.view = null;
+      if (this.shownGraph) {
+        this.shownGraph.remove();
         this.shownGraph = null;
       }
       this.wireColorIndex = 0;
