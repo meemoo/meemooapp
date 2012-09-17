@@ -8,6 +8,10 @@ $(function(){
       title: "cam",
       description: "webcam (HTML5 getUserMedia with Flash backup)"
     },
+    events: {
+      "click .startcamera": "startCam"
+      // "click .chooseimage": "chooseImage"
+    },
     initializeModule: function(){
       // Mirror preview
       $(this.canvas).css({
@@ -19,18 +23,28 @@ $(function(){
       this._crop = { left:0, top:0, width:640, height:480 };
       var self = this;
       this.$el.prepend('<button class="startcamera">start camera</button>');
-      this.$(".startcamera")
-        .button()
-        .click(function(){
-          self.startCam();
+      this.$(".startcamera").button();
+      // this.$el.prepend('<button class="chooseimage">choose image</button>');
+      // this.$(".choose").button();
+
+      if ( !window.URL ) {
+        window.URL = window.webkitURL || window.msURL || window.oURL;
+      }
+      if ( !navigator.getUserMedia ) {
+        navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || false;
+      }
+      if ( !navigator.getUserMedia ) {
+        this.$(".startcamera").button({
+          label: "demo video"
         });
-      // this.startCam();
+      }
+
     },
     _camStarted: false,
     _placeholderWarning: null,
     startCam: function(){
       var self = this;
-      this.$(".startcamera").remove();
+      this.$("button").hide();
 
       if (!this._video) {
         this._video = document.createElement("video");
@@ -40,12 +54,6 @@ $(function(){
         });
       }
 
-      if ( !window.URL ) {
-        window.URL = window.webkitURL || window.msURL || window.oURL;
-      }
-      if ( !navigator.getUserMedia ) {
-        navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || false;
-      }
       if (navigator.getUserMedia) {
         navigator.getUserMedia( { video: true, audio: false }, function(stream){
           self._stream = stream;
@@ -62,28 +70,35 @@ $(function(){
           }
           // Sets up frame draw interval
           self.inputfps(self._fps);
+          self._placeholderWarning = null;
           self._camStarted = true;
           self._triggerRedraw = true;
         }, function(error){
+          this.$(".startcamera").show();
           self._placeholderWarning = "(denied webcam access)";
           self.setupPlaceholderVideo();
         });
       } else {
-        this._placeholderWarning = "(browser doesn't support getUserMedia webcam)";
+        this._placeholderWarning = "(no getUserMedia webcam)";
         this.setupPlaceholderVideo();
       }
     },
     setupPlaceholderVideo: function(){
       // Video file instead of webcam
-      $(this._video).attr({
-        "autoplay": "true",
-        "loop": "true",
-        "src": "img/no-webcam.webm"
-      }).on('ended', function(){
-        this.play();
-      });
+      $(this._video)
+        .attr({
+          "autoplay": "true",
+          "loop": "true"
+        })
+        .html(
+          '<source src="img/no-webcam.mp4" type="video/mp4" />'+
+          '<source src="img/no-webcam.webm" type="video/webm" />'
+        )
+        .on('ended', function(){
+          this.play();
+        });
       // Sets up frame draw interval
-      this.inputfps(20);
+      this.inputfps(10);
       this._camStarted = true;
       this._triggerRedraw = true;
     },
