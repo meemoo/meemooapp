@@ -36,10 +36,11 @@ $(function(){
     _tween: null,
     _tweenVals: {},
     setupTween: function(){
+      var ease = this._ease;
       if (this._type === "Linear" && this._ease !== "None") {
-        this._ease = "None";
+        ease = "None";
       }
-      if (!!window.TWEEN && TWEEN.Easing.hasOwnProperty(this._type) && TWEEN.Easing[this._type].hasOwnProperty(this._ease)) {
+      if (!!window.TWEEN && TWEEN.Easing.hasOwnProperty(this._type) && TWEEN.Easing[this._type].hasOwnProperty(ease)) {
         // Restart tween if currently playing
         var restart = false;
         if (this._tween && this._tween.playing) {
@@ -48,13 +49,13 @@ $(function(){
           restart = true;
         }
 
-        var tweeningFunction = TWEEN.Easing[this._type][this._ease];
+        var tweeningFunction = TWEEN.Easing[this._type][ease];
 
-        this.$(".function").text(this._type+"."+this._ease);
+        this.$(".function").text(this._type+"."+ease);
         this.$(".tween-in").text(this._from);
         this.$(".tween-out").text(this._to);
         this.$(".tween-duration").text(this._duration);
-        this.$(".tween-view").attr({src:"libs/Tween/"+this._type+"."+this._ease+".png"});
+        this.$(".tween-view").attr({src:"libs/Tween/"+this._type+"."+ease+".png"});
 
         this._tweenVals.x = this._reversing ? this._to : this._from;
         var self = this;
