@@ -126,7 +126,7 @@ $(function(){
         }
       });
 
-      if (event) {
+      if (event && ui) {
         // Drag is coming from this module
         // Move other modules
         var others = this.model.graph.view._selected;
