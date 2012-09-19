@@ -32,9 +32,7 @@ $(function(){
       "click .module, .title": "click",
       "click .showcontrols": "showControls",
       "click .hidecontrols": "hideControls",
-      "click .remove":       "removeModel"//,
-      // "selectableselected .module": "selected",
-      // "selectableunselected .module": "unselected"
+      "click .remove":       "removeModel"
     },
     initialize: function () {
       this.render();
@@ -211,6 +209,11 @@ $(function(){
       });
       this.$(".module")
         .css("z-index", topZ+1);
+
+      if (event) {
+        // Don't select
+        event.stopPropagation();
+      }
 
     },
     click: function (event) {
