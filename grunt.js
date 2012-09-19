@@ -87,7 +87,7 @@ module.exports = function(grunt) {
         "Backbone": true,
         "yepnope": true,
         "Iframework": true,
-        "_gaq": true,
+        // "_gaq": true,
         "Mousetrap": true
       }
     },
