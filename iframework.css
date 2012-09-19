@@ -102,9 +102,10 @@ div.module {
   z-index:2;
 }
   div.module.ui-selected {
-    border: 1px #333 solid;
+    border: 3px #BDBDBD solid;
+    border-top: 1px #333 solid;
+    border-left: 1px #333 solid;
     background-color: #FFF;
-    outline: 3px solid #BDBDBD;
   }
   div.module.ui-selecting {
     border: 1px #333 solid;
