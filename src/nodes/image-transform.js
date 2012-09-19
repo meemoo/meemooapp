@@ -50,6 +50,7 @@ $(function(){
       }
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
       if (this._background) {
+        this.context.globalCompositeOperation = 'source-over';
         this.context.drawImage(this._background, 0, 0);
       }
       if (this._image) {
@@ -57,6 +58,8 @@ $(function(){
         var height = this._image.height * this._scale;
         var x = this.canvas.width/2 + this._translateX;
         var y = this.canvas.height/2 + this._translateY;
+        
+        this.context.globalCompositeOperation = this._composite;
 
         // context.save();
         this.context.translate(x, y);
@@ -112,6 +115,12 @@ $(function(){
         type: "float",
         description: "rotate percentage",
         "default": 0
+      },
+      composite: {
+        type: "string",
+        description: "'source-over', 'source-in', 'source-out', 'source-atop', 'destination-over', 'destination-in', 'destination-out', 'destination-atop', 'lighter', 'darker', 'copy', 'xor' see https://developer.mozilla.org/samples/canvas-tutorial/6_1_canvas_composite.html for examples",
+        options: ['source-over', 'source-in', 'source-out', 'source-atop', 'destination-over', 'destination-in', 'destination-out', 'destination-atop', 'lighter', 'darker', 'copy', 'xor'],
+        "default": "source-over"
       },
       // clear: {
       //   type: "bang",
