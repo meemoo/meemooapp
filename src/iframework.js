@@ -706,7 +706,7 @@ $(function(){
     },
     analyze: function (group, type, id) {
       // Google analytics
-      _gaq.push(['_trackEvent', group, type, id]);
+      // _gaq.push(['_trackEvent', group, type, id]);
     }
 
   });
