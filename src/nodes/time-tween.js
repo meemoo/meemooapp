@@ -40,6 +40,9 @@ $(function(){
       if (this._type === "Linear" && this._ease !== "None") {
         ease = "None";
       }
+      if (this._type !== "Linear" && this._ease === "None") {
+        ease = "InOut";
+      }
       if (!!window.TWEEN && TWEEN.Easing.hasOwnProperty(this._type) && TWEEN.Easing[this._type].hasOwnProperty(ease)) {
         // Restart tween if currently playing
         var restart = false;
