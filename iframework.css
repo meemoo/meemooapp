@@ -104,7 +104,7 @@ div.module {
   div.module.ui-selected {
     border: 1px #333 solid;
     background-color: #FFF;
-    outline: 3px solid #7F7F7F;
+    outline: 3px solid #BDBDBD;
   }
   div.module.ui-selecting {
     border: 1px #333 solid;
