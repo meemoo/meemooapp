@@ -34,6 +34,7 @@ $(function(){
         })
         .selectable({
           filter: ".module",
+          // distance: 1,
           delay: 20
         });
 

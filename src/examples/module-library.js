@@ -20,7 +20,7 @@ $(function(){
       {"src":"meemoo:util/math","info":{"title":"math","author":"silentmatt","description":"math equation evaluator"}}
     ],
     file: [
-      // {"src":"meemoo:file/image","info":{"title":"image-in","author":"forresto","description":"Public image url to get the canvas pixel data."}},
+      {"src":"meemoo:file/image","info":{"title":"image-in","author":"forresto","description":"Public image url to get the canvas pixel data."}},
       {"src":"meemoo:file/webm","info":{"title":"webm","author":"antimatter15","description":"(Chrome only) Canvas to WebM video encoder thanks to antimatter15/whammy."}}
     ],
     flow: [
