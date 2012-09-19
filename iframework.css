@@ -102,11 +102,11 @@ div.module {
   z-index:2;
 }
   div.module.ui-selected {
-    border: 3px #BDBDBD solid;
-    border-top: 1px #333 solid;
-    border-left: 1px #333 solid;
-    background-color: #FFF;
+    border: 1px #333 solid;
   }
+    div.module.ui-selected .outer {
+      outline: 3px #999 solid;
+    }
   div.module.ui-selecting {
     border: 1px #333 solid;
     background-color: #FFFFE9;
@@ -154,6 +154,13 @@ div.module {
       width: 18px;
       height: 18px;
     }
+  div.module .outer {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+  }
   div.module .inner {
     border: 1px #AAA solid;
     position: absolute;

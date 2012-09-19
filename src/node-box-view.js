@@ -2,6 +2,7 @@ $(function(){
 
   var template = 
     '<div class="module" style="left:<%= get("x")-10 %>px;top:<%= get("y")-30 %>px;width:<%= get("w")+20 %>px;height:<%= get("h")+40 %>px;" >'+
+      '<div class="outer"></div>'+
       '<div class="ports ports-in"></div>'+
       '<div class="ports ports-out"></div>'+
       '<h1 class="title">...</h1>'+
@@ -10,8 +11,7 @@ $(function(){
         '<button type="button" class="remove">remove</button>'+
         '<button type="button" class="hidecontrols">hide controls</button>'+
       '</div>'+
-      '<div class="inner">'+
-      '</div>'+
+      '<div class="inner"></div>'+
     '</div>';
 
   // var innerTemplate = '<div class="info" />';
