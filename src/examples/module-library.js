@@ -9,6 +9,7 @@ $(function(){
       {"src":"meemoo:image/transform","info":{"title":"transform","author":"meemoo","description":"scale, translate, and/or rotate image (centered)"}},
       {"src":"meemoo:image/fit","info":{"title":"fit","author":"meemoo","description":"scale and crop an image to fit the given size. easy way to make thumbnails."}},
       {"src":"meemoo:image/rectangle","info":{"title":"rectangle","author":"meemoo","description":"draw a rectangle"}}
+      {"src":"meemoo:video/player","info":{"title":"video","author":"meemoo","description":"HTML5 video player"}},
     ],
     effects: [
       {"src":"meemoo:image/grid","info":{"title":"grid","author":"forresto","description":"images stack up in a grid"}},

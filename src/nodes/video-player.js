@@ -3,7 +3,7 @@
 $(function(){
 
   var template = 
-    '<video id="video-<%= id %>" class="video" crossorigin="anonymous" style="max-width:100%;" /><br />'+
+    '<video id="video-<%= id %>" class="video" controls="true" autoplay="true" style="max-width:100%;" /><br />'+
     '<button class="play">play</button>'+
     '<button class="pause">pause</button>'+
     '<button class="back">back</button>'+
@@ -24,27 +24,34 @@ $(function(){
       "click .forward": "inputforward"
     },
     initializeModule: function(){
-      this.canvas = document.createElement("canvas");
-      this.context = this.canvas.getContext('2d');
       this.$("button").button();
 
       this._video = this.$("video")[0];
-      this._video.autoplay = true;
-      this._video.controls = true;
+      this._video.crossOrigin = "anonymous";
+      this._video.crossorigin = "anonymous"; // moz bug?
       var self = this;
       $(this._video).on("loadedmetadata", function(e){
         self.loadedMetadata();
       });
     },
     inputurl: function(url){
-      this._url = url;
-      // Multiple sources
-      this._urls = url.split(" ");
-      var sources = "";
-      _.each(this._urls, function(url){
-        sources += '<source src="'+url+'" />';
-      });
-      $(this._video).html(sources);
+      if (this._url !== url) {
+        this._url = url;
+        this._corsTested = false;
+        this._corsOK = false;
+        this._videoStarted = false;
+        var urls = url.split(" ");
+        if (urls.length === 1) {
+          this._video.src = url;
+        } else {
+          // Multiple sources
+          var sources = "";
+          _.each(urls, function(url){
+            sources += '<source src="'+url+'" />';
+          });
+          $(this._video).html(sources);
+        }
+      }
     },
     loadedMetadata: function(){
       // Called from this._video loadedmetadata
@@ -64,27 +71,45 @@ $(function(){
         return false;        
       }
 
-      // Hidden canvas size match video
+      // Initialize hidden canvas, size match video
+      this.canvas = document.createElement("canvas");
+      this.context = this.canvas.getContext('2d');
       this.canvas.width = this._width;
       this.canvas.height = this._height;
+
       this._videoStarted = true;
     },
-    _corsErrorShown: false,
+    _corsTested: false,
+    _corsOK: false,
     drawFrame: function(){
       if (!this._videoStarted) { return false; }
-      try {
+
+      if (!this._corsTested) {
+        this._corsOK = false;
+        // Test for cross-origin blarp
+        var testCanvas = document.createElement("canvas");
+        var testContext = testCanvas.getContext("2d");
+        testContext.drawImage(this._video, 0, 0);
+        try {
+          var testToDataUrl = testCanvas.toDataURL();
+          this._corsOK = true;
+          this.$(".info").html('');
+        } catch (e) {
+          this._corsOK = false;
+          this.$(".info").html('( ;_;) We can\'t get the image data from this video. Encourage your video host to <a href="http://enable-cors.org/" target="_blank">enable CORS</a>. There might be a workaround by using <a href="http://www.corsproxy.com/" target="_blank">this proxy</a> in the video URL.');
+        }
+        this._corsTested = true;
+      }
+
+      if (this._corsOK) {
         this.context.drawImage(this._video, 0, 0);
         this.send("stream", this.canvas);
         if (this._sendNext) {
           this.send("image", this.canvas);
           this._sendNext = false;
         }
-      } catch (e) {
-        if (!this._corsErrorShown) {
-          this.$(".info").text("CORS smth smth...");
-          // this._corsErrorShown = true;
-        }
       }
+
     },
     inputplay: function (){
       this._video.play();
