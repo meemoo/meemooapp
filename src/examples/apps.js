@@ -18,5 +18,5 @@ $(function(){
   ];
 
   Iframework.loadExampleApps(exampleApps);
-  
+
 });

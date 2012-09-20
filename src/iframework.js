@@ -124,6 +124,7 @@ $(function(){
       this.$(".newblank")
         .button({ icons: { primary: 'icon-doc' } });
 
+      // After all of the .js is loaded, this.allLoaded will be called to finish the init
     },
     allLoaded: function () {
       this.loadLocalApps();
@@ -274,7 +275,7 @@ $(function(){
         if (this._loadedExample) {
           // Router tried to load this already, try again
           this.loadExample(this._loadedExample);
-        } else if (!this._loadedLocal) {
+        } else if (!this._loadedLocal && !this._loadedLocal && !this._loadedGist) {
           // Load first example
           Iframework.loadGraph(this._exampleGraphs[0]);
         }
@@ -384,6 +385,7 @@ $(function(){
       return false;
     },
     loadFromGistId: function (gistid) {
+      this._loadedGist = gistid;
       // "https://gist.github.com/2439102" or just "2439102"
       var split = gistid.split("/"); // ["https:", "", "gist.github.com", "2439102"]
       if (split.length > 3 && split[2] === "gist.github.com") {

@@ -91,7 +91,7 @@ $(function(){
         var testContext = testCanvas.getContext("2d");
         testContext.drawImage(this._video, 0, 0);
         try {
-          var testToDataUrl = testCanvas.toDataURL();
+          testContext.getImageData(0, 0, 1, 1);
           this._corsOK = true;
           this.$(".info").html('');
         } catch (e) {
