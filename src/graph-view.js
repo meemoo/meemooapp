@@ -2,7 +2,7 @@ $(function(){
 
   var template = 
     '<div class="edges">'+
-      '<svg id="edgesSvg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></svg>'+
+      '<svg id="edgesSvg" class="edgesSvg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></svg>'+
     '</div>'+
     '<div class="nodes" />';
 
@@ -125,6 +125,11 @@ $(function(){
       }, this);
       width += 150;
       height += 50;
+      if (width === 150 && height === 50) {
+        // So wires on new graph show up
+        width = this.$el.width();
+        height = this.$el.height();
+      }
       this.$('#edgesSvg').css({
         "width": width,
         "height": height

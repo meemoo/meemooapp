@@ -9,10 +9,10 @@ div.graph {
   background: #EEE url(img/meemoo-bg-graph.png) scroll repeat;
   background-attachment: local;
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 0px;
+  left: 0px;
   right: 0px;
-  bottom: 0;
+  bottom: 0px;
   overflow: auto;
   border-right: 1px dotted #666;
 }

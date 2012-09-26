@@ -130,18 +130,6 @@ $(function(){
     inputsend: function () {
       this._sendNext = true;
     },
-    // inputfps: function(f){
-    //   if (f > 0 && f <= this.inputs.fps.max) {
-    //     this._fps = f;
-    //     if (this._interval) {
-    //       clearInterval(this._interval);
-    //     }
-    //     var self = this;
-    //     this._interval = window.setInterval( function(){
-    //       self.drawFrame();
-    //     }, 1000/this._fps);
-    //   }
-    // },
     remove: function(){
       if (this._stream) {
         this._stream.stop();
