@@ -186,10 +186,10 @@ div.module {
   }
   div.module div.iframemask {
     position: absolute;
-    top: 29px;
-    right: 9px;
-    bottom: 9px;
-    left: 9px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
   }
   div.module div.ports {
     cursor: default;
