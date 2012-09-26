@@ -68,7 +68,7 @@ $(function(){
               self._video.src = stream;
             }
           }
-          // Sets up frame draw interval
+          // Sets up frame draw ms
           self.inputfps(self._fps);
           self._placeholderWarning = null;
           self._camStarted = true;
@@ -97,7 +97,7 @@ $(function(){
         .on('ended', function(){
           this.play();
         });
-      // Sets up frame draw interval
+      // Sets up frame draw ms
       this.inputfps(10);
       this._camStarted = true;
       this._triggerRedraw = true;
@@ -172,16 +172,13 @@ $(function(){
       this.resetSizes = true;
       this._triggerRedraw = true;
     },
+    _ms: 1000/20,
     inputfps: function(f){
-      if (f > 0 && f <= this.inputs.fps.max) {
+      if (f <= 0) {
+        this._fps = 0;
+      } else if (0 < f && f <= this.inputs.fps.max) {
         this._fps = f;
-        if (this._interval) {
-          clearInterval(this._interval);
-        }
-        var self = this;
-        this._interval = window.setInterval( function(){
-          self.drawFrame();
-        }, 1000/this._fps);
+        this._ms = 1000/f;
       }
     },
     disconnectEdge: function(edge) {
@@ -195,15 +192,27 @@ $(function(){
       if (this._stream) {
         this._stream.stop();
       }
-      if (this._interval) {
-        clearInterval(this._interval);
-      }
     },
     redraw: function(){
       // Called from NodeBoxNativeView.renderAnimationFrame()
       if (this.resetSizes) {
         this.setSizes();
         this.resetSizes = false;
+      }
+    },
+    _lastTime: 0,
+    renderAnimationFrame: function (timestamp) {
+      // Get a tick from GraphView.renderAnimationFrame()
+      // this._valueChanged is set by NodeBox.receive()
+      if (this._triggerRedraw) {
+        this._triggerRedraw = false;
+        this.redraw(timestamp);
+      }
+      if (this._fps && this._ms) {
+        if (timestamp-this._lastTime >= this._ms) {
+          this.drawFrame();
+          this._lastTime = timestamp;
+        }
       }
     },
     inputs: {
