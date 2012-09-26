@@ -138,7 +138,6 @@ $(function(){
     selectableStart: function () {
       // Add a mask so that iframes don't steal mouse
       this.maskFrames();
-
     },
     _selected: [],
     selectableStop: function (event) {
@@ -146,7 +145,6 @@ $(function(){
         // Remove iframe masks
         this.unmaskFrames();
       }
-
       this._selected = [];
       var uiselected = $(".module.ui-selected");
       for (var i=0; i<uiselected.length; i++) {
@@ -160,6 +158,40 @@ $(function(){
     selectAll: function () {
       $(".module").addClass("ui-selected");
       this.selectableStop();
+    },
+    cut: function(){
+      this.copy();
+      var i;
+      for (i=0; i<Iframework._copied.length; i++) {
+        // HACK offset cut for pasting in same spot
+        Iframework._copied[i].x -= 50;
+        Iframework._copied[i].y -= 50;
+      }
+      //Delete selected
+      for (i=0; i<this._selected.length; i++) {
+        this._selected[i].view.removeModel();
+      }
+      // Empty _selected
+      this.selectableStop();
+    },
+    copy: function(){
+      var copied = [];
+      for (var i=0; i<this._selected.length; i++) {
+        copied.push( this._selected[i].view.model.toJSON() );
+      }
+      // TODO also copy common edges?
+      Iframework._copied = copied;
+    },
+    paste: function(){
+      if (Iframework._copied) {
+        for (var i=0; i<Iframework._copied.length; i++) {
+          // Offset pasted
+          Iframework._copied[i].x += 50;
+          Iframework._copied[i].y += 50;
+          this.model.addNode(Iframework._copied[i]);
+          // Select pasted
+        }
+      }
     },
     maskFrames: function () {
       $(".iframe-type").append( '<div class="iframemask" />' );
