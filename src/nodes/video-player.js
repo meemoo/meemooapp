@@ -36,6 +36,9 @@ $(function(){
     },
     inputurl: function(url){
       if (this._url !== url) {
+        // TODO: remake video element, since ff doesn't notice source changes
+        // this.$el.remove(this._video);
+        // this._video = $('<video id="video-<%= id %>" class="video" controls="true" autoplay="true" style="max-width:100%;" />');
         this._url = url;
         this._corsTested = false;
         this._corsOK = false;
@@ -45,6 +48,7 @@ $(function(){
           this._video.src = url;
         } else {
           // Multiple sources
+          this._video.removeAttribute("src");
           var sources = "";
           _.each(urls, function(url){
             sources += '<source src="'+url+'" />';

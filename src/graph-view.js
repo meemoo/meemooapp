@@ -162,7 +162,7 @@ $(function(){
       this.selectableStop();
     },
     maskFrames: function () {
-      $(".module").append( '<div class="iframemask" />' );
+      $(".iframe-type").append( '<div class="iframemask" />' );
     },
     unmaskFrames: function () {
       $(".iframemask").remove();
