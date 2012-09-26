@@ -40,6 +40,15 @@ $(function(){
         "style": "max-width:100%"
       });      
       this.$el.prepend(this.canvas);
+    },
+    _smoothing: true,
+    inputsmoothing: function (s) {
+      if (this._smoothing !== s) {
+        this._smoothing = s;
+        // HACK browser-specific stuff
+        this.context.webkitImageSmoothingEnabled = s;
+        this.context.mozImageSmoothingEnabled = s;
+      }
     }
     // showResizer: function(translateX, translateY, scale, rotate){
     //   if (!this.resizer) {

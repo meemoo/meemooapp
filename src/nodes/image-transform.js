@@ -122,6 +122,11 @@ $(function(){
         options: ['source-over', 'source-in', 'source-out', 'source-atop', 'destination-over', 'destination-in', 'destination-out', 'destination-atop', 'lighter', 'darker', 'copy', 'xor'],
         "default": "source-over"
       },
+      smoothing: {
+        type: "boolean",
+        description: "true for smooth image transforms, false for pixeley (only in firefox and chrome)",
+        "default": "true"
+      },
       // clear: {
       //   type: "bang",
       //   description: "clear the canvas"
