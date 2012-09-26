@@ -159,6 +159,10 @@ $(function(){
       $(".module").addClass("ui-selected");
       this.selectableStop();
     },
+    selectNone: function () {
+      $(".module").removeClass("ui-selected");
+      this.selectableStop();
+    },
     cut: function(){
       this.copy();
       var i;
@@ -177,20 +181,29 @@ $(function(){
     copy: function(){
       var copied = [];
       for (var i=0; i<this._selected.length; i++) {
+        // toJSON() saves it with its current state
         copied.push( this._selected[i].view.model.toJSON() );
       }
       // TODO also copy common edges?
+      // Save these to Iframework so can paste to other graphs
       Iframework._copied = copied;
     },
     paste: function(){
-      if (Iframework._copied) {
+      if (Iframework._copied && Iframework._copied.length > 0) {
+        // Select none
+        $(".module").removeClass("ui-selected");
         for (var i=0; i<Iframework._copied.length; i++) {
           // Offset pasted
           Iframework._copied[i].x += 50;
           Iframework._copied[i].y += 50;
-          this.model.addNode(Iframework._copied[i]);
+          var newNode = this.model.addNode(Iframework._copied[i]);
           // Select pasted
+          if (newNode.view) {
+            newNode.view.select();
+          }
         }
+        // Set new selection
+        this.selectableStop();
       }
     },
     maskFrames: function () {

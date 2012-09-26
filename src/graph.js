@@ -174,6 +174,8 @@ $(function(){
       }
 
       this.trigger("change");
+
+      return node;
     },
     addEdge: function (edge) {
       // Make sure edge is unique

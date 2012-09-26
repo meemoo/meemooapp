@@ -222,13 +222,13 @@ $(function(){
         if (event.metaKey === false) {
           // Command key isn't pressed, deselect others and select this one
           $("div.module.ui-selected").removeClass("ui-selected");
-          this.$(".module").addClass("ui-selected");
+          this.select();
         } else {
           // Command key is pressed, toggle selection
           if (this.$(".module").hasClass("ui-selected")) {
             this.$(".module").removeClass("ui-selected");
           } else {
-            this.$(".module").addClass("ui-selected");
+            this.select();
           }
         }
       }
@@ -240,6 +240,9 @@ $(function(){
 
       // Don't fire click on graph
       event.stopPropagation();
+    },
+    select: function () {
+      this.$(".module").addClass("ui-selected");
     },
     addInput: function (port) {
       this.$(".ports-in").append( port.initializeView().el );
