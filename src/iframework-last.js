@@ -32,4 +32,11 @@ $(function(){
     }
   });
 
+  // Mousetrap.bind('del', function(e) {
+  //   if (Iframework.shownGraph && Iframework.shownGraph.view) {
+  //     e.preventDefault();
+  //     Iframework.shownGraph.view.deleteSelected();
+  //   }
+  // });
+
 });

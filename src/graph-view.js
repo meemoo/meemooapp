@@ -206,6 +206,13 @@ $(function(){
         this.selectableStop();
       }
     },
+    // deleteSelected: function(){
+    //   for (var i=0; i<this._selected.length; i++) {
+    //     this._selected[i].view.removeModel();
+    //   }
+    //   // Empty _selected
+    //   this.selectableStop();
+    // },
     maskFrames: function () {
       $(".iframe-type").append( '<div class="iframemask" />' );
     },

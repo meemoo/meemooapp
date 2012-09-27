@@ -7,3 +7,6 @@
 [submodule "libs/js-expression-eval"]
 	path = libs/js-expression-eval
 	url = git://github.com/silentmatt/js-expression-eval.git
+[submodule "libs/swfobject"]
+	path = libs/swfobject
+	url = git://github.com/swfobject/swfobject.git
