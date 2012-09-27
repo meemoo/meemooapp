@@ -166,10 +166,10 @@ $(function(){
     cut: function(){
       this.copy();
       var i;
-      for (i=0; i<Iframework._copied.length; i++) {
+      for (i=0; i<Iframework._copied.nodes.length; i++) {
         // HACK offset cut for pasting in same spot
-        Iframework._copied[i].x -= 50;
-        Iframework._copied[i].y -= 50;
+        Iframework._copied.nodes[i].x -= 50;
+        Iframework._copied.nodes[i].y -= 50;
       }
       //Delete selected
       for (i=0; i<this._selected.length; i++) {
@@ -179,24 +179,43 @@ $(function(){
       this.selectableStop();
     },
     copy: function(){
-      var copied = [];
+      var copied = {nodes:[],edges:[]};
       for (var i=0; i<this._selected.length; i++) {
         // toJSON() saves it with its current state
-        copied.push( this._selected[i].view.model.toJSON() );
+        copied.nodes.push( this._selected[i].view.model.toJSON() );
       }
-      // TODO also copy common edges?
+      // Copy common edges
+      this.model.get("edges").each(function(edge){
+        var sourceSelected, targetSelected = false;
+        for (i=0; i<this._selected.length; i++) {
+          if (edge.Source.node === this._selected[i].view.model) {
+            sourceSelected = true;
+          }
+          if (edge.Target.node === this._selected[i].view.model) {
+            targetSelected = true;
+          }
+        }
+        if (sourceSelected && targetSelected) {
+          copied.edges.push( edge.toJSON() );
+        }
+      }, this);
       // Save these to Iframework so can paste to other graphs
       Iframework._copied = copied;
     },
     paste: function(){
-      if (Iframework._copied && Iframework._copied.length > 0) {
+      var copied = Iframework._copied;
+      if (copied && copied.nodes.length > 0) {
+        var newNodes = [];
         // Select none
         $(".module").removeClass("ui-selected");
-        for (var i=0; i<Iframework._copied.length; i++) {
+        for (var i=0; i<copied.nodes.length; i++) {
+          var oldNode = copied.nodes[i];
           // Offset pasted
-          Iframework._copied[i].x += 50;
-          Iframework._copied[i].y += 50;
-          var newNode = this.model.addNode(Iframework._copied[i]);
+          oldNode.x += 50;
+          oldNode.y += 50;
+          var newNode = this.model.addNode(oldNode);
+          newNode.copiedFrom = oldNode.id;
+          newNodes.push(newNode);
           // Select pasted
           if (newNode.view) {
             newNode.view.select();
@@ -204,6 +223,25 @@ $(function(){
         }
         // Set new selection
         this.selectableStop();
+        // Add edges
+        for (var j=0; j<copied.edges.length; j++) {
+          var oldEdge = copied.edges[j];
+          var newEdge = {source:[],target:[]};
+          for (var k=0; k<newNodes.length; k++) {
+            var node = newNodes[k];
+            if (oldEdge.source[0] === node.copiedFrom) {
+              newEdge.source[0] = node.id;
+            }
+            if (oldEdge.target[0] === node.copiedFrom) {
+              newEdge.target[0] = node.id;
+            }
+          }
+          newEdge.source[1] = oldEdge.source[1];
+          newEdge.target[1] = oldEdge.target[1];
+          newEdge = new Iframework.Edge( newEdge );
+          newEdge.graph = this.model;
+          this.model.addEdge(newEdge);
+        }
       }
     },
     // deleteSelected: function(){

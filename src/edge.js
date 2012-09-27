@@ -14,6 +14,7 @@ $(function(){
     Source: null,
     Target: null,
     connectTryCount: 5,
+    connected: false,
     connect: function () {
       // Called from graph.connectEdges()
       try {
@@ -23,7 +24,10 @@ $(function(){
         console.warn("Edge source or target port not found, try #"+this.connectTryCount+": "+this.toString());
         if (this.connectTryCount > 0) {
           this.connectTryCount--;
-          _.delay(_.bind(this.connect, this), 1000);
+          var self = this;
+          _.delay(function(){
+            self.connect();
+          }, 1000);
         }
         return false;
       }
@@ -44,6 +48,7 @@ $(function(){
       if (this.Target.node.view && this.Target.node.view.Native) {
         this.Target.node.view.Native.connectEdge(this);
       }
+      this.connected = true;
       return this;
     },
     disconnect: function () {
@@ -64,6 +69,7 @@ $(function(){
       if (this.view) {
         this.view.remove();
       }
+      this.connected = false;
     },
     remove: function(){
       this.graph.removeEdge(this);

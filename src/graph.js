@@ -105,7 +105,7 @@ $(function(){
         id = path.join("-");
 
         // Load js if needed
-        // HACK only for loading meemoo:module:group/node
+        // HACK only for loading meemoo:group/node
         //   from src/nodes/group-node.js 
         //   to Iframework.NativeNodes[group-node]
         if (path[0] && path[1]) {
@@ -183,7 +183,7 @@ $(function(){
         return ( _edge.get('source')[0] === edge.get('source')[0] && _edge.get('source')[1] === edge.get('source')[1] && _edge.get('target')[0] === edge.get('target')[0] && _edge.get('target')[1] === edge.get('target')[1] );
       });
       if (isDupe) {
-        console.warn("duplicate edge ignored");
+        console.warn("duplicate edge ignored", edge);
         return false;
       } else {
         this.trigger("change");
@@ -243,8 +243,11 @@ $(function(){
       }
       this.loaded = true;
       
-      // Disconnect then connect edges
-      this.reconnectEdges();
+      // Connect edges when all modules have loaded (+.5 seconds)
+      var self = this;
+      setTimeout(function(){
+        self.connectEdges();
+      }, 500);
       
       return true;
     },
@@ -261,7 +264,9 @@ $(function(){
     connectEdges: function () {
       // Connect edges
       this.get("edges").each(function(edge){
-        edge.connect();
+        if (!edge.connected) {
+          edge.connect();
+        }
       });
 
       // Set state of nodes
