@@ -598,9 +598,12 @@ $(function(){
       return app;
     },
     forkLocal: function(){
+      // This makes it save the app as a new local app
       this._loadedLocalApp = null;
+      // Suggested name
       var url = this.shownGraph.get("info")["url"]+"-copy";
       this.setKey(url);
+      // Do the overwrite checks and save
       this.saveLocal();
     },
     deleteLocal: function () {

@@ -269,7 +269,7 @@ $(function(){
       this.$el.remove();
     },
     refresh: function () {
-      //
+      
     }//,
     // selected: function(){
     //   console.log("sel", this.model);
