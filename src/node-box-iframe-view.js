@@ -8,14 +8,14 @@ $(function(){
       // "super"
       Iframework.NodeBoxView.prototype.initialize.call(this);
 
-      // Add refresh button
-      this.$("button.remove")
-        .after(
-          $('<button type="button" class="refresh">refresh</button>')
-            .button({ icons: { primary: "icon-cw" }, text: false })
-        );
-      // Add refresh event
-      this.events["click .refresh"] = "refresh";
+      // // Add refresh button
+      // this.$("button.remove")
+      //   .after(
+      //     $('<button type="button" class="refresh">refresh</button>')
+      //       .button({ icons: { primary: "icon-cw" }, text: false })
+      //   );
+      // // Add refresh event
+      // this.events["click .refresh"] = "refresh";
 
       // .inner style for css
       this.$(".inner").addClass("iframe-type");
