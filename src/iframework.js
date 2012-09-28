@@ -63,6 +63,7 @@ $(function(){
     '</div>'+
     '<div class="savecontrols">'+
       '<button class="savelocal">save local</button>'+
+      '<button class="forklocal" title="save as... copy app and save under a new name">fork</button>'+
       '<button class="savegist" title="save app to gist.github.com anonymously">save public</button>'+
       '<button class="deletelocal">delete</button>'+
     '</div>'+
@@ -87,6 +88,7 @@ $(function(){
       "submit .addbyurl":      "addByUrl",
       "submit .loadfromgist":  "loadFromGist",
       "click .savelocal":      "saveLocal",
+      "click .forklocal":      "forkLocal",
       "click .savegist":       "saveGist",
       "click .deletelocal":    "deleteLocal",
       "click .newblank":       "newBlank",
@@ -588,9 +590,18 @@ $(function(){
 
       this.analyze("save", "local", "x");
 
+      // To show when url changes
+      this.updateCurrentInfo();
+
       // URL hash
       Iframework.router.navigate("local/"+key);
       return app;
+    },
+    forkLocal: function(){
+      this._loadedLocalApp = null;
+      var url = this.shownGraph.get("info")["url"]+"-copy";
+      this.setKey(url);
+      this.saveLocal();
     },
     deleteLocal: function () {
       if (this._loadedLocalApp) {
@@ -623,6 +634,8 @@ $(function(){
         .html( this.currentTemplate(graph) );
       this.$(".currentapp .savelocal")
         .button({ icons: { primary: 'icon-install' } });
+      this.$(".currentapp .forklocal")
+        .button({ icons: { primary: 'icon-split' } });
       this.$(".currentapp .savegist")
         .button({ icons: { primary: 'icon-globe-1' } });
       this.$(".currentapp .deletelocal")

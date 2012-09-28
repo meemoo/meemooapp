@@ -10,15 +10,6 @@ Font license info
    Homepage:  http://fortawesome.github.com/Font-Awesome/
 
 
-## Typicons
-
-   (c) Stephen Hutchings 2012
-
-   Author:    Stephen Hutchings
-   License:   CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0/)
-   Homepage:  http://typicons.com/
-
-
 ## Iconic
 
    Copyright (C) 2012 by P.J. Onori
@@ -26,6 +17,15 @@ Font license info
    Author:    P.J. Onori
    License:   SIL (http://scripts.sil.org/OFL)
    Homepage:  http://somerandomdude.com/work/iconic/
+
+
+## Typicons
+
+   (c) Stephen Hutchings 2012
+
+   Author:    Stephen Hutchings
+   License:   CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0/)
+   Homepage:  http://typicons.com/
 
 
 ## Entypo

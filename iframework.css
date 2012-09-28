@@ -623,6 +623,7 @@ div.panel {
 }
 
 .icon-plus:before { content: '\2b'; } /* '+' */
+.icon-split:before { content: '\2387'; } /* '⎇' */
 .icon-cog:before { content: '\2699'; } /* '⚙' */
 .icon-scissors:before { content: '\2702'; } /* '✂' */
 .icon-ok:before { content: '\2713'; } /* '✓' */
