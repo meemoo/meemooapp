@@ -5,18 +5,26 @@ $(function(){
   var template = 
     // '<canvas id="canvas-<%= id %>" class="canvas" width="500" height="500" style="max-width:100%;" />'+
     '<div class="info" />';
-    // '<input type="checkbox" checked="checked" class="showpreview" id="showpreview-<%= id %>" />'+
-    // '<label for="showpreview-<%= id %>">show preview</label>';
 
   Iframework.NativeNodes["image"] = Iframework.NodeBoxNativeView.extend({
 
     template: _.template(template),
     canvas: null,
     context: null,
-    // events: {
-    //   "click .showpreview": "togglePreview"
-    // },
     initializeCategory: function() {
+      // Add popout button to box
+      var self = this;
+      this.model.view.$("button.remove")
+        .after(
+          $('<button type="button" class="popout">popout</button>')
+            .button({ icons: { primary: "icon-popup" }, text: false })
+            .click(function(){
+              self.popout();
+            })
+        );
+      // Add refresh event
+      // this.events["click .refresh"] = "refresh";
+
       this.canvas = document.createElement("canvas");
       this.canvas.width = 500;
       this.canvas.height = 500;
@@ -43,13 +51,73 @@ $(function(){
     },
     _smoothing: true,
     inputsmoothing: function (s) {
-      if (this._smoothing !== s) {
-        this._smoothing = s;
-        // HACK browser-specific stuff
-        this.context.webkitImageSmoothingEnabled = s;
-        this.context.mozImageSmoothingEnabled = s;
+      this._smoothing = s;
+      // HACK browser-specific stuff
+      this.context.webkitImageSmoothingEnabled = s;
+      this.context.mozImageSmoothingEnabled = s;
+    },
+    popout: function() {
+      if (this.w) {
+        // Toggle
+        this.popin();
+        return false;
       }
-    }
+
+      // Cache local canvas
+      this.localCanvas = this.canvas;
+      this.localContext = this.context;
+      $(this.localCanvas).hide();
+
+      // Open new window to about:blank
+      this.w = window.open("", "meemooRemoteWindow", "menubar=no,location=no,resizable=yes,scrollbars=no,status=no");
+      var self = this;
+      this.w.addEventListener("unload", function(){
+        self.popin();
+      });
+
+      // Popin other
+      if (Iframework.popoutModule && Iframework.popoutModule !== this) {
+        Iframework.popoutModule.popin();
+      }
+      Iframework.popoutModule = this;
+      // TODO: fade out other canvas?
+      this.w.document.body.innerHTML = "";
+
+      // Make new canvas
+      this.canvas = this.w.document.createElement("canvas");
+      this.canvas.width = this.localCanvas.width;
+      this.canvas.height = this.localCanvas.height;
+      this.context = this.canvas.getContext('2d');
+      this.w.document.body.appendChild(this.canvas);
+
+      // Full-screen styling
+      this.w.document.body.style.backgroundColor="black";
+      this.w.document.body.style.margin="0px";
+      this.w.document.body.style.padding="0px";
+      this.canvas.style.position="absolute";
+      this.canvas.style.top="0px";
+      this.canvas.style.left="0px";
+      this.canvas.style.width="100%";
+      this.canvas.style.height="100%";
+
+      // Smoothing on new canvas
+      this.inputsmoothing(this._smoothing);
+
+      return false;
+    },
+    popin: function() {
+      if (this.w) {
+        this.w = null;
+      }
+      this.canvas = this.localCanvas;
+      this.context = this.localContext;
+      $(this.canvas).show();
+
+      // Smoothing on canvas (only matters if it changed while out)
+      this.inputsmoothing(this._smoothing);
+
+      return false;
+    }    
     // showResizer: function(translateX, translateY, scale, rotate){
     //   if (!this.resizer) {
     //     this.resizer = $('<div class="resizer">');

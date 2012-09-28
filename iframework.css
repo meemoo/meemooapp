@@ -633,6 +633,7 @@ div.panel {
 .icon-doc:before { content: '\e730'; } /* '' */
 .icon-login:before { content: '\e740'; } /* '' */
 .icon-logout:before { content: '\e741'; } /* '' */
+.icon-popup:before { content: '\e74c'; } /* '' */
 .icon-window:before { content: '\e74e'; } /* '' */
 .icon-down-open:before { content: '\e75c'; } /* '' */
 .icon-left-open:before { content: '\e75d'; } /* '' */

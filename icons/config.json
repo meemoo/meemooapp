@@ -10,11 +10,27 @@
       "src": "entypo"
     },
     {
+      "uid": "744a71fe4b5ab7c4f4b7cd598e9bf75a",
+      "orig_css": "window",
+      "orig_code": 59214,
+      "css": "window",
+      "code": 59214,
+      "src": "entypo"
+    },
+    {
       "uid": "d83b7429002f7b0b206c8d550034212b",
       "orig_css": "install",
       "orig_code": 59256,
       "css": "install",
       "code": 59256,
+      "src": "entypo"
+    },
+    {
+      "uid": "6a12c2b74456ea21cc984e11dec227a1",
+      "orig_css": "globe",
+      "orig_code": 127757,
+      "css": "globe-1",
+      "code": 127757,
       "src": "entypo"
     },
     {
@@ -26,20 +42,12 @@
       "src": "entypo"
     },
     {
-      "uid": "744a71fe4b5ab7c4f4b7cd598e9bf75a",
-      "orig_css": "window",
-      "orig_code": 59214,
-      "css": "window",
-      "code": 59214,
-      "src": "entypo"
-    },
-    {
-      "uid": "6a12c2b74456ea21cc984e11dec227a1",
-      "orig_css": "globe",
-      "orig_code": 127757,
-      "css": "globe-1",
-      "code": 127757,
-      "src": "entypo"
+      "uid": "12f4ece88e46abd864e40b35e05b11cd",
+      "orig_css": "ok",
+      "orig_code": 10003,
+      "css": "ok",
+      "code": 10003,
+      "src": "fontawesome"
     },
     {
       "uid": "5211af474d3a9848f67f945e2ccaf143",
@@ -138,19 +146,19 @@
       "src": "fontawesome"
     },
     {
-      "uid": "12f4ece88e46abd864e40b35e05b11cd",
-      "orig_css": "ok",
-      "orig_code": 10003,
-      "css": "ok",
-      "code": 10003,
-      "src": "fontawesome"
-    },
-    {
       "uid": "9ebd01466c6cb73106d26dbacef5f84a",
       "orig_css": "doc",
       "orig_code": 59184,
       "css": "doc",
       "code": 59184,
+      "src": "iconic"
+    },
+    {
+      "uid": "09b87624e9d9a79109429ea81ed0d02d",
+      "orig_css": "split",
+      "orig_code": 9095,
+      "css": "split",
+      "code": 9095,
       "src": "iconic"
     },
     {
@@ -194,11 +202,11 @@
       "src": "brandico"
     },
     {
-      "uid": "09b87624e9d9a79109429ea81ed0d02d",
-      "orig_css": "split",
-      "orig_code": 9095,
-      "css": "split",
-      "code": 9095,
+      "uid": "971be54c1452e2558926d36786e6b1d7",
+      "orig_css": "popup",
+      "orig_code": 59212,
+      "css": "popup",
+      "code": 59212,
       "src": "iconic"
     }
   ]

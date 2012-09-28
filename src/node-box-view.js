@@ -59,7 +59,7 @@ $(function(){
       if (!this.Native){
         if (Iframework.NativeNodes.hasOwnProperty(this.model.lazyLoadType)) {
           this.Native = new Iframework.NativeNodes[this.model.lazyLoadType]({model:this.model});
-          this.$(".inner").append( this.Native.initialize().$el );
+          this.$(".inner").append( this.Native.$el );
           // Check if all modules are loaded
           this.model.loaded = true;
           this.model.graph.checkLoaded();
@@ -269,7 +269,8 @@ $(function(){
       this.$el.remove();
     },
     refresh: function () {
-      
+    },
+    popout: function () {
     }//,
     // selected: function(){
     //   console.log("sel", this.model);

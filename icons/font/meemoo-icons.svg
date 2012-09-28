@@ -2,7 +2,7 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
 <svg xmlns="http://www.w3.org/2000/svg">
 <metadata>
-Created by FontForge 20100429 at Fri Sep 28 10:51:03 2012
+Created by FontForge 20100429 at Fri Sep 28 14:02:54 2012
  By root
 Copyright (C) 2012 by original authors @ fontello.com
 </metadata>
@@ -66,6 +66,8 @@ h237q32 0 60.5 -13t50 -34t34 -50t12.5 -61v-474q0 -33 -12.5 -61t-34 -50t-50 -34.5
     <glyph glyph-name="uniE741" unicode="&#xe741;" horiz-adv-x="868" 
 d="M0 92v474q0 32 12.5 60.5t34 50t50 34.5t61.5 13h237v-99h-237q-24 0 -41.5 -17.5t-17.5 -41.5v-474q0 -24 17.5 -41.5t41.5 -17.5h237v-99h-237q-33 0 -61.5 12.5t-50 34.5t-34 50t-12.5 61zM261 234v190q0 17 11.5 28t28.5 11h220v150q0 21 20 30q20 7 34 -8l284 -284
 q9 -9 9 -22.5t-9 -21.5l-284 -284q-10 -10 -22 -10q-6 0 -12 2q-20 9 -20 30v149h-220q-17 0 -28.5 11.5t-11.5 28.5z" />
+    <glyph glyph-name="uniE74C" unicode="&#xe74c;" horiz-adv-x="928" 
+d="M911 766v-670h-223v-223h-670v670h223v223h670zM576 -15v111h-335v224h-111v-335h446zM799 208v335h-446v-335h446z" />
     <glyph glyph-name="uniE74E" unicode="&#xe74e;" horiz-adv-x="1030" 
 d="M915 700q41 0 70.5 -29.5t29.5 -70.5v-600q0 -41 -29.5 -70.5t-70.5 -29.5h-800q-41 0 -70.5 29.5t-29.5 70.5v600q0 41 29.5 70.5t70.5 29.5h800zM245 606q-16 0 -26.5 -10.5t-10.5 -25.5t10.5 -26t26.5 -11t26.5 11t10.5 26t-10.5 25.5t-26.5 10.5zM108 570
 q0 -15 10.5 -26t26.5 -11t26.5 11t10.5 26t-10.5 25.5t-26.5 10.5t-26.5 -10.5t-10.5 -25.5zM916 0v460h-802v-460h802zM916 540v60h-601v-60h601z" />
