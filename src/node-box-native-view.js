@@ -53,12 +53,14 @@ $(function(){
       // Do everything that will cause a redraw here
     },
     _triggerRedraw: false,
+    _lastRedraw: 0,
     renderAnimationFrame: function (timestamp) {
       // Get a tick from GraphView.renderAnimationFrame()
       // this._valueChanged is set by NodeBox.receive()
       if (this._triggerRedraw) {
         this._triggerRedraw = false;
         this.redraw(timestamp);
+        this._lastRedraw = timestamp;
       }
     },
     send: function (name, value) {

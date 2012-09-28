@@ -200,7 +200,7 @@ $(function(){
         this.resetSizes = false;
       }
     },
-    _lastTime: 0,
+    _lastRedraw: 0,
     renderAnimationFrame: function (timestamp) {
       // Get a tick from GraphView.renderAnimationFrame()
       // this._valueChanged is set by NodeBox.receive()
@@ -209,9 +209,9 @@ $(function(){
         this.redraw(timestamp);
       }
       if (this._fps && this._ms) {
-        if (timestamp-this._lastTime >= this._ms) {
+        if (timestamp-this._lastRedraw >= this._ms) {
           this.drawFrame();
-          this._lastTime = timestamp;
+          this._lastRedraw = timestamp;
         }
       }
     },

@@ -351,8 +351,8 @@ $(function(){
         var graphEl = this.$(".graph");
         this.shownGraph.addNode({
           "src": url,
-          "x": graphEl.scrollLeft() + graphEl.width()/2 - 100,
-          "y": graphEl.scrollTop() + graphEl.height()/2 - 100
+          "x": Math.floor(graphEl.scrollLeft() + graphEl.width()/2) - 100,
+          "y": Math.floor(graphEl.scrollTop() + graphEl.height()/2) - 100
         });
         this.$(".addbyurlinput")
           .val("")

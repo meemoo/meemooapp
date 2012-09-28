@@ -6,11 +6,9 @@ $(function(){
     // '<canvas id="canvas-<%= id %>" class="canvas" width="500" height="500" style="max-width:100%;" />'+
     '<div class="info" />';
 
-  Iframework.NativeNodes["image"] = Iframework.NodeBoxNativeView.extend({
+  Iframework.NativeNodes["view"] = Iframework.NodeBoxNativeView.extend({
 
     template: _.template(template),
-    canvas: null,
-    context: null,
     initializeCategory: function() {
       // Add popout button to box
       var self = this;

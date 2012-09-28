@@ -162,6 +162,7 @@ $(function(){
         this.drawFrame();
         this.send("time", currentTime);
         this._lastTimeSent = currentTime;
+        this._lastRedraw = timestamp;
       }
     },
     inputs: {
