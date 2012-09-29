@@ -106,7 +106,7 @@ $(function(){
     dragstart: function (event, ui) {
       // Add a mask so that iframes don't steal mouse
       this.model.graph.view.maskFrames();
-
+      
       // Start dragging a deselected module
       if (!this.$(".module").hasClass("ui-selected")) {
         // Deselect others and select this one

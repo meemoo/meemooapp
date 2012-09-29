@@ -2,33 +2,45 @@
 
 $(function(){
 
+  var template = 
+    '<div class="control">'+
+      '<button class="startcamera">start camera</button>'+
+      '<button class="sendimage">send</button>'+
+      '<button class="stopcamera">stop</button>'+
+      '<span style="position:absolute;width:0px;overflow:hidden;"><input type="file" class="fileinput" accept="image/*" /></span>'+
+      '<button class="chooseimage">choose image</button>'+
+      '<br />'+
+      '<label><input type="checkbox" class="mirrorpreview" />mirror preview</label>'+
+      // '<label><input type="checkbox" class="showonionskin" />show onionskin</label>'+
+    '</div>'+
+    '<div class="info" />';
+
   Iframework.NativeNodes["image-cam"] = Iframework.NativeNodes["image"].extend({
 
+    template: _.template(template),
     info: {
       title: "cam",
       description: "webcam (HTML5 getUserMedia with Flash backup)"
     },
     events: {
-      "click .startcamera": "startCam"
-      // "click .chooseimage": "chooseImage"
+      "click .startcamera": "startCam",
+      "click .sendimage":   "inputsend",
+      "click .stopcamera":  "stopCam",
+      "click .chooseimage": "chooseImage",
+      "change .fileinput":  "choseImage",
+      "change .mirrorpreview": "mirrorPreview"
     },
     initializeModule: function(){
-      // Mirror preview
-      $(this.canvas).css({
-        "-webkit-transform": "scale(-1, 1)",
-        "-moz-transform": "scale(-1, 1)",
-        "-o-transform": "scale(-1, 1)",
-        "transform": "scale(-1, 1)"        
-      });
+      this.canvas.width = 10;
+      this.canvas.height = 10;
       this._crop = { left:0, top:0, width:640, height:480 };
-      var self = this;
-      this.$el.prepend('<button class="startcamera">start camera</button>');
-      this.$(".startcamera").button();
-      // this.$el.prepend('<button class="chooseimage">choose image</button>');
-      // this.$(".choose").button();
+
+      this.$("button").button();
+      this.$(".stopcamera").hide();
+      this.$(".sendimage").hide();
 
       if ( !window.URL ) {
-        window.URL = window.webkitURL || window.msURL || window.oURL;
+        window.URL = window.webkitURL || window.msURL || window.oURL || false;
       }
       if ( !navigator.getUserMedia ) {
         navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || false;
@@ -45,6 +57,8 @@ $(function(){
     startCam: function(){
       var self = this;
       this.$("button").hide();
+      this.$(".stopcamera").show();
+      this.$(".sendimage").show();
 
       if (!this._video) {
         this._video = document.createElement("video");
@@ -74,13 +88,45 @@ $(function(){
           self._camStarted = true;
           self._triggerRedraw = true;
         }, function(error){
-          this.$(".startcamera").show();
+          // this.$("button").show();
+          // this.$(".stopcamera").hide();
           self._placeholderWarning = "(denied webcam access)";
           self.setupPlaceholderVideo();
         });
       } else {
         this._placeholderWarning = "(no getUserMedia webcam)";
         this.setupPlaceholderVideo();
+      }
+    },
+    stopCam: function(){
+      if (this._video) {
+        this._video.pause();
+        this._video = null;
+      }
+      if (this._stream && this._stream.stop) {
+        this._stream.stop();
+      }
+      this.$("button").show();
+      this.$(".stopcamera").hide();
+      this.$(".sendimage").hide();
+    },
+    mirrorPreview: function(event) {
+      if (event.target.checked) {
+        // Mirror
+        $(this.canvas).css({
+          "-webkit-transform": "scale(-1, 1)",
+          "-moz-transform": "scale(-1, 1)",
+          "-o-transform": "scale(-1, 1)",
+          "transform": "scale(-1, 1)"        
+        });
+      } else {
+        // No mirror
+        $(this.canvas).css({
+          "-webkit-transform": "scale(1, 1)",
+          "-moz-transform": "scale(1, 1)",
+          "-o-transform": "scale(1, 1)",
+          "transform": "scale(1, 1)"        
+        });
       }
     },
     setupPlaceholderVideo: function(){
@@ -103,7 +149,9 @@ $(function(){
       this._triggerRedraw = true;
     },
     setSizes: function(){
+      var input;
       if (this._video) {
+        input = this._video;
         // Here we find the webcam's reported size
         this._video.width = this._video.videoWidth;
         this._video.height = this._video.videoHeight;
@@ -115,6 +163,8 @@ $(function(){
           }, 500);
           return false;
         }
+      } else if (this._image) {
+        input = this._image;
       } else {
         return false;        
       }
@@ -126,25 +176,25 @@ $(function(){
       this.canvas.height = h;
       var ratio = w/h;
 
-      var vidWidth = this._video.width;
-      var vidHeight = this._video.height;
-      var info = "Cam resolution: "+vidWidth+"x"+vidHeight+", output: "+w+"x"+h;
+      var inputWidth = input.width;
+      var inputHeight = input.height;
+      var info = "input: "+inputWidth+"x"+inputHeight+", output: "+w+"x"+h;
       if (this._placeholderWarning) {
         info += " "+this._placeholderWarning;
       }
       this.$(".info").text(info);
 
-      var camRatio = vidWidth/vidHeight;
+      var camRatio = inputWidth/inputHeight;
 
       if (ratio >= camRatio) {
-        this._crop.width = vidWidth;
-        this._crop.height = vidWidth/ratio;
+        this._crop.width = inputWidth;
+        this._crop.height = inputWidth/ratio;
         this._crop.left = 0;
-        this._crop.top = Math.floor((vidHeight-this._crop.height)/2);
+        this._crop.top = Math.floor((inputHeight-this._crop.height)/2);
       } else {
-        this._crop.width = vidHeight*ratio;
-        this._crop.height = vidHeight;
-        this._crop.left = Math.floor((vidWidth-this._crop.width)/2);
+        this._crop.width = inputHeight*ratio;
+        this._crop.height = inputHeight;
+        this._crop.left = Math.floor((inputWidth-this._crop.width)/2);
         this._crop.top = 0;
       }
     },
@@ -189,9 +239,59 @@ $(function(){
       }
     },
     remove: function(){
-      if (this._stream) {
+      if (this._stream && this._stream.stop) {
         this._stream.stop();
       }
+    },
+    chooseImage: function(){
+      this.$(".fileinput").trigger("click");
+    },
+    choseImage: function (event){
+      // Thanks Robert Nyman https://hacks.mozilla.org/2012/04/taking-pictures-with-the-camera-api-part-of-webapi/
+      // Get a reference to the taken picture or chosen file
+      var files = event.target.files;
+      if (files.length > 0) {
+        this.loadImage(files[0]);
+      }
+    },
+    loadImage: function(file) {
+      this._video = null;
+      var self = this;
+      this._image = new Image();
+      this._image.onload = function (event) {
+        self.loadedImage(event);
+      };
+      try {
+        // Create ObjectURL
+        var imgURL = window.URL.createObjectURL(file);
+
+        // Set img src to ObjectURL
+        this._image.src = imgURL;
+
+        // Revoke ObjectURL
+        window.URL.revokeObjectURL(imgURL);
+      }
+      catch (e) {
+        try {
+          // Fallback if createObjectURL is not supported
+          var fileReader = new FileReader();
+          fileReader.onload = function (event) {
+            this._image.src = event.target.result;
+          };
+          fileReader.readAsDataURL(file);
+        }
+        catch (e) {
+          console.warn("Neither createObjectURL or FileReader are supported");
+        }
+      }
+    },
+    loadedImage: function(event) {
+      // event.target is this._image
+      this.setSizes();
+      this.context.drawImage(this._image, this._crop.left, this._crop.top, this._crop.width, this._crop.height, 0, 0, this._width, this._height);
+
+      this.send("stream", this.canvas);
+      this.send("image", this.canvas);
     },
     redraw: function(){
       // Called from NodeBoxNativeView.renderAnimationFrame()
