@@ -154,6 +154,7 @@ $(function(){
           view: $(uiselected[i]).data("view")
         });
       }
+      Iframework._enableKeyBindings = true;
     },
     selectAll: function () {
       $(".module").addClass("ui-selected");

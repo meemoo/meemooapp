@@ -5,28 +5,28 @@ $(function(){
 
   // Bind shortcuts
   Mousetrap.bind(['command+a', 'ctrl+a'], function(e) {
-    if (Iframework.shownGraph && Iframework.shownGraph.view) {
+    if (Iframework.shownGraph && Iframework.shownGraph.view && Iframework._enableKeyBindings) {
       e.preventDefault();
       Iframework.shownGraph.view.selectAll();
     }
   });
 
   Mousetrap.bind(['command+x', 'ctrl+x'], function(e) {
-    if (Iframework.shownGraph && Iframework.shownGraph.view) {
+    if (Iframework.shownGraph && Iframework.shownGraph.view && Iframework._enableKeyBindings) {
       e.preventDefault();
       Iframework.shownGraph.view.cut();
     }
   });
 
   Mousetrap.bind(['command+c', 'ctrl+c'], function(e) {
-    if (Iframework.shownGraph && Iframework.shownGraph.view) {
+    if (Iframework.shownGraph && Iframework.shownGraph.view && Iframework._enableKeyBindings) {
       e.preventDefault();
       Iframework.shownGraph.view.copy();
     }
   });
 
   Mousetrap.bind(['command+v', 'ctrl+v'], function(e) {
-    if (Iframework.shownGraph && Iframework.shownGraph.view) {
+    if (Iframework.shownGraph && Iframework.shownGraph.view && Iframework._enableKeyBindings) {
       e.preventDefault();
       Iframework.shownGraph.view.paste();
     }

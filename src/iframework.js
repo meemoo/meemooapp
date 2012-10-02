@@ -631,6 +631,7 @@ $(function(){
         this.shownGraph.setInfo("url", input);
       }
     },
+    _enableKeyBindings: true,
     updateCurrentInfo: function () {
       var graph = this.shownGraph.toJSON();
       this.$(".currentapp")
@@ -668,6 +669,8 @@ $(function(){
             var gistUrlSelect = $('<span />')
               .text(gisturl)
               .click(function(e){
+                // Otherwise our ctrl-c overrides the browser one
+                Iframework._enableKeyBindings = false;
                 // Click-to-select from http://stackoverflow.com/a/987376/592125
                 var range;
                 if (document.body.createTextRange) { // ms
