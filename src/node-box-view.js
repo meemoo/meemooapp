@@ -218,21 +218,20 @@ $(function(){
     },
     click: function (event) {
       // With help from idFlood http://stackoverflow.com/a/8643716/592125
-      if (event && event.hasOwnProperty("metaKey")) {
-        if (event.metaKey === false) {
-          // Command key isn't pressed, deselect others and select this one
-          $("div.module.ui-selected").removeClass("ui-selected");
-          this.select();
-        } else {
-          // Command key is pressed, toggle selection
-          if (this.$(".module").hasClass("ui-selected")) {
-            this.$(".module").removeClass("ui-selected");
-          } else {
-            this.select();
-          }
+      if (event.ctrlKey || event.metaKey) {
+        // Command key is pressed, toggle selection
+        if (this.$(".module").hasClass("ui-selected")) {
+          this.$(".module").removeClass("ui-selected");
         }
+        else {
+          this.select();
+        }
+      } else {
+        // Command key isn't pressed, deselect others and select this one
+        $("div.module.ui-selected").removeClass("ui-selected");
+        this.select();
       }
-
+      
       // Rebuild selected on graph view
       if (this.model.graph.view) {
         this.model.graph.view.selectableStop();
