@@ -73,7 +73,7 @@ $(function(){
           self._stream = stream;
           if (navigator.mozGetUserMedia) {
             // HACK for ff
-            self._video.src = stream;
+            self._video.mozSrcObject = stream;
             self._video.play();
           } else {
             if (window.URL.createObjectURL) {
@@ -101,6 +101,10 @@ $(function(){
     stopCam: function(){
       if (this._video) {
         this._video.pause();
+        if (this._video.mozSrcObject) {
+          // HACK for ff
+          this._video.mozSrcObject = null;
+        }
         this._video = null;
       }
       if (this._stream && this._stream.stop) {
