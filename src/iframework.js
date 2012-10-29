@@ -279,7 +279,9 @@ $(function(){
           this.loadExample(this._loadedExample);
         } else if (!this._loadedLocal && !this._loadedLocal && !this._loadedGist) {
           // Load first example
-          Iframework.loadGraph(this._exampleGraphs[0]);
+          // Iframework.loadGraph(this._exampleGraphs[0]);
+          // Load new graph
+          this.newBlank();
         }
       }
     },
