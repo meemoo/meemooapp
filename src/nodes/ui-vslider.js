@@ -29,8 +29,8 @@ $(function(){
           max: this._max,
           step: this._step === 0 ? 0.001 : this._step,
           slide: function(e, ui){
-            self._value = ui.value;
-            self.sendValue();
+            self.setValue(ui.value);
+            self.inputsend();
           }
         })
         .css({
@@ -41,13 +41,17 @@ $(function(){
       });
     },
     inputvalue: function(val){
-      this._value = val;
+      this.setValue(val);
       this.$(".slider").slider({
-        value: this._value
+        value: val
       });
-      this.sendValue();
+      this.inputsend();
     },
-    sendValue: function(){
+    setValue: function(val){
+      this._value = val;
+      this.$(".info").text(this._value);      
+    },
+    inputsend: function(){
       this.send("value", this._value);
       this.$(".info").text(this._value);
     },
