@@ -30,7 +30,8 @@ $(function(){
     ],
     time: [
       {"src":"meemoo:time/tween","info":{"title":"tween","author":"sole","description":"Interpolate between two values."}},
-      {"src":"meemoo:time/countdown","info":{"title":"countdown","author":"forresto","description":"Countdown to a bang."}}
+      {"src":"meemoo:time/countdown","info":{"title":"countdown","author":"forresto","description":"Countdown to a bang."}},
+      {"src":"meemoo:time/metronome","info":{"title":"metronome","author":"forresto","description":"Metronome beats per minute"}}
     ],
     ui: [
       {"src":"meemoo:ui/button","info":{"title":"button","author":"meemoo","description":"a button sends a bang, and you can attach a keyboard key"}},

@@ -1,5 +1,3 @@
-/*global TWEEN:true*/
-
 // extends src/nodes/time.js which extends src/node-box-native-view.js
 
 $(function(){
