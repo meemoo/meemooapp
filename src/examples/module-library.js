@@ -12,6 +12,8 @@ $(function(){
       {"src":"meemoo:video/player","info":{"title":"video","author":"meemoo","description":"HTML5 video player"}}
     ],
     effects: [
+      {"src":"meemoo:image/chromakey","info":{"title":"chromakey","author":"forresto, timtaubert","description":"greenscreen chromakey"}},
+      {"src":"meemoo:image/lumakey","info":{"title":"lumakey","author":"forresto","description":"remove white or black, lumakey"}},
       {"src":"meemoo:image/grid","info":{"title":"grid","author":"forresto","description":"images stack up in a grid"}},
       {"src":"meemoo:image/monochrome","info":{"title":"monochrome","author":"ticky+flickr+forresto","description":"monochrome by atkinson, bayer, floydsteinberg, or no dither"}}
     ],

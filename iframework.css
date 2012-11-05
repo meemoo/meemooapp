@@ -22,6 +22,10 @@ div.graph {
   div.nodes {
     z-index: 2;
   }
+
+.alpha-bg {
+  background-image: url(img/alphabg.png);
+}
   
 div.edge-edit {
   position: absolute;
