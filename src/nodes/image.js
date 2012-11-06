@@ -64,7 +64,7 @@ $(function(){
       // Cache local canvas
       this.localCanvas = this.canvas;
       this.localContext = this.context;
-      $(this.localCanvas).hide();
+      // $(this.localCanvas).hide();
 
       // Open new window to about:blank
       this.w = window.open("", "meemooRemoteWindow", "menubar=no,location=no,resizable=yes,scrollbars=no,status=no");
@@ -109,7 +109,7 @@ $(function(){
       }
       this.canvas = this.localCanvas;
       this.context = this.localContext;
-      $(this.canvas).show();
+      // $(this.canvas).show();
 
       // Smoothing on canvas (only matters if it changed while out)
       this.inputsmoothing(this._smoothing);
