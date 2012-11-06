@@ -45,7 +45,7 @@ $(function(){
           if (this.visible[id]) {
             vis.attr({
               "checked": "checked"
-            })
+            });
           }
           li.append(vis);
           list.append(li);
