@@ -46,6 +46,7 @@ $(function(){
         this._triggerRedraw = true;
       }
     },
+    _lastTime: 0,
     _spawnNext: 0,
     redraw: function(timestamp){
       // Called from NodeBoxNativeView.renderAnimationFrame()
@@ -58,11 +59,16 @@ $(function(){
         }
         this._sizeChanged = false;
       }
-
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      
+
+      // Time diff
+      if (this._lastTime > 0) {
+        // spawnRate is particles per second
+        this._spawnNext += this._spawnRate * ((timestamp - this._lastTime)/1000);
+      }
+      this._lastTime = timestamp;
+
       // Spawn new particles
-      this._spawnNext += this._spawnRate;      
       while (this.particles.length < this._maxParticles && this._spawnNext > 1) {
         var angle = (this._angle-0.25 + Math.random()*this._angleSpread*2 - this._angleSpread)*2*Math.PI;
         var velocity = this._speed + Math.random()*this._speedSpread*2 - this._speedSpread;
@@ -192,7 +198,7 @@ $(function(){
       },
       spawnRate: {
         type: "float",
-        description: "emit speed",
+        description: "emit speed in particles per second",
         "default": 1
       },
       maxParticles: {
