@@ -18,6 +18,7 @@ $(function(){
       {"src":"meemoo:image/grid","info":{"title":"grid","author":"forresto","description":"images stack up in a grid"}},
       {"src":"meemoo:image/tile","info":{"title":"tile","author":"forresto","description":"tile to fill canvas, reflect mirror tile for seamless"}},
       {"src":"meemoo:image/particles","info":{"title":"particles","author":"forresto","description":"make a stream of particles from an image or spritesheet"}},
+      {"src":"meemoo:image/trails","info":{"title":"trails","author":"forresto","description":"draws image without clearing, leaving motion trails"}},
       {"src":"meemoo:image/monochrome","info":{"title":"monochrome","author":"ticky+flickr+forresto","description":"monochrome by atkinson, bayer, floydsteinberg, or no dither"}}
     ],
     util: [

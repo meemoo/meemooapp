@@ -342,6 +342,8 @@ $(function(){
         var newGraph = JSON.parse( $(".panel .sourceedit textarea").val() );
         this.loadGraph(newGraph);
         this.showSource();
+        // reset localStorage version
+        this._loadedLocalApp = null;
       } catch (e) {
         console.warn("json parse error: "+e);
       }
