@@ -46,6 +46,7 @@ $(function(){
         this._triggerRedraw = true;
       }
     },
+    _spawnNext: 0,
     redraw: function(){
       // Called from NodeBoxNativeView.renderAnimationFrame()
       if (this._sizeChanged) {
@@ -61,8 +62,8 @@ $(function(){
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
       
       // Spawn new particles
-      var spawn = this._spawnRate;
-      while (this.particles.length < this._maxParticles && spawn > 0) {
+      this._spawnNext += this._spawnRate;      
+      while (this.particles.length < this._maxParticles && this._spawnNext > 1) {
         var angle = (this._angle-0.25 + Math.random()*this._angleSpread*2 - this._angleSpread)*2*Math.PI;
         var velocity = this._speed + Math.random()*this._speedSpread*2 - this._speedSpread;
         this.particles.push({
@@ -72,7 +73,7 @@ $(function(){
           xVel: velocity * Math.cos(angle),
           yVel: velocity * Math.sin(angle)
         });
-        spawn--;
+        this._spawnNext-=1;
       }
 
       for(var i=0; i<this.particles.length; i++) {
