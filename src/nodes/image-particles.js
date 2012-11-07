@@ -158,12 +158,12 @@ $(function(){
       angleSpread: {
         type: "float",
         description: "start angle variance",
-        "default": 0.33
+        "default": 0.1
       },
       speed: {
         type: "float",
         description: "start speed",
-        "default": 1
+        "default": 10
       },
       speedSpread: {
         type: "float",
@@ -183,7 +183,7 @@ $(function(){
       spawnRate: {
         type: "float",
         description: "emit speed",
-        "default": 5
+        "default": 1
       },
       maxParticles: {
         type: "int",
@@ -193,7 +193,7 @@ $(function(){
       life: {
         type: "int",
         description: "particle life in frames",
-        "default": 1000
+        "default": 60
       },
       start: {
         type: "bang",
