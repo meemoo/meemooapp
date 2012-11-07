@@ -47,7 +47,7 @@ $(function(){
       }
     },
     _spawnNext: 0,
-    redraw: function(){
+    redraw: function(timestamp){
       // Called from NodeBoxNativeView.renderAnimationFrame()
       if (this._sizeChanged) {
         if (this.canvas.width !== this._width) {
@@ -67,7 +67,7 @@ $(function(){
         var angle = (this._angle-0.25 + Math.random()*this._angleSpread*2 - this._angleSpread)*2*Math.PI;
         var velocity = this._speed + Math.random()*this._speedSpread*2 - this._speedSpread;
         this.particles.push({
-          age: 0,
+          born: timestamp,
           x: this._x + Math.random()*this._xSpread*2 - this._xSpread,
           y: this._x + Math.random()*this._ySpread*2 - this._ySpread,
           xVel: velocity * Math.cos(angle),
@@ -90,7 +90,7 @@ $(function(){
         particle.xVel += this._xAccel;
         particle.yVel += this._yAccel;
         particle.age++;
-        if (particle.age>this._life) {
+        if (timestamp-particle.born>=this._life) {
           // Kill it
           this.particles.splice(i, 1);
           i--;
@@ -99,20 +99,29 @@ $(function(){
 
       this.inputsend();
     },
-    renderAnimationFrame: function (timestamp) {
-      if (this._running){
-        this.redraw();
-      }
+    inputspawnRate: function(r){
+      this._spawnRate = r;
+      this._spawnNext = 0;
+    },
+    inputlife: function(s){
+      // Seconds to ms
+      this._life = s*1000;
     },
     _running: false,
     inputstart: function(){
       this._running = true;
+      this._spawnNext = 0;
     },
     inputstop: function(){
       this._running = false;
     },
     inputsend: function(){
       this.send("image", this.canvas);
+    },
+    renderAnimationFrame: function (timestamp) {
+      if (this._running){
+        this.redraw(timestamp);
+      }
     },
     inputs: {
       image: {
@@ -192,9 +201,9 @@ $(function(){
         "default": 100
       },
       life: {
-        type: "int",
-        description: "particle life in frames",
-        "default": 60
+        type: "float",
+        description: "particle lifetime in seconds",
+        "default": 1
       },
       start: {
         type: "bang",
