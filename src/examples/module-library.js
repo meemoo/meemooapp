@@ -9,6 +9,7 @@ $(function(){
       {"src":"meemoo:image/transform","info":{"title":"transform","author":"meemoo","description":"scale, translate, and/or rotate image (centered)"}},
       {"src":"meemoo:image/fit","info":{"title":"fit","author":"meemoo","description":"scale and crop an image to fit the given size. easy way to make thumbnails."}},
       {"src":"meemoo:image/rectangle","info":{"title":"rectangle","author":"meemoo","description":"draw a rectangle"}},
+      {"src":"meemoo:image/circle","info":{"title":"circle","author":"meemoo","description":"draw a circle"}},
       {"src":"meemoo:video/player","info":{"title":"video","author":"meemoo","description":"HTML5 video player"}}
     ],
     effects: [
@@ -16,6 +17,7 @@ $(function(){
       {"src":"meemoo:image/lumakey","info":{"title":"lumakey","author":"forresto","description":"remove white or black, lumakey"}},
       {"src":"meemoo:image/grid","info":{"title":"grid","author":"forresto","description":"images stack up in a grid"}},
       {"src":"meemoo:image/tile","info":{"title":"tile","author":"forresto","description":"tile to fill canvas, reflect mirror tile for seamless"}},
+      {"src":"meemoo:image/particles","info":{"title":"particles","author":"forresto","description":"make a stream of particles from an image or spritesheet"}},
       {"src":"meemoo:image/monochrome","info":{"title":"monochrome","author":"ticky+flickr+forresto","description":"monochrome by atkinson, bayer, floydsteinberg, or no dither"}}
     ],
     util: [
