@@ -64,6 +64,38 @@ $(function(){
       this._hueMax = this._hue + this._hueRange;
       this._triggerRedraw = true;
     },
+    _sat: 0.55,
+    _satRange: 0.35, 
+    _satMin: this._sat - this._satRange,
+    _satMax: this._sat + this._satRange,
+    inputsat: function (percent) {
+      this._sat = percent;
+      this._satMin = this._sat - this._satRange;
+      this._satMax = this._sat + this._satRange;
+      this._triggerRedraw = true;
+    },
+    inputsatRange: function (percent) {
+      this._satRange = percent;
+      this._satMin = this._sat - this._satRange;
+      this._satMax = this._sat + this._satRange;
+      this._triggerRedraw = true;
+    },
+    _lightness: 0.5,
+    _lightnessRange: 0.3, 
+    _lightnessMin: this._lightness - this._lightnessRange,
+    _lightnessMax: this._lightness + this._lightnessRange,
+    inputlightness: function (percent) {
+      this._lightness = percent;
+      this._lightnessMin = this._lightness - this._lightnessRange;
+      this._lightnessMax = this._lightness + this._lightnessRange;
+      this._triggerRedraw = true;
+    },
+    inputlightnessRange: function (percent) {
+      this._lightnessRange = percent;
+      this._lightnessMin = this._lightness - this._lightnessRange;
+      this._lightnessMax = this._lightness + this._lightnessRange;
+      this._triggerRedraw = true;
+    },
     disconnectEdge: function(edge) {
       // Called from Edge.disconnect();
       if (edge.Target.id === "image") {
@@ -100,8 +132,8 @@ $(function(){
 
           // ... and check if we have a somewhat green pixel.
           if (h >= this._hueMin && h <= this._hueMax &&
-              s >= 0.25 && s <= 0.90 &&
-              l >= 0.20 && l <= 0.75) {
+              s >= this._satMin && s <= this._satMax &&
+              l >= this._lightnessMin && l <= this._lightnessMax) {
             frame.data[i * 4 + 3] = 0;
           }
         }
@@ -131,7 +163,35 @@ $(function(){
         description: "hue range plus or minus",
         min: 0,
         max: 1,
-        "default": 0.1
+        "default": 0.2
+      },
+      sat: {
+        type: "float",
+        description: "saturation",
+        min: 0,
+        max: 1,
+        "default": 0.55
+      },
+      satRange: {
+        type: "float",
+        description: "saturation range plus or minus",
+        min: 0,
+        max: 1,
+        "default": 0.4
+      },
+      lightness: {
+        type: "float",
+        description: "lightness",
+        min: 0,
+        max: 1,
+        "default": 0.5
+      },
+      lightnessRange: {
+        type: "float",
+        description: "lightness range plus or minus",
+        min: 0,
+        max: 1,
+        "default": 0.4
       },
       send: {
         type: "bang",
