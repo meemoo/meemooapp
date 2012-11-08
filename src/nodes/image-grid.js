@@ -71,7 +71,7 @@ $(function(){
     },
     _regrid: false,
     regrid: function() {
-      // Canvas size size
+      // Canvas size
       if (this.canvas.width !== this._width) {
         this.canvas.width = this._width;
       }
@@ -173,7 +173,8 @@ $(function(){
     },
     outputs: {
       image: {
-        type: "image"
+        type: "image",
+        description: "the whole grid image"
       }
     }
 

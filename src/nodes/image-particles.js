@@ -43,8 +43,15 @@ $(function(){
       // Called from Edge.disconnect();
       if (edge.Target.id === "image") {
         this._image = null;
-        this._triggerRedraw = true;
       }
+      if (edge.Target.id === "animation") {
+        this._animation = null;
+      }
+    },
+    _ms: 1000/12,
+    inputanimation: function(a){
+      this._animation = a;
+      this._ms = 1000/a.fps;
     },
     _lastTime: 0,
     _spawnNext: 0,
@@ -64,7 +71,8 @@ $(function(){
       // Time diff
       if (this._lastTime > 0) {
         // spawnRate is particles per second
-        this._spawnNext += this._spawnRate * ((timestamp - this._lastTime)/1000);
+        // var timeDiff = timestamp - this._lastTime;
+        this._spawnNext += Math.min( this._spawnRate/10, (this._spawnRate*((timestamp-this._lastTime)/1000)) );
       }
       this._lastTime = timestamp;
 
@@ -77,7 +85,9 @@ $(function(){
           x: this._x + Math.random()*this._xSpread*2 - this._xSpread,
           y: this._x + Math.random()*this._ySpread*2 - this._ySpread,
           xVel: velocity * Math.cos(angle),
-          yVel: velocity * Math.sin(angle)
+          yVel: velocity * Math.sin(angle),
+          frame: 0,
+          lastFrame: timestamp
         });
         this._spawnNext-=1;
       }
@@ -85,7 +95,18 @@ $(function(){
       for(var i=0; i<this.particles.length; i++) {
         var particle = this.particles[i];
         // Draw particles
-        if (this._image) {
+        if (this._animation && this._animation.length>0) {
+          if (timestamp-particle.lastFrame>=this._ms) {
+            // Advance animation frame
+            particle.frame++;
+            if (particle.frame>=this._animation.length) {
+              // Loop
+              particle.frame = 0;
+            }
+            particle.lastFrame = timestamp;
+          }
+          this.context.drawImage(this._animation.frames[particle.frame], particle.x, particle.y);
+        } else if (this._image) {
           this.context.drawImage(this._image, particle.x, particle.y);
         } else {
           this.context.fillRect(particle.x, particle.y, 5, 5);
@@ -103,7 +124,11 @@ $(function(){
         }
       }
 
-      this.inputsend();
+      if (this._sendNext) {
+        this._sendNext = false;
+        this.send("image", this.canvas);
+      }
+      this.send("stream", this.canvas);
     },
     inputspawnRate: function(r){
       this._spawnRate = r;
@@ -121,8 +146,9 @@ $(function(){
     inputstop: function(){
       this._running = false;
     },
+    _sendNext: false,
     inputsend: function(){
-      this.send("image", this.canvas);
+      this._sendNext = true;
     },
     renderAnimationFrame: function (timestamp) {
       if (this._running){
@@ -132,7 +158,11 @@ $(function(){
     inputs: {
       image: {
         type: "image",
-        description: "image to tile"
+        description: "make particles from image"
+      },
+      animation: {
+        type: "animation",
+        description: "make particles from animation"
       },
       width: {
         type: "int",
@@ -199,7 +229,7 @@ $(function(){
       spawnRate: {
         type: "float",
         description: "emit speed in particles per second",
-        "default": 1
+        "default": 10
       },
       maxParticles: {
         type: "int",
@@ -221,10 +251,13 @@ $(function(){
       },
       send: {
         type: "bang",
-        description: "send the image"
+        description: "send the next image"
       }
     },
     outputs: {
+      stream: {
+        type: "image"
+      },
       image: {
         type: "image"
       }
