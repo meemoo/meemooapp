@@ -3,7 +3,7 @@
 $(function(){
 
   var template = 
-    '<canvas class="preview" style="max-width:100%"></canvas>'+
+    '<canvas id="canvas-<%= id %>" class="preview" style="max-width:100%"></canvas>'+
     '<div class="info">frame <span class="index"></span>/<span class="length"></span></div>'+
     '<div class="control">'+
       '<button class="play">play</button>'+
@@ -97,6 +97,7 @@ $(function(){
     },
     inputpause: function(){
       this._play = false;
+      this.showFrame(this._previewFrame);
     },
     _previewFrame: 0,
     inputprev: function(){
@@ -122,7 +123,18 @@ $(function(){
       this.send("animation", this._animation);
     },
     redraw: function(timestamp){
-      // Called from NodeBoxNativeView.renderAnimationFrame()
+    },
+    renderAnimationFrame: function (timestamp) {
+      if (this._play && timestamp-this._lastRedraw>=this._ms) {
+        this._previewFrame++;
+        if (this._previewFrame >= this._animation.frames.length) {
+          // Loop
+          this._previewFrame = 0;
+        }
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.context.drawImage(this._animation.frames[this._previewFrame], 0, 0);
+        this._lastRedraw = timestamp;
+      }
     },
     inputs: {
       push: {
