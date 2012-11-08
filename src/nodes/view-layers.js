@@ -110,6 +110,7 @@ $(function(){
         var layer = this.visible[i];
         if (layer) {
           if (layer.last !== layer.nativeView._lastRedraw) {
+            layer.context.clearRect(0, 0, layer.copy.width, layer.copy.height);
             layer.context.drawImage(layer.original, 0, 0);
             layer.last = layer.nativeView._lastRedraw;
           }

@@ -8,10 +8,20 @@ $(function(){
       title: "particles",
       description: "make a stream of particles from an image or spritesheet"
     },
+    events: {
+      "click .start" : "inputstart",
+      "click .stop"  : "inputstop"
+    },
     initializeModule: function(){
       // this.showResizer(20,20,0.5);
       this.particles = [];
       this.context.fillStyle = "black";
+
+      this.$(".info").append(
+        '<button class="start">start</button>'+
+        '<button class="stop">stop</button>'
+      );
+      this.$("button").button();
     },
     _sizeChanged: false,
     inputwidth: function (w) {
@@ -129,6 +139,7 @@ $(function(){
         this.send("image", this.canvas);
       }
       this.send("stream", this.canvas);
+
     },
     inputspawnRate: function(r){
       this._spawnRate = r;
@@ -153,6 +164,7 @@ $(function(){
     renderAnimationFrame: function (timestamp) {
       if (this._running){
         this.redraw(timestamp);
+        this._lastRedraw = timestamp;
       }
     },
     inputs: {
