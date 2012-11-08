@@ -83,7 +83,7 @@ $(function(){
         this.particles.push({
           born: timestamp,
           x: this._x + Math.random()*this._xSpread*2 - this._xSpread,
-          y: this._x + Math.random()*this._ySpread*2 - this._ySpread,
+          y: this._y + Math.random()*this._ySpread*2 - this._ySpread,
           xVel: velocity * Math.cos(angle),
           yVel: velocity * Math.sin(angle),
           frame: 0,
