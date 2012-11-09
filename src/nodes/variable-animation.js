@@ -10,6 +10,7 @@ $(function(){
       '<button class="pause">pause</button>'+
       '<button class="prev">prev</button>'+
       '<button class="next">next</button>'+
+      '<button class="deleteframe">deleteframe</button>'+
     '</div>';
 
   Iframework.NativeNodes["variable-animation"] = Iframework.NativeNodes["variable"].extend({
@@ -23,7 +24,8 @@ $(function(){
       "click .play"  : "inputplay",
       "click .pause" : "inputpause",
       "click .prev"  : "inputprev",
-      "click .next"  : "inputnext"
+      "click .next"  : "inputnext",
+      "click .deleteframe"  : "deleteFrame"
     },
     initializeModule: function(){
       this._animation = {
@@ -74,6 +76,7 @@ $(function(){
         this.context.drawImage(frame, 0, 0);
         this._previewFrame = i;
         this.$(".index").text(i+1);
+        this.send("image", this.canvas);
       }
     },
     _ms: 1000/12,
@@ -84,11 +87,31 @@ $(function(){
       this.inputsend();
     },
     inputlength: function(i){
-      this._length = i;
-      if (this._animation.frames.length > this._length) {
-        this._animation.frames.splice(this._length, this._animation.frames.length);
-        this._animation.length = this._animation.frames.length;
-        this.$(".length").text(this._animation.length);
+      if (i >= 0) {
+        this._length = i;
+        if (this._length > 0 && this._animation.frames.length > this._length) {
+          this._animation.frames.splice(this._length, this._animation.frames.length);
+          this._animation.length = this._animation.frames.length;
+          this.$(".length").text(this._animation.length);
+        }
+      }
+    },
+    deleteFrame: function(){
+      this.inputpause();
+      this._animation.frames.splice(this._previewFrame, 1);
+      this._animation.length = this._animation.frames.length;
+      this.$(".length").text(this._animation.length);
+      // Show next preview
+      if (this._animation.length <= 0) {
+        // No frames, make blank
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.$(".index").text("0");
+      } else if (this._previewFrame >= this._animation.length) {
+        // Show last
+        this.showFrame(this._animation.length-1);
+      } else {
+        // Show next
+        this.showFrame(this._previewFrame);
       }
     },
     _play: false,
@@ -97,12 +120,11 @@ $(function(){
     },
     inputpause: function(){
       this._play = false;
-      this.showFrame(this._previewFrame);
     },
     _previewFrame: 0,
     inputprev: function(){
       // Pause
-      this._play = false; 
+      this.inputpause();
       // Show prev or loop back
       if (this._previewFrame > 0) {
         this.showFrame(this._previewFrame-1);
@@ -111,7 +133,7 @@ $(function(){
       }
     },
     inputnext: function(){
-      this._play = false;
+      this.inputpause();
       // Show next or loop
       if (this._previewFrame < this._animation.frames.length-1) {
         this.showFrame(this._previewFrame+1);
@@ -131,8 +153,8 @@ $(function(){
           // Loop
           this._previewFrame = 0;
         }
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.context.drawImage(this._animation.frames[this._previewFrame], 0, 0);
+        this.showFrame(this._previewFrame);
+
         this._lastRedraw = timestamp;
       }
     },
