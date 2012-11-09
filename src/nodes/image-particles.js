@@ -90,10 +90,20 @@ $(function(){
       while (this.particles.length < this._maxParticles && this._spawnNext > 1) {
         var angle = (this._angle-0.25 + Math.random()*this._angleSpread*2 - this._angleSpread)*2*Math.PI;
         var velocity = this._speed + Math.random()*this._speedSpread*2 - this._speedSpread;
+        // Offset initial position to center images
+        var offsetX = 0;
+        var offsetY = 0;
+        if (this._image) {
+          offsetX = Math.floor(this._image.width/2);
+          offsetY = Math.floor(this._image.height/2);
+        } else if (this._animation && this._animation.frames.length>0) {
+          offsetX = Math.floor(this._animation.frames[0].width/2);
+          offsetY = Math.floor(this._animation.frames[0].height/2);
+        }
         this.particles.push({
           born: timestamp,
-          x: this._x + Math.random()*this._xSpread*2 - this._xSpread,
-          y: this._y + Math.random()*this._ySpread*2 - this._ySpread,
+          x: this._x - offsetX + Math.floor(Math.random()*this._xSpread*2) - this._xSpread,
+          y: this._y - offsetY + Math.floor(Math.random()*this._ySpread*2) - this._ySpread,
           xVel: velocity * Math.cos(angle),
           yVel: velocity * Math.sin(angle),
           frame: 0,

@@ -3,7 +3,7 @@
 $(function(){
 
   var template = 
-    '<video id="video-<%= id %>" class="video" controls="true" autoplay="true" style="max-width:100%;" /><br />'+
+    '<video id="video-<%= id %>" class="video" controls="true" autoplay="true" crossorigin="anonymous" style="max-width:100%;" /><br />'+
     '<button class="play">play</button>'+
     '<button class="pause">pause</button>'+
     '<button class="back">back</button>'+
@@ -124,11 +124,14 @@ $(function(){
     inputtime: function (time){
       this._video.currentTime = time;
     },
+    _frameTime: 1/30,
     inputforward: function (){
-      this._video.currentTime += 1/30;
+      this._video.pause();
+      this._video.currentTime += this._frameTime;
     },
     inputback: function (){
-      this._video.currentTime -= 1/30;
+      this._video.pause();
+      this._video.currentTime -= this._frameTime;
     },
     _sendNext: false,
     inputsend: function () {
