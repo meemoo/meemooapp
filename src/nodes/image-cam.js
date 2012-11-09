@@ -285,7 +285,7 @@ $(function(){
           fileReader.readAsDataURL(file);
         }
         catch (e) {
-          console.warn("Neither createObjectURL or FileReader are supported");
+          console.warn("Neither createObjectURL nor FileReader are supported");
         }
       }
     },

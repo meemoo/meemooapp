@@ -6,8 +6,11 @@ $(function(){
     '<video id="video-<%= id %>" class="video" controls="true" autoplay="true" crossorigin="anonymous" style="max-width:100%;" /><br />'+
     '<button class="play">play</button>'+
     '<button class="pause">pause</button>'+
+    '<button class="send">send</button>'+
     '<button class="back">back</button>'+
-    '<button class="forward">forward</button>'+
+    '<button class="forward">forward</button><br />'+
+    '<span style="position:absolute;width:0px;overflow:hidden;"><input type="file" class="fileinput" accept="video/*" /></span>'+
+    '<button class="choosefile">choose file</button>'+
     '<div class="info" />';
 
   Iframework.NativeNodes["video-player"] = Iframework.NativeNodes["video"].extend({
@@ -20,8 +23,11 @@ $(function(){
     events: {
       "click .play": "inputplay",
       "click .pause": "inputpause",
+      "click .send": "inputsend",
       "click .back": "inputback",
-      "click .forward": "inputforward"
+      "click .forward": "inputforward",
+      "click .choosefile": "chooseFile",
+      "change .fileinput":  "choseFile"
     },
     initializeModule: function(){
       this.$("button").button();
@@ -57,7 +63,40 @@ $(function(){
         }
       }
     },
-    loadedMetadata: function(){
+    chooseFile: function(){
+      this.$(".fileinput").trigger("click");
+    },
+    choseFile: function (event){
+      // Thanks Robert Nyman https://hacks.mozilla.org/2012/04/taking-pictures-with-the-camera-api-part-of-webapi/
+      // Get a reference to the taken picture or chosen file
+      var files = event.target.files;
+      if (files.length > 0) {
+        this.loadFile(files[0]);
+      }
+    },
+    loadFile: function(file) {
+      try {
+        // Create ObjectURL
+        var imgURL = window.URL.createObjectURL(file);
+        // Set img src to ObjectURL
+        this._video.src = imgURL;
+        // Revoke ObjectURL
+        // window.URL.revokeObjectURL(imgURL);
+      }
+      catch (e) {
+        try {
+          // Fallback if createObjectURL is not supported
+          var fileReader = new FileReader();
+          fileReader.onload = function (event) {
+            this._video.src = event.target.result;
+          };
+          fileReader.readAsDataURL(file);
+        }
+        catch (e) {
+          console.warn("Neither createObjectURL nor FileReader are supported");
+        }
+      }
+    },    loadedMetadata: function(){
       // Called from this._video loadedmetadata
       if (this._video) {
         // Here we find the video's reported size
@@ -122,7 +161,10 @@ $(function(){
       this._video.pause();
     },
     inputtime: function (time){
-      this._video.currentTime = time;
+      this._video.currentTime = time;        
+    },
+    inputvolume: function (v){
+      this._video.volume = v;        
     },
     _frameTime: 1/30,
     inputforward: function (){
@@ -135,7 +177,13 @@ $(function(){
     },
     _sendNext: false,
     inputsend: function () {
-      this._sendNext = true;
+      if (this._video.paused) {
+        // Send now
+        this.send("image", this.canvas);
+      } else {
+        // Send next
+        this._sendNext = true;
+      }
     },
     remove: function(){
       if (this._stream) {
@@ -173,13 +221,6 @@ $(function(){
         type: "string",
         description: "video file, or space-separated list of urls for different formats (http://...webm http://...mp4)"
       },
-      // fps: {
-      //   type: "number",
-      //   description: "frames per second to update the canvas",
-      //   min: 0,
-      //   max: 30,
-      //   "default": 20
-      // },
       play: {
         type: "bang",
         description: "play the video"
@@ -191,6 +232,13 @@ $(function(){
       time: {
         type: "float",
         description: "skip to time"
+      },
+      volume: {
+        type: "float",
+        description: "volume, 0 to 1",
+        min: 0,
+        max: 1,
+        "default": 1
       },
       frameForward: {
         type: "bang",

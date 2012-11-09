@@ -2,6 +2,10 @@
 
 $(function(){
 
+  var randomPlusOrMinus = function(range){
+    return Math.random()*range*2-range;
+  };
+
   Iframework.NativeNodes["image-particles"] = Iframework.NativeNodes["image"].extend({
 
     info: {
@@ -88,8 +92,8 @@ $(function(){
 
       // Spawn new particles
       while (this.particles.length < this._maxParticles && this._spawnNext > 1) {
-        var angle = (this._angle-0.25 + Math.random()*this._angleSpread*2 - this._angleSpread)*2*Math.PI;
-        var velocity = this._speed + Math.random()*this._speedSpread*2 - this._speedSpread;
+        var angle = (this._angle-0.25 + randomPlusOrMinus(this._angleSpread))*2*Math.PI;
+        var velocity = this._speed + randomPlusOrMinus(this._speedSpread);
         // Offset initial position to center images
         var offsetX = 0;
         var offsetY = 0;
@@ -102,8 +106,8 @@ $(function(){
         }
         this.particles.push({
           born: timestamp,
-          x: this._x - offsetX + Math.floor(Math.random()*this._xSpread*2) - this._xSpread,
-          y: this._y - offsetY + Math.floor(Math.random()*this._ySpread*2) - this._ySpread,
+          x: this._x - offsetX + randomPlusOrMinus(this._xSpread),
+          y: this._y - offsetY + randomPlusOrMinus(this._ySpread),
           xVel: velocity * Math.cos(angle),
           yVel: velocity * Math.sin(angle),
           frame: 0,
@@ -134,8 +138,8 @@ $(function(){
         // Advance particles
         particle.x += particle.xVel;
         particle.y += particle.yVel;
-        particle.xVel += this._xAccel;
-        particle.yVel += this._yAccel;
+        particle.xVel += this._xAccel + randomPlusOrMinus(this._wander);
+        particle.yVel += this._yAccel + randomPlusOrMinus(this._wander);
         particle.age++;
         if (timestamp-particle.born>=this._life) {
           // Kill it
@@ -144,12 +148,7 @@ $(function(){
         }
       }
 
-      if (this._sendNext) {
-        this._sendNext = false;
-        this.send("image", this.canvas);
-      }
-      this.send("stream", this.canvas);
-
+      this.send("image", this.canvas);
     },
     inputspawnRate: function(r){
       this._spawnRate = r;
@@ -238,6 +237,11 @@ $(function(){
         description: "start spread variance",
         "default": 0
       },
+      wander: {
+        type: "float",
+        description: "randomize speed by this much every frame",
+        "default": 0
+      },
       accelAngle: {
         type: "float",
         description: "acceleration angle",
@@ -277,9 +281,6 @@ $(function(){
       }
     },
     outputs: {
-      stream: {
-        type: "image"
-      },
       image: {
         type: "image"
       }
