@@ -93,6 +93,10 @@ $(function(){
           this._animation.frames.splice(this._length, this._animation.frames.length);
           this._animation.length = this._animation.frames.length;
           this.$(".length").text(this._animation.length);
+          if (this._previewFrame >= this._animation.length) {
+            // Show last
+            this.showFrame(this._animation.length-1);
+          }
         }
       }
     },
