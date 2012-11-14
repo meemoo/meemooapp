@@ -8,8 +8,31 @@ $(function(){
       title: "transform",
       description: "scale, translate, and/or rotate image"
     },
+    dragstart: null,
     initializeModule: function(){
       // this.showResizer(20,20,0.5);
+
+      // TODO drag to move x, y
+
+      // var self = this;
+      // $(this.canvas).draggable({
+      //   helper: function(){
+      //     return $('<div style="width:10px;height:10px;border:1px black dotted;"></div>');
+      //   },
+      //   start: function(event, ui){
+      //     self.dragstart = [self._x, self._y];
+      //     console.log(event, ui);
+      //     // self.dragstart
+      //   },
+      //   drag: function(event, ui){
+      //     console.log(event, ui);
+      //   },
+      //   stop: function(event, ui){
+
+      //     self.dragstart = null;
+      //     event.stopPropagation();
+      //   }
+      // });
     },
     inputrotate: function (percent) {
       this._rotate = percent * 2 * Math.PI;

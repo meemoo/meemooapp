@@ -150,6 +150,9 @@ $(function(){
 
       this.send("image", this.canvas);
     },
+    inputspawn: function(i){
+      this._spawnNext = i;
+    },
     inputspawnRate: function(r){
       this._spawnRate = r;
       this._spawnNext = 0;
@@ -251,6 +254,11 @@ $(function(){
         type: "float",
         description: "acceleration speed",
         "default": 1
+      },
+      spawn: {
+        type: "float",
+        description: "spawn this number of particles now",
+        "default": 0
       },
       spawnRate: {
         type: "float",
