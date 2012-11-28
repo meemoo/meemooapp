@@ -183,7 +183,8 @@ $(function(){
       var copied = {nodes:[],edges:[]};
       for (var i=0; i<this._selected.length; i++) {
         // toJSON() saves it with its current state
-        copied.nodes.push( this._selected[i].view.model.toJSON() );
+        var nodeJSON = this._selected[i].view.model.toJSON();
+        copied.nodes.push( JSON.parse(JSON.stringify(nodeJSON)) );
       }
       // Copy common edges
       this.model.get("edges").each(function(edge){
