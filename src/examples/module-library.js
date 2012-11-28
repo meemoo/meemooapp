@@ -10,6 +10,7 @@ $(function(){
       {"src":"meemoo:image/fit","info":{"title":"fit","author":"meemoo","description":"scale and crop an image to fit the given size. easy way to make thumbnails."}},
       {"src":"meemoo:image/rectangle","info":{"title":"rectangle","author":"meemoo","description":"draw a rectangle"}},
       {"src":"meemoo:image/circle","info":{"title":"circle","author":"meemoo","description":"draw a circle"}},
+      {"src":"meemoo:image/text","info":{"title":"text","author":"meemoo","description":"draw text to a canvas"}},
       {"src":"meemoo:video/player","info":{"title":"video","author":"meemoo","description":"HTML5 video player"}}
     ],
     effects: [

@@ -76,7 +76,7 @@ $(function(){
         this.context.globalCompositeOperation = 'source-over';
         this.context.drawImage(this._background, 0, 0);
       }
-      if (this._image) {
+      if (this._image && this._image.width && this._image.height) {
         var width = this._image.width * this._scale;
         var height = this._image.height * this._scale;
         var x = this.canvas.width/2 + this._translateX;
