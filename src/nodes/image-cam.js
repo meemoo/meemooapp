@@ -3,6 +3,7 @@
 $(function(){
 
   var template = 
+    // '<canvas class="onionskin"></canvas>'+
     '<div class="control">'+
       '<button class="startcamera">start camera</button>'+
       '<button class="sendimage">send</button>'+
@@ -11,7 +12,7 @@ $(function(){
       '<button class="chooseimage">choose image</button>'+
       '<br />'+
       '<label><input type="checkbox" class="mirrorpreview" />mirror preview</label>'+
-      // '<label><input type="checkbox" class="showonionskin" />show onionskin</label>'+
+      '<label><input type="checkbox" class="showonionskin" />show onionskin</label>'+
     '</div>'+
     '<div class="info" />';
 
@@ -28,12 +29,30 @@ $(function(){
       "click .stopcamera":  "stopCam",
       "click .chooseimage": "chooseImage",
       "change .fileinput":  "choseImage",
-      "change .mirrorpreview": "mirrorPreview"
+      "change .mirrorpreview": "mirrorPreview",
+      "change .showonionskin": "changeShowOnionskin"
     },
     initializeModule: function(){
       this.canvas.width = 10;
       this.canvas.height = 10;
       this._crop = { left:0, top:0, width:640, height:480 };
+
+      // Se up onionskin
+      this.onionskin = document.createElement("canvas");
+      this.onionskinContext = this.onionskin.getContext("2d");
+      $(this.onionskin)
+        .css({
+          "position": "absolute",
+          "top": 0,
+          "left": 0,
+          "z-index": 10,
+          "opacity": 0.5,
+          "max-width": "100%"
+        })
+        .hide();
+      this.onionskin.width = 10;
+      this.onionskin.height = 10;
+      this.$el.append(this.onionskin);
 
       this.$("button").button();
       this.$(".stopcamera").hide();
@@ -133,6 +152,17 @@ $(function(){
         });
       }
     },
+    _showOnionskin: false,
+    changeShowOnionskin: function(event) {
+      // Show last frame as overlay
+      if (event.target.checked) {
+        this._showOnionskin = true;
+        $(this.onionskin).show();
+      } else {
+        this._showOnionskin = false;
+        $(this.onionskin).hide();
+      }
+    },
     setupPlaceholderVideo: function(){
       // Video file instead of webcam
       $(this._video)
@@ -201,6 +231,11 @@ $(function(){
         this._crop.left = Math.floor((inputWidth-this._crop.width)/2);
         this._crop.top = 0;
       }
+
+      // Onionskin size
+      this.onionskin.width = this._width;
+      this.onionskin.height = this._height;
+
     },
     drawFrame: function(){
       if (!this._camStarted || !this._video || !this._video.height) { return false; }
@@ -214,6 +249,7 @@ $(function(){
     sendNext: false,
     inputsend: function () {
       this.sendNext = true;
+      this.onionskinContext.drawImage(this.canvas, 0, 0);
     },
     resetSizes: false,
     inputwidth: function(w){
@@ -340,6 +376,10 @@ $(function(){
         min: 0,
         max: 30,
         "default": 20
+      },
+      onionskin: {
+        type: "image",
+        description: "onionskin image"
       },
       send: {
         type: "bang",
