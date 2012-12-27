@@ -11,7 +11,8 @@ $(function(){
       {"src":"meemoo:image/rectangle","info":{"title":"rectangle","author":"meemoo","description":"draw a rectangle"}},
       {"src":"meemoo:image/circle","info":{"title":"circle","author":"meemoo","description":"draw a circle"}},
       {"src":"meemoo:image/text","info":{"title":"text","author":"meemoo","description":"draw text to a canvas"}},
-      {"src":"meemoo:video/player","info":{"title":"video","author":"meemoo","description":"HTML5 video player"}}
+      {"src":"meemoo:video/player","info":{"title":"video","author":"meemoo","description":"HTML5 video player"}},
+      {"src":"meemoo:view/layers","info":{"title":"layers","author":"meemoo","description":"can get any of the canvases in the graph and make a stack of them"}}
     ],
     effects: [
       {"src":"meemoo:image/chromakey","info":{"title":"chromakey","author":"forresto, timtaubert","description":"greenscreen chromakey"}},
@@ -44,7 +45,8 @@ $(function(){
       {"src":"meemoo:ui/button","info":{"title":"button","author":"meemoo","description":"a button sends a bang, and you can attach a keyboard key"}},
       {"src":"meemoo:ui/hslider","info":{"title":"hslider","author":"meemoo","description":"horizontal slider"}},
       {"src":"meemoo:ui/vslider","info":{"title":"vslider","author":"meemoo","description":"vertical slider"}},
-      {"src":"meemoo:ui/xy","info":{"title":"xy pad","author":"meemoo","description":"sends coordinates as percentage"}}
+      {"src":"meemoo:ui/xy","info":{"title":"xy pad","author":"meemoo","description":"sends coordinates as percentage"}},
+      {"src":"meemoo:ui/mouse","info":{"title":"mouse","author":"meemoo","description":"sends mouse coordinates as percentage"}}
     ],
     variables: [
       {"src":"meemoo:variable/animation","info":{"title":"animation","author":"meemoo","description":"holds a stack of canvases to use as an animation"}}
