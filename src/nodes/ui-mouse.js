@@ -5,7 +5,8 @@
 $(function(){
 
   var template = 
-    '<div class="info" style="font-size:10px;">(0.5, 0.5)</div>';
+    '<div class="info">(0.5, 0.5)</div><br>'+
+    '<label><input type="checkbox" class="active" checked /> active</label>';
 
   Iframework.NativeNodes["ui-mouse"] = Iframework.NativeNodes["ui"].extend({
 
@@ -14,10 +15,15 @@ $(function(){
       title: "mouse",
       description: "sends mouse coordinates as percentage"
     },
+    events: {
+      "change .active": "changeActive"
+    },
     initializeModule: function(){
       var self = this;
       $(window).mousemove(function(event){
-        self.sendPosition(event.clientX, event.clientY);
+        if (self._active) {
+          self.sendPosition(event.clientX, event.clientY);
+        }
       });
       $(window).resize(function(event){
         self.windowResize();
@@ -27,6 +33,14 @@ $(function(){
     windowResize: function(){
       this._windowWidth = $(window).width();
       this._windowHeight = $(window).height();
+    },
+    _active: true,
+    changeActive: function(event){
+      if (event.target.checked) {
+        this._active = true;
+      } else {
+        this._active = false;
+      }
     },
     sendPosition: function(x, y){
       this._xPercent = x/this._windowWidth;
