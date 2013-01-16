@@ -18,11 +18,11 @@ $(function(){
 
   Iframework.NativeNodes["image-cam"] = Iframework.NativeNodes["image"].extend({
 
-    template: _.template(template),
     info: {
       title: "cam",
-      description: "webcam (HTML5 getUserMedia with Flash backup)"
+      description: "webcam (HTML5 getUserMedia)"
     },
+    template: _.template(template),
     events: {
       "click .startcamera": "startCam",
       "click .sendimage":   "inputsend",
@@ -246,6 +246,12 @@ $(function(){
         this.sendNext = false;
       }
     },
+    inputstart: function () {
+      this.startCam();
+    },
+    inputstop: function () {
+      this.stopCam();
+    },
     sendNext: false,
     inputsend: function () {
       this.sendNext = true;
@@ -380,6 +386,14 @@ $(function(){
       onionskin: {
         type: "image",
         description: "onionskin image"
+      },
+      start: {
+        type: "bang",
+        description: "start the camera"
+      },
+      stop: {
+        type: "bang",
+        description: "stop the camera"
       },
       send: {
         type: "bang",

@@ -18,6 +18,7 @@ $(function(){
       {"src":"meemoo:image/chromakey","info":{"title":"chromakey","author":"forresto, timtaubert","description":"greenscreen chromakey"}},
       {"src":"meemoo:image/lumakey","info":{"title":"lumakey","author":"forresto","description":"remove white or black, lumakey"}},
       {"src":"meemoo:image/grid","info":{"title":"grid","author":"forresto","description":"images stack up in a grid"}},
+      {"src":"meemoo:image/slitscan","info":{"title":"slitscan","author":"forresto","description":"slitscan effect"}},
       {"src":"meemoo:image/tile","info":{"title":"tile","author":"forresto","description":"tile to fill canvas, reflect mirror tile for seamless"}},
       {"src":"meemoo:image/particles","info":{"title":"particles","author":"forresto","description":"make a stream of particles from an image or spritesheet"}},
       {"src":"meemoo:image/trails","info":{"title":"trails","author":"forresto","description":"draws image without clearing, leaving motion trails"}},
