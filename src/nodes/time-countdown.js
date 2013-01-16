@@ -4,6 +4,8 @@ $(function(){
 
   var template = 
     '<div class="progressbar"></div>'+
+    '<button class="start">start</button>'+
+    '<button class="stop">stop</button>'+
     '<div class="info"></div>';
 
   Iframework.NativeNodes["time-countdown"] = Iframework.NativeNodes["time"].extend({
@@ -13,26 +15,35 @@ $(function(){
       title: "countdown",
       description: "countdown to bang"
     },
+    events: {
+      "click .start": "inputstart",
+      "click .stop":  "inputstop"
+    },
     initializeModule: function(){
       this.setupProgressbar(".progressbar", 100);
+      this.$("button").button();
     },
     inputduration: function(s){
       this._duration = s * 1000;
       this.inputstart();
     },
     _running: false,
+    _startme: false,
     inputstart: function(){
-      this._start = Date.now();
-      this._running = true;
+      this._startme = true;
     },
     inputstop: function(){
       this._running = false;
-      this._start = Date.now();
     },
     redraw: function(){
     },
     _lastDisplay: "",
     renderAnimationFrame: function (timestamp) {
+      if (this._startme) {
+        this._start = timestamp;
+        this._running = true;
+        this._startme = false;
+      }
       if (this._running) {
         var delta = timestamp - this._start;
         if (delta <= this._duration) {

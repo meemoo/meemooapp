@@ -4,11 +4,7 @@
 
 $(function(){
 
-  var template = 
-    '<form class="textform">'+
-      '<input type="checkbox" class="check" style="width:3em;height:3em;"></input>'+
-      '<button class="send" type="submit">send</button>'+
-    '</form>';
+  var template = '<input type="checkbox" class="check" style="width:3em;height:3em;"></input>';
 
   Iframework.NativeNodes["ui-checkbox"] = Iframework.NativeNodes["ui"].extend({
 
@@ -48,7 +44,6 @@ $(function(){
       this.inputsend();
     },
     inputsend: function(){
-      console.log(this._val);
       this.send("checked", this._val);
       if (this._val) {
         this.send("on", "!");
