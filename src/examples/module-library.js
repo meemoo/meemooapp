@@ -46,6 +46,9 @@ $(function(){
       {"src":"meemoo:ui/button","info":{"title":"button","author":"meemoo","description":"a button sends a bang, and you can attach a keyboard key"}},
       {"src":"meemoo:ui/hslider","info":{"title":"hslider","author":"meemoo","description":"horizontal slider"}},
       {"src":"meemoo:ui/vslider","info":{"title":"vslider","author":"meemoo","description":"vertical slider"}},
+      {"src":"meemoo:ui/text","info":{"title":"text","author":"meemoo","description":"a text box to save and send text"}},
+      {"src":"meemoo:ui/textarea","info":{"title":"textarea","author":"meemoo","description":"a multiline text box to edit and send text"}},
+      {"src":"meemoo:ui/checkbox","info":{"title":"checkbox","author":"meemoo","description":"a checkbox to send boolean on/off"}},
       {"src":"meemoo:ui/xy","info":{"title":"xy pad","author":"meemoo","description":"sends coordinates as percentage"}},
       {"src":"meemoo:ui/mouse","info":{"title":"mouse","author":"meemoo","description":"sends mouse coordinates as percentage"}}
     ],
