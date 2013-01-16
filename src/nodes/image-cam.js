@@ -136,7 +136,7 @@ $(function(){
     mirrorPreview: function(event) {
       if (event.target.checked) {
         // Mirror
-        $(this.canvas).css({
+        this.$("canvas").css({
           "-webkit-transform": "scale(-1, 1)",
           "-moz-transform": "scale(-1, 1)",
           "-o-transform": "scale(-1, 1)",
@@ -144,7 +144,7 @@ $(function(){
         });
       } else {
         // No mirror
-        $(this.canvas).css({
+        this.$("canvas").css({
           "-webkit-transform": "scale(1, 1)",
           "-moz-transform": "scale(1, 1)",
           "-o-transform": "scale(1, 1)",
