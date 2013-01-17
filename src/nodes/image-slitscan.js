@@ -127,11 +127,11 @@ $(function(){
           this._position++;
           var done = false;
           if (this._direction === "up" || this._direction === "down") {
-            if (this._position*this._speed >= this._stream.height) {
+            if (this._position*this._speed >= this._stream.height+this._speed) {
               done = true;
             }
           } else {
-            if (this._position*this._speed >= this._stream.width) {
+            if (this._position*this._speed >= this._stream.width+this._speed) {
               done = true;
             }
           }
