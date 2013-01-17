@@ -51,41 +51,42 @@ $(function(){
       this.send("image", this.canvas);
     },
     _position: 0,
+    _speed: 1,
     redraw: function(){
       // Called from NodeBoxNativeView.renderAnimationFrame()
       if (this._stream && this._scanning) {
         var sx, sy, sw, sh, dx, dy, dw, dh;
         if (this._fixed) {
           if (this._direction === "up") {
-            this.context.drawImage(this.canvas, 0, -1);
+            this.context.drawImage(this.canvas, 0, 0-this._speed);
             sx = 0;
             sy = Math.floor(this._stream.height/2);
             sw = this._stream.width;
-            sh = 1;
+            sh = this._speed;
             dx = 0;
-            dy = this.canvas.height-1;
+            dy = this.canvas.height-1 - this._speed;
           } else if (this._direction === "down") {
-            this.context.drawImage(this.canvas, 0, 1);
+            this.context.drawImage(this.canvas, 0, this._speed);
             sx = 0;
             sy = Math.floor(this._stream.height/2);
             sw = this._stream.width;
-            sh = 1;
+            sh = this._speed;
             dx = 0;
             dy = 0;
           } else if (this._direction === "left") {
-            this.context.drawImage(this.canvas, -1, 0);
+            this.context.drawImage(this.canvas, 0-this._speed, 0);
             sx = Math.floor(this._stream.width/2);
             sy = 0;
-            sw = 1;
+            sw = this._speed;
             sh = this._stream.height;
-            dx = this.canvas.width-1;
+            dx = this.canvas.width-1 - this._speed;
             dy = 0;
           } else {
             // right
-            this.context.drawImage(this.canvas, 1, 0);
+            this.context.drawImage(this.canvas, this._speed, 0);
             sx = Math.floor(this._stream.width/2);
             sy = 0;
-            sw = 1;
+            sw = this._speed;
             sh = this._stream.height;
             dx = 0;
             dy = 0;
@@ -98,24 +99,24 @@ $(function(){
           // Not fixed
           if (this._direction === "up") {
             sx = 0;
-            sy = this._stream.height-1 - this._position;
+            sy = this._stream.height-1 - this._position*this._speed;
             sw = this._stream.width;
-            sh = 1;
+            sh = this._speed;
           } else if (this._direction === "down") {
             sx = 0;
-            sy = this._position;
+            sy = this._position*this._speed;
             sw = this._stream.width;
-            sh = 1;
+            sh = this._speed;
           } else if (this._direction === "left") {
-            sx = this._stream.width-1 - this._position;
+            sx = this._stream.width-1 - this._position*this._speed;
             sy = 0;
-            sw = 1;
+            sw = this._speed;
             sh = this._stream.height;
           } else {
             // right
-            sx = this._position;
+            sx = this._position*this._speed;
             sy = 0;
-            sw = 1;
+            sw = this._speed;
             sh = this._stream.height;
           }
           dx = sx;
@@ -126,11 +127,11 @@ $(function(){
           this._position++;
           var done = false;
           if (this._direction === "up" || this._direction === "down") {
-            if (this._position >= this._stream.height) {
+            if (this._position*this._speed >= this._stream.height) {
               done = true;
             }
           } else {
-            if (this._position >= this._stream.width) {
+            if (this._position*this._speed >= this._stream.width) {
               done = true;
             }
           }
@@ -163,6 +164,12 @@ $(function(){
         description: "direction to scan",
         options: "up right down left".split(" "),
         "default": "right"
+      },
+      speed: {
+        type: "int",
+        description: "speed is the thickness of the scan line",
+        min: 1,
+        "default": 1
       },
       fixed: {
         type: "boolean",
