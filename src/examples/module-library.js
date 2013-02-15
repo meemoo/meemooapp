@@ -18,6 +18,7 @@ $(function(){
       {"src":"meemoo:image/chromakey","info":{"title":"chromakey","author":"forresto, timtaubert","description":"greenscreen chromakey"}},
       {"src":"meemoo:image/lumakey","info":{"title":"lumakey","author":"forresto","description":"remove white or black, lumakey"}},
       {"src":"meemoo:image/grid","info":{"title":"grid","author":"forresto","description":"images stack up in a grid"}},
+      {"src":"meemoo:image/interlace","info":{"title":"interlace","author":"forresto","description":"interlace images together"}},
       {"src":"meemoo:image/slitscan","info":{"title":"slitscan","author":"forresto","description":"slitscan effect"}},
       {"src":"meemoo:image/tile","info":{"title":"tile","author":"forresto","description":"tile to fill canvas, reflect mirror tile for seamless"}},
       {"src":"meemoo:image/particles","info":{"title":"particles","author":"forresto","description":"make a stream of particles from an image or spritesheet"}},
@@ -54,6 +55,10 @@ $(function(){
     ],
     variables: [
       {"src":"meemoo:variable/animation","info":{"title":"animation","author":"meemoo","description":"holds a stack of canvases to use as an animation"}}
+    ],
+    "web-audio-api---alpha": [
+      {"src":"meemoo:audio/source","info":{"title":"source","author":"meemoo","description":"web audio api input"}},
+      {"src":"meemoo:audio/destination","info":{"title":"destination","author":"meemoo","description":"web audio api output"}}
     ],
     "iframe---fading": [
       {"src":"http://forresto.github.com/meemoo-canvas2gif/canvas2gif.html","info":{"title":"gif","author":"forresto","description":"canvas image data to animated gif"}},
