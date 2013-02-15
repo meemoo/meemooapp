@@ -38,6 +38,7 @@ $(function(){
     },
     inputclear: function () {
       this._count = 0;
+      this._added = 0;
       this.canvas.width = 10;
       this.canvas.height = 10;
     },
