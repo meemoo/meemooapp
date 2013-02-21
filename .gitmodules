@@ -10,6 +10,3 @@
 [submodule "libs/swfobject"]
 	path = libs/swfobject
 	url = git://github.com/swfobject/swfobject.git
-[submodule "libs/headtrackr"]
-	path = libs/headtrackr
-	url = git://github.com/auduno/headtrackr.git

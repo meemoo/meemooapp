@@ -8,6 +8,7 @@ $(function(){
       title: "facetracker",
       description: "checks image for face, sends coordinates"
     },
+    _loaded: false,
     initializeModule: function(){
       // Load library
       var self = this;
@@ -37,9 +38,11 @@ $(function(){
             self.sendfaceRect(event);
           }
         );
+
+        this._loaded = true;
       } else {
         yepnope({
-          load: "libs/headtrackr/headtrackr.js",
+          load: "libs/headtrackr.js",
           complete: function () {
             self.initializeModule();
           }
@@ -49,9 +52,10 @@ $(function(){
     _busy: false,
     _busyReset: null,
     inputimage: function (image) {
+      if (!this._loaded) { return; }
       if (this._busy) { 
-        var self = this;
         if (!this._busyReset){
+          var self = this;
           this._busyReset = window.setTimeout(function(){
             self._busy = false;
             self._busyReset = null;
