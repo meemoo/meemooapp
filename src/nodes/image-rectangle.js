@@ -11,6 +11,13 @@ $(function(){
     initializeModule: function(){
       
     },
+    inputrect: function (rect) {
+      this._x = rect.x;
+      this._y = rect.y;
+      this._w = rect.width;
+      this._h = rect.height;
+      // this._angle = (rect.angle + 1) * (Math.PI * 2);
+    },
     inputfill: function (color) {
       this._triggerRedraw = true;
       this._fill = color;
@@ -67,6 +74,23 @@ $(function(){
       if (this._background) {
         this.context.drawImage(this._background, 0, 0);
       }
+      // Angle
+      // if (this._angle !== undefined) {
+      //   this.context.translate(this._x, this._y);
+      //   this.context.rotate(this._angle);
+      //   // Fill
+      //   if (this._fill && this._fill!=="") {
+      //     this.context.fillRect(0-(this._w/2), 0-(this._h/2), this._w, this._h);  
+      //   }
+      //   // Stroke
+      //   if (this._stroke && this._stroke!=="" && this._strokewidth && this._strokewidth>0) {
+      //     this.context.strokeRect(0-(this._w/2), 0-(this._h/2), this._w, this._h);  
+      //   }
+      //   this.context.rotate(0-this._angle);
+      //   this.context.translate(0-this._x, 0-this._y);
+      //   this.inputsend();
+      //   return;
+      // }
       // Fill
       if (this._fill && this._fill!=="") {
         this.context.fillRect(this._x, this._y, this._w, this._h);  
@@ -84,6 +108,10 @@ $(function(){
       background: {
         type: "image",
         description: "first image layer"
+      },
+      rect: {
+        type: "f4",
+        description: "a rectangle object containing x, y, width, height"
       },
       x: {
         type: "float",

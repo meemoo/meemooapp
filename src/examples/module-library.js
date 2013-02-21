@@ -52,7 +52,8 @@ $(function(){
       {"src":"meemoo:ui/checkbox","info":{"title":"checkbox","author":"meemoo","description":"a checkbox to send boolean on/off"}},
       {"src":"meemoo:ui/xy","info":{"title":"xy pad","author":"meemoo","description":"sends coordinates as percentage"}},
       {"src":"meemoo:ui/mouse","info":{"title":"mouse","author":"meemoo","description":"sends mouse coordinates as percentage"}},
-      {"src":"meemoo:ui/motion","info":{"title":"motion","author":"meemoo","description":"sends device motion (accelerometer) data as percentage (Chrome and iOS only)"}}
+      {"src":"meemoo:ui/motion","info":{"title":"motion","author":"meemoo","description":"sends device motion (accelerometer) data as percentage (Chrome and iOS only)"}},
+      {"src":"meemoo:ui/facetracker","info":{"title":"facetracker","author":"meemoo","description":"checks image for face, sends coordinates"}}
     ],
     variables: [
       {"src":"meemoo:variable/animation","info":{"title":"animation","author":"meemoo","description":"holds a stack of canvases to use as an animation"}}
