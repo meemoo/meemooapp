@@ -69,6 +69,7 @@ $(function(){
         if (this.canvas.height !== this._height) {
           this.canvas.height = this._height;
         }
+        this.inputsmoothing(this._smoothing);
         this._sizeChanged = false;
       }
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
