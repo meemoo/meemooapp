@@ -56,15 +56,11 @@ $(function(){
       {"src":"meemoo:ui/motion","info":{"title":"motion","author":"meemoo","description":"sends device motion (accelerometer) data as percentage (Chrome and iOS only)"}},
       {"src":"meemoo:ui/facetracker","info":{"title":"facetracker","author":"meemoo","description":"checks image for face, sends coordinates"}}
     ],
-    variables: [
-      {"src":"meemoo:variable/animation","info":{"title":"animation","author":"meemoo","description":"holds a stack of canvases to use as an animation"}}
-    ],
-    "web-audio-api---alpha": [
-      {"src":"meemoo:audio/source","info":{"title":"source","author":"meemoo","description":"web audio api input"}},
-      {"src":"meemoo:audio/destination","info":{"title":"destination","author":"meemoo","description":"web audio api output"}}
+    animation: [
+      {"src":"meemoo:variable/animation","info":{"title":"animation","author":"meemoo","description":"holds a stack of canvases to use as an animation"}},
+      {"src":"http://forresto.github.com/meemoo-canvas2gif/canvas2gif.html","info":{"title":"gif","author":"forresto","description":"canvas image data to animated gif"}}
     ],
     "iframe---fading": [
-      {"src":"http://forresto.github.com/meemoo-canvas2gif/canvas2gif.html","info":{"title":"gif","author":"forresto","description":"canvas image data to animated gif"}},
       {"src":"http://forresto.github.com/meemoo-camcanvas/onionskin.html","info":{"title":"cam+onionskin","author":"taboca + forresto + ginger","description":"flash webcam image to canvas with onionskin of last frame"}},
       // {"src":"http://forresto.github.com/meemoo-camcanvas/webcam2canvas.html","info":{"title":"cam","author":"taboca + Forrest Oliphant","description":"flash webcam image to canvas"}},
       // {"src":"http://forresto.github.com/meemoo-image/transform.html","info":{"title":"transform","author":"forresto","description":"scale, translate, and/or rotate image (centered)"}},
