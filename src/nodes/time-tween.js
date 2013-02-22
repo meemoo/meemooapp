@@ -156,7 +156,7 @@ $(function(){
         }
       }
       if (!!window.TWEEN && this._tween && this._tween.playing) {
-        this._tween.update(timestamp);
+        this._tween.update( Date.now() );
         if (this._lastValue !== this._tweenVals.x) {
           this.send("value", this._tweenVals.x);
           this.redraw();
