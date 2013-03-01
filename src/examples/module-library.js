@@ -54,6 +54,7 @@ $(function(){
       {"src":"meemoo:ui/xy","info":{"title":"xy pad","author":"meemoo","description":"sends coordinates as percentage"}},
       {"src":"meemoo:ui/mouse","info":{"title":"mouse","author":"meemoo","description":"sends mouse coordinates as percentage"}},
       {"src":"meemoo:ui/motion","info":{"title":"motion","author":"meemoo","description":"sends device motion (accelerometer) data as percentage (Chrome and iOS only)"}},
+      {"src":"meemoo:ui/leap","info":{"title":"leap","author":"meemoo","description":"leap motion hand tracker"}},
       {"src":"meemoo:ui/facetracker","info":{"title":"facetracker","author":"meemoo","description":"checks image for face, sends coordinates"}}
     ],
     animation: [
