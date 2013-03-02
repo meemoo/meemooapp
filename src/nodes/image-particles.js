@@ -62,10 +62,19 @@ $(function(){
         this._animation = null;
       }
     },
+    _oneWidth: 0,
+    _oneHeight: 0,
+    inputimage: function(image){
+      this._image = image;
+      this._oneWidth = image.width;
+      this._oneHeight = image.height;
+    },
     _ms: 1000/12,
     inputanimation: function(a){
       this._animation = a;
       this._ms = 1000/a.fps;
+      this._oneWidth = a.width;
+      this._oneHeight = a.height;
     },
     _lastTime: 0,
     _spawnNext: 0,
@@ -110,15 +119,22 @@ $(function(){
           y: this._y - offsetY + randomPlusOrMinus(this._ySpread),
           xVel: velocity * Math.cos(angle),
           yVel: velocity * Math.sin(angle),
+          angle: angle,
           frame: 0,
           lastFrame: timestamp
         });
         this._spawnNext-=1;
       }
 
+      // Delete extra
+      while (this.particles.length > this._maxParticles) {
+        this.particles.pop();
+      }
+
       for(var i=0; i<this.particles.length; i++) {
         var particle = this.particles[i];
         // Draw particles
+        var draw = null;
         if (this._animation && this._animation.length>0) {
           if (timestamp-particle.lastFrame>=this._ms) {
             // Advance animation frame
@@ -129,19 +145,43 @@ $(function(){
             }
             particle.lastFrame = timestamp;
           }
-          this.context.drawImage(this._animation.frames[particle.frame], particle.x, particle.y);
+          draw = this._animation.frames[particle.frame];
         } else if (this._image) {
-          this.context.drawImage(this._image, particle.x, particle.y);
+          draw = this._image;
+        }
+
+        if (draw) {
+          this.context.translate(particle.x, particle.y);
+          if (this._matchAngle) { this.context.rotate(particle.angle); }
+          this.context.drawImage(draw, 0 - (this._oneWidth/2), 0 - (this._oneHeight/2));
+          if (this._matchAngle) { this.context.rotate(-particle.angle); }
+          this.context.translate(-particle.x, -particle.y);
         } else {
           this.context.fillRect(particle.x, particle.y, 5, 5);
         }
+
         // Advance particles
         particle.x += particle.xVel;
         particle.y += particle.yVel;
         particle.xVel += this._xAccel + randomPlusOrMinus(this._wander);
         particle.yVel += this._yAccel + randomPlusOrMinus(this._wander);
         particle.age++;
-        if (timestamp-particle.born>=this._life) {
+        if (this._loop) {
+          var halfW = this._oneWidth/2;
+          var halfH = this._oneHeight/2;
+          if (particle.x > this._width + halfW) {
+            particle.x = 0 - halfW;
+          }
+          if (particle.x < 0 - halfW) {
+            particle.x = this._width + halfW;
+          }
+          if (particle.y > this._height + halfH) {
+            particle.y = 0 - halfH;
+          }
+          if (particle.y < 0 - halfH) {
+            particle.y = this._height + halfH;
+          }
+        } else if (timestamp-particle.born >= this._life) {
           // Kill it
           this.particles.splice(i, 1);
           i--;
@@ -168,6 +208,7 @@ $(function(){
     },
     inputstop: function(){
       this._running = false;
+      this.particles = [];
     },
     _sendNext: false,
     inputsend: function(){
@@ -230,6 +271,11 @@ $(function(){
         description: "start angle variance",
         "default": 0.1
       },
+      matchAngle: {
+        type: "boolean",
+        description: "turn sprite to match direction",
+        "default": false
+      },
       speed: {
         type: "float",
         description: "start speed",
@@ -274,6 +320,11 @@ $(function(){
         type: "float",
         description: "particle lifetime in seconds",
         "default": 1
+      },
+      loop: {
+        type: "boolean",
+        description: "loop around to the other side (ignores life)",
+        "default": false
       },
       start: {
         type: "bang",
