@@ -150,41 +150,58 @@ $(function(){
           draw = this._image;
         }
 
+        this.context.translate(particle.x, particle.y);
+        if (this._matchAngle) { this.context.rotate(particle.angle); }
         if (draw) {
-          this.context.translate(particle.x, particle.y);
-          if (this._matchAngle) { this.context.rotate(particle.angle); }
           this.context.drawImage(draw, 0 - (this._oneWidth/2), 0 - (this._oneHeight/2));
-          if (this._matchAngle) { this.context.rotate(-particle.angle); }
-          this.context.translate(-particle.x, -particle.y);
         } else {
-          this.context.fillRect(particle.x, particle.y, 5, 5);
+          this.context.fillRect(0-5, 0-5, 10, 10);
         }
+        if (this._matchAngle) { this.context.rotate(-particle.angle); }
+        this.context.translate(-particle.x, -particle.y);
 
         // Advance particles
         particle.x += particle.xVel;
         particle.y += particle.yVel;
-        particle.xVel += this._xAccel + randomPlusOrMinus(this._wander);
-        particle.yVel += this._yAccel + randomPlusOrMinus(this._wander);
-        particle.age++;
-        if (this._loop) {
-          var halfW = this._oneWidth/2;
-          var halfH = this._oneHeight/2;
-          if (particle.x > this._width + halfW) {
-            particle.x = 0 - halfW;
+        particle.xVel += this._xAccel;
+        particle.yVel += this._yAccel;
+        if (this._wander > 0) {
+          particle.xVel += randomPlusOrMinus(this._wander);
+          particle.yVel += randomPlusOrMinus(this._wander);
+        }
+        if (this._matchAngle) {
+          particle.angle = Math.atan2(particle.yVel, particle.xVel); 
+        }
+
+        var kill = false;
+        var halfW = this._oneWidth;
+        var halfH = this._oneHeight;
+        if (particle.x > this._width + halfW) {
+          particle.x = 0 - halfW;
+          kill = true;
+        }
+        if (particle.x < 0 - halfW) {
+          particle.x = this._width + halfW;
+          kill = true;
+        }
+        if (particle.y > this._height + halfH) {
+          particle.y = 0 - halfH;
+          kill = true;
+        }
+        if (particle.y < 0 - halfH) {
+          particle.y = this._height + halfH;
+          kill = true;
+        }
+
+        if (!this._loop) {
+          if (this._life > 0 && timestamp-particle.born >= this._life) {
+            kill = true;
           }
-          if (particle.x < 0 - halfW) {
-            particle.x = this._width + halfW;
+          if (kill) {
+            // Kill it
+            this.particles.splice(i, 1);
+            i--;
           }
-          if (particle.y > this._height + halfH) {
-            particle.y = 0 - halfH;
-          }
-          if (particle.y < 0 - halfH) {
-            particle.y = this._height + halfH;
-          }
-        } else if (timestamp-particle.born >= this._life) {
-          // Kill it
-          this.particles.splice(i, 1);
-          i--;
         }
       }
 
@@ -289,7 +306,8 @@ $(function(){
       wander: {
         type: "float",
         description: "randomize speed by this much every frame",
-        "default": 0
+        "default": 0,
+        min: 0
       },
       accelAngle: {
         type: "float",
@@ -318,7 +336,7 @@ $(function(){
       },
       life: {
         type: "float",
-        description: "particle lifetime in seconds",
+        description: "particle lifetime in seconds (0 will live until off edge)",
         "default": 1
       },
       loop: {
