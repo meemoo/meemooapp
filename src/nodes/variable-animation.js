@@ -10,7 +10,11 @@ $(function(){
       '<button class="pause">pause</button>'+
       '<button class="prev">prev</button>'+
       '<button class="next">next</button>'+
-      '<button class="deleteframe">deleteframe</button>'+
+      '<button class="deleteframe">deleteframe</button><br/><br/>'+
+      '<button class="export">export</button>'+
+      // '<button class="import">import</button>'+
+      // '<form class="importform" style="display:none;">'+
+      // '</form>'+
     '</div>';
 
   Iframework.NativeNodes["variable-animation"] = Iframework.NativeNodes["variable"].extend({
@@ -25,7 +29,8 @@ $(function(){
       "click .pause" : "inputpause",
       "click .prev"  : "inputprev",
       "click .next"  : "inputnext",
-      "click .deleteframe"  : "deleteFrame"
+      "click .deleteframe"  : "deleteFrame",
+      "click .export"  : "exportImage"
     },
     initializeModule: function(){
       this._animation = {
@@ -144,6 +149,23 @@ $(function(){
       } else {
         this.showFrame(0);
       }
+    },
+    exportImage: function(){
+      if (this._animation.length < 1) { return; }
+
+      var image = document.createElement("canvas");
+      var imageContext = image.getContext("2d");
+      image.width = this._animation.width * this._animation.length;
+      image.height = this._animation.height;
+      var x = 0;
+      for (var i=0; i<this._animation.length; i++){
+        imageContext.drawImage(this._animation.frames[i], x, 0);
+        x += this._animation.width;
+      }
+      try {
+        var url = image.toDataURL();
+        window.open(url);
+      } catch (e) {}
     },
     inputsend: function(){
       this.send("animation", this._animation);
