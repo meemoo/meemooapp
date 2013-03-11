@@ -54,6 +54,14 @@ $(function(){
       this.context.webkitImageSmoothingEnabled = s;
       this.context.mozImageSmoothingEnabled = s;
     },
+    exportImage: function(){
+      try {
+        var url = this.canvas.toDataURL();
+        window.open(url);
+      } catch (e) {
+        // Maybe it is dirty with non-CORS data
+      }
+    },
     popout: function() {
       if (this.w) {
         // Toggle

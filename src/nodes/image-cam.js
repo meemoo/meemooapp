@@ -107,14 +107,12 @@ $(function(){
           self._camStarted = true;
           self._triggerRedraw = true;
         }, function(error){
-          // this.$("button").show();
-          // this.$(".stopcamera").hide();
           self._placeholderWarning = "(denied webcam access)";
-          self.setupPlaceholderVideo();
+          self.stopCam();
         });
       } else {
         this._placeholderWarning = "(no getUserMedia webcam)";
-        this.setupPlaceholderVideo();
+        self.stopCam();
       }
     },
     stopCam: function(){

@@ -2,14 +2,38 @@
 
 $(function(){
 
+  var template = 
+    '<p class="saveas">'+
+      'Right-click to Save Image As...'+
+    '</p>'+
+    '<div class="control">'+
+      '<button class="export">export</button>'+
+    '</div>'+
+    '<p class="info">'+
+      '<a href="http://meemoo.org/hack-tivities/physical-gif.html">How this works.</a> '+
+      'If interlacing 3 images, input the one to be viewed from the right first, then middle, then left. '+
+      'If interlacing 2 images, input the one to be viewed from the left first, then right. '+
+    '</p>';
+
   Iframework.NativeNodes["image-interlace"] = Iframework.NativeNodes["image"].extend({
 
+    template: _.template(template),
     info: {
       title: "interlace",
       author: "forresto",
       description: "interlace images together"
     },
+    events: {
+      "click .export"  : "exportImage"
+    },
     initializeModule: function(){
+      var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+      if (is_chrome) {
+        this.$("button").button();
+        this.$(".saveas").hide();
+      } else {
+        this.$("button").hide();
+      }
     },
     _added: 0,
     _count: 3,
