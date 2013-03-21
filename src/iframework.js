@@ -235,14 +235,11 @@ $(function(){
       this.$('.panel .library .listing').append(accordion);
       accordion.children(".library-section")
         .accordion({
-          animated: false,
+          animate: false,
           header: "h3",
-          autoHeight: false,
+          heightStyle: "content",
           collapsible: true,
-          create: function(event) {
-            // start closed
-            $(event.target).accordion( "activate", false );
-          }
+          active: false
         });
 
       this.$('.addbyurlinput')
@@ -694,11 +691,12 @@ $(function(){
               .attr("href", last);
             var fbLink = $('<a title="share on facebook" target="_blank" class="share icon-facebook-rect"></a>')
               .attr("href", 'https://www.facebook.com/sharer.php?u='+gisturlE+'&t='+titleE);
-            var tweet = gisturl + " " + graph["info"]["title"] + " #meemoo " + graph["info"]["description"];
-            // url is shortened, so can be longer than 140
-            if (tweet.length >= 158) {
-              tweet = tweet.substr(0,155) + "...";
+            var tweet = " " + graph["info"]["title"] + " #meemoo " + graph["info"]["description"];
+            // url is shortened to 20
+            if (tweet.length >= 120) {
+              tweet = tweet.substr(0,115) + "...";
             }
+            tweet = gisturl + tweet;
             var twitterLink = $('<a title="post to twitter" target="_blank" class="share icon-twitter-bird"></a>')
               .attr("href", 'https://twitter.com/intent/tweet?text='+encodeURIComponent(tweet));
 
