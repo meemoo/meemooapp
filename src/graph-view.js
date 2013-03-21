@@ -30,7 +30,7 @@ $(function(){
       // Drag helper from module library
       this.$el
         .droppable({ 
-          accept: ".addnode" 
+          accept: ".addnode, .canvas" 
         })
         .selectable({
           filter: ".module",
@@ -69,10 +69,24 @@ $(function(){
       $("div.module").removeClass("active");
     },
     drop: function (event, ui) {
-      var module = ui.draggable.data("module");
       var x = Math.round(this.$el.scrollLeft() + ui.offset.left + 10);
       var y = Math.round(this.$el.scrollTop() + ui.offset.top + 35);
-      module.view.dragAddNode({x:x,y:y});
+      var options = {x:x,y:y};
+
+      var module = ui.draggable.data("module");
+      if (module) {
+        // Add module
+        module.view.dragAddNode( options );
+      } else {
+        var canvas = ui.helper.data("meemoo-drag-canvas");
+        // Copy canvas
+        if (canvas) {
+          options.src = "meemoo:image/in";
+          options.canvas = canvas;
+          Iframework.shownGraph.addNode( options );
+        }
+      }
+
     },
     addNode: function (node) {
       this.$(".nodes").append( node.initializeView().el );

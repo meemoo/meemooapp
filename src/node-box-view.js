@@ -64,7 +64,7 @@ $(function(){
           this.model.loaded = true;
           this.model.graph.checkLoaded();
         } else {
-          console.warn("No native node found.");
+          // console.warn("No native node found.");
         }
       }
     },

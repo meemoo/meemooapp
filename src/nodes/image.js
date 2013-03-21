@@ -27,7 +27,39 @@ $(function(){
       this.canvas.width = 500;
       this.canvas.height = 500;
       this.context = this.canvas.getContext('2d');
-      this.showCanvas();
+
+      $(this.canvas)
+        .attr({
+          "class": "canvas",
+          "id": "canvas-"+this.model.id
+        })
+        .css({
+          maxWidth: "100%",
+          cursor: "pointer"
+        })
+        .draggable({
+          cursor: "pointer",
+          cursorAt: { top: -10, left: -10 },
+          helper: function( event ) {
+            var helper = $( '<div class="drag-image"><h2>Copy this</h2></div>' );
+            $(document.body).append(helper);
+            _.delay(function(){
+              self.dragCopyCanvas(helper);
+            }, 100);
+            return helper;
+          }
+        });
+
+      this.$el.prepend(this.canvas);
+    },
+    dragCopyCanvas: function(helper) {
+      if (!helper) { return; }
+      var canvasCopy = document.createElement("canvas");
+      canvasCopy.width = this.canvas.width;
+      canvasCopy.height = this.canvas.height;
+      canvasCopy.getContext("2d").drawImage(this.canvas, 0, 0);
+      helper.data("meemoo-drag-canvas", canvasCopy);
+      helper.append(canvasCopy);
     },
     scale: function(){
       // canvas is shown at this scaling factor
@@ -38,14 +70,6 @@ $(function(){
       image: {
         type: "image"
       }
-    },
-    showCanvas: function(){
-      $(this.canvas).attr({
-        "class": "canvas",
-        "id": "canvas-"+this.model.id,
-        "style": "max-width:100%"
-      });      
-      this.$el.prepend(this.canvas);
     },
     _smoothing: true,
     inputsmoothing: function (s) {
