@@ -10,7 +10,7 @@ $(function(){
       '<button class="export">export</button>'+
     '</div>'+
     '<p class="info">'+
-      '<a href="http://meemoo.org/hack-tivities/physical-gif.html">How this works.</a> '+
+      '<a href="http://meemoo.org/hack-tivities/physical-gif.html" target="_blank">How this works.</a> '+
       'If interlacing 3 images, input the one to be viewed from the right first, then middle, then left. '+
       'If interlacing 2 images, input the one to be viewed from the left first, then right. '+
     '</p>';

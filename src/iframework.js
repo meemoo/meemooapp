@@ -395,7 +395,7 @@ $(function(){
       // "https://gist.github.com/2439102" or just "2439102"
       var split = gistid.split("/"); // ["https:", "", "gist.github.com", "2439102"]
       if (split.length > 3 && split[2] === "gist.github.com") {
-        gistid = split[3];
+        gistid = split[split.length-1];
       }
 
       // Load gist to json to app

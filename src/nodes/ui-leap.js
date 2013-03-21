@@ -52,6 +52,14 @@ $(function(){
         this.send("hand"+i+"y", position[1]);
         this.send("hand"+i+"z", position[2]);
       }
+      for (i = 0; i < frame.pointables.length && i<2; i++) {
+        var pointable = frame.pointables[i];
+        if (pointable.direction) {
+          var angle = Math.atan2(pointable.direction[2], pointable.direction[0]);
+          angle = angle / (Math.PI*2) - 0.25;
+          this.send("pointer"+i+"xz", angle);
+        }
+      }
     },
     outputs: {
       hand0x: {
@@ -77,6 +85,14 @@ $(function(){
       hand1z: {
         type: "float",
         description: "z in(-300) to out(300) of hand1 position"
+      },
+      pointer0xz: {
+        type: "float",
+        description: "rotation on plane"
+      },
+      pointer1xz: {
+        type: "float",
+        description: "rotation on plane"
       }
     }
 
