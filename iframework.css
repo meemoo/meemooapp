@@ -69,26 +69,31 @@ div.edge-edit {
     text-shadow: 0 1px 1px #AAA;
     padding: 0 3px;
   }
-/*  div.edge-edit .ui-button-icon-only .ui-icon, 
-  div.edge-edit .ui-button-text-icon-primary .ui-icon, 
-  div.edge-edit .ui-button-text-icon-secondary .ui-icon, 
-  div.edge-edit .ui-button-text-icons .ui-icon, 
-  div.edge-edit .ui-button-icons-only .ui-icon {
-    margin-top: -14px;
-    position: absolute;
-    top: 50%;
-  }
-*/
 
 /* boxes */
 
 div.edge-edit,
+div.drag-image,
 div.module,
 div.ports div.portshown,
 div.showpanel {
   border: 1px #AAA solid;
   background-color: rgba(255, 255, 255, 0.85);
 }
+
+div.drag-image {
+  z-index: 1000;
+  font-size: 11px;
+  padding: 10px;  
+}
+  div.drag-image h2 {
+    font-size: 110%;
+    margin: 0;
+    padding: 0;
+  }
+  div.drag-image canvas {
+    max-width: 125px;
+  }
 
 div.node {
   position: absolute;
@@ -292,7 +297,7 @@ div.module {
   span.plugend,
   span.plugendhelper,
   span.holehelper {
-    cursor: move;
+    cursor: pointer;
     display: block;
     width: 19px;
     height: 13px;
@@ -421,7 +426,7 @@ div.panel {
 
   div.panel .load,
   div.panel .source,
-  div.panel .library {
+  div.panel .menu {
     padding: 5px 10px;
   }
 
@@ -451,10 +456,10 @@ div.panel {
       bottom: 10px;
     }
 
-  div.panel .library {
+  div.panel .menu-library {
     text-align: left;
   }
-    div.panel .library .controls {
+    div.panel .menu-library .controls {
     }
     div.panel .listing {
       position: absolute;
@@ -490,29 +495,29 @@ div.panel {
 
     .localapp h2,
     .localapp p,
-    div.panel .library h2,
-    div.panel .library p{
+    div.panel .menu-library h2,
+    div.panel .menu-library p{
       margin: 0;
       padding: 0;
     }
     .localapp h2,
-    div.panel .library h2{
+    div.panel .menu-library h2{
       font-size: 14px;
       line-height: 14px;
     }
     .localapp .description,
-    div.panel .library .description{
+    div.panel .menu-library .description{
       font-size: 10px;
       line-height: 14px;
     }
     .localapp .src,
-    div.panel .library .src{
+    div.panel .menu-library .src{
       font-size: 10px;
       line-height: 10px;
       color: #999;
     }
     .localapp .loadapp,
-    div.panel .library .addnode {
+    div.panel .menu-library .addnode {
       float: left;
       clear: left;
     }

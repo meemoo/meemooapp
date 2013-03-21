@@ -4,13 +4,13 @@ $(function(){
     '<div class="showpanel">'+
       '<button class="button showload">app</button>'+
       '<button class="button showsource">source</button>'+
-      '<button class="button showlibrary">module</button>'+
+      // '<button class="button showlibrary">module</button>'+
     '</div>'+
     '<div class="panel">'+
       '<div class="choosepanel">'+
         '<button class="button showload">app</button>'+
         '<button class="button showsource">source</button>'+
-        '<button class="button showlibrary">module</button>'+
+        // '<button class="button showlibrary">module</button>'+
         '<button class="button close">close</button>'+
       '</div>'+
       '<div class="load">'+
@@ -42,16 +42,6 @@ $(function(){
           '<button class="button sourceapply" title="reloads the app">apply changes</button>'+
         '</div>'+
       '</div>'+
-      '<div class="library">'+
-        '<div class="controls">'+
-          '<form class="addbyurl">'+
-            '<input class="addbyurlinput" name="addbyurlinput" placeholder="search or url" type="text" />'+
-            '<button class="addbyurlsubmit" type="submit">load</button>'+
-          '</form>'+
-        '</div>'+
-        '<div class="listing">'+
-        '</div>'+
-      '</div>'+
     '</div>';
 
   var currentTemplate = 
@@ -81,18 +71,19 @@ $(function(){
       "click .close" :         "closePanels",
       "click .showload" :      "showLoad",
       "click .showsource" :    "showSource",
-      "click .showlibrary":    "showLibrary",
+
       "click .sourcerefresh":  "sourceRefresh",
       "click .sourcecompress": "sourceCompress",
       "click .sourceapply":    "sourceApply",
-      "submit .addbyurl":      "addByUrl",
+
+      "click .newblank":       "newBlank",
+
       "submit .loadfromgist":  "loadFromGist",
+      "click .savegist":       "saveGist",
       "click .savelocal":      "saveLocal",
       "click .forklocal":      "forkLocal",
-      "click .savegist":       "saveGist",
       "click .deletelocal":    "deleteLocal",
-      "click .newblank":       "newBlank",
-      // "click .saveaslocal": "saveAsLocal",
+
       "blur .settitle":        "setTitle",
       "blur .setdescription":  "setDescription",
       "blur .seturl":          "setUrl"
@@ -111,8 +102,8 @@ $(function(){
         .button({ icons: { primary: 'icon-cog' } });
       this.$(".showload")
         .button({ icons: { primary: 'icon-folder-open' } });
-      this.$(".showlibrary")
-        .button({ icons: { primary: 'icon-plus' } });
+      // this.$(".showlibrary")
+      //   .button({ icons: { primary: 'icon-plus' } });
       this.$(".sourcerefresh")
         .button({ icons: { primary: 'icon-cw' } });
       this.$(".sourcecompress")
@@ -147,6 +138,24 @@ $(function(){
         this.wireColorIndex = 0;
       }
       return color;
+    },
+    addMenu: function(name, html){
+      var self = this;
+
+      var menu = $('<div class="menu menu-'+name+'"></div>');
+      menu.append(html);
+      this.$(".panel").append(menu);
+
+      var showButton = $('<button class="button show-'+name+'">'+name+'</button>')
+        .click( function(){
+          self.showPanel();
+          menu.show();
+        });
+      this.$(".showpanel").append(showButton);
+      this.$(".choosepanel > .close").before(showButton.clone(true));
+    },
+    addMenuSection: function(menu, name, html){
+
     },
     loadGraph: function (graph) {
       if (this.shownGraph) {
@@ -194,84 +203,6 @@ $(function(){
           }
         }
       }
-    },
-    Library: null,
-    loadLibrary: function (library) {
-      this.Library = new Iframework.Modules();
-
-      var autocompleteData = [];
-
-      var accordion = $("<div></div>");
-
-      for (var category in library) {
-        if (!library.hasOwnProperty(category)){continue;}
-        var section = $('<div class="library-section"></div>');
-
-        // section title
-        section.append( $('<h3><a href="#">'+category+"</a></h3>") );
-
-        // section items
-        var sectionDiv = $("<div></div>");
-        var modules = library[category];
-        for (var i = 0; i<modules.length; i++) {
-          var module = new Iframework.Module(modules[i]);
-          this.Library.add(module);
-
-          module.initializeView();
-          sectionDiv.append(module.view.$el);
-
-          var autocompleteDataItem = {
-            value: module.get("src"),
-            label: module.get("info").title + " - " + module.get("info").description//,
-            // title: module.get("info").title,
-            // desc: module.get("info").description
-          };
-          autocompleteData.push(autocompleteDataItem);
-        }
-        section.append( sectionDiv );
-        accordion.append( section );
-      }
-
-      this.$('.panel .library .listing').append(accordion);
-      accordion.children(".library-section")
-        .accordion({
-          animate: false,
-          header: "h3",
-          heightStyle: "content",
-          collapsible: true,
-          active: false
-        });
-
-      var self = this;
-      this.$('.addbyurlinput')
-        .autocomplete({
-          minLength: 1,
-          source: autocompleteData,
-          select: function( event, ui ) {
-            self.addByUrl();
-          }
-        });
-    },
-    addByUrl: function() {
-      $(".addbyurlinput").blur();
-      var url = this.$(".addbyurlinput").val();
-      if (url !== "") {
-        var graphEl = this.$(".graph");
-        this.shownGraph.addNode({
-          "src": url,
-          "x": Math.floor(graphEl.scrollLeft() + graphEl.width()/2) - 100,
-          "y": Math.floor(graphEl.scrollTop() + graphEl.height()/2) - 100
-        });
-        console.log(this);
-        this.$(".addbyurlinput")
-          .val("")
-          .attr("placeholder", "loading...");
-        window.setTimeout(function(){
-          this.$(".addbyurlinput")
-            .attr("placeholder", "search or url");
-        }, 1000);
-      }
-      return false;
     },
     _exampleGraphs: [],
     _loadedExample: null,
@@ -323,7 +254,8 @@ $(function(){
       this.$(".panel .library").hide();
       this.$(".panel .source").hide();
     },
-    showpanel: function() {
+    showPanel: function() {
+      this.$(".menu").hide();
       this.$(".panel .load").hide();
       this.$(".panel .library").hide();
       this.$(".panel .source").hide();
@@ -333,17 +265,13 @@ $(function(){
       this.$(".graph").css("right", "350px");
     },
     showLoad: function() {
-      this.showpanel();
+      this.showPanel();
       this.$(".panel .load").show();
     },
     showSource: function() {
-      this.showpanel();
+      this.showPanel();
       this.$(".panel .source").show();
       this.sourceRefresh();
-    },
-    showLibrary: function() {
-      this.showpanel();
-      this.$(".panel .library").show();
     },
     sourceRefresh: function() {
       this.$(".panel .source textarea")
