@@ -101,6 +101,7 @@ $(function(){
       this.w.document.body.style.overflow = "hidden";
       this.w.document.body.style.margin="0px";
       this.w.document.body.style.padding="0px";
+      this.w.document.title = "meemoo.org";
       this.canvas.style.position="absolute";
       this.canvas.style.top="0px";
       this.canvas.style.left="0px";

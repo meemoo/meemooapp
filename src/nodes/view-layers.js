@@ -138,6 +138,7 @@ $(function(){
       // Style
       this.w.document.body.style.backgroundColor = "black";
       this.w.document.body.style.overflow = "hidden";
+      this.w.document.title = "meemoo.org";
 
       // Empty it
       var el = this.w.document.body;
