@@ -222,9 +222,9 @@ $(function(){
 
           var autocompleteDataItem = {
             value: module.get("src"),
-            label: module.get("info").title + " by " + module.get("info").author + " - " + module.get("info").description + " " + module.get("src"),
-            title: module.get("info").title,
-            desc: module.get("info").description
+            label: module.get("info").title + " - " + module.get("info").description//,
+            // title: module.get("info").title,
+            // desc: module.get("info").description
           };
           autocompleteData.push(autocompleteDataItem);
         }
@@ -242,17 +242,36 @@ $(function(){
           active: false
         });
 
+      var self = this;
       this.$('.addbyurlinput')
         .autocomplete({
           minLength: 1,
-          source: autocompleteData
-        })
-        .data( "autocomplete" )._renderItem = function( ul, item ) {
-          return $( "<li></li>" )
-            .data( "item.autocomplete", item )
-            .append( '<a title="'+item.value+'"><span class="autocomplete-title">' + item.title + '</span><br /><span class="autocomplete-desc">' + item.desc + "</span></a>" )
-            .appendTo( ul );
-        };
+          source: autocompleteData,
+          select: function( event, ui ) {
+            self.addByUrl();
+          }
+        });
+    },
+    addByUrl: function() {
+      $(".addbyurlinput").blur();
+      var url = this.$(".addbyurlinput").val();
+      if (url !== "") {
+        var graphEl = this.$(".graph");
+        this.shownGraph.addNode({
+          "src": url,
+          "x": Math.floor(graphEl.scrollLeft() + graphEl.width()/2) - 100,
+          "y": Math.floor(graphEl.scrollTop() + graphEl.height()/2) - 100
+        });
+        console.log(this);
+        this.$(".addbyurlinput")
+          .val("")
+          .attr("placeholder", "loading...");
+        window.setTimeout(function(){
+          this.$(".addbyurlinput")
+            .attr("placeholder", "search or url");
+        }, 1000);
+      }
+      return false;
     },
     _exampleGraphs: [],
     _loadedExample: null,
@@ -345,26 +364,6 @@ $(function(){
         console.warn("json parse error: "+e);
       }
     },
-    addByUrl: function() {
-      $(".addbyurlinput").blur();
-      var url = this.$(".addbyurlinput").val();
-      if (url !== "") {
-        var graphEl = this.$(".graph");
-        this.shownGraph.addNode({
-          "src": url,
-          "x": Math.floor(graphEl.scrollLeft() + graphEl.width()/2) - 100,
-          "y": Math.floor(graphEl.scrollTop() + graphEl.height()/2) - 100
-        });
-        this.$(".addbyurlinput")
-          .val("")
-          .attr("placeholder", "loading...");
-        window.setTimeout(function(){
-          this.$(".addbyurlinput")
-            .attr("placeholder", "search or url");
-        },1000);
-      }
-      return false;
-    },
     loadFromGist: function () {
       var gistid = this.loadFromGistId( this.$(".loadfromgistinput").val() );
       if ( gistid ) {
@@ -382,9 +381,7 @@ $(function(){
           this.$(".loadfromgistinput")
             .attr("placeholder", "load app from gist url");
         }, 1500);
-
       }
-
       return false;
     },
     loadFromGistId: function (gistid) {
