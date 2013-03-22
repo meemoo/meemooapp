@@ -86,7 +86,7 @@ $(function(){
       if (Iframework.util.isImageURL(info.src)) {
         // Probably an image
         var src = info.src;
-        info.src = "meemoo:file/image";
+        info.src = "meemoo:image/in";
         if (!info.state){
           info.state = {};
         }
@@ -280,6 +280,13 @@ $(function(){
           Iframework.sourceRefresh();
         }, 100);
       }
+    },
+    toJSON: function () {
+      return {
+        info: this.get("info"),
+        nodes: this.get("nodes"),
+        edges: this.get("edges")
+      };
     }
   });
   
