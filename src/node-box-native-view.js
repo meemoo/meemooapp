@@ -66,6 +66,16 @@ $(function(){
     send: function (name, value) {
       this.model.send(name, value);
     },
+    recieve: function (name, value) {
+      if (this["input"+name]){
+        this["input"+name](value);
+        // Must manually set _triggerRedraw in that function if needed
+      } else {
+        this["_"+name] = value;
+        // Will trigger a NodeBoxNativeView.redraw() on next renderAnimationFrame
+        this._triggerRedraw = true;
+      }
+    },
     toString: function() {
       return "Native view: "+this.model.get("id")+": "+this.info.title;
     },

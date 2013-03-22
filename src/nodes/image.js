@@ -41,7 +41,11 @@ $(function(){
           cursor: "pointer",
           cursorAt: { top: -10, left: -10 },
           helper: function( event ) {
-            var helper = $( '<div class="drag-image"><h2>Copy this</h2></div>' );
+            var helper = $( '<div class="drag-image"><h2>Copy this</h2></div>' )
+              .data({
+                "meemoo-drag-type": "canvas",
+                "meemoo-source-node": self
+              });
             $(document.body).append(helper);
             _.delay(function(){
               self.dragCopyCanvas(helper);
@@ -49,6 +53,26 @@ $(function(){
             return helper;
           }
         });
+
+      // If there is an image input
+      var firstImageInput;
+      for (var name in this.inputs) {
+        if (this.inputs[name].type==="image"){
+          firstImageInput = name;
+        }
+        break;
+      }
+
+      // Setup droppable
+      if (firstImageInput) {
+        this.$el.droppable({
+          accept: ".canvas",
+          hoverClass: "drop-hover",
+          // Don't also drop on graph
+          greedy: true
+        });
+        this.$el.on("drop", {"self": this, "inputName": firstImageInput}, this.drop);
+      }
 
       this.$el.prepend(this.canvas);
     },
@@ -60,6 +84,22 @@ $(function(){
       canvasCopy.getContext("2d").drawImage(this.canvas, 0, 0);
       helper.data("meemoo-drag-canvas", canvasCopy);
       helper.append(canvasCopy);
+    },
+    drop: function(event, ui){
+      // TODO only drop to top
+
+      // Don't also drop on graph
+      event.stopPropagation();
+
+      var type = ui.helper.data("meemoo-drag-type");
+      if ( !type || type !== "canvas" ) { return false; }
+      var canvas = ui.helper.data("meemoo-drag-canvas");
+      var inputName = event.data.inputName;
+      if ( !inputName || !canvas) { return false; }
+
+      // Hit own input with image
+      // debugger;
+      event.data.self.recieve(inputName, canvas);
     },
     scale: function(){
       // canvas is shown at this scaling factor

@@ -14,7 +14,7 @@
   );
 
   // Add menu
-  Iframework.addMenu("library", template);
+  Iframework.addMenu("library", template, "icon-plus");
 
 
   Iframework.loadLibrary = function (library) {

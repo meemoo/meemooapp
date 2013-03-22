@@ -24,6 +24,9 @@ $(function(){
         .draggable({
           helper: function () {
             var h = $('<div class="addnode-drag-helper" />')
+              .data({
+                "meemoo-drag-type": "library-module"
+              })
               .text($(this).data("module").get("info")["title"]);
             $(".app").append(h);
             return h;

@@ -39,14 +39,15 @@ $(function(){
     receive: function (message) {
       for (var name in message) {
         if (this.view.Native) {
-          if (this.view.Native["input"+name]){
-            this.view.Native["input"+name](message[name]);
-            // Must manually set _triggerRedraw in that function if needed
-          } else {
-            this.view.Native["_"+name] = message[name];
-            // Will trigger a NodeBoxNativeView.redraw() on next renderAnimationFrame
-            this.view.Native._triggerRedraw = true;
-          }
+          this.view.Native.recieve(name, message[name]);
+          // if (this.view.Native["input"+name]){
+          //   this.view.Native["input"+name](message[name]);
+          //   // Must manually set _triggerRedraw in that function if needed
+          // } else {
+          //   this.view.Native["_"+name] = message[name];
+          //   // Will trigger a NodeBoxNativeView.redraw() on next renderAnimationFrame
+          //   this.view.Native._triggerRedraw = true;
+          // }
         }
       }
     },

@@ -69,24 +69,35 @@ $(function(){
       $("div.module").removeClass("active");
     },
     drop: function (event, ui) {
-      var x = Math.round(this.$el.scrollLeft() + ui.offset.left + 10);
-      var y = Math.round(this.$el.scrollTop() + ui.offset.top + 35);
-      var options = {x:x,y:y};
+      var type = ui.helper.data("meemoo-drag-type");
+      if (!type) {return false;}
 
-      var module = ui.draggable.data("module");
-      if (module) {
-        // Add module
-        module.view.dragAddNode( options );
-      } else {
-        var canvas = ui.helper.data("meemoo-drag-canvas");
-        // Copy canvas
-        if (canvas) {
-          options.src = "meemoo:image/in";
-          options.canvas = canvas;
-          Iframework.shownGraph.addNode( options );
-        }
+      var options = {
+        x: Math.round(this.$el.scrollLeft() + ui.offset.left + 10),
+        y: Math.round(this.$el.scrollTop() + ui.offset.top + 35)
+      };
+
+      switch(type){
+        case "library-module":
+          var module = ui.draggable.data("module");
+          if (module) {
+            // Add module
+            module.view.dragAddNode( options );
+          }
+          break;
+        case "canvas":
+          var canvas = ui.helper.data("meemoo-drag-canvas");
+          // Copy canvas
+          if (canvas) {
+            options.src = "meemoo:image/in";
+            options.canvas = canvas;
+            Iframework.shownGraph.addNode( options );
+          }
+          break;
+        default:
+          break;
       }
-
+      return false;
     },
     addNode: function (node) {
       this.$(".nodes").append( node.initializeView().el );

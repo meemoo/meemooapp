@@ -2,16 +2,16 @@ $(function(){
   
   var template = 
     '<div class="showpanel">'+
-      '<button class="button showload">app</button>'+
-      '<button class="button showsource">source</button>'+
+      '<button class="button showload icon-folder-open">app</button>'+
+      '<button class="button showsource icon-cog">source</button>'+
       // '<button class="button showlibrary">module</button>'+
     '</div>'+
     '<div class="panel">'+
       '<div class="choosepanel">'+
-        '<button class="button showload">app</button>'+
-        '<button class="button showsource">source</button>'+
+        '<button class="button showload icon-folder-open">app</button>'+
+        '<button class="button showsource icon-cog">source</button>'+
         // '<button class="button showlibrary">module</button>'+
-        '<button class="button close">close</button>'+
+        '<button class="button close icon-cancel"></button>'+
       '</div>'+
       '<div class="load">'+
         '<div class="controls">'+
@@ -96,12 +96,12 @@ $(function(){
       this.closePanels();
 
       // Panel buttons
-      this.$(".close")
-        .button({ icons: { primary: 'icon-cancel' }, text: false });
-      this.$(".showsource")
-        .button({ icons: { primary: 'icon-cog' } });
-      this.$(".showload")
-        .button({ icons: { primary: 'icon-folder-open' } });
+      // this.$(".close")
+      //   .button({ icons: { primary: 'icon-cancel' }, text: false });
+      // this.$(".showsource")
+      //   .button({ icons: { primary: 'icon-cog' } });
+      // this.$(".showload")
+      //   .button({ icons: { primary: 'icon-folder-open' } });
       // this.$(".showlibrary")
       //   .button({ icons: { primary: 'icon-plus' } });
       this.$(".sourcerefresh")
@@ -139,7 +139,7 @@ $(function(){
       }
       return color;
     },
-    addMenu: function(name, html){
+    addMenu: function(name, html, icon){
       var self = this;
 
       var menu = $('<div class="menu menu-'+name+'"></div>');
@@ -151,6 +151,9 @@ $(function(){
           self.showPanel();
           menu.show();
         });
+      if (icon) {
+        showButton.addClass(icon);
+      }
       this.$(".showpanel").append(showButton);
       this.$(".choosepanel > .close").before(showButton.clone(true));
     },
