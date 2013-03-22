@@ -50,6 +50,9 @@ module.exports = function(grunt) {
           'src/edge.js',
           'src/edge-view.js',
           'src/router.js',
+          // Plugins
+          'src/plugins/library.js',
+          // All Iframework loaded
           'src/iframework-last.js'
         ],
         dest: 'build/<%= pkg.name %>.min.js'
