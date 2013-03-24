@@ -19,6 +19,7 @@ $(function(){
     },
     toJSON: function () {
       return {
+        id: this.id,
         graph: this.get("graph")
       };
     }
