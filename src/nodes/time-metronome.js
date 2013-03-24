@@ -4,7 +4,9 @@ $(function(){
 
   var template = 
     '<div class="blinklights">stopped</div>'+
-    '<div class="info"></div>';
+    '<div class="info"></div>'+
+    '<button class="start">start</button>'+
+    '<button class="stop">stop</button>';
 
   Iframework.NativeNodes["time-metronome"] = Iframework.NativeNodes["time"].extend({
 
@@ -12,6 +14,10 @@ $(function(){
     info: {
       title: "metronome",
       description: "metronome tick tock"
+    },
+    events: {
+      "click .start" : "inputstart",
+      "click .stop"  : "inputstop"
     },
     initializeModule: function(){
     },
