@@ -257,7 +257,7 @@ $(function(){
       this.$(".panel .library").hide();
       this.$(".panel .source").hide();
     },
-    showPanel: function() {
+    showPanel: function( which ) {
       this.$(".menu").hide();
       this.$(".panel .load").hide();
       this.$(".panel .library").hide();
@@ -266,6 +266,10 @@ $(function(){
       this.$(".showpanel").hide();
       this.$(".panel").show();
       this.$(".graph").css("right", "350px");
+
+      if (which) {
+        this.$("button.show-"+which).click();
+      }
     },
     showLoad: function() {
       this.showPanel();
@@ -650,7 +654,7 @@ $(function(){
       // reset localStorage version
       this._loadedLocalApp = null;
 
-      this.showLibrary();
+      this.showPanel("library");
 
       // URL hash
       Iframework.router.navigate("new");
