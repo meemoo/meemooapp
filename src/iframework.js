@@ -354,7 +354,8 @@ $(function(){
         }
         if (graphs.length > 0) {
           // reset localStorage version
-          this._loadedLocalApp = null;
+          // FIXME
+          // Iframework._loadedLocalApp = null;
           // load graph
           Iframework.loadGraph(graphs[0]);
           Iframework.closePanels();

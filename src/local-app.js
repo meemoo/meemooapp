@@ -16,6 +16,11 @@ $(function(){
 
       //DEBUG
       // Iframework.showLoad();
+    },
+    toJSON: function () {
+      return {
+        graph: this.get("graph")
+      };
     }
   });
 

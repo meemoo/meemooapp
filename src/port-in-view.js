@@ -77,13 +77,13 @@ $(function(){
           accept = ".hole-in.hole-all, .hole-in.hole-"+type_class+", .plugend-out.plugend-all, .plugend-out.plugend-"+type_class;
         }
       }
-      if (this.model.isIn && this.model.get("type") === "string"){
+      if (this.model.get("type") === "string"){
         // HACK to allow int and float -> string
         accept += ", .hole-out.hole-int, .hole-out.hole-float, .plugend-in.plugend-int, .plugend-in.plugend-float";
       }
-      if (!this.model.isIn && (this.model.get("type") === "int" || this.model.get("type") === "float")){
-        // HACK to allow int and float -> string
-        accept += ", .hole-in.hole-string, .plugend-out.plugend-string";
+      if (this.model.get("type") === "int" || this.model.get("type") === "float" || this.model.get("type") === "number") {
+        // HACK to allow all int float number to connect
+        accept += ", .hole-out.hole-int, .hole-out.hole-float, .hole-out.hole-number, .plugend-in.plugend-int, .plugend-in.plugend-float, .plugend-in.plugend-number";
       }
       this.$el.droppable({
         "hoverClass": "drophover",

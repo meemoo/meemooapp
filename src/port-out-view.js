@@ -76,13 +76,11 @@ $(function(){
           accept = ".hole-in.hole-all, .hole-in.hole-"+type_class+", .plugend-out.plugend-all, .plugend-out.plugend-"+type_class;
         }
       }
-      if (this.model.isIn && this.model.get("type") === "string"){
-        // HACK to allow int and float -> string
-        accept += ", .hole-out.hole-int, .hole-out.hole-float, .plugend-in.plugend-int, .plugend-in.plugend-float";
-      }
-      if (!this.model.isIn && (this.model.get("type") === "int" || this.model.get("type") === "float")){
+      if (this.model.get("type") === "int" || this.model.get("type") === "float" || this.model.get("type") === "number") {
         // HACK to allow int and float -> string
         accept += ", .hole-in.hole-string, .plugend-out.plugend-string";
+        // HACK to allow all int float number to connect
+        accept += ", .hole-in.hole-int, .hole-in.hole-float, .hole-out.hole-number, .plugend-out.plugend-int, .plugend-out.plugend-float, .plugend-out.plugend-number";
       }
       this.$el.droppable({
         "hoverClass": "drophover",

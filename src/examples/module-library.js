@@ -28,6 +28,7 @@ $(function(){
     ],
     util: [
       {"src":"meemoo:util/stats","info":{"title":"stats.js","author":"mr.doob","description":"fps stats graph"}},
+      {"src":"meemoo:image/palette","info":{"title":"palette","author":"meemoo","description":"get color palette from image"}},
       {"src":"meemoo:util/color-hsla","info":{"title":"color-hsla","author":"meemoo","description":"make hsla() css color (hue, saturation, lightness, alpha)"}},
       {"src":"meemoo:util/math","info":{"title":"math","author":"silentmatt","description":"math equation evaluator"}}
     ],
@@ -37,7 +38,8 @@ $(function(){
     ],
     flow: [
       {"src":"meemoo:util/gate","info":{"title":"gate","author":"meemoo","description":"stop the data flow and let one through"}},
-      {"src":"meemoo:time/throttle","info":{"title":"throttle","author":"meemoo","description":"too many fps? use throttle to limit data rate passing through flow."}}
+      {"src":"meemoo:time/throttle","info":{"title":"throttle","author":"meemoo","description":"too many fps? use throttle to limit data rate passing through flow."}},
+      {"src":"meemoo:time/delay","info":{"title":"delay","author":"meemoo","description":"holds x values until the next one comes"}}
     ],
     time: [
       {"src":"meemoo:time/tween","info":{"title":"tween","author":"sole","description":"Interpolate between two values."}},

@@ -5,7 +5,7 @@
 $(function(){
 
   var template = 
-    '<button class="button" style="position:absolute; overflow:hidden; top:0;right:0;bottom:0;left:0; width:100%;"></button>';
+    '<button class="button" style="position:absolute; overflow:hidden; top:0;right:0;bottom:0;left:0; width:100%; padding: 0; margin: 0;"></button>';
 
   Iframework.NativeNodes["ui-button"] = Iframework.NativeNodes["ui"].extend({
 

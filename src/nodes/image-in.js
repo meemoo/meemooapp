@@ -29,7 +29,6 @@ $(function(){
           self.inputsend();
         };
         this._image.src = url;
-        this.$(".img")[0].src = url;
       }
     },
     inputimage: function(image){
