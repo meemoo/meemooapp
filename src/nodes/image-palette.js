@@ -2,36 +2,52 @@
 
 $(function(){
 
+  function componentToHex(c) {
+    var hex = parseInt( c, 10 ).toString(16);
+    return hex.length === 1 ? "0" + hex : hex;
+  }
+
+  var rgbToHex = function ( rgb ) {
+    var rgbRegex = /^rgb\((\d+),(\d+),(\d+)\)$/ ;
+    var result, r, g, b, hex = "";
+    if ( (result = rgbRegex.exec(rgb)) ) {
+      hex = "#" + componentToHex(result[1]) + componentToHex(result[2]) + componentToHex(result[3]);
+      return hex;
+    }
+    return false;
+  };
+
+  var template = 
+    '<div class="palette" style="background-color:black; padding: 1px 0 0 1px;"></div>'+
+    '<div class="info">input an image to make a palette</div>'+
+    '<button class="export-rgb">export rgb</button>'+
+    '<button class="export-hex">export hex</button>';
+
   Iframework.NativeNodes["image-palette"] = Iframework.NativeNodes["image"].extend({
 
+    template: _.template(template),
     info: {
       title: "palette",
-      author: "ticky+flickr+forresto",
-      description: "monochrome by atkinson, bayer, floydsteinberg, or no dither"
+      author: "nrabinowitz",
+      description: "get color palette from image color quantize"
+    },
+    events: {
+      "click .export-rgb" : "exportRGB",
+      "click .export-hex" : "exportHex"
     },
     _workerBusy: false,
     initializeModule: function(){
-      // Clear canvas
+      // Clear canvas (we're extending image to get the droppable)
       $(this.canvas).remove();
       delete this.context;
       delete this.canvas;
-
-      // Info
-      this.$(".info").text("input an image to make a palette");
-
-      // Palette container
-      var paletteDiv = $('<div class="palette"></div>').css({
-        "background-color": "black",
-        "padding": "1px 0 0 1px"
-      });
-      this.$(".info").before( paletteDiv );
 
       // Setup worker
       var self = this;
       this._worker = new Worker('src/nodes/image-palette-worker.js');
       this._worker.addEventListener('message', function (e) {
         // HACK
-        self.model.setValue({"palette":e.data});
+        self.set("palette", e.data);
 
         self._palette = e.data;
         self.renderPalette(self._palette);
@@ -82,7 +98,9 @@ $(function(){
 
       var self = this;
       var clickColor = function(){
-        self.send("color", $(this).css("background-color"));
+        var color = $(this).css("background-color");
+        self.send("color", color);
+        self.$(".info").text(color);
       };
       for (var i=0; i<palette.length; i++) {
         var button = $('<button title="'+palette[i]+'"></button>')
@@ -99,6 +117,23 @@ $(function(){
         this.$(".palette").append(button);
       }
       // this.$(".info").text( palette.toString() );
+    },
+    exportRGB: function () {
+      var code = JSON.stringify(this._palette, null, "  ");
+      // window.alert(code);
+      window.open( "data:text/javascript," + window.escape(code) );
+    },
+    exportHex: function () {
+      var hexen = [];
+      for (var i=0; i<this._palette.length; i++) {
+        var hex;
+        if ( (hex=rgbToHex(this._palette[i])) ) {
+          hexen.push( hex );
+        }
+      }
+      var code = JSON.stringify(hexen, null, "  ");
+      // window.alert(code);
+      window.open( "data:text/javascript," + window.escape(code) );
     },
     inputrandom: function (index) {
       if (this._palette && this._palette.length > 0) {
