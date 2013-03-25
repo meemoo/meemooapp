@@ -6,8 +6,10 @@ $(function(){
 
   var template = 
     '<form class="textform">'+
-      '<textarea class="text" style="width:90%;height:7em;"></textarea>'+
-      '<button class="send" type="submit">send</button>'+
+      '<div style="position:absolute; top:2px; right:4px; bottom:30px; left:2px;">'+
+        '<textarea class="text" style="width:100%; height:100%;"></textarea>'+
+      '</div>'+
+      '<button class="send" type="submit" style="position:absolute; bottom:0; left:0;">send</button>'+
     '</form>';
 
   Iframework.NativeNodes["ui-textarea"] = Iframework.NativeNodes["ui"].extend({

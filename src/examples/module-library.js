@@ -28,28 +28,30 @@ $(function(){
     ],
     util: [
       {"src":"meemoo:util/stats","info":{"title":"stats.js","author":"mr.doob","description":"fps stats graph"}},
-      {"src":"meemoo:image/palette","info":{"title":"palette","author":"meemoo","description":"get color palette from image"}},
+      {"src":"meemoo:image/palette","info":{"title":"palette","author":"nrabinowitz","description":"get color palette from image color quantize"}},
       {"src":"meemoo:util/color-hsla","info":{"title":"color-hsla","author":"meemoo","description":"make hsla() css color (hue, saturation, lightness, alpha)"}},
       {"src":"meemoo:util/math","info":{"title":"math","author":"silentmatt","description":"math equation evaluator"}}
-    ],
-    file: [
-      {"src":"meemoo:image/in","info":{"title":"image","author":"forresto","description":"hold a canvas or get image from url"}},
-      {"src":"meemoo:file/webm","info":{"title":"webm","author":"antimatter15","description":"(Chrome only) Canvas to WebM video encoder thanks to antimatter15/whammy."}}
     ],
     flow: [
       {"src":"meemoo:util/gate","info":{"title":"gate","author":"meemoo","description":"stop the data flow and let one through"}},
       {"src":"meemoo:time/throttle","info":{"title":"throttle","author":"meemoo","description":"too many fps? use throttle to limit data rate passing through flow."}},
-      {"src":"meemoo:time/delay","info":{"title":"delay","author":"meemoo","description":"holds x values until the next one comes"}}
+      {"src":"meemoo:time/delay","info":{"title":"delay","author":"meemoo","description":"holds x values until the next one comes"}},
+      {"src":"meemoo:util/count","info":{"title":"count","author":"meemoo","description":"count the times that the data input is hit"}}
     ],
     time: [
       {"src":"meemoo:time/tween","info":{"title":"tween","author":"sole","description":"Interpolate between two values."}},
       {"src":"meemoo:time/countdown","info":{"title":"countdown","author":"forresto","description":"Countdown to a bang."}},
       {"src":"meemoo:time/metronome","info":{"title":"metronome","author":"forresto","description":"Metronome beats per minute"}}
     ],
+    file: [
+      {"src":"meemoo:image/in","info":{"title":"image","author":"forresto","description":"hold a canvas or get image from url"}},
+      {"src":"meemoo:file/webm","info":{"title":"webm","author":"antimatter15","description":"(Chrome only) Canvas to WebM video encoder thanks to antimatter15/whammy."}}
+    ],
     ui: [
       {"src":"meemoo:ui/button","info":{"title":"button","author":"meemoo","description":"a button sends a bang, and you can attach a keyboard key"}},
       {"src":"meemoo:ui/hslider","info":{"title":"hslider","author":"meemoo","description":"horizontal slider"}},
       {"src":"meemoo:ui/vslider","info":{"title":"vslider","author":"meemoo","description":"vertical slider"}},
+      {"src":"meemoo:ui/number","info":{"title":"number","author":"meemoo","description":"simple number box"}},
       {"src":"meemoo:ui/text","info":{"title":"text","author":"meemoo","description":"a text box to save and send text"}},
       {"src":"meemoo:ui/textarea","info":{"title":"textarea","author":"meemoo","description":"a multiline text box to edit and send text"}},
       {"src":"meemoo:ui/checkbox","info":{"title":"checkbox","author":"meemoo","description":"a checkbox to send boolean on/off"}},

@@ -146,10 +146,14 @@ $(function(){
         }
       }
     },
-    setValue: function(info) {
+    setValues: function(info) {
       for (var name in info) {
         this.get("state")[name] = info[name];
       }
+      this.nodeChanged();
+    },
+    setValue: function(name, value) {
+      this.get("state")[name] = value;
       this.nodeChanged();
     },
     toString: function() {

@@ -197,7 +197,7 @@ $(function(){
                   node.iframeLoaded();
                   break;
                 case "set":
-                  node.setValue(info);
+                  node.setValues(info);
                   break;
                 default:
                   break;

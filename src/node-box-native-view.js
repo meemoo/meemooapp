@@ -63,6 +63,10 @@ $(function(){
         this._lastRedraw = timestamp;
       }
     },
+    set: function (name, value) {
+      // Sets own state, use sparingly
+      this.model.setValue(name, value);
+    },
     send: function (name, value) {
       this.model.send(name, value);
     },

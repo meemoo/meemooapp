@@ -433,9 +433,7 @@ $(function(){
       message[inputname] = val;
       this.model.node.receive(message);
       if (saveToState) {
-        var o = {};
-        o[inputname] = val;
-        this.model.node.setValue(o);
+        this.model.node.setValue(inputname, val);
       }
       // $('div.edge-edit').remove();
       return false;
