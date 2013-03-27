@@ -59,6 +59,7 @@ $(function(){
       }, false);
     },
     inputimage: function(image) {
+      this._image = image;
       if (!this._worker || this._workerBusy) { return false; }
 
       // Reduce size of big images
@@ -86,12 +87,23 @@ $(function(){
         this._workerBusy = true;
       } catch(e) {
         // Can't getImageData
+        this.$(".info").text("Can't getImageData from that image :(");
         // console.log(e);
       }
     },
     inputpalette: function (palette) {
       this._palette = palette;
       this.renderPalette(palette);
+    },
+    _max: 16,
+    inputmax: function (max) {
+      max = parseInt(max, 10);
+      if (max===max){
+        this._max = max;
+        if (this._image) {
+          this.inputimage(this._image);
+        }
+      }
     },
     renderPalette: function(palette){
       this.$(".info, .palette").empty();
