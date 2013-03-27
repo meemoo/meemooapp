@@ -62,24 +62,18 @@ $(function(){
         
       // The whole port is droppable
       var accept = "";
-      if (this.model.get("type") === "all"){
-        if (this.model.isIn) {
-          accept = ".hole-out, .plugend-in";
-        } else {
-          accept = ".hole-in, .plugend-out";
-        }
+      var type = this.model.get("type_class");
+      if (type === "all"){
+        accept = ".hole-in, .plugend-out";
       } else {
-        var type_class = this.model.get("type_class");
-        if (this.model.isIn) {
-          accept = ".hole-out.hole-all, .hole-out.hole-"+type_class+", .plugend-in.plugend-all, .plugend-in.plugend-"+type_class;
-        } else {
-          accept = ".hole-in.hole-all, .hole-in.hole-"+type_class+", .plugend-out.plugend-all, .plugend-out.plugend-"+type_class;
-        }
+        accept = ".hole-in.hole-all, .hole-in.hole-"+type+", .plugend-out.plugend-all, .plugend-out.plugend-"+type;
+        // Anything can hit an in bang
+        accept += ", .hole-in.hole-bang, .plugend-out.plugend-string";
       }
-      if (this.model.get("type") === "int" || this.model.get("type") === "float" || this.model.get("type") === "number") {
-        // HACK to allow int and float -> string
+      if (type === "int" || type === "float" || type === "number") {
+        // Allow int and float -> string
         accept += ", .hole-in.hole-string, .plugend-out.plugend-string";
-        // HACK to allow all int float number to connect
+        // Allow all int float number to connect
         accept += ", .hole-in.hole-int, .hole-in.hole-float, .hole-out.hole-number, .plugend-out.plugend-int, .plugend-out.plugend-float, .plugend-out.plugend-number";
       }
       this.$el.droppable({

@@ -13,6 +13,8 @@ $(function(){
       '<button class="disconnect" type="button">disconnect</button>'+
     '</div>';
 
+  var accepts = {};
+
   Iframework.PortView = Backbone.View.extend({
     tagName: "div",
     className: "port",
