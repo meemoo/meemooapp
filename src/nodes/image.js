@@ -59,15 +59,20 @@ $(function(){
       for (var name in this.inputs) {
         if (this.inputs[name].type==="image"){
           firstImageInput = name;
+          break;
         }
-        break;
       }
 
       // Setup droppable
       if (firstImageInput) {
+        // Add drop indicator (shown in CSS)
+        this.$el.append('<div class="drop-indicator"><p class="icon-login">input '+firstImageInput+'</p></div>');
+        
+        // Make droppable        
         this.$el.droppable({
           accept: ".canvas",
           hoverClass: "drop-hover",
+          activeClass: "drop-active",
           // Don't also drop on graph
           greedy: true
         });

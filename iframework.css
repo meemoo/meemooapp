@@ -211,6 +211,39 @@ div.module {
     div.nativenode.drop-hover {
       background-color: #FFFFE9;
     }
+
+/* Droppable */
+.drop-indicator {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: #AAA 3px dashed;
+}
+  .drop-indicator p {
+    display: none;
+    font-size: 150%;
+    background-color: white;
+    text-align: center;
+    margin: 20% 10%;
+    padding: 10px;
+    border-radius: 10px;
+    color: #333;
+  }
+.drop-active .drop-indicator,
+.drop-hover .drop-indicator {
+  display: block;
+}
+.drop-hover .drop-indicator {
+  background-color: rgba(255,255,220,0.5);
+  border-color: #666;
+}
+  .drop-hover .drop-indicator p {
+    display: block;
+  }
+
   div.module div.iframemask {
     position: absolute;
     top: 0px;

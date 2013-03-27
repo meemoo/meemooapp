@@ -100,13 +100,13 @@ $(function(){
       this.send("image", this.canvas);
     },
     inputs: {
-      background: {
-        type: "image",
-        description: "background image"
-      },
       image: {
         type: "image",
         description: "image to center and transform"
+      },
+      background: {
+        type: "image",
+        description: "background image"
       },
       width: {
         type: "int",
