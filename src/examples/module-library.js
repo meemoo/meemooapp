@@ -5,6 +5,7 @@ $(function(){
 
   var library = {
     image: [
+      {"src":"meemoo:image/in","info":{"title":"image","author":"forresto","description":"hold a canvas or get image from url or service"}},
       {"src":"meemoo:image/cam","info":{"title":"cam","author":"meemoo","description":"HTML5 webcam with getUserMedia."}},
       {"src":"meemoo:image/transform","info":{"title":"transform","author":"meemoo","description":"scale, translate, and/or rotate image (centered)"}},
       {"src":"meemoo:image/fit","info":{"title":"fit","author":"meemoo","description":"scale and crop an image to fit the given size. easy way to make thumbnails."}},
@@ -43,10 +44,6 @@ $(function(){
       {"src":"meemoo:time/countdown","info":{"title":"countdown","author":"forresto","description":"Countdown to a bang."}},
       {"src":"meemoo:time/metronome","info":{"title":"metronome","author":"forresto","description":"Metronome beats per minute"}}
     ],
-    file: [
-      {"src":"meemoo:image/in","info":{"title":"image","author":"forresto","description":"hold a canvas or get image from url"}},
-      {"src":"meemoo:file/webm","info":{"title":"webm","author":"antimatter15","description":"(Chrome only) Canvas to WebM video encoder thanks to antimatter15/whammy."}}
-    ],
     ui: [
       {"src":"meemoo:ui/button","info":{"title":"button","author":"meemoo","description":"a button sends a bang, and you can attach a keyboard key"}},
       {"src":"meemoo:ui/hslider","info":{"title":"hslider","author":"meemoo","description":"horizontal slider"}},
@@ -63,7 +60,8 @@ $(function(){
     ],
     animation: [
       {"src":"meemoo:variable/animation","info":{"title":"animation","author":"meemoo","description":"holds a stack of canvases to use as an animation"}},
-      {"src":"http://forresto.github.com/meemoo-canvas2gif/canvas2gif.html","info":{"title":"gif","author":"forresto","description":"canvas image data to animated gif"}}
+      {"src":"http://forresto.github.com/meemoo-canvas2gif/canvas2gif.html","info":{"title":"gif","author":"forresto","description":"canvas image data to animated gif"}},
+      {"src":"meemoo:file/webm","info":{"title":"webm","author":"antimatter15","description":"(Chrome only) Canvas to WebM video encoder thanks to antimatter15/whammy."}}
     ],
     "iframe---fading": [
       {"src":"http://forresto.github.com/meemoo-camcanvas/onionskin.html","info":{"title":"cam+onionskin","author":"taboca + forresto + ginger","description":"flash webcam image to canvas with onionskin of last frame"}},
