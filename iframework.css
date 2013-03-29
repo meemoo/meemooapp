@@ -707,6 +707,7 @@ div.panel {
 .icon-tumblr:before { content: '\f311'; } /* '' */
 .icon-globe-1:before { content: '🌍'; } /* '\1f30d' */
 .icon-folder-open:before { content: '📂'; } /* '\1f4c2' */
+.icon-camera:before { content: '📷'; } /* '\1f4f7' */
 .icon-link:before { content: '🔗'; } /* '\1f517' */
 
 
