@@ -52,6 +52,7 @@ module.exports = function(grunt) {
           'src/router.js',
           // Plugins
           'src/plugins/library.js',
+          'src/plugins/images.js',
           // All Iframework loaded
           'src/iframework-last.js'
         ],

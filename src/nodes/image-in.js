@@ -31,29 +31,28 @@ $(function(){
       }
       this.$(".savers").hide();
     },
+    inputimage: function(image){
+      this._image = image;
+      this._triggerRedraw = true;
+      this.$(".choosers").hide();
+    },
     inputurl: function (url) {
       if ( url==="" ){ return false; }
 
       this._url = url;
       // Internal image to copy to canvas
-      this._image = new Image();
-      this._image.crossOrigin = "anonymous";
+      this._img = new Image();
+      this._img.crossOrigin = "anonymous";
       var self = this;
-      this._image.onload = function(){
-        self.canvas.width = self._image.width;
-        self.canvas.height = self._image.height;
-        self.context.drawImage(self._image, 0, 0);
+      this._img.onload = function(){
+        self.canvas.width = self._img.width;
+        self.canvas.height = self._img.height;
+        self.context.drawImage(self._img, 0, 0);
         self.inputsend();
       };
-      this._image.src = url;
+      this._img.src = url;
 
       this.$(".choosers, .savers").hide();
-    },
-    inputimage: function(image){
-      this.canvas.width = image.width;
-      this.canvas.height = image.height;
-      this.context.drawImage(image, 0, 0);
-      this.$(".choosers").hide();
     },
     _loadingFilepicker: false,
     loadPublic: function(){
@@ -92,6 +91,18 @@ $(function(){
     },
     inputsend: function(){
       this.send("image", this.canvas);
+    },
+    redraw: function () {
+      if (this._image) {
+        if (this.canvas.width !== this._image.width) {
+          this.canvas.width = this._image.width;
+        }
+        if (this.canvas.height !== this._image.height) {
+          this.canvas.height = this._image.height;
+        }
+        this.context.drawImage(this._image, 0, 0);
+        this.inputsend();
+      }
     },
     inputs: {
       image: {

@@ -71,6 +71,7 @@ $(function(){
         // Make droppable        
         this.$el.droppable({
           accept: ".canvas",
+          tolerance: "pointer",
           hoverClass: "drop-hover",
           activeClass: "drop-active",
           // Don't also drop on graph
@@ -103,7 +104,6 @@ $(function(){
       if ( !inputName || !canvas) { return false; }
 
       // Hit own input with image
-      // debugger;
       event.data.self.recieve(inputName, canvas);
     },
     scale: function(){

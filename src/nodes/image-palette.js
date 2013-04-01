@@ -18,7 +18,7 @@ $(function(){
   };
 
   var template = 
-    '<div class="palette" style="background-color:black; padding: 1px 0 0 1px;"></div>'+
+    '<div class="palette" style="padding: 1px 0 0 1px;"></div>'+
     '<div class="info">input an image to make a palette</div>'+
     '<button class="export-rgb">export rgb</button>'+
     '<button class="export-hex">export hex</button>';

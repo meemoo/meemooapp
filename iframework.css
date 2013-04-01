@@ -214,13 +214,15 @@ div.module {
 
 /* Droppable */
 .drop-indicator {
+  border: #AAA 3px dashed;
+}
+.inner .drop-indicator {
   display: none;
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  border: #AAA 3px dashed;
 }
   .drop-indicator p {
     display: none;
@@ -658,19 +660,46 @@ div.panel {
 /* Plugins */
 
 .meemoo-plugin-images-thumbnail {
-  padding: 10px;
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0px;
+  margin: 0 5px 10px 0;
+  /*border: 1px solid #D3D3D3;*/
 }
 
-.meemoo-plugin-images-thumbnail img {
+.meemoo-plugin-images-thumbnail img,
+.meemoo-plugin-images-thumbnail canvas {
   max-width: 100px;
   max-height: 100px;
 }
 
+.meemoo-plugin-images .image-drop {
+}
+
+.meemoo-plugin-images .image-drop .drop-indicator {
+  display: none;
+  width: 100%;
+  height: 100px;
+}
+
+  .meemoo-plugin-images .image-drop .drop-indicator p {
+    display: block;
+    margin-top: 10px;
+  }
+
+.meemoo-plugin-images .image-drop.drop-active .drop-indicator {
+  display: block;
+}
 
 
 
 
-/* icons thanks to http://fontello.com/ and the included icon sets */
+
+/*
+  icons thanks to http://fontello.com/ and the included icon sets 
+  http://meemoo.org/iframework/icons/LICENSE.txt
+*/
+
 
 @charset "UTF-8";
 
