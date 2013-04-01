@@ -324,6 +324,20 @@
     },
     {
       "search": [
+        "image",
+        "picture",
+        "photo"
+      ],
+      "code": 127748,
+      "uid": "3def559c3c39b8500882e02892b7daa8",
+      "css": "picture",
+      "orig_css": "picture",
+      "orig_code": 127748,
+      "src": "entypo",
+      "from": 127748
+    },
+    {
+      "search": [
         "globe"
       ],
       "code": 127757,

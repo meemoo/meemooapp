@@ -1,5 +1,5 @@
 $(function(){
-  
+
   Iframework.util = {
     // From YUI3 via http://stackoverflow.com/a/7390555/592125
     types: {
@@ -26,8 +26,7 @@ $(function(){
         return (this.imageTypes.indexOf(fileType) > -1);
       }
       return false;
-    }
-    
+    }    
   };
 
   // requestAnimationFrame shim from http://paulirish.com/2011/requestanimationframe-for-smart-animating/

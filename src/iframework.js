@@ -67,6 +67,7 @@ $(function(){
     currentTemplate: _.template(currentTemplate),
     frameCount: 0, // HACK to not use same name in Firefox
     NativeNodes: {},
+    plugins: {},
     events: {
       "click .close" :         "closePanels",
       "click .showload" :      "showLoad",

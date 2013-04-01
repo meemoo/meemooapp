@@ -24,8 +24,8 @@ $(function(){
         );
 
       this.canvas = document.createElement("canvas");
-      this.canvas.width = 500;
-      this.canvas.height = 500;
+      this.canvas.width = 10;
+      this.canvas.height = 10;
       this.context = this.canvas.getContext('2d');
 
       $(this.canvas)

@@ -34,8 +34,16 @@ $(function(){
       }
     },
     canvasSettings: function () {
-      this.context.fillStyle = this._fill;
-      this.context.strokeStyle = this._stroke;
+      if (this._fill === "") {
+        this.context.fillStyle = "none";
+      } else {
+        this.context.fillStyle = this._fill;
+      }
+      if (this._stroke === "") {
+        this.context.strokeStyle = "none";
+      } else {
+        this.context.strokeStyle = this._stroke;
+      }
       this.context.lineWidth = this._strokewidth;
     },
     redraw: function(){
@@ -91,12 +99,12 @@ $(function(){
       fill: {
         type: "color",
         description: "fill color",
-        "default": ""
+        "default": "black"
       },
       stroke: {
         type: "color",
         description: "stroke color",
-        "default": "black"
+        "default": ""
       },
       strokewidth: {
         type: "float",

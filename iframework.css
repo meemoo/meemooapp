@@ -652,6 +652,24 @@ div.panel {
   /*padding: .2em 0 0 .2em !important;*/
 }
 
+
+
+
+/* Plugins */
+
+.meemoo-plugin-images-thumbnail {
+  padding: 10px;
+}
+
+.meemoo-plugin-images-thumbnail img {
+  max-width: 100px;
+  max-height: 100px;
+}
+
+
+
+
+
 /* icons thanks to http://fontello.com/ and the included icon sets */
 
 @charset "UTF-8";
@@ -705,6 +723,7 @@ div.panel {
 .icon-twitter-bird:before { content: '\f303'; } /* '' */
 .icon-github:before { content: '\f308'; } /* '' */
 .icon-tumblr:before { content: '\f311'; } /* '' */
+.icon-picture:before { content: '🌄'; } /* '\1f304' */
 .icon-globe-1:before { content: '🌍'; } /* '\1f30d' */
 .icon-folder-open:before { content: '📂'; } /* '\1f4c2' */
 .icon-camera:before { content: '📷'; } /* '\1f4f7' */
