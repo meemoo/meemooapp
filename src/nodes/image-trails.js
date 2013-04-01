@@ -16,6 +16,14 @@ $(function(){
         this._image = null;
       }
     },
+    inputcomposite: function (mode) {
+      this._composite = mode;
+      var oldmode = this.context.globalCompositeOperation;
+      this.context.globalCompositeOperation = mode;
+      if (this.context.globalCompositeOperation !== mode) {
+        this.$(".info").text("globalCompositeOperation '"+mode+"' not supported in this browser");
+      }
+    },
     _clear: false,
     inputclear: function(){
       this._clear = true;
@@ -32,9 +40,11 @@ $(function(){
       if (this._image) {
         if (this.canvas.width !== this._image.width) {
           this.canvas.width = this._image.width;
+          this.context.globalCompositeOperation = this._composite;
         }
         if (this.canvas.height !== this._image.height) {
           this.canvas.height = this._image.height;
+          this.context.globalCompositeOperation = this._composite;
         }
         this.context.drawImage(this._image, 0, 0);
         this.inputsend();
@@ -44,6 +54,13 @@ $(function(){
       image: {
         type: "image",
         description: "image to stack"
+      },
+      composite: {
+        type: "string",
+        description: "composite (source-over, source-in, source-out, source-atop, destination-over, destination-in, destination-out, destination-atop, lighter, darker, copy, xor) and/or blend mode (alpha browsers only as of April 2013: normal, multiply, screen, overlay, darken, lighten, color-dodge, color-burn, hard-light, soft-light, difference, exclusion, hue, saturation, color, luminosity) ",
+        options: ['source-over', 'source-in', 'source-out', 'source-atop', 'destination-over', 'destination-in', 'destination-out', 'destination-atop', 'lighter', 'darker', 'copy', 'xor', 
+          'normal', 'multiply', 'screen', 'overlay', 'darken', 'lighten', 'color-dodge', 'color-burn', 'hard-light', 'soft-light', 'difference', 'exclusion', 'hue', 'saturation', 'color', 'luminosity'],
+        "default": "source-over"
       },
       clear: {
         type: "bang",
