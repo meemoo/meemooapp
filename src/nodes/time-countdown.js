@@ -25,7 +25,6 @@ $(function(){
     },
     inputduration: function(s){
       this._duration = s * 1000;
-      this.inputstart();
     },
     _running: false,
     _startme: false,
