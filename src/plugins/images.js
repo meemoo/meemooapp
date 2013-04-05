@@ -3,7 +3,7 @@
 ( function(Iframework) {
 
   var FILEPICKER_API_KEY = "AaqPpE9LORQel03S9cCl7z";
-  var IMAGE_SERVER = "http://meemoo-images.s3.amazonaws.com/";
+  var IMAGE_SERVER = "http://i.meemoo.me/";
 
   // Shim
   if ( !window.URL ) {
@@ -12,13 +12,13 @@
 
   var template = $(
     '<div class="meemoo-plugin-images">'+
-      '<h2>Local images (not public)</h2>'+
+      '<h2>Local images (not saved)</h2>'+
       '<span style="position:absolute;width:0px;overflow:hidden;"><input type="file" class="fileinput" accept="image/*" multiple /></span>'+
       '<button class="localfile icon-camera" title="Not public. From computer (or mobile camera).">Choose local image</button> from computer or mobile camera'+
       '<div class="image-drop local-drop"><div class="drop-indicator"><p>drag image here to hold it</p></div></div>'+
       '<div class="local-listing"></div>'+
       '<h2>Public images</h2>'+
-      '<button class="publicfile icon-globe-1" title="Public image from computer, URL, Flickr, Dropbox, Google...">Upload image</button> from computer, Flickr, G, Db, etc.'+
+      '<button class="publicfile icon-globe-1" title="Upload image to Meemoo from computer, URL, Flickr, Google, Dropbox...">Upload image</button> from computer, Flickr, G, Db, etc.'+
       '<div class="info"></div>'+
       '<div class="image-drop public-drop"><div class="drop-indicator"><p>drag image here to save to web</p></div></div>'+
       '<div class="public-listing"></div>'+
@@ -147,10 +147,11 @@
       },
       function(files){
         for (var i=0; i<files.length; i++) {
-          var img = new Image();
-          img.src = files[i].url;
-          var thumbnail = makeThumbnail(img);
-          publicListing.append( thumbnail );
+          // Add to local storage and make thumbnail
+          var o = {main:files[i]};
+          var img = new Iframework.plugins.images.GalleryImage({files:o});
+          publicImages.add(img);
+          img.save();
         }
       }
     );
@@ -168,11 +169,14 @@
 
     var b64;
     try{
-      b64 = image.toDataURL().split(',')[1];
+      b64 = image.toDataURL().split(',', 2)[1];
+      // b64 = window.atob(b64);
     } catch (error) {
       setInfo('Not able to get image data. Right-click "Save as..." or take a screenshot.');
       return false;
     }
+
+    setInfo('Uploading...');
 
     filepicker.store(
       b64, 
@@ -185,10 +189,12 @@
         base64decode: true
       }, 
       function (file) {
-        var img = new Image();
-        img.src = file.url;
-        var thumbnail = makeThumbnail(img);
-        publicListing.append( thumbnail );
+        // Add to local storage and make thumbnail
+        var files = {main:file};
+        var img = new Iframework.plugins.images.GalleryImage({files:files});
+        publicImages.add(img);
+        img.save();
+
         // Info
         setInfo('Upload done :-)');
         _.delay(function(){
@@ -210,60 +216,102 @@
   Iframework.plugins.images = {};
 
   Iframework.plugins.images.GalleryImage = Backbone.Model.extend({
+    initialize: function () {
+      this.initializeView();
+    },
     initializeView: function () {
       if (!this.view) {
-        this.view = new Iframework.LocalAppView({model:this});
+        this.view = new Iframework.plugins.images.GalleryImageView({model:this});
       }
       return this.view;
-    },
-    load: function(){
-      
-      Iframework._loadedLocalApp = this;
-      // Clone graph
-      var graph = JSON.parse(JSON.stringify(this.get("graph")));
-      Iframework.loadGraph(graph);
-
-      //DEBUG
-      // Iframework.showLoad();
     },
     toJSON: function () {
       return {
         id: this.id,
-        graph: this.get("graph")
+        files: this.get("files")
       };
     }
   });
 
+  Iframework.plugins.images.GalleryImages = Backbone.Collection.extend({
+    model: Iframework.plugins.images.GalleryImage,
+    localStorage: new Backbone.LocalStorage("GalleryImages")
+  });
+
   var imageTemplate = 
-    '<a class="url" href="#local/<%= graph.info.url %>"></a>'+
-    '<div class="info">'+
-      '<h2 class="title"><%= graph.info.title %></h2>' +
-      '<p class="description"><%= graph.info.description %></p>' +
+    '<img title="drag to graph or image node" />'+
+    '<div class="controls">'+
+      '<button class="export-public" title="Save straight to Flickr, Dropbox, Google, Facebook...">export</button>'+
+      '<button class="delete icon-trash" title="Delete image"></button>'+
     '</div>';
 
   Iframework.plugins.images.GalleryImageView = Backbone.View.extend({
     tagName: "div",
-    className: "plugin-images-image",
+    className: "meemoo-plugin-images-thumbnail canvas already-web-public",
     template: _.template(imageTemplate),
     events: {
+      "click .export-public": "exportPublic",
+      "click .delete": "destroyModel"
     },
     initialize: function () {
-      this.render();
-      Iframework.$(".localapps").append( this.el );
+      this.$el.html(this.template(this.model.toJSON()));
 
-      this.model.on('change', this.update, this);
+      // Load thumbnail
+      var file = this.model.get("files")["main"];
+      if (file && file.key) {
+        var img = this.$("img")[0];
+        // Using direct link to my S3 instead of file.url
+        img.src = IMAGE_SERVER + file.key;
+
+        this.$el.draggable({
+          cursor: "pointer",
+          cursorAt: { top: -10, left: -10 },
+          helper: function( event ) {
+            var helper = $( '<div class="drag-image"><h2>Copy this</h2></div>' )
+              .data({
+                "meemoo-drag-type": "canvas",
+                "meemoo-source-image": img
+              });
+            $(document.body).append(helper);
+            _.delay(function(){
+              dragCopyCanvas(helper);
+            }, 100);
+            return helper;
+          }
+        });
+
+      }
+
+      publicListing.append( this.el );
+
       this.model.on('destroy', this.remove, this);
 
       return this;
     },
-    render: function () {
-      this.$el.html(this.template(this.model.toJSON()));
-      this.$(".url").text(decodeURIComponent(this.model.get("graph")["info"]["url"]));
-      this.$(".info").hide();
+    exportPublic: function(){
+      if ( !window.filepicker ) { 
+        setInfo("Image service not available.");
+        return false; 
+      }
+
+      var url = this.model.get("files")["main"]["url"];
+
+      filepicker.exportFile(
+        url,
+        {mimetype:'image/png'},
+        function (file) {}
+      );
     },
-    update: function () {
-      this.render();
-      Iframework.updateCurrentInfo();
+    destroyModel: function () {
+      if (window.confirm("Are you sure you want to delete this image?")) {
+        // Delete filepicker file
+        if (window.filepicker) {
+          var file = this.model.get("files")["main"];
+          filepicker.remove(file, function () { });
+        }
+        // Delete localstorage reference
+        this.model.destroy();
+      }
     },
     remove: function () {
       this.$el.remove();
@@ -271,30 +319,17 @@
 
   });
 
-  Iframework.plugins.images.GalleryImages = Backbone.Collection.extend({
-    model: Iframework.LocalApp,
-    localStorage: new Backbone.LocalStorage("LocalApps"),
-    getByUrl: function (url) {
-      var app = this.find(function(app){
-        return app.get("graph")["info"]["url"] === url;
+  // Load local images from local storage
+  var publicImages = new Iframework.plugins.images.GalleryImages();
+  publicImages.fetch({
+    success: function(e) {
+      publicImages.each(function(image){
+        image.initializeView();
       });
-      return app;
     },
-    updateOrCreate: function (graph) {
-      var app;
-      app = this.find(function(app){
-        return app.get("graph")["info"]["url"] === graph["info"]["url"];
-      });
-      if (app) {
-        app.save({graph:graph});
-        app.trigger("change");
-      } else {
-        app = this.create({graph:graph});
-        app.initializeView();
-      }
-      return app;
+    error: function (e) {
+      console.warn("error loading public images");
     }
-
   });
 
 }(Iframework) );

@@ -6,7 +6,7 @@ $(function(){
       "example/:url": "loadExample", // #example/url
       "new":          "newBlank",
       "local/:url":   "loadLocal",
-      "gist/https://gist.github.com/:id": "loadGistUgly", // Redirects
+      "gist/https://gist.github.com/:user/:id": "loadGistUgly", // Redirects
       "gist/:id":     "loadGist", 
       "*path":        "default"
     },

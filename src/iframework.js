@@ -2,26 +2,24 @@ $(function(){
   
   var template = 
     '<div class="showpanel">'+
-      '<button class="button showload icon-folder-open">app</button>'+
-      '<button class="button showsource icon-cog">source</button>'+
-      // '<button class="button showlibrary">module</button>'+
+      '<button class="button show-load icon-folder-open">app</button>'+
+      '<button class="button show-source icon-cog">source</button>'+
     '</div>'+
     '<div class="panel">'+
       '<div class="choosepanel">'+
-        '<button class="button showload icon-folder-open">app</button>'+
-        '<button class="button showsource icon-cog">source</button>'+
-        // '<button class="button showlibrary">module</button>'+
-        '<button class="button close icon-cancel"></button>'+
+        '<button class="button show-load icon-folder-open">app</button>'+
+        '<button class="button show-source icon-cog">source</button>'+
+        '<button class="button close icon-cancel" title="close menu"></button>'+
       '</div>'+
-      '<div class="load">'+
+      '<div class="menu menu-load">'+
         '<div class="controls">'+
           '<form class="loadfromgist">'+
             '<input class="loadfromgistinput" name="loadfromgistinput" placeholder="load app from gist url" type="text" />'+
-            '<button class="loadfromgistsubmit" type="submit">load</button>'+
+            '<button class="loadfromgistsubmit icon-ok" type="submit">load</button>'+
           '</form>'+
         '</div>'+
         '<div class="listing">'+
-          '<button class="button newblank" title="new blank app">new</button>'+
+          '<button class="button newblank icon-doc" title="new blank app">new</button>'+
           '<div class="currentapp">'+
           '</div>'+
           '<div class="localapps">'+
@@ -32,14 +30,14 @@ $(function(){
           '</div>'+
         '</div>'+
       '</div>'+
-      '<div class="source">'+
+      '<div class="menu menu-source">'+
         '<div class="sourceedit">'+
           '<textarea />'+
         '</div>'+
         '<div class="controls">'+
-          '<button class="button sourcerefresh" title="refresh the source code">refresh</button>'+
-          '<button class="button sourcecompress" title="refresh and compress the source code into one line">compress</button>'+
-          '<button class="button sourceapply" title="reloads the app">apply changes</button>'+
+          '<button class="button sourcerefresh icon-cw" title="refresh the source code">refresh</button>'+
+          '<button class="button sourcecompress icon-bag" title="refresh and compress the source code into one line">compress</button>'+
+          '<button class="button sourceapply icon-ok" title="reloads the app">apply changes</button>'+
         '</div>'+
       '</div>'+
     '</div>';
@@ -52,10 +50,10 @@ $(function(){
       '<p title="description, click to edit" class="setdescription editable"></p>' +
     '</div>'+
     '<div class="savecontrols">'+
-      '<button class="savelocal">save local</button>'+
-      '<button class="forklocal" title="save as... copy app and save under a new name">fork</button>'+
-      '<button class="savegist" title="save app to gist.github.com anonymously">save public</button>'+
-      '<button class="deletelocal">delete</button>'+
+      '<button class="savelocal icon-install">save local</button>'+
+      '<button class="forklocal icon-split" title="save as... copy app and save under a new name">fork</button>'+
+      '<button class="savegist icon-globe-1" title="save app to gist.github.com anonymously">save public</button>'+
+      '<button class="deletelocal icon-trash" title="delete local app"></button>'+
     '</div>'+
     '<div class="permalink" title="last publicly saved version">'+
     '</div>';
@@ -70,8 +68,8 @@ $(function(){
     plugins: {},
     events: {
       "click .close" :         "closePanels",
-      "click .showload" :      "showLoad",
-      "click .showsource" :    "showSource",
+      "click .show-load" :      "showLoad",
+      "click .show-source" :    "showSource",
 
       "click .sourcerefresh":  "sourceRefresh",
       "click .sourcecompress": "sourceCompress",
@@ -96,32 +94,11 @@ $(function(){
       // Hide panels
       this.closePanels();
 
-      // Panel buttons
-      // this.$(".close")
-      //   .button({ icons: { primary: 'icon-cancel' }, text: false });
-      // this.$(".showsource")
-      //   .button({ icons: { primary: 'icon-cog' } });
-      // this.$(".showload")
-      //   .button({ icons: { primary: 'icon-folder-open' } });
-      // this.$(".showlibrary")
-      //   .button({ icons: { primary: 'icon-plus' } });
-      this.$(".sourcerefresh")
-        .button({ icons: { primary: 'icon-cw' } });
-      this.$(".sourcecompress")
-        .button({ icons: { primary: 'icon-bag' } });
-      this.$(".sourceapply")
-        .button({ icons: { primary: 'icon-ok' } });
-      this.$(".addbyurlsubmit")
-        .button({ icons: { primary: 'icon-ok' } });
-      this.$(".loadfromgistsubmit")
-        .button({ icons: { primary: 'icon-ok' } });
-      this.$(".newblank")
-        .button({ icons: { primary: 'icon-doc' } });
-
-      // After all of the .js is loaded, this.allLoaded will be called to finish the init
+      // After all of the .js is loaded, this.allLoaded will be triggered to finish the init
+      this.once("allLoaded", this.loadLocalApps, this);
     },
     allLoaded: function () {
-      this.loadLocalApps();
+      this.trigger("allLoaded");
     },
     render: function () {
       this.$el.html(this.template());
@@ -143,8 +120,9 @@ $(function(){
     addMenu: function(name, html, icon){
       var self = this;
 
-      var menu = $('<div class="menu menu-'+name+'"></div>');
-      menu.append(html);
+      var menu = $('<div class="menu menu-'+name+'"></div>')
+        .append(html)
+        .hide();
       this.$(".panel").append(menu);
 
       var showButton = $('<button class="button show-'+name+'">'+name+'</button>')
@@ -221,7 +199,7 @@ $(function(){
           exampleLinks += '<a href="#example/'+url+'" title="'+examples[i]["info"]["title"]+": "+examples[i]["info"]["description"]+'">'+url+'</a> <br />';
         }
       }
-      this.$(".panel .load .examples").append(exampleLinks);
+      this.$(".menu-load .examples").append(exampleLinks);
 
       // None shown
       if (!this.shownGraph){
@@ -254,15 +232,10 @@ $(function(){
       this.$(".panel").hide();
       this.$(".graph").css("right", "0px");
 
-      this.$(".panel .load").hide();
-      this.$(".panel .library").hide();
-      this.$(".panel .source").hide();
+      this.$(".menu").hide();
     },
     showPanel: function( which ) {
       this.$(".menu").hide();
-      this.$(".panel .load").hide();
-      this.$(".panel .library").hide();
-      this.$(".panel .source").hide();
 
       this.$(".showpanel").hide();
       this.$(".panel").show();
@@ -274,24 +247,24 @@ $(function(){
     },
     showLoad: function() {
       this.showPanel();
-      this.$(".panel .load").show();
+      this.$(".menu-load").show();
     },
     showSource: function() {
       this.showPanel();
-      this.$(".panel .source").show();
+      this.$(".menu-source").show();
       this.sourceRefresh();
     },
     sourceRefresh: function() {
-      this.$(".panel .source textarea")
+      this.$(".sourceedit textarea")
         .val( JSON.stringify(Iframework.shownGraph, null, "  ") );
     },
     sourceCompress: function() {
-      this.$(".panel .source textarea")
+      this.$(".sourceedit textarea")
         .val( JSON.stringify(Iframework.shownGraph, null, "") );
     },
     sourceApply: function() {
       try {
-        var newGraph = JSON.parse( $(".panel .sourceedit textarea").val() );
+        var newGraph = JSON.parse( this.$(".sourceedit textarea").val() );
         this.loadGraph(newGraph);
         this.showSource();
         // reset localStorage version
@@ -385,10 +358,8 @@ $(function(){
 
       // Button
       this.$(".savegist")
-        .button({ 
-          disabled: true,
-          label: "saving..."
-        });
+        .prop('disabled', true)
+        .text("saving...");
 
       $.ajax({
         url: 'https://api.github.com/gists',
@@ -418,10 +389,8 @@ $(function(){
       .complete(function(e){
         // Button
         this.$(".savegist")
-          .button({ 
-            disabled: false,
-            label: "save public"
-          });
+          .prop('disabled', false)
+          .text("save public");
       });
     },
     loadLocalApps: function () {
@@ -571,14 +540,6 @@ $(function(){
       var graph = this.shownGraph.toJSON();
       this.$(".currentapp")
         .html( this.currentTemplate(graph) );
-      this.$(".currentapp .savelocal")
-        .button({ icons: { primary: 'icon-install' } });
-      this.$(".currentapp .forklocal")
-        .button({ icons: { primary: 'icon-split' } });
-      this.$(".currentapp .savegist")
-        .button({ icons: { primary: 'icon-globe-1' } });
-      this.$(".currentapp .deletelocal")
-        .button({ icons: { primary: 'icon-trash' }, text: false });
 
       this.$(".currentapp .seturl")
         .text(decodeURIComponent(graph["info"]["url"]));

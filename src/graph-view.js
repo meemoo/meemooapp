@@ -91,6 +91,13 @@ $(function(){
           if (canvas) {
             options.src = "meemoo:image/in";
             options.canvas = canvas;
+            var original = ui.helper.data("meemoo-source-image");
+            if (original) {
+              if (original.src && original.src.slice(0,4)==="http") {
+                options.state = {};
+                options.state.url = original.src;
+              }
+            }
             Iframework.shownGraph.addNode( options );
           }
           break;

@@ -4,14 +4,14 @@
 $(function(){
 
   var template = 
-    '<div class="info" />'+
-    '<div class="choosers">'+
-      '<button class="publicfile icon-globe-1">choose or upload public image</button> (choose from device, Flickr, Dropbox, Google...) <br />'+
-      '<button class="localfile icon-camera">choose or take local image</button> (not public. from device, mobile camera...) '+
-    '<div>'+
-    '<div class="savers">'+
-      '<button class="publicfile icon-globe-1">save image publicly</button> this canvas is not saved'+
-    '<div>';
+    '<div class="info" />';
+    // '<div class="choosers">'+
+    //   '<button class="publicfile icon-globe-1">choose or upload public image</button> (choose from device, Flickr, Dropbox, Google...) <br />'+
+    //   '<button class="localfile icon-camera">choose or take local image</button> (not public. from device, mobile camera...) '+
+    // '<div>'+
+    // '<div class="savers">'+
+    //   '<button class="publicfile icon-globe-1">save image publicly</button> this canvas is not saved'+
+    // '<div>';
 
   Iframework.NativeNodes["image-in"] = Iframework.NativeNodes["image"].extend({
 
@@ -20,10 +20,10 @@ $(function(){
       title: "image",
       description: "hold a canvas or get image from url"
     },
-    events: {
-      "click .publicfile": "loadPublic",
-      "click .localfile":  "loadLocal"
-    },
+    // events: {
+    //   "click .publicfile": "loadPublic",
+    //   "click .localfile":  "loadLocal"
+    // },
     initializeModule: function(){
       var canvas = this.model.get("canvas");
       if (canvas){
@@ -51,44 +51,37 @@ $(function(){
         self.inputsend();
       };
       this._img.src = url;
-
+      // make sure the load event fires for cached images too
+      if ( this._img.complete || this._img.complete === undefined ) {
+        this._img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+        this._img.src = url;
+      }
+      
       this.$(".choosers, .savers").hide();
     },
-    _loadingFilepicker: false,
-    loadPublic: function(){
-      var self = this;
-
-      // Load filepicker.io library
-      if (!window.filepicker) {
-        if (!this._loadingFilepicker) {
-          Iframework.plugins.gallery.setupFilepicker(this.loadPublic, this);
-          this._loadingFilepicker = true;
-        }
-        return false;
-      }
-
-      // Open chooser
-      filepicker.pickAndStore(
-        {
-          mimetype: 'image/*',
-          multiple: false,
-          maxSize: 5*1024*1024
-        }, 
-        {
-          location: 'S3',
-          path: 'v1/',
-          access: 'public'
-        },
-        function(fpfiles){
-          console.log(fpfiles);
-          self.inputurl(fpfiles[0].url);
-          self.set("url", fpfiles[0].url);
-        }
-      );
-    },
-    loadLocal: function() {
-
-    },
+    // loadPublic: function(){
+    //   var self = this;
+    //   // Open chooser
+    //   filepicker.pickAndStore(
+    //     {
+    //       mimetype: 'image/*',
+    //       multiple: false,
+    //       maxSize: 5*1024*1024
+    //     }, 
+    //     {
+    //       location: 'S3',
+    //       path: 'v1/',
+    //       access: 'public'
+    //     },
+    //     function(fpfiles){
+    //       console.log(fpfiles);
+    //       self.inputurl(fpfiles[0].url);
+    //       self.set("url", fpfiles[0].url);
+    //     }
+    //   );
+    // },
+    // loadLocal: function() {
+    // },
     inputsend: function(){
       this.send("image", this.canvas);
     },

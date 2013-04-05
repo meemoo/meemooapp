@@ -162,6 +162,16 @@ $(function(){
       } else {
         return "Native node "+this.get("id");
       }
+    },
+    toJSON: function () {
+      return {
+        src: this.get("src"),
+        x: this.get("x"),
+        y: this.get("y"),
+        w: this.get("w"),
+        h: this.get("h"),
+        state: this.get("state")
+      };
     }
 
   });

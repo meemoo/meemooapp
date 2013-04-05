@@ -5,7 +5,7 @@
       '<div class="controls">'+
         '<form class="addbyurl">'+
           '<input class="addbyurlinput" name="addbyurlinput" placeholder="search or url" type="text" />'+
-          '<button class="addbyurlsubmit" type="submit">load</button>'+
+          '<button class="addbyurlsubmit icon-ok" type="submit">load</button>'+
         '</form>'+
       '</div>'+
       '<div class="listing">'+

@@ -365,14 +365,14 @@ $(function(){
         description: "video width",
         min: 1,
         max: 1920,
-        "default": 320
+        "default": 300
       },
       height: {
         type: "int",
         description: "video height",
         min: 1,
         max: 1080,
-        "default": 240
+        "default": 300
       },
       fps: {
         type: "number",

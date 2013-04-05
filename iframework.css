@@ -7,7 +7,7 @@ html, body {
 }
 
 button {
-  padding: 3px 5px;
+  padding: 3px 3px;
   margin: 0px 1px;
   color: #555555;
   background-color: #E6E6E6;
@@ -18,6 +18,17 @@ button {
     color: #212121;
     background-color: #DADADA;
     border-color: #999999;
+  }
+  button:active {
+    color: #212121;
+    background-color: #ffffff;
+    border-color: #AAAAAA;
+  }
+  button:disabled {
+    color: #555555;
+    background-color: #E6E6E6;
+    border-color: #D3D3D3;
+    opacity: 0.35;
   }
 
 div.graph {
@@ -151,7 +162,6 @@ div.module {
     
     margin: 0;
     padding: 5px 0;
-    cursor: move;
   }
     div.module.ui-selected h1.title,
     div.module.ui-selecting h1.title {
@@ -333,7 +343,6 @@ div.module {
   }
   div.port span.hole,
   span.holehelper {
-    cursor: pointer;
     display: inline-block;
     width: 14px;
     height: 14px;
@@ -350,7 +359,6 @@ div.module {
   span.plugend,
   span.plugendhelper,
   span.holehelper {
-    cursor: pointer;
     display: block;
     width: 19px;
     height: 13px;
@@ -477,13 +485,11 @@ div.panel {
     padding: 5px;
   }
 
-  div.panel .load,
-  div.panel .source,
   div.panel .menu {
     padding: 5px 10px;
   }
 
-  div.panel .source .sourceedit {
+  .menu-source .sourceedit {
     background-color: white;
 
     position: absolute;
@@ -494,7 +500,7 @@ div.panel {
 
   }
 
-  div.panel .source textarea {
+  .menu-source textarea {
     background-color: white;
     width: 100%;
     height: 100%;
@@ -504,17 +510,15 @@ div.panel {
     font-family: Monaco, monospace;
   }
 
-    div.panel .source .controls {
+    .menu-source .controls {
       position: absolute;
       bottom: 10px;
     }
 
-  div.panel .menu-library {
+  .menu-library {
     text-align: left;
   }
-    div.panel .menu-library .controls {
-    }
-    div.panel .listing {
+    .panel .listing {
       position: absolute;
       top: 75px;
       right: 10px;
@@ -522,16 +526,16 @@ div.panel {
       bottom: 10px;
       overflow: auto;
     }
-    div.panel form {
+    .panel form {
       margin-bottom: 10px;
     }
 
-    div.panel form input {
+    .panel form input {
       width: 255px;
       height: 18px;
     }
 
-    div.panel form button {
+    .panel form button {
       float: right;
     }
 
@@ -548,34 +552,34 @@ div.panel {
 
     .localapp h2,
     .localapp p,
-    div.panel .menu-library h2,
-    div.panel .menu-library p{
+    .menu-library h2,
+    .menu-library p{
       margin: 0;
       padding: 0;
     }
     .localapp h2,
-    div.panel .menu-library h2{
+    .menu-library h2{
       font-size: 14px;
       line-height: 14px;
     }
     .localapp .description,
-    div.panel .menu-library .description{
+    .menu-library .description{
       font-size: 10px;
       line-height: 14px;
     }
     .localapp .src,
-    div.panel .menu-library .src{
+    .menu-library .src{
       font-size: 10px;
       line-height: 10px;
       color: #999;
     }
     .localapp .loadapp,
-    div.panel .menu-library .addnode {
+    .menu-library .addnode {
       float: left;
       clear: left;
     }
 
-.panel .load .editable {
+.menu-load .editable {
   margin: 0 0 5px 0;
 }
 .editable {
@@ -587,28 +591,29 @@ div.panel {
   border-color: #AAA;
   background-color: #FFFFD3;
 }
-.panel .load .deletelocal {
+.menu-load .deletelocal {
   float: right;
   margin-right: 5px;
 }
 
-.panel .load .permalink {
+.menu-load .permalink {
   margin-top: 10px;
   line-height: 18px;
 }
-  .panel .load .permalink .share {
+  .menu-load .permalink .share {
     color: #999;
-    opacity: 0.2;
+    opacity: 0.5;
+    margin-left: 4px;
     text-decoration: none;
   }
-  .panel .load .permalink:hover .share {
+  .menu-load .permalink:hover .share {
     opacity: 1;
   }
-  .panel .load .permalink:hover .share:hover {
+  .menu-load .permalink:hover .share:hover {
     color: #666;
   }
 
-.panel .load .newblank {
+.menu-load .newblank {
   float: right;
   margin: 10px 5px 10px 10px;
 }
@@ -625,6 +630,10 @@ div.panel {
 
 
 /* jQuery UI overrides */
+
+.ui-draggable {
+  cursor: pointer;
+}
 
 .ui-resizable-e {
   height: auto;
@@ -664,6 +673,8 @@ div.panel {
   vertical-align: middle;
   padding: 0px;
   margin: 0 5px 10px 0;
+  min-width: 75px;
+  min-height: 75px;
   /*border: 1px solid #D3D3D3;*/
 }
 
@@ -691,7 +702,15 @@ div.panel {
   display: block;
 }
 
+.meemoo-plugin-images .controls {
+  position: relative;
+  top: -20px;
+}
 
+  .meemoo-plugin-images .controls button {
+    font-size: 95%;
+    padding:1px;
+  }
 
 
 
@@ -719,7 +738,7 @@ div.panel {
   display: inline-block;
   text-decoration: inherit;
   width: 1em;
-  margin-right: 0.2em;
+  margin: 0 2px;
   text-align: center;
   opacity: 0.7;
   /* Uncomment for 3D effect */
