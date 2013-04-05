@@ -29,6 +29,19 @@ $(function(){
         });
       }
     },
+    inputx: function (x) {
+      // Hot
+      this._x = x;
+      this.inputevaluate();
+    },
+    inputy: function (y) {
+      // Not hot
+      this._y = y;
+    },
+    inputz: function (z) {
+      // Not hot
+      this._z = z;
+    },
     _expression: null,
     inputequation: function(s) {
       if (window.Parser && Parser.parse) {
@@ -71,19 +84,18 @@ $(function(){
         }
       }
     },
-    redraw: function(timestamp){
-      // Called from NodeBoxNativeView.renderAnimationFrame()
-      this.inputevaluate();
-    },
     inputs: {
       x: {
         type: "float",
+        description: "hot input, will evaluate when changed",
         "default": 0
       },
       y: {
+        description: "cold input, will not evaluate when changed",
         type: "float"
       },
       z: {
+        description: "cold input, will not evaluate when changed",
         type: "float"
       },
       equation: {
