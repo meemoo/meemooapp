@@ -57,7 +57,7 @@ $(function(){
       },
       composite: {
         type: "string",
-        description: "composite (source-over, source-in, source-out, source-atop, destination-over, destination-in, destination-out, destination-atop, lighter, darker, copy, xor) and/or blend mode (alpha browsers only as of April 2013: normal, multiply, screen, overlay, darken, lighten, color-dodge, color-burn, hard-light, soft-light, difference, exclusion, hue, saturation, color, luminosity) ",
+        description: "composite (source-over, source-in, source-out, source-atop, destination-over, destination-in, destination-out, destination-atop, lighter, darker, copy, xor) and/or blend mode (Firefox 20 only as of April 2013: normal, multiply, screen, overlay, darken, lighten, color-dodge, color-burn, hard-light, soft-light, difference, exclusion, hue, saturation, color, luminosity) ",
         options: ['source-over', 'source-in', 'source-out', 'source-atop', 'destination-over', 'destination-in', 'destination-out', 'destination-atop', 'lighter', 'darker', 'copy', 'xor', 
           'normal', 'multiply', 'screen', 'overlay', 'darken', 'lighten', 'color-dodge', 'color-burn', 'hard-light', 'soft-light', 'difference', 'exclusion', 'hue', 'saturation', 'color', 'luminosity'],
         "default": "source-over"

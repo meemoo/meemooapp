@@ -51,6 +51,7 @@ module.exports = function(grunt) {
           'src/edge-view.js',
           'src/router.js',
           // Plugins
+          'src/plugins/source.js',
           'src/plugins/library.js',
           'src/plugins/images.js',
           // All Iframework loaded

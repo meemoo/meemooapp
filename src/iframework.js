@@ -3,12 +3,10 @@ $(function(){
   var template = 
     '<div class="showpanel">'+
       '<button class="button show-load icon-folder-open">app</button>'+
-      '<button class="button show-source icon-cog">source</button>'+
     '</div>'+
     '<div class="panel">'+
       '<div class="choosepanel">'+
         '<button class="button show-load icon-folder-open">app</button>'+
-        '<button class="button show-source icon-cog">source</button>'+
         '<button class="button close icon-cancel" title="close menu"></button>'+
       '</div>'+
       '<div class="menu menu-load">'+
@@ -28,16 +26,6 @@ $(function(){
           '<div class="examples">'+
             '<h1>Examples</h1>'+
           '</div>'+
-        '</div>'+
-      '</div>'+
-      '<div class="menu menu-source">'+
-        '<div class="sourceedit">'+
-          '<textarea />'+
-        '</div>'+
-        '<div class="controls">'+
-          '<button class="button sourcerefresh icon-cw" title="refresh the source code">refresh</button>'+
-          '<button class="button sourcecompress icon-bag" title="refresh and compress the source code into one line">compress</button>'+
-          '<button class="button sourceapply icon-ok" title="reloads the app">apply changes</button>'+
         '</div>'+
       '</div>'+
     '</div>';
@@ -69,11 +57,6 @@ $(function(){
     events: {
       "click .close" :         "closePanels",
       "click .show-load" :      "showLoad",
-      "click .show-source" :    "showSource",
-
-      "click .sourcerefresh":  "sourceRefresh",
-      "click .sourcecompress": "sourceCompress",
-      "click .sourceapply":    "sourceApply",
 
       "click .newblank":       "newBlank",
 
@@ -127,8 +110,8 @@ $(function(){
 
       var showButton = $('<button class="button show-'+name+'">'+name+'</button>')
         .click( function(){
-          self.showPanel();
-          menu.show();
+          self.showPanel(name);
+          // menu.show();
         });
       if (icon) {
         showButton.addClass(icon);
@@ -234,44 +217,21 @@ $(function(){
 
       this.$(".menu").hide();
     },
-    showPanel: function( which ) {
+    showPanel: function( menu ) {
       this.$(".menu").hide();
 
       this.$(".showpanel").hide();
       this.$(".panel").show();
       this.$(".graph").css("right", "350px");
 
-      if (which) {
-        this.$("button.show-"+which).click();
+      if (menu) {
+        this.$(".menu-"+menu).show();
+        this.trigger("showmenu:"+menu);
       }
     },
     showLoad: function() {
       this.showPanel();
       this.$(".menu-load").show();
-    },
-    showSource: function() {
-      this.showPanel();
-      this.$(".menu-source").show();
-      this.sourceRefresh();
-    },
-    sourceRefresh: function() {
-      this.$(".sourceedit textarea")
-        .val( JSON.stringify(Iframework.shownGraph, null, "  ") );
-    },
-    sourceCompress: function() {
-      this.$(".sourceedit textarea")
-        .val( JSON.stringify(Iframework.shownGraph, null, "") );
-    },
-    sourceApply: function() {
-      try {
-        var newGraph = JSON.parse( this.$(".sourceedit textarea").val() );
-        this.loadGraph(newGraph);
-        this.showSource();
-        // reset localStorage version
-        this._loadedLocalApp = null;
-      } catch (e) {
-        console.warn("json parse error: "+e);
-      }
     },
     loadFromGist: function () {
       var gistid = this.loadFromGistId( this.$(".loadfromgistinput").val() );

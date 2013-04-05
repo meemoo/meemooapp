@@ -275,11 +275,12 @@ $(function(){
       });
     },
     graphChanged: function () {
-      if (Iframework.$(".source").is(":visible")) {
-        window.setTimeout(function(){
-          Iframework.sourceRefresh();
-        }, 100);
-      }
+      Iframework.trigger("change", this);
+      // if (Iframework.$(".source").is(":visible")) {
+      //   window.setTimeout(function(){
+      //     Iframework.sourceRefresh();
+      //   }, 100);
+      // }
     },
     toJSON: function () {
       return {
