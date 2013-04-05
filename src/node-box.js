@@ -165,6 +165,7 @@ $(function(){
     },
     toJSON: function () {
       return {
+        id: this.id,
         src: this.get("src"),
         x: this.get("x"),
         y: this.get("y"),
