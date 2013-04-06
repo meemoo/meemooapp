@@ -6,7 +6,9 @@ $(function(){
 
   var template = 
     '<form class="textform">'+
-      '<input type="text" class="text" style="width:90%"></input>'+
+      '<label><span class="label"></span> '+
+        '<input type="text" class="text" style="width:90%"></input>'+
+      '</label>'+
       '<button class="send" type="submit">send</button>'+
     '</form>';
 
@@ -33,6 +35,9 @@ $(function(){
       this.$(".text").val(val);
       this.inputsend();
     },
+    inputlabel: function(label){
+      this.$(".label").text(label);
+    },
     inputsend: function(){
       this.send("string", this._val);
     },
@@ -40,6 +45,10 @@ $(function(){
       value: {
         type: "string",
         description: "manual input of text"
+      },
+      label: {
+        type: "string",
+        description: "label for input"
       },
       send: {
         type: "bang",

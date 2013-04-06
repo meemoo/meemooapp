@@ -6,7 +6,9 @@ $(function(){
 
   var template = 
     '<form class="textform">'+
-      '<input type="number" class="number" style="width:90%"></input>'+
+      '<label><span class="label"></span> '+
+        '<input type="number" class="number" style="width:90%"></input>'+
+      '</label>'+
       '<button class="send" type="submit">send</button>'+
     '</form>';
 
@@ -32,6 +34,9 @@ $(function(){
       this.inputsend();
       this._triggerRedraw = true;
     },
+    inputlabel: function(label){
+      this.$(".label").text(label);
+    },
     inputsend: function(){
       this.send("number", this._val);
     },
@@ -42,6 +47,10 @@ $(function(){
       value: {
         type: "float",
         description: "default number"
+      },
+      label: {
+        type: "string",
+        description: "label for input"
       },
       send: {
         type: "bang",
