@@ -1,7 +1,7 @@
 $(function(){
 
   var template = 
-    '<div class="addnode" type="button">drag to graph</div>' +
+    '<div class="addnode button icon-window" title="drag to graph"></div>' +
     '<h2 class="title"><%= info.title %></h2>' +
     '<p class="description"><%= info.description %></p>' +
     '<p class="src"><%= src %></p>';
@@ -20,7 +20,6 @@ $(function(){
 
       this.$(".addnode")
         .data({module: this.model})
-        .button({ icons: { primary: 'icon-window' }, text: false })
         .draggable({
           helper: function () {
             var h = $('<div class="addnode-drag-helper" />')

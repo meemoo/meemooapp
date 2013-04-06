@@ -30,7 +30,7 @@ $(function(){
       // Drag helper from module library
       this.$el
         .droppable({ 
-          accept: ".addnode, .canvas" 
+          accept: ".addnode, .canvas, .meemoo-plugin-images-thumbnail"
         })
         .selectable({
           filter: ".module",
@@ -91,12 +91,11 @@ $(function(){
           if (canvas) {
             options.src = "meemoo:image/in";
             options.canvas = canvas;
-            var original = ui.helper.data("meemoo-source-image");
-            if (original) {
-              if (original.src && original.src.slice(0,4)==="http") {
-                options.state = {};
-                options.state.url = original.src;
-              }
+            var url = ui.helper.data("meemoo-image-url");
+            if (url && url.slice(0,4)==="http") {
+              // Dragged from public image library
+              options.state = {};
+              options.state.url = url;
             }
             Iframework.shownGraph.addNode( options );
           }

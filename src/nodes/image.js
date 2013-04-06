@@ -70,7 +70,7 @@ $(function(){
         
         // Make droppable        
         this.$el.droppable({
-          accept: ".canvas",
+          accept: ".canvas, .meemoo-plugin-images-thumbnail",
           tolerance: "pointer",
           hoverClass: "drop-hover",
           activeClass: "drop-active",

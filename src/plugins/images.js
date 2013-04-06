@@ -217,6 +217,7 @@
 
   Iframework.plugins.images.GalleryImage = Backbone.Model.extend({
     initialize: function () {
+      this.mainsrc = IMAGE_SERVER + this.get("files")["main"]["key"];
       this.initializeView();
     },
     initializeView: function () {
@@ -239,15 +240,16 @@
   });
 
   var imageTemplate = 
-    '<img title="drag to graph or image node" />'+
+    '<img crossorigin="anonymous" title="drag to graph or image node" />'+
     '<div class="controls">'+
-      '<button class="export-public" title="Save straight to Flickr, Dropbox, Google, Facebook...">export</button>'+
+      '<a class="link button icon-link" title="Open image in new window" target="_blank"></a>'+
+      '<button class="export-public icon-export" title="Save straight to Flickr, Dropbox, Google, Facebook..."></button>'+
       '<button class="delete icon-trash" title="Delete image"></button>'+
     '</div>';
 
   Iframework.plugins.images.GalleryImageView = Backbone.View.extend({
     tagName: "div",
-    className: "meemoo-plugin-images-thumbnail canvas already-web-public",
+    className: "meemoo-plugin-images-thumbnail",
     template: _.template(imageTemplate),
     events: {
       "click .export-public": "exportPublic",
@@ -256,31 +258,30 @@
     initialize: function () {
       this.$el.html(this.template(this.model.toJSON()));
 
+      this.$(".link").attr("href", this.model.mainsrc);
+
       // Load thumbnail
-      var file = this.model.get("files")["main"];
-      if (file && file.key) {
-        var img = this.$("img")[0];
-        // Using direct link to my S3 instead of file.url
-        img.src = IMAGE_SERVER + file.key;
+      var img = this.$("img")[0];
+      // Using direct link to my S3 instead of file.url
+      img.src = this.model.mainsrc;
 
-        this.$el.draggable({
-          cursor: "pointer",
-          cursorAt: { top: -10, left: -10 },
-          helper: function( event ) {
-            var helper = $( '<div class="drag-image"><h2>Copy this</h2></div>' )
-              .data({
-                "meemoo-drag-type": "canvas",
-                "meemoo-source-image": img
-              });
-            $(document.body).append(helper);
-            _.delay(function(){
-              dragCopyCanvas(helper);
-            }, 100);
-            return helper;
-          }
-        });
-
-      }
+      this.$el.draggable({
+        cursor: "pointer",
+        cursorAt: { top: -10, left: -10 },
+        helper: function( event ) {
+          var helper = $( '<div class="drag-image"><h2>Copy this</h2></div>' )
+            .data({
+              "meemoo-drag-type": "canvas",
+              "meemoo-source-image": img,
+              "meemoo-image-url": img.src
+            });
+          $(document.body).append(helper);
+          _.delay(function(){
+            dragCopyCanvas(helper);
+          }, 100);
+          return helper;
+        }
+      });
 
       publicListing.append( this.el );
 
