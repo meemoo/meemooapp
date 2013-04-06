@@ -218,6 +218,19 @@
   Iframework.plugins.images.GalleryImage = Backbone.Model.extend({
     initialize: function () {
       this.mainsrc = IMAGE_SERVER + this.get("files")["main"]["key"];
+
+      var thumb = this.get("files")["thumb"];
+      if (thumb && thumb.key) {
+        this.thumbsrc = IMAGE_SERVER + thumb.key;
+      } else {
+        // Make thumbnail if needed
+        this.thumbsrc = this.mainsrc;
+        var self = this;
+        _.delay( function(){
+          self.makeThumb();
+        }, 3000);
+      }
+
       this.initializeView();
     },
     initializeView: function () {
@@ -225,6 +238,32 @@
         this.view = new Iframework.plugins.images.GalleryImageView({model:this});
       }
       return this.view;
+    },
+    makeThumb: function () {
+      var self = this;
+      var main = this.get("files")["main"];
+      if (main && window.filepicker) {
+        filepicker.convert(
+          main,
+          {
+            fit: "crop",
+            width: 100, 
+            height: 100
+          },
+          {
+            location: 'S3',
+            path: 'v1/thumbs/',
+            access: 'public'
+          },
+          function(file) {
+            var files = self.get("files");
+            files.thumb = file;
+            self.save();
+          },
+          function (error) {
+          }
+        );
+      }
     },
     toJSON: function () {
       return {
@@ -262,9 +301,9 @@
 
       // Load thumbnail
       var img = this.$("img")[0];
-      // Using direct link to my S3 instead of file.url
-      img.src = this.model.mainsrc;
+      img.src = this.model.thumbsrc;
 
+      var self = this;
       this.$el.draggable({
         cursor: "pointer",
         cursorAt: { top: -10, left: -10 },
@@ -273,7 +312,7 @@
             .data({
               "meemoo-drag-type": "canvas",
               "meemoo-source-image": img,
-              "meemoo-image-url": img.src
+              "meemoo-image-url": self.mainsrc
             });
           $(document.body).append(helper);
           _.delay(function(){
