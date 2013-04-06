@@ -30,6 +30,18 @@ $(function(){
         this.inputimage( canvas );
       }
       this.$(".savers").hide();
+
+      var self = this;
+      this.$el.on("drop", function(event, ui){
+        self.dropUrlTest(event, ui);
+      });
+    },
+    dropUrlTest: function (event, ui) {
+      var url = ui.helper.data("meemoo-image-url");
+      if (url) {
+        this.set("url", url);
+        this.inputurl(url);
+      }
     },
     inputimage: function(image){
       this._image = image;
@@ -38,13 +50,18 @@ $(function(){
     },
     inputurl: function (url) {
       if ( url==="" ){ return false; }
-
       this._url = url;
+      this._image = null;
+
+      this.$(".info").text("Loading image...");
+
       // Internal image to copy to canvas
       this._img = new Image();
       this._img.crossOrigin = "anonymous";
       var self = this;
       this._img.onload = function(){
+        self.$(".info").text("");
+
         self.canvas.width = self._img.width;
         self.canvas.height = self._img.height;
         self.context.drawImage(self._img, 0, 0);

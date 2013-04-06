@@ -17,7 +17,6 @@ $(function(){
     initializeModule: function(){
       var self = this;
       this.$(".button")
-        .button()
         .click(function(e){
           self.inputbang();
         });
@@ -31,9 +30,7 @@ $(function(){
       if (this._key && this._key !== "") {
         label += " ("+this._key+")";
       }
-      this.$(".button").button({
-        label: label
-      });
+      this.$(".button").text(label);
     },
     inputkey: function(key){
       // Unbind the old 
@@ -47,21 +44,10 @@ $(function(){
           self.inputbang();          
         }, 'keydown');
         this._key = key;
+      } 
 
-        // Label
-        var label = "";
-        if (this._label) {
-          label = this._label;
-        }
-        label += " ("+this._key+")";
-        this.$(".button").button({
-          label: label
-        });
-      } else {
-        this.$(".button").button({
-          label: this._label ? this._label : " "
-        });
-      }
+      // Reset label
+      this.inputlabel(this._label);
     },
     remove: function(){
       if (this._key && this._key !== "") {

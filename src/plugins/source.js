@@ -21,6 +21,7 @@
   // On change update code view
   Iframework.on("change", function(graph){
     if (Iframework.shownGraph && Iframework.$(".menu-source").is(":visible")) {
+      // Bookmark to scroll back to
       var scrollBackTop = code.prop("scrollTop");
       code.val( JSON.stringify(Iframework.shownGraph.toJSON(), null, "  ") );
       code.scrollTop( scrollBackTop );
@@ -31,6 +32,8 @@
     code.val( JSON.stringify(Iframework.shownGraph, null, "  ") );
   };
   template.find(".sourcerefresh").click(sourceRefresh);
+
+  // On show manu update source
   Iframework.on("showmenu:source", sourceRefresh);
 
   var sourceCompress = function(){

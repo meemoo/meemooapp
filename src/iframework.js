@@ -577,7 +577,10 @@ $(function(){
       // reset localStorage version
       this._loadedLocalApp = null;
 
-      this.showPanel("library");
+      var self = this;
+      _.delay(function(){
+        self.showPanel("library");
+      }, 500);
 
       // URL hash
       Iframework.router.navigate("new");

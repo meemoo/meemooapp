@@ -526,11 +526,16 @@ div.panel {
     .panel .listing {
       position: absolute;
       top: 75px;
-      right: 10px;
-      left: 10px;
-      bottom: 10px;
+      right: 5px;
+      left: 5px;
+      bottom: 5px;
+      padding: 5px;
       overflow: auto;
+      border: 1px #D3D3D3 solid;
     }
+      .menu-images .listing {
+        top: 40px;
+      }
     .panel form {
       margin-bottom: 10px;
     }
@@ -677,7 +682,7 @@ div.panel {
   display: inline-block;
   vertical-align: bottom;
   padding: 0px;
-  margin: 0 5px 0 0;
+  margin: 0 3px 0 0;
   min-width: 75px;
   min-height: 75px;
   /*border: 1px solid #D3D3D3;*/
@@ -707,15 +712,25 @@ div.panel {
   display: block;
 }
 
-.meemoo-plugin-images .controls {
+.meemoo-plugin-images-thumbnail .controls {
   position: relative;
   top: -10px;
+  text-align: center;
+  opacity: 0.75;
 }
 
-  .meemoo-plugin-images .controls button {
+  .meemoo-plugin-images .meemoo-plugin-images-thumbnail:hover .controls {
+    opacity: 1.0;
+  }
+
+  .meemoo-plugin-images-thumbnail .controls button {
     font-size: 95%;
     padding:1px;
   }
+
+.meemoo-plugin-images .thumbnails {
+  padding-top: 5px;
+}
 
 
 

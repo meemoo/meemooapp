@@ -12,16 +12,18 @@
 
   var template = $(
     '<div class="meemoo-plugin-images">'+
-      '<h2>Local images (not saved)</h2>'+
-      '<span style="position:absolute;width:0px;overflow:hidden;"><input type="file" class="fileinput" accept="image/*" multiple /></span>'+
-      '<button class="localfile icon-camera" title="Not public. From computer (or mobile camera).">Choose local image</button> from computer or mobile camera'+
-      '<div class="image-drop local-drop"><div class="drop-indicator"><p>drag image here to hold it</p></div></div>'+
-      '<div class="local-listing"></div>'+
-      '<h2>Public images</h2>'+
-      '<button class="publicfile icon-globe-1" title="Upload image to Meemoo from computer, URL, Flickr, Google, Dropbox...">Upload image</button> from computer, Flickr, G, Db, etc.'+
-      '<div class="info"></div>'+
-      '<div class="image-drop public-drop"><div class="drop-indicator"><p>drag image here to save to web</p></div></div>'+
-      '<div class="public-listing"></div>'+
+      '<div class="listing">'+
+        '<h2>Local images (not saved)</h2>'+
+        '<span style="position:absolute;width:0px;overflow:hidden;"><input type="file" class="fileinput" accept="image/*" multiple /></span>'+
+        '<button class="localfile icon-camera" title="Not public. From computer (or mobile camera).">Choose local image</button> from computer or mobile camera'+
+        '<div class="image-drop local-drop"><div class="drop-indicator"><p>drag image here to hold it</p></div></div>'+
+        '<div class="thumbnails local-listing"></div>'+
+        '<h2>Public images</h2>'+
+        '<button class="publicfile icon-globe-1" title="Upload image to Meemoo from computer, URL, Flickr, Google, Dropbox...">Upload image</button> from computer, Flickr, G, Db, etc.'+
+        '<div class="info"></div>'+
+        '<div class="image-drop public-drop"><div class="drop-indicator"><p>drag image here to save to web</p></div></div>'+
+        '<div class="thumbnails public-listing"></div>'+
+      '</div>'+
     '</div>'
   );
 
@@ -297,13 +299,13 @@
     initialize: function () {
       this.$el.html(this.template(this.model.toJSON()));
 
-      this.$(".link").attr("href", this.model.mainsrc);
+      var mainsrc = this.model.mainsrc;
+      this.$(".link").attr("href", mainsrc);
 
       // Load thumbnail
       var img = this.$("img")[0];
       img.src = this.model.thumbsrc;
 
-      var self = this;
       this.$el.draggable({
         cursor: "pointer",
         cursorAt: { top: -10, left: -10 },
@@ -312,7 +314,7 @@
             .data({
               "meemoo-drag-type": "canvas",
               "meemoo-source-image": img,
-              "meemoo-image-url": self.mainsrc
+              "meemoo-image-url": mainsrc
             });
           $(document.body).append(helper);
           _.delay(function(){
