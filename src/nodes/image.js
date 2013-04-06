@@ -97,14 +97,38 @@ $(function(){
       // Don't also drop on graph
       event.stopPropagation();
 
+      var self = event.data.self;
+
       var type = ui.helper.data("meemoo-drag-type");
       if ( !type || type !== "canvas" ) { return false; }
-      var canvas = ui.helper.data("meemoo-drag-canvas");
-      var inputName = event.data.inputName;
-      if ( !inputName || !canvas) { return false; }
 
-      // Hit own input with image
-      event.data.self.recieve(inputName, canvas);
+      var inputName = event.data.inputName;
+      if ( !inputName ) { return false; }
+
+      var canvas;
+
+      var url = ui.helper.data("meemoo-image-url");
+      if (url) {
+        // Load big image instead of thumbnail
+        var img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = function(){
+          canvas = document.createElement("canvas");
+          var context = canvas.getContext("2d");
+          canvas.width = img.width;
+          canvas.height = img.height;
+          context.drawImage(img, 0, 0);
+          // Hit own input with image
+          self.recieve(inputName, canvas);
+        };
+        img.src = url;
+      } else {
+        canvas = ui.helper.data("meemoo-drag-canvas");
+        if ( !canvas) { return false; }
+        // Hit own input with image
+        self.recieve(inputName, canvas);
+      }
+
     },
     scale: function(){
       // canvas is shown at this scaling factor

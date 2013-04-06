@@ -324,7 +324,7 @@
         }
       });
 
-      publicListing.append( this.el );
+      publicListing.prepend( this.el );
 
       this.model.on('destroy', this.remove, this);
 

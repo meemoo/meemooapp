@@ -5,7 +5,6 @@ $(function(){
 
   var library = {
     image: [
-      {"src":"meemoo:image/in","info":{"title":"image","author":"forresto","description":"hold a canvas or get image from url or service"}},
       {"src":"meemoo:image/cam","info":{"title":"cam","author":"meemoo","description":"HTML5 webcam with getUserMedia."}},
       {"src":"meemoo:image/transform","info":{"title":"transform","author":"meemoo","description":"scale, translate, and/or rotate image (centered)"}},
       {"src":"meemoo:image/fit","info":{"title":"fit","author":"meemoo","description":"scale and crop an image to fit the given size. easy way to make thumbnails."}},
@@ -13,8 +12,9 @@ $(function(){
       {"src":"meemoo:image/rectangle","info":{"title":"rectangle","author":"meemoo","description":"draw a rectangle"}},
       {"src":"meemoo:image/circle","info":{"title":"circle","author":"meemoo","description":"draw a circle"}},
       {"src":"meemoo:image/text","info":{"title":"text","author":"meemoo","description":"draw text to a canvas"}},
+      {"src":"meemoo:view/layers","info":{"title":"layers","author":"meemoo","description":"can get any of the canvases in the graph and make a stack of them"}},
       {"src":"meemoo:video/player","info":{"title":"video","author":"meemoo","description":"HTML5 video player"}},
-      {"src":"meemoo:view/layers","info":{"title":"layers","author":"meemoo","description":"can get any of the canvases in the graph and make a stack of them"}}
+      {"src":"meemoo:image/in","info":{"title":"image","author":"forresto","description":"hold a canvas or get image from url or service"}}
     ],
     effects: [
       {"src":"meemoo:image/chromakey","info":{"title":"chromakey","author":"forresto, timtaubert","description":"greenscreen chromakey"}},

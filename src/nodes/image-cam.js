@@ -54,7 +54,7 @@ $(function(){
       this.onionskin.height = 10;
       this.$el.append(this.onionskin);
 
-      this.$("button").button();
+      // this.$("button").button();
       this.$(".stopcamera").hide();
       this.$(".sendimage").hide();
 
@@ -65,9 +65,11 @@ $(function(){
         navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || false;
       }
       if ( !navigator.getUserMedia ) {
-        this.$(".startcamera").button({
-          label: "demo video"
-        });
+        this.$(".startcamera")
+          .text("no cam access")
+          .prop("disabled", true);
+        this.$(".info")
+          .text("No getUserMedia camera in this browser. Try Firefox or Chrome.");
       }
 
     },
@@ -161,25 +163,25 @@ $(function(){
         $(this.onionskin).hide();
       }
     },
-    setupPlaceholderVideo: function(){
-      // Video file instead of webcam
-      $(this._video)
-        .attr({
-          "autoplay": "true",
-          "loop": "true"
-        })
-        .html(
-          '<source src="img/no-webcam.mp4" type="video/mp4" />'+
-          '<source src="img/no-webcam.webm" type="video/webm" />'
-        )
-        .on('ended', function(){
-          this.play();
-        });
-      // Sets up frame draw ms
-      this.inputfps(10);
-      this._camStarted = true;
-      this._triggerRedraw = true;
-    },
+    // setupPlaceholderVideo: function(){
+    //   // Video file instead of webcam
+    //   $(this._video)
+    //     .attr({
+    //       "autoplay": "true",
+    //       "loop": "true"
+    //     })
+    //     .html(
+    //       '<source src="img/no-webcam.mp4" type="video/mp4" />'+
+    //       '<source src="img/no-webcam.webm" type="video/webm" />'
+    //     )
+    //     .on('ended', function(){
+    //       this.play();
+    //     });
+    //   // Sets up frame draw ms
+    //   this.inputfps(10);
+    //   this._camStarted = true;
+    //   this._triggerRedraw = true;
+    // },
     setSizes: function(){
       var input;
       if (this._video) {
@@ -313,7 +315,7 @@ $(function(){
         this._image.src = imgURL;
 
         // Revoke ObjectURL
-        window.URL.revokeObjectURL(imgURL);
+        // window.URL.revokeObjectURL(imgURL);
       }
       catch (e) {
         try {
