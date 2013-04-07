@@ -77,12 +77,7 @@ $(function(){
         replace.set(info);
         return;
       }
-      var newPort;
-      if (info.type === "image") {
-        newPort = new Iframework.PortInImage(info); 
-      } else {
-        newPort = new Iframework.PortIn(info);
-      }
+      var newPort = new Iframework.PortIn(info);
       newPort.isIn = true;
       newPort.node = this;
       newPort.graph = this.graph;
@@ -105,20 +100,7 @@ $(function(){
         replace.set(info);
         return;
       }
-      var newPort;
-      if (info.type === "image") {
-        newPort = new Iframework.PortOutImage(info);
-      } else {
-        newPort = new Iframework.PortOut(info);
-      }
-      // switch (info.type) {
-      //   case "image" :
-      //     newPort = new Iframework.PortOutImage(info);
-      //     break;
-      //   default :
-      //     newPort = new Iframework.PortOut(info);
-      //     break;
-      // }
+      var newPort = new Iframework.PortOut(info);
       newPort.isIn = false;
       newPort.node = this;
       newPort.graph = this.graph;
