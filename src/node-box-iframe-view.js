@@ -1,9 +1,9 @@
 $(function(){
 
-  var innerTemplate = '<iframe class="iframe" name="<%= frameIndex %>" src="<%= get("src") %>"></iframe>';
+  // var innerTemplate = '<iframe class="iframe" name="<%= frameIndex %>" src="<%= get("src") %>"></iframe>';
 
   Iframework.NodeBoxIframeView = Iframework.NodeBoxView.extend({
-    innerTemplate: _.template(innerTemplate),
+    // innerTemplate: _.template(innerTemplate),
     initialize: function () {
       // "super"
       Iframework.NodeBoxView.prototype.initialize.call(this);
@@ -19,10 +19,24 @@ $(function(){
 
       // .inner style for css
       this.$(".inner").addClass("iframe-type");
+
+      var self = this;
+      this.iframe.onload = function () {
+        self.iframeloaded = true;
+      };
     },
     render: function () {
       this.$el.html(this.template(this.model));
-      this.$(".inner").html(this.innerTemplate(this.model));
+
+      this.iframe = document.createElement("iframe");
+
+      $(this.iframe).attr({
+        "class": "iframe",
+        "name": this.model.frameIndex,
+        "src": this.model.get("src")
+      });
+
+      this.$(".inner").html( this.iframe );
       return this;
     },
     refresh: function () {

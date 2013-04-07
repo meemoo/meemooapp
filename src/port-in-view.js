@@ -422,9 +422,7 @@ $(function(){
         val = "!";
         saveToState = false;
       }
-      var message = {};
-      message[inputname] = val;
-      this.model.node.receive(message);
+      this.model.node.receive(inputname, val);
       if (saveToState) {
         this.model.node.setValue(inputname, val);
       }

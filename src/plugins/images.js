@@ -21,7 +21,7 @@
         '<h2>Public images</h2>'+
         '<button class="publicfile icon-globe-1" title="Upload image to Meemoo from computer, URL, Flickr, Google, Dropbox...">Upload image</button> from computer, Flickr, G, Db, etc.'+
         '<div class="info"></div>'+
-        '<div class="image-drop public-drop"><div class="drop-indicator"><p>drag image here to save to web</p></div></div>'+
+        '<div class="image-drop public-drop"><div class="drop-indicator"><p class="icon-globe-1">drag image here to save to meemoo.me</p></div></div>'+
         '<div class="thumbnails public-listing"></div>'+
       '</div>'+
     '</div>'
@@ -49,7 +49,7 @@
   });
 
   // Open image panel by dragging over show button
-  Iframework.$(".showpanel .show-images").droppable({
+  Iframework.$(".show-images").droppable({
     accept: ".canvas",
     tolerance: "pointer",
     activeClass: "drop-indicator",

@@ -134,6 +134,8 @@ $(function(){
       }
 
       this.updateCurrentInfo();
+
+      return this.shownGraph;
     },
     gotMessage: function (e) {
       if (Iframework.shownGraph) {
@@ -225,8 +227,17 @@ $(function(){
       this.$(".graph").css("right", "350px");
 
       if (menu) {
-        this.$(".menu-"+menu).show();
-        this.trigger("showmenu:"+menu);
+        if ( this.$(".menu-"+menu) ) {
+          this.$(".menu-"+menu).show();
+          this.trigger("showmenu:"+menu);
+        } else {
+          // HACK for when menu isn't added yet
+          var self = this;
+          _.delay(function(){
+            self.$(".menu-"+menu).show();
+            self.trigger("showmenu:"+menu);
+          }, 500);
+        }
       }
     },
     showLoad: function() {
@@ -577,10 +588,7 @@ $(function(){
       // reset localStorage version
       this._loadedLocalApp = null;
 
-      var self = this;
-      _.delay(function(){
-        self.showPanel("library");
-      }, 500);
+      this.showPanel("library");
 
       // URL hash
       Iframework.router.navigate("new");

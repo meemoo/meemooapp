@@ -119,14 +119,14 @@ $(function(){
           canvas.height = img.height;
           context.drawImage(img, 0, 0);
           // Hit own input with image
-          self.recieve(inputName, canvas);
+          self.receive(inputName, canvas);
         };
         img.src = url;
       } else {
         canvas = ui.helper.data("meemoo-drag-canvas");
         if ( !canvas) { return false; }
         // Hit own input with image
-        self.recieve(inputName, canvas);
+        self.receive(inputName, canvas);
       }
 
     },

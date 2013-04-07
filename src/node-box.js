@@ -31,25 +31,24 @@ $(function(){
     },
     send: function (name, value) {
       // Send message out to connected modules
-      var output = this.Outputs.get(name);
-      if (!!output) {
-        output.send(value);
-      }
+      // Defer to make this safe for infinite loops
+      var self = this;
+      _.defer(function(){
+        self.trigger("send:"+name, value);
+      });
+
     },
-    receive: function (message) {
-      for (var name in message) {
-        if (this.view.Native) {
-          this.view.Native.recieve(name, message[name]);
-          // if (this.view.Native["input"+name]){
-          //   this.view.Native["input"+name](message[name]);
-          //   // Must manually set _triggerRedraw in that function if needed
-          // } else {
-          //   this.view.Native["_"+name] = message[name];
-          //   // Will trigger a NodeBoxNativeView.redraw() on next renderAnimationFrame
-          //   this.view.Native._triggerRedraw = true;
-          // }
-        }
+    receive: function (name, value) {
+      // The listener that hits this is added in the edge
+      if (this.view.Native) {
+        this.view.Native.receive(name, value);
       }
+
+      // for (var name in message) {
+      //   if (this.view.Native) {
+      //     this.view.Native.receive(name, message[name]);
+      //   }
+      // }
     },
     infoLoaded: function (info) {
       this.info = info;

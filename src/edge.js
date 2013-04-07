@@ -49,7 +49,15 @@ $(function(){
         this.Target.node.view.Native.connectEdge(this);
       }
       this.connected = true;
+
+      // Set up listener
+      // var sourceNode = this.graph.get("nodes").get( this.get("source")[0] );
+      this.Source.node.on( "send:"+this.Source.id, this.send, this );
+
       return this;
+    },
+    send: function (value) {
+      this.Target.node.receive( this.Target.id, value );
     },
     disconnect: function () {
       // Called from graph.removeEdge()
@@ -69,6 +77,10 @@ $(function(){
       if (this.view) {
         this.view.remove();
       }
+
+      // Remove listener
+      this.Source.node.off( "send:"+this.Source.id, this.send, this );
+
       this.connected = false;
     },
     remove: function(){

@@ -25,8 +25,11 @@ $(function(){
       this.send("bang", "!");
       return false;
     },
-    inputlabel: function(label){
+    inputlabel: function (label) {
       this._label = label;
+      if (this._label === undefined) {
+        label = "";
+      }
       if (this._key && this._key !== "") {
         label += " ("+this._key+")";
       }

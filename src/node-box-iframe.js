@@ -11,14 +11,13 @@ $(function(){
       description: "extend me"
     },
     sendFromFrame: function (message) {
-      var output = this.Outputs.get(message.output);
-      if (!!output) {
-        output.send(message.value);
-      }
+      this.send(message.output, message.value);
     },
-    receive: function (message) {
-      if (window.frames[this.frameIndex]) {
-        window.frames[this.frameIndex].postMessage(message, "*");
+    receive: function (name, message) {
+      if (this.view && this.view.iframeloaded) {
+        var m = {};
+        m[name] = message;
+        this.view.iframe.contentWindow.postMessage(m, "*");
       } else {
         console.error("wat "+this.id+" "+this.frameIndex);
       }

@@ -70,7 +70,7 @@ $(function(){
     send: function (name, value) {
       this.model.send(name, value);
     },
-    recieve: function (name, value) {
+    receive: function (name, value) {
       if (this["input"+name]){
         this["input"+name](value);
         // Must manually set _triggerRedraw in that function if needed
