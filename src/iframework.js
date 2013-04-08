@@ -77,6 +77,14 @@ $(function(){
       // Hide panels
       this.closePanels();
 
+      window.addEventListener('popstate', function () {
+
+          if(window.location.href.match(/new/) && localStorage.preventSwipe) {
+            localStorage.removeItem('preventSwipe');
+          }
+
+        }, false);
+
       // After all of the .js is loaded, this.allLoaded will be triggered to finish the init
       this.once("allLoaded", this.loadLocalApps, this);
     },
@@ -315,6 +323,11 @@ $(function(){
       return gistid;
     },
     saveGist: function () {
+
+      if(localStorage.preventSwipe) {
+        localStorage.removeItem('preventSwipe');
+      }
+
       // Save app to gist
       var graph = this.shownGraph.toJSON();
       var data = {
@@ -420,6 +433,11 @@ $(function(){
       return key;
     },
     saveLocal: function () {
+
+      if(localStorage.preventSwipe) {
+        localStorage.removeItem('preventSwipe');
+      }
+
       if (!this.shownGraph.get("info")){
         this.shownGraph.set({
           info: {}
