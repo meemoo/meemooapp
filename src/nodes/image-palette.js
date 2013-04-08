@@ -55,7 +55,7 @@ $(function(){
         self._workerBusy = false;
       }, false);
       this._worker.addEventListener('error', function (e) {
-        console.log(e);
+        console.warn(e);
       }, false);
     },
     inputimage: function(image) {

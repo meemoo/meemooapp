@@ -227,16 +227,16 @@ $(function(){
       this.$(".graph").css("right", "350px");
 
       if (menu) {
-        if ( this.$(".menu-"+menu) ) {
+        if ( this.$(".menu-"+menu).length > 0 ) {
           this.$(".menu-"+menu).show();
           this.trigger("showmenu:"+menu);
         } else {
-          // HACK for when menu isn't added yet
+          // HACK for when menu plugin isn't added yet
           var self = this;
           _.delay(function(){
             self.$(".menu-"+menu).show();
             self.trigger("showmenu:"+menu);
-          }, 500);
+          }, 1000);
         }
       }
     },

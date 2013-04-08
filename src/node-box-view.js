@@ -270,13 +270,7 @@ $(function(){
     refresh: function () {
     },
     popout: function () {
-    }//,
-    // selected: function(){
-    //   console.log("sel", this.model);
-    // },
-    // unselected: function(){
-    //   console.log("unsel", this.model);
-    // }
+    }
 
   });
 

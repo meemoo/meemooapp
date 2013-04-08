@@ -177,6 +177,7 @@
     // Load local image
     if (event.target.files.length > 0) {
       // Upload them
+      setInfo('Uploading...');
       filepicker.store(
         event.target,
         {
@@ -185,10 +186,15 @@
           access: 'public'
         },
         function (fpfile) {
-          console.log(fpfile);
           var files = [];
           files.push(fpfile);
           addFilepickerFiles(files);
+        },
+        function (error) {
+          setInfo('Upload error :-(');
+        }, 
+        function (percent) {
+          setInfo(percent + "% uploaded.");
         }
       );
     }

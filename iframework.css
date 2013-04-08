@@ -488,6 +488,7 @@ div.panel {
   div.choosepanel {
     text-align: right;
     padding: 5px;
+    white-space: nowrap;
   }
 
   div.panel .menu {
