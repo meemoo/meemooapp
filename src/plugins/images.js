@@ -14,12 +14,14 @@
     '<div class="meemoo-plugin-images">'+
       '<div class="listing">'+
         '<h2>Local images (not saved)</h2>'+
-        '<span style="position:absolute;width:0px;overflow:hidden;"><input type="file" class="fileinput" accept="image/*" multiple /></span>'+
+        '<span style="position:absolute;width:0px;overflow:hidden;"><input type="file" class="file-input-local" accept="image/*" multiple /></span>'+
         '<button class="localfile icon-camera" title="Not public. From computer (or mobile camera).">Choose local image</button> from computer or mobile camera'+
         '<div class="image-drop local-drop"><div class="drop-indicator"><p>drag image here to hold it</p></div></div>'+
         '<div class="thumbnails local-listing"></div>'+
-        '<h2>Public images</h2>'+
-        '<button class="publicfile icon-globe-1" title="Upload image to Meemoo from computer, URL, Flickr, Google, Dropbox...">Upload image</button> from computer, Flickr, G, Db, etc.'+
+        '<h2>Meemoo.me images (public)</h2>'+
+        '<span style="position:absolute;width:0px;overflow:hidden;"><input type="file" class="file-input-public" accept="image/*" /></span>'+
+        '<button disabled class="publicfile icon-camera" title="Import from computer (or mobile camera).">Upload</button>'+
+        '<button disabled class="publicfile-service icon-globe-1" title="Upload image to Meemoo from computer, URL, Flickr, Google, Dropbox...">Import from Flickr, Dropbox, etc.</button>'+
         '<div class="info"></div>'+
         '<div class="image-drop public-drop"><div class="drop-indicator"><p class="icon-globe-1">drag image here to save to meemoo.me</p></div></div>'+
         '<div class="thumbnails public-listing"></div>'+
@@ -42,6 +44,8 @@
     complete: function () {
       if (window.filepicker){
         filepicker.setKey(FILEPICKER_API_KEY);
+        // Enable upload buttons
+        template.find(".publicfile, .publicfile-service").prop("disabled", false);
       } else {
         setInfo("Offline or image service not available.");
       }
@@ -110,7 +114,7 @@
 
 
   // Local files
-  var fileInput = template.find(".fileinput");
+  var fileInput = template.find(".file-input-local");
   var localListing = template.find(".local-listing");
   fileInput.change( function (event) {
     // Load local image
@@ -128,9 +132,20 @@
   });
 
 
+  // Filepicker add to localStorage
+  var addFilepickerFiles = function (files) {
+    for (var i=0; i<files.length; i++) {
+      // Add to local storage and make thumbnail
+      var o = {main:files[i]};
+      var img = new Iframework.plugins.images.GalleryImage({files:o});
+      publicImages.add(img);
+      img.save();
+    }
+  };
+
   // Filepicker select
   var publicListing = template.find(".public-listing");
-  template.find(".publicfile").click(function(){
+  template.find(".publicfile-service").click(function(){
     if ( !window.filepicker ) { 
       setInfo("Image service not yet available.");
       return false; 
@@ -147,17 +162,46 @@
         path: 'v1/in/',
         access: 'public'
       },
-      function(files){
-        for (var i=0; i<files.length; i++) {
-          // Add to local storage and make thumbnail
-          var o = {main:files[i]};
-          var img = new Iframework.plugins.images.GalleryImage({files:o});
-          publicImages.add(img);
-          img.save();
-        }
-      }
+      addFilepickerFiles
     );
   });
+
+
+  // Native select local files to Filepicker
+  var fileInputPublic = template.find(".file-input-public");
+  fileInputPublic.change( function (event) {
+    if ( !window.filepicker ) { 
+      setInfo("Image service not yet available.");
+      return false; 
+    }
+    // Load local image
+    if (event.target.files.length > 0) {
+      // Upload them
+      filepicker.store(
+        event.target,
+        {
+          location: 'S3',
+          path: 'v1/in/',
+          access: 'public'
+        },
+        function (fpfile) {
+          console.log(fpfile);
+          var files = [];
+          files.push(fpfile);
+          addFilepickerFiles(files);
+        }
+      );
+    }
+  });
+  template.find(".publicfile").click(function(){
+    if ( !window.filepicker ) { 
+      setInfo("Image service not yet available.");
+      return false; 
+    }
+    // Trigger 
+    fileInputPublic.trigger("click");
+  });
+
 
   // Filepicker drop
   template.find(".public-drop").on("drop", function(event, ui) {
