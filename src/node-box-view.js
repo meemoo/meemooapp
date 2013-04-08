@@ -146,6 +146,14 @@ $(function(){
       }
     },
     dragstop: function (event, ui) {
+
+      Iframework.router.navigate('/unsaved');
+
+      if(window.location.href.match(/unsaved/) && !localStorage.preventSwipe) {
+        localStorage.preventSwipe = true;
+        history.pushState(null, null, "#unsaved");
+      }
+
       // Redraw edges once more
       this.drag();
       // Save position to model
