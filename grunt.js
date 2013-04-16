@@ -48,6 +48,8 @@ module.exports = function(grunt) {
           'src/edge.js',
           'src/edge-view.js',
           'src/router.js',
+          // Nodes (most are loaded dynamically)
+          'src/nodes/image.js',
           // Plugins
           'src/plugins/source.js',
           'src/plugins/library.js',
