@@ -89,6 +89,13 @@ $(function(){
       this.send("right", "bang");
       this.$(".info").text('Right!');
     },
+    remove: function() {
+      var keys = ['space', 'up', 'down', 'left', 'right'];
+      for (key in keys) {
+        Mousetrap.unbind(key, 'keydown');
+      }
+      $(window).unbind('click');
+    },
     outputs: {
       space: {
         type: "bang"
