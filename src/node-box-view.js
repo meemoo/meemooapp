@@ -89,32 +89,11 @@ $(function(){
           title: (info.author ? "by "+info.author+": " : "" ) + info.description
         });
     },
-    // _relatedEdges: null,
-    // relatedEdges: function () {
-    //   // Resets to null on dis/connect
-    //   if ( this._relatedEdges === null ) {
-    //     var edges = [];
-    //     this.model.Inputs.each(function(port){
-    //       port.Edges.each(function(edge){
-    //         edges.push(edge);
-    //       });
-    //     });
-    //     this.model.Outputs.each(function(port){
-    //       port.Edges.each(function(edge){
-    //         edges.push(edge);
-    //       });
-    //     });
-    //     this._relatedEdges = edges;
-    //   }
-    //   return this._relatedEdges;
-    // },
-    // resetRelatedEdges: function () {
-    //   this._relatedEdges = null;
-    //   this.relatedEdges();
-    // },
     _alsoDrag: [],
     _dragDelta: {},
     dragStart: function(event, ui){
+      if (event.target !== this.$(".module")[0]) { return; }
+
       // Add a mask so that iframes don't steal mouse
       this.model.graph.view.maskFrames();
 
@@ -149,6 +128,8 @@ $(function(){
       });
     },
     drag: function(event, ui){
+      if (event.target !== this.$(".module")[0]) { return; }
+
       // Drag other helpers
       if (this._alsoDrag.length) {
         var self = $(event.target).data("ui-draggable");
@@ -169,6 +150,8 @@ $(function(){
       }
     },
     dragStop: function(event, ui){
+      if (event.target !== this.$(".module")[0]) { return; }
+
       var x = parseInt(ui.position.left, 10);
       var y = parseInt(ui.position.top, 10);
       this.moveToPosition(x,y);

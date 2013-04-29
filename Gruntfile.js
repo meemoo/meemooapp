@@ -111,7 +111,7 @@ module.exports = function() {
 
   this.registerTask('dev', ['connect', 'watch']);
   this.registerTask('build', ['concat:dist', 'uglify:dist']);
-  this.registerTask('test', ['jshint']);
+  this.registerTask('test', ['jshint:all']);
   this.registerTask('default', ['test', 'build']);
 
 };

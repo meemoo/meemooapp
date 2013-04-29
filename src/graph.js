@@ -204,10 +204,15 @@ $(function(){
       var connected = [];
 
       // Disconnect edges
-      _.each(node.view.relatedEdges(), function (edge) {
-        connected.push(edge);
-        edge.remove();
+      this.get("edges").each(function (edge) {
+        if (edge.Source.parentNode === node || edge.Target.parentNode === node) {
+          connected.push(edge);
+        }
       }, this);
+
+      _.each(connected, function(edge){
+        edge.remove();
+      });
 
       if (this.view) {
         this.view.removeNode(node);
