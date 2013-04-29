@@ -41,7 +41,6 @@ $(function(){
           delay: 20
         });
 
-      this.resizeEdgeSVG = _.debounce(this.resizeEdgeSVG, 100);
       this.resizeEdgeSVG();
 
       // requestAnimationFrame on all nodes
@@ -151,12 +150,8 @@ $(function(){
         edge.view.remove();
       }
     },
-    // _lastResize: 0,
-    resizeEdgeSVG: function () {
-      // TODO timeout to not do this with many edge resizes at once
-      // var now = new Date();
-      // if (now - this._lastResize < 100) { return; }
-
+    resizeEdgeSVG: _.debounce( function () {
+      // _.debounce keeps it from getting called more than needed
       var svg = this.$('.edgesSvg')[0];
       var rect = svg.getBBox();
       var width = rect.x+rect.width;
@@ -168,10 +163,7 @@ $(function(){
       }
       svg.setAttribute("width", Math.round(width+50));
       svg.setAttribute("height", Math.round(height+50));
-
-      // this._lastResize = new Date();
-
-    },
+    }, 100),
     selectableStart: function () {
       // Add a mask so that iframes don't steal mouse
       this.maskFrames();
