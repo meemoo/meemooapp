@@ -416,13 +416,17 @@ div.module {
   
   
 div.ui-resizable-helper {
+  position: absolute;
   display: inline-block;
   border: 1px black dotted;
+  z-index: 9999;
 }
 
 div.ui-draggable-helper {
+  position: absolute;
   display: inline-block;
   border: 1px black dotted;
+  z-index: 9999;
 }
 
 div.edges {
@@ -457,9 +461,6 @@ div.edges {
   top:0;
   left:0;
   z-index:0;
-
-  width: 1500px;
-  height: 1000px;
 }
   
 div.showpanel {

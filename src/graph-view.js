@@ -14,7 +14,10 @@ $(function(){
       "click": "click",
       "drop":  "drop",
       "selectablestart": "selectableStart",
-      "selectablestop":  "selectableStop"
+      "selectablestop":  "selectableStop",
+      "touchstart":  "touch",
+      "touchmove":   "touch",
+      "touchend":    "touch"
     },
     initialize: function () {
       this.render();
@@ -38,6 +41,7 @@ $(function(){
           delay: 20
         });
 
+      this.resizeEdgeSVG = _.debounce(this.resizeEdgeSVG, 100);
       this.resizeEdgeSVG();
 
       // requestAnimationFrame on all nodes
@@ -60,13 +64,19 @@ $(function(){
         });
       }
     },
+    touch: function (event) {
+      // Don't touchpunch selectable (it messes up scrolling)
+      event.stopPropagation();
+    },
     click: function (event) {
       // Hide dis/connection boxes
       $(".edge-edit").remove();
       Iframework.selectedPort = null;
       
-      // Unactivate modules
-      $("div.module").removeClass("active");
+      // Deactivate modules
+      this.$(".module").removeClass("active");
+      // Deselect modules
+      this.$(".module").removeClass("ui-selected");
     },
     drop: function (event, ui) {
       var type = ui.helper.data("meemoo-drag-type");
@@ -115,10 +125,10 @@ $(function(){
     addEdge: function (edge) {
       edge.initializeView();
 
-      if (!!edge.Source.view) {
+      if (edge.Source.view) {
         edge.Source.view.resetRelatedEdges();
       }
-      if (!!edge.Target.view) {
+      if (edge.Target.view) {
         edge.Target.view.resetRelatedEdges();
       }
     },
@@ -141,30 +151,26 @@ $(function(){
         edge.view.remove();
       }
     },
+    // _lastResize: 0,
     resizeEdgeSVG: function () {
-      var width = 0;
-      var height = 0;
-      this.model.get('nodes').each(function(node){
-        var thisRight = node.get('x') + node.get('w');
-        if ( thisRight > width ) {
-          width = thisRight;
-        }
-        var thisBottom = node.get('y') + node.get('h');
-        if ( thisBottom > height ) {
-          height = thisBottom;
-        }
-      }, this);
-      width += 150;
-      height += 50;
-      if (width === 150 && height === 50) {
+      // TODO timeout to not do this with many edge resizes at once
+      // var now = new Date();
+      // if (now - this._lastResize < 100) { return; }
+
+      var svg = this.$('.edgesSvg')[0];
+      var rect = svg.getBBox();
+      var width = rect.x+rect.width;
+      var height = rect.y+rect.height;
+      if (width === 0 && height === 0) {
         // So wires on new graph show up
         width = this.$el.width();
         height = this.$el.height();
       }
-      this.$('#edgesSvg').css({
-        "width": width,
-        "height": height
-      });
+      svg.setAttribute("width", Math.round(width+50));
+      svg.setAttribute("height", Math.round(height+50));
+
+      // this._lastResize = new Date();
+
     },
     selectableStart: function () {
       // Add a mask so that iframes don't steal mouse

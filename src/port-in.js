@@ -8,7 +8,8 @@ $(function(){
       "default": null
     },
     initializeView: function () {
-      return this.view = new Iframework.PortInView({model:this});
+      this.view = new Iframework.PortInView({model:this});
+      return this.view;
     }
   });
   

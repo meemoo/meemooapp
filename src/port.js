@@ -16,6 +16,8 @@ $(function(){
       // this.set( "type_class", this.get("type").split("/")[0].replace(":", "_") );
       this.set( "type_class", this.get("type").split(":")[0] );
       this.Edges = new Iframework.Edges();
+
+      this.parentNode = this.get("parentNode");
     },
     // Ports keep track of connected edges
     connect: function (edge) {

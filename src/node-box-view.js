@@ -22,9 +22,9 @@ $(function(){
     template: _.template(template),
     // innerTemplate: _.template(innerTemplate),
     events: {
-      "dragstart .module":   "dragstart",
+      "dragstart .module":   "dragStart",
       "drag .module":        "drag",
-      "dragstop .module":    "dragstop",
+      "dragstop .module":    "dragStop",
       "resizestart .module": "resizestart",
       "resize .module":      "resize",
       "resizestop .module":  "resizestop",
@@ -37,9 +37,19 @@ $(function(){
     initialize: function () {
       this.render();
       this.$(".module")
-        .data({view: this})
-        .draggable({ handle: "h1" })
-        .resizable({ minHeight: 100, minWidth: 100 });
+        .data({"iframework-node-view": this})
+        .draggable({ 
+          handle: "h1",
+          helper: function(event) {
+            var node = $(this);
+            return $('<div class="ui-draggable-helper" style="width:'+node.width()+'px; height:'+node.height()+'px">');
+          }
+        })
+        .resizable({ 
+          minHeight: 100, 
+          minWidth: 100, 
+          helper: "ui-draggable-helper"
+        });
       this.$(".showcontrols")
         .button({ icons: { primary: "icon-left-open" }, text: false });
       this.$(".hidecontrols")
@@ -79,94 +89,117 @@ $(function(){
           title: (info.author ? "by "+info.author+": " : "" ) + info.description
         });
     },
-    _relatedEdges: null,
-    relatedEdges: function () {
-      // Resets to null on dis/connect
-      if ( this._relatedEdges === null ) {
-        var edges = [];
-        this.model.Inputs.each(function(port){
-          port.Edges.each(function(edge){
-            edges.push(edge);
-          });
-        });
-        this.model.Outputs.each(function(port){
-          port.Edges.each(function(edge){
-            edges.push(edge);
-          });
-        });
-        this._relatedEdges = edges;
-      }
-      return this._relatedEdges;
-    },
-    resetRelatedEdges: function () {
-      this._relatedEdges = null;
-      this.relatedEdges();
-    },
-    _delta: {},
-    dragstart: function (event, ui) {
+    // _relatedEdges: null,
+    // relatedEdges: function () {
+    //   // Resets to null on dis/connect
+    //   if ( this._relatedEdges === null ) {
+    //     var edges = [];
+    //     this.model.Inputs.each(function(port){
+    //       port.Edges.each(function(edge){
+    //         edges.push(edge);
+    //       });
+    //     });
+    //     this.model.Outputs.each(function(port){
+    //       port.Edges.each(function(edge){
+    //         edges.push(edge);
+    //       });
+    //     });
+    //     this._relatedEdges = edges;
+    //   }
+    //   return this._relatedEdges;
+    // },
+    // resetRelatedEdges: function () {
+    //   this._relatedEdges = null;
+    //   this.relatedEdges();
+    // },
+    _alsoDrag: [],
+    _dragDelta: {},
+    dragStart: function(event, ui){
       // Add a mask so that iframes don't steal mouse
       this.model.graph.view.maskFrames();
-      
-      // Start dragging a deselected module
-      if (!this.$(".module").hasClass("ui-selected")) {
-        // Deselect others and select this one
-        $("div.module.ui-selected").removeClass("ui-selected");
-        this.$(".module").addClass("ui-selected");
+
+      // Select
+      if (!this.$(".module").hasClass("ui-selected")){
+        this.click(event);
       }
 
-      // Reset offsets of selected
-      this.model.graph.view.selectableStop();
-
-      this._delta = this.$(".module").offset();
-    },
-    drag: function (event, ui) {
-      _.each(this.relatedEdges(), function(edge){
-        if (edge.view) {
-          edge.view.redraw();
+      // Make helper and save start position of all other selected
+      var self = this;
+      this._alsoDrag = [];
+      this.model.parentGraph.view.$(".ui-selected").each(function() {
+        if (self.$(".module")[0] !== this) {
+          var el = $(this);
+          var position = {
+            left: parseInt( el.css('left'), 10 ), 
+            top: parseInt( el.css('top'), 10 )
+          };
+          el.data("ui-draggable-alsodrag-initial", position);
+          // Add helper
+          var helper = $('<div class="ui-draggable-helper">').css({
+            width: el.width(),
+            height: el.height(),
+            left: position.left,
+            top: position.top
+          });
+          el.parent().append(helper);
+          el.data("ui-draggable-alsodrag-helper", helper);
+          // Add to array
+          self._alsoDrag.push(el);
         }
       });
+    },
+    drag: function(event, ui){
+      // Drag other helpers
+      if (this._alsoDrag.length) {
+        var self = $(event.target).data("ui-draggable");
+        var op = self.originalPosition;
+        var delta = {
+          top: (self.position.top - op.top) || 0, 
+          left: (self.position.left - op.left) || 0
+        };
 
-      if (event && ui) {
-        // Drag is coming from this module
-        // Move other modules
-        var others = this.model.graph.view._selected;
-        var deltaL = this._delta.left - ui.offset.left - $('.graph').scrollLeft();
-        var deltaT = this._delta.top - ui.offset.top - $('.graph').scrollTop();
-        for (var i=0; i<others.length; i++) {
-          if (this.$(".module")[0] !== others[i].el) {
-            // Move other selected module
-            $(others[i].el).css({
-              left: (others[i].offset.left - deltaL) + "px",
-              top: (others[i].offset.top - deltaT) + "px"
-            });
-            // Redraw edges
-            others[i].view.drag();
-          }
-        }
+        _.each(this._alsoDrag, function(el){
+          var initial = el.data("ui-draggable-alsodrag-initial");
+          var helper = el.data("ui-draggable-alsodrag-helper");
+          helper.css({
+            left: initial.left + delta.left,
+            top: initial.top + delta.top
+          });
+        });
       }
     },
-    dragstop: function (event, ui) {
-      // Redraw edges once more
-      this.drag();
-      // Save position to model
+    dragStop: function(event, ui){
+      var x = parseInt(ui.position.left, 10);
+      var y = parseInt(ui.position.top, 10);
+      this.moveToPosition(x,y);
+      // Also drag
+      if (this._alsoDrag.length) {
+        _.each(this._alsoDrag, function(el){
+          var initial = el.data("ui-draggable-alsodrag-initial");
+          var helper = el.data("ui-draggable-alsodrag-helper");
+          var node = el.data("iframework-node-view");
+          // Move other node
+          node.moveToPosition(parseInt(helper.css("left"), 10), parseInt(helper.css("top"), 10));
+          // Remove helper
+          helper.remove();
+          el.data("ui-draggable-alsodrag-initial", null);
+          el.data("ui-draggable-alsodrag-helper", null);
+        });
+        this._alsoDrag = [];
+      }
+
+      // Remove iframe masks
+      this.model.graph.view.unmaskFrames();
+    },
+    moveToPosition: function(x, y){
+      this.$(".module").css({
+        left: x,
+        top: y
+      });
       this.model.set({
-        x: this.$(".module").offset().left + 10 + $('.graph').scrollLeft(),
-        y: this.$(".module").offset().top + 30 + $('.graph').scrollTop()
+        x: x + 10,
+        y: y + 30
       });
-      if (event) {
-        // Remove iframe masks
-        this.model.graph.view.unmaskFrames();
-        // Set other modules
-        var others = this.model.graph.view._selected;
-        for (var i=0; i<others.length; i++) {
-          if (this.$(".module")[0] !== others[i].el) {
-            // Call this dragstop on the other modules
-            others[i].view.dragstop();
-          }
-        }
-        // Resize edges container
-        this.model.graph.view.resizeEdgeSVG();
-      }
     },
     resizestart: function (event, ui) {
       // Add a mask so that iframes don't steal mouse
@@ -174,7 +207,7 @@ $(function(){
     },
     resize: function (event, ui) {
       // Rerender related edges
-      this.drag();
+      // this.drag();
     },
     resizestop: function (event, ui) {
       // Remove iframe masks
@@ -217,30 +250,21 @@ $(function(){
 
     },
     click: function (event) {
-      // With help from idFlood http://stackoverflow.com/a/8643716/592125
+      // Select
       if (event.ctrlKey || event.metaKey) {
         // Command key is pressed, toggle selection
-        if (this.$(".module").hasClass("ui-selected")) {
-          this.$(".module").removeClass("ui-selected");
-        }
-        else {
-          this.select();
-        }
+        this.$(".module").toggleClass("ui-selected");
       } else {
         // Command key isn't pressed, deselect others and select this one
-        $("div.module.ui-selected").removeClass("ui-selected");
-        this.select();
-      }
-      
-      // Rebuild selected on graph view
-      if (this.model.graph.view) {
-        this.model.graph.view.selectableStop();
+        this.model.parentGraph.view.$(".ui-selected").removeClass("ui-selected");
+        this.$(".module").addClass("ui-selected");
       }
 
       // Don't fire click on graph
       event.stopPropagation();
     },
-    select: function () {
+    select: function (event) {
+      // Called from code
       this.$(".module").addClass("ui-selected");
     },
     addInput: function (port) {

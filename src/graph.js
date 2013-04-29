@@ -81,6 +81,7 @@ $(function(){
       if (!info.src){
         return false;
       }
+      info.parentGraph = this;
       var node;
       // Test if image
       if (Iframework.util.isImageURL(info.src)) {

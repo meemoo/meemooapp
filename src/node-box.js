@@ -21,6 +21,8 @@ $(function(){
       this.Inputs = new Iframework.PortsIn();
       this.Outputs = new Iframework.PortsOut();
 
+      this.parentGraph = this.get("parentGraph");
+
       // Change event
       this.on("change", this.nodeChanged);
     },
@@ -71,6 +73,7 @@ $(function(){
     addInput: function (info) {
       // Set id to name
       info.id = info.name;
+      info.parentNode = this;
       // Name must be unique
       var replace = this.Inputs.get(info.name);
       if (replace) {
@@ -94,6 +97,7 @@ $(function(){
     addOutput: function (info) {
       // Set id to name
       info.id = info.name;
+      info.parentNode = this;
       // Name must be unique
       var replace = this.Outputs.get(info.name);
       if (replace) {

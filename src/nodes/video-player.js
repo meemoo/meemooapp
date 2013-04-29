@@ -92,7 +92,7 @@ $(function(){
           };
           fileReader.readAsDataURL(file);
         }
-        catch (e) {
+        catch (error) {
           console.warn("Neither createObjectURL nor FileReader are supported");
         }
       }

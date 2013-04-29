@@ -33,6 +33,14 @@ $(function(){
           .click( function(event){
             $(event.target).data("model").view.click(event);
           });
+
+        // Listen for changes to redraw
+        if (this.model.Source) {
+          this.model.Source.parentNode.on("change:x change:y change:w change:h", this.redraw, this);
+        }
+        if (this.model.Target) {
+          this.model.Target.parentNode.on("change:x change:y", this.redraw, this);
+        }
       }
     },
     render: function () {
@@ -62,6 +70,7 @@ $(function(){
       if (this.model) {
         this.model.Source.view.$(".plugend").show();
         this.model.Target.view.$(".plugend").show();
+        this.model.graph.view.resizeEdgeSVG();
       }
 
       return this;
@@ -71,6 +80,12 @@ $(function(){
       $(this.elementGroup).attr( "transform", "translate("+this.svgX()+", "+this.svgY()+")" );
       $(this.elementWire).attr( "d", this.svgPath() );
       $(this.elementShadow).attr( "d", this.svgPathShadow() );
+
+      if (this.model) {
+        this.model.graph.view.resizeEdgeSVG();
+      } else {
+        Iframework.shownGraph.view.resizeEdgeSVG();
+      }
     },
     remove: function () {
       $(this.elementGroup).remove();
@@ -130,7 +145,8 @@ $(function(){
       }
       if (this.model) {
         // Connected
-        return this._color = Iframework.getWireColor();
+        this._color = Iframework.getWireColor();
+        return this._color;
       } else {
         // Preview
         return Iframework.wireColors[Iframework.wireColorIndex];

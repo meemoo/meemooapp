@@ -350,7 +350,7 @@ $(function(){
         } else {
           this.$(".plugend").hide();
         }
-        this.model.node.view.resetRelatedEdges();
+        // this.model.node.view.resetRelatedEdges();
       }
       return this._relatedEdges;
     },
