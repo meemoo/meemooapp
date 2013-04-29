@@ -1,12 +1,8 @@
-/*global Stats:true*/
-
-// extends src/nodes/time.js which extends src/node-box-native-view.js
-
 $(function(){
 
   var template = 
     '<b>makeymakey</b><br /><div class="info"></div>'+
-    '<label><input type="checkbox" class="active" checked /> active</label>';;
+    '<label><input type="checkbox" class="active" checked /> active</label>';
 
   Iframework.NativeNodes["ui-makeymakey"] = Iframework.NativeNodes["ui"].extend({
 
@@ -91,7 +87,7 @@ $(function(){
     },
     remove: function() {
       var keys = ['space', 'up', 'down', 'left', 'right'];
-      for (key in keys) {
+      for (var key in keys) {
         Mousetrap.unbind(key, 'keydown');
       }
       $(window).unbind('click');
