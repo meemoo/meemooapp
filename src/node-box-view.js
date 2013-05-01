@@ -203,16 +203,10 @@ $(function(){
         w: newW - 20,
         h: newH - 40
       });
-      // this.$(".frame").css({
-      //   width: newW - 20,
-      //   height: newH - 40
-      // });
       if (this.Native) {
         this.Native.resize(newW,newH);
       }
       this.model.graph.view.resizeEdgeSVG();
-      // Rerender related edges
-      this.drag();
     },
     mousedown: function (event, ui) {
       // Bring to top
