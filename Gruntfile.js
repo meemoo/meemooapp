@@ -3,6 +3,8 @@ module.exports = function() {
 
   var banner = "/*! <%= pkg.title %> <%= pkg.homepage %> - v<%= pkg.version %> - <%= grunt.template.today('yyyy-mm-dd') %> (<%= grunt.template.date('longTime') %>)\n* Copyright (c) <%= grunt.template.today('yyyy') %> <%= pkg.author.name %>; Licensed <%= _.pluck(pkg.licenses, 'type').join(', ') %> */\n";
 
+  var grunt = this;
+
   // Project configuration.
   this.initConfig({
     pkg: this.file.readJSON('package.json'),
@@ -102,6 +104,15 @@ module.exports = function() {
       }
     }
   });
+  
+  // Only lint the changed file when watching
+  this.event.on('watch', function(action, filepath) {
+    grunt.config('jshint.force.files.src', filepath);
+  });
+
+  // grunt.event.on('jshint:lint', function() {
+  //   grunt.warn(); 
+  // });
 
   this.loadNpmTasks('grunt-contrib-concat');
   this.loadNpmTasks('grunt-contrib-uglify');
