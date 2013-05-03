@@ -10,15 +10,22 @@ self.onmessage = function(event) {
   encoder.setDelay(event.data.delay);
   // TODO transparent
 
+  var startTime = Date.now();
+
   encoder.start();
 
   var framesLength = frames.length;
   for (var i = 0; i<framesLength; i++) {
     encoder.addFrame(frames[i].data, true);
-    self.postMessage( {type: "progress", data: Math.round((i+1)/framesLength*100) } );
+    self.postMessage( {type: "progress", data: Math.round( (i+1)/framesLength*100 ) } );
   }
 
   encoder.finish();
 
-  self.postMessage( {type: "gif", data: encoder.stream().getData() } );
+  self.postMessage({
+    type: "gif", 
+    data: encoder.stream().getData(),
+    frameCount: framesLength,
+    encodeTime: Math.round( (Date.now()-startTime)/10 ) / 100
+  });
 };

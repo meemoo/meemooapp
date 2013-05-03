@@ -210,7 +210,7 @@ $(function(){
     makeGif: function(){
       // Spawn worker
       this.$(".status").text("Setting up GIF...");
-      var gifWorker = new Worker("libs/jsgif/jsgif-worker.js");
+      var gifWorker = new Worker("libs/omggif/omggif-worker.js");
 
       // Setup listeners
       var self = this;
@@ -219,7 +219,12 @@ $(function(){
           self.$(".status").text("GIF " + e.data.data + "% encoded...");
         } else if (e.data.type === "gif") {
           var gifurl = "data:image/gif;base64,"+window.btoa(e.data.data);
-          var img = '<img src="'+gifurl+'" style="max-width:100%" />';
+          var img = $('<img />')
+            .attr({
+              src: gifurl,
+              title: e.data.frameCount + " frames encoded in " + e.data.encodeTime + " seconds",
+              style: "max-width:100%"
+            });
           self.$(".exports").prepend( img );
           self.$(".status").text("");
         }
