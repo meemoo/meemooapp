@@ -77,7 +77,7 @@ $(function(){
           // Don't also drop on graph
           greedy: true
         });
-        this.$el.on("drop", {"self": this, "inputName": firstImageInput}, this.drop);
+        this.$el.on("drop", {"self": this, "inputName": firstImageInput}, Iframework.util.imageDrop);
       }
 
       this.$el.prepend(this.canvas);
@@ -90,45 +90,6 @@ $(function(){
       canvasCopy.getContext("2d").drawImage(this.canvas, 0, 0);
       helper.data("meemoo-drag-canvas", canvasCopy);
       helper.append(canvasCopy);
-    },
-    drop: function(event, ui){
-      // TODO only drop to top
-
-      // Don't also drop on graph
-      event.stopPropagation();
-
-      var self = event.data.self;
-
-      var type = ui.helper.data("meemoo-drag-type");
-      if ( !type || type !== "canvas" ) { return false; }
-
-      var inputName = event.data.inputName;
-      if ( !inputName ) { return false; }
-
-      var canvas;
-
-      var url = ui.helper.data("meemoo-image-url");
-      if (url) {
-        // Load big image instead of thumbnail
-        var img = new Image();
-        img.crossOrigin = "anonymous";
-        img.onload = function(){
-          canvas = document.createElement("canvas");
-          var context = canvas.getContext("2d");
-          canvas.width = img.width;
-          canvas.height = img.height;
-          context.drawImage(img, 0, 0);
-          // Hit own input with image
-          self.receive(inputName, canvas);
-        };
-        img.src = url;
-      } else {
-        canvas = ui.helper.data("meemoo-drag-canvas");
-        if ( !canvas) { return false; }
-        // Hit own input with image
-        self.receive(inputName, canvas);
-      }
-
     },
     scale: function(){
       // canvas is shown at this scaling factor

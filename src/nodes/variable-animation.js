@@ -11,6 +11,7 @@ $(function(){
       '<button class="prev">prev</button>'+
       '<button class="next">next</button>'+
       '<button class="deleteframe">deleteframe</button><br/><br/>'+
+      '<label><input type="checkbox" class="pingpong" <%= (get("state").pingpong ? "checked" : "") %> />pingpong (loop back and forth)</label><br/>'+
       '<button class="export">export</button>'+
       // '<button class="import">import</button>'+
       // '<form class="importform" style="display:none;">'+
@@ -30,6 +31,7 @@ $(function(){
       "click .prev"  : "inputprev",
       "click .next"  : "inputnext",
       "click .deleteframe"  : "deleteFrame",
+      "change .pingpong": "clickPingpong",
       "click .export"  : "exportImage"
     },
     initializeModule: function(){
@@ -43,6 +45,22 @@ $(function(){
       this.canvas = this.$(".preview")[0];
       this.context = this.canvas.getContext('2d');
       this.$("button").button();
+
+
+      // Setup droppable
+      // Add drop indicator (shown in CSS)
+      this.$el.append('<div class="drop-indicator"><p class="icon-login">add image</p></div>');
+      
+      // Make droppable        
+      this.$el.droppable({
+        accept: ".canvas, .meemoo-plugin-images-thumbnail",
+        tolerance: "pointer",
+        hoverClass: "drop-hover",
+        activeClass: "drop-active",
+        // Don't also drop on graph
+        greedy: true
+      });
+      this.$el.on("drop", {"self": this, "inputName": "push"}, Iframework.util.imageDrop);
     },
     inputpush: function(image){
       var frame = document.createElement("canvas");
@@ -123,6 +141,26 @@ $(function(){
         this.showFrame(this._previewFrame);
       }
     },
+    _pingpong: false,
+    _reverse: false,
+    clickPingpong: function(event){
+      if (event.target.checked) {
+        this._pingpong = true;
+        this.set("pingpong", true);
+      } else {
+        this._pingpong = false;
+        this._reverse = false;
+        this.set("pingpong", false);
+      }
+    },
+    inputpingpong: function(boo){
+      this._pingpong = boo;
+      if (!boo) {
+        // Keeps it from looping backwards
+        this._reverse = false;
+      }
+      this.$(".pingpong")[0].checked = boo;
+    },
     _play: false,
     inputplay: function(){
       this._play = true;
@@ -174,10 +212,28 @@ $(function(){
     },
     renderAnimationFrame: function (timestamp) {
       if (this._play && timestamp-this._lastRedraw>=this._ms) {
-        this._previewFrame++;
-        if (this._previewFrame >= this._animation.frames.length) {
-          // Loop
-          this._previewFrame = 0;
+        if (this._reverse) {
+          this._previewFrame--;
+          if (this._previewFrame < 0) {
+            // Loop
+            if (this._pingpong) {
+              this._reverse = false;
+              this._previewFrame = 1;
+            } else {
+              this._previewFrame = this._animation.frames.length - 1;
+            }
+          }
+        } else {
+          this._previewFrame++;
+          if (this._previewFrame >= this._animation.frames.length) {
+            // Loop
+            if (this._pingpong) {
+              this._reverse = true;
+              this._previewFrame = Math.max(this._animation.frames.length - 2, 0);
+            } else {
+              this._previewFrame = 0;
+            }
+          }
         }
         this.showFrame(this._previewFrame);
 
@@ -197,6 +253,11 @@ $(function(){
         type: "float",
         description: "frames per second to animate",
         "default": 12
+      },
+      pingpong: {
+        type: "boolean",
+        description: "loop animation back and forth",
+        "default": false
       },
       play: {
         type: "bang",
