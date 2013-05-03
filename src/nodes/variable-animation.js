@@ -11,12 +11,15 @@ $(function(){
       '<button class="prev">prev</button>'+
       '<button class="next">next</button>'+
       '<button class="deleteframe">deleteframe</button><br/><br/>'+
-      '<label><input type="checkbox" class="pingpong" <%= (get("state").pingpong ? "checked" : "") %> />pingpong (loop back and forth)</label><br/>'+
-      '<button class="export">export</button>'+
+      '<label><input type="checkbox" class="pingpong" <%= (get("state").pingpong ? "checked" : "") %> />pingpong (loop back and forth)</label><br/><br/>'+
+      '<button class="make-gif">make gif</button>'+
+      '<button class="make-spritesheet">make spritesheet</button>'+
       // '<button class="import">import</button>'+
       // '<form class="importform" style="display:none;">'+
       // '</form>'+
-    '</div>';
+    '</div>'+
+    '<div class="status"></div>'+
+    '<div class="exports"></div>';
 
   Iframework.NativeNodes["variable-animation"] = Iframework.NativeNodes["variable"].extend({
 
@@ -32,7 +35,8 @@ $(function(){
       "click .next"  : "inputnext",
       "click .deleteframe"  : "deleteFrame",
       "change .pingpong": "clickPingpong",
-      "click .export"  : "exportImage"
+      "click .make-spritesheet"  : "makeSpritesheet",
+      "click .make-gif"  : "makeGif"
     },
     initializeModule: function(){
       this._animation = {
@@ -188,7 +192,7 @@ $(function(){
         this.showFrame(0);
       }
     },
-    exportImage: function(){
+    makeSpritesheet: function(){
       if (this._animation.length < 1) { return; }
 
       var image = document.createElement("canvas");
@@ -200,10 +204,44 @@ $(function(){
         imageContext.drawImage(this._animation.frames[i], x, 0);
         x += this._animation.width;
       }
-      try {
-        var url = image.toDataURL();
-        window.open(url);
-      } catch (e) {}
+      var img = '<img src="' + image.toDataURL() + '" style="max-width:100%" />';
+      self.$(".exports").prepend( img );
+    },
+    makeGif: function(){
+      // Spawn worker
+      this.$(".status").text("Setting up GIF...");
+      var gifWorker = new Worker("libs/jsgif/jsgif-worker.js");
+
+      // Setup listeners
+      var self = this;
+      gifWorker.addEventListener('message', function (e) {
+        if (e.data.type === "progress") {
+          self.$(".status").text("GIF " + e.data.data + "% encoded...");
+        } else if (e.data.type === "gif") {
+          var gifurl = "data:image/gif;base64,"+window.btoa(e.data.data);
+          var img = '<img src="'+gifurl+'" style="max-width:100%" />';
+          self.$(".exports").prepend( img );
+          self.$(".status").text("");
+        }
+      }, false);
+      gifWorker.addEventListener('error', function (e) {
+        self.$(".status").text("GIF encoding error :-(");
+      }, false);
+
+      // Send image data
+      var frames = [];
+      for (var i = 0; i<this._animation.length; i++) {
+        var imageData = this._animation.frames[i].getContext('2d').getImageData(0, 0, this._animation.width, this._animation.height);
+        frames[i] = imageData;
+        if (this._pingpong && i>0 && i<this._animation.length-1) {
+          frames[this._animation.length * 2 - 2 - i] = imageData;
+        }
+      }
+      gifWorker.postMessage({
+        frames: frames,
+        delay: this._ms
+      });
+
     },
     inputsend: function(){
       this.send("animation", this._animation);
