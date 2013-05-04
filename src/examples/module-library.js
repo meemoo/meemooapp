@@ -57,7 +57,8 @@ $(function(){
       {"src":"meemoo:ui/motion","info":{"title":"motion","author":"meemoo","description":"sends device motion (accelerometer) data as percentage (Chrome and iOS only)"}},
       {"src":"meemoo:ui/leap","info":{"title":"leap","author":"meemoo","description":"leap motion hand tracker"}},
       {"src":"meemoo:ui/facetracker","info":{"title":"facetracker","author":"meemoo","description":"checks image for face, sends coordinates"}},
-      {"src":"meemoo:ui/makeymakey","info":{"title":"makeymakey","author":"meemoo","description":"makeymakey board"}}
+      {"src":"meemoo:ui/makeymakey","info":{"title":"makeymakey","author":"meemoo","description":"makeymakey board"}},
+      {"src":"meemoo:ui/smartphone","info":{"title":"smartphone","author":"meemoo","description":"iOS or Android smartphone gamepad controller via muzzley.com"}}
     ],
     animation: [
       {"src":"meemoo:variable/animation","info":{"title":"animation","author":"meemoo","description":"holds a stack of canvases to use as an animation"}},

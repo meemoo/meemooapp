@@ -29,7 +29,6 @@ self.onmessage = function(event) {
 
   var startTime = Date.now();
 
-  // Looking at http://www.mrdoob.com/lab/javascript/omggif/
   var buffer = new Uint8Array( frames[0].width * frames[0].height * framesLength * 5 );
   var gif = new GifWriter( buffer, frames[0].width, frames[0].height, { loop: 0 } );
   // var pixels = new Uint8Array( frames[0].width * frames[0].height );
