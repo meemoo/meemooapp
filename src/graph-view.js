@@ -168,32 +168,18 @@ $(function(){
       // Add a mask so that iframes don't steal mouse
       this.maskFrames();
     },
-    _selected: [],
     selectableStop: function (event) {
-      if (event) {
-        // Remove iframe masks
-        this.unmaskFrames();
-      }
-      this._selected = [];
-      var uiselected = $(".module.ui-selected");
-      for (var i=0; i<uiselected.length; i++) {
-        this._selected.push({
-          el: uiselected[i],
-          offset: $(uiselected[i]).offset(),
-          view: $(uiselected[i]).data("view")
-        });
-      }
-      Iframework._enableKeyBindings = true;
+      // Remove iframe masks
+      this.unmaskFrames();
     },
     selectAll: function () {
-      $(".module").addClass("ui-selected");
-      this.selectableStop();
+      this.$(".module").addClass("ui-selected");
     },
     selectNone: function () {
-      $(".module").removeClass("ui-selected");
-      this.selectableStop();
+      this.$(".module").removeClass("ui-selected");
     },
     cut: function(){
+      // Copy selected
       this.copy();
       var i;
       for (i=0; i<Iframework._copied.nodes.length; i++) {
@@ -201,28 +187,33 @@ $(function(){
         Iframework._copied.nodes[i].x -= 50;
         Iframework._copied.nodes[i].y -= 50;
       }
-      //Delete selected
-      for (i=0; i<this._selected.length; i++) {
-        this._selected[i].view.removeModel();
+      // Delete selected
+      var uiselected = this.$(".module.ui-selected");
+      for (i=0; i<uiselected.length; i++) {
+        $(uiselected[i]).data("iframework-node-view").removeModel();
       }
-      // Empty _selected
-      this.selectableStop();
     },
     copy: function(){
       var copied = {nodes:[],edges:[]};
-      for (var i=0; i<this._selected.length; i++) {
-        // toJSON() saves it with its current state
-        var nodeJSON = this._selected[i].view.model.toJSON();
+      var uiselected = this.$(".module.ui-selected");
+      var i, selected;
+
+      // Copy selected nodes
+      for (i=0; i<uiselected.length; i++) {
+        selected = $(uiselected[i]).data("iframework-node-view").model;
+        var nodeJSON = selected.toJSON();
         copied.nodes.push( JSON.parse(JSON.stringify(nodeJSON)) );
       }
+
       // Copy common edges
       this.model.get("edges").each(function(edge){
         var sourceSelected, targetSelected = false;
-        for (i=0; i<this._selected.length; i++) {
-          if (edge.Source.node === this._selected[i].view.model) {
+        for (i=0; i<uiselected.length; i++) {
+          selected = $(uiselected[i]).data("iframework-node-view").model;
+          if (edge.Source.node === selected) {
             sourceSelected = true;
           }
-          if (edge.Target.node === this._selected[i].view.model) {
+          if (edge.Target.node === selected) {
             targetSelected = true;
           }
         }
@@ -275,13 +266,6 @@ $(function(){
         }
       }
     },
-    // deleteSelected: function(){
-    //   for (var i=0; i<this._selected.length; i++) {
-    //     this._selected[i].view.removeModel();
-    //   }
-    //   // Empty _selected
-    //   this.selectableStop();
-    // },
     maskFrames: function () {
       $(".iframe-type").append( '<div class="iframemask" />' );
     },
