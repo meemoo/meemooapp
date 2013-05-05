@@ -119,8 +119,9 @@ $(function(){
       this.$(".showpanel").append(showButton);
       this.$(".choosepanel > .close").before(showButton.clone(true));
     },
-    addMenuSection: function(menu, name, html){
-
+    addMenuSection: function(name, html, parentMenu){
+      var title = $("<h1>").text(name);
+      this.$(".menu-"+parentMenu+" .listing").append(title, html);
     },
     loadGraph: function (graph) {
       if (this.shownGraph) {

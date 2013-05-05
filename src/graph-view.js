@@ -229,7 +229,7 @@ $(function(){
       if (copied && copied.nodes.length > 0) {
         var newNodes = [];
         // Select none
-        $(".module").removeClass("ui-selected");
+        this.$(".module").removeClass("ui-selected");
         for (var i=0; i<copied.nodes.length; i++) {
           var oldNode = copied.nodes[i];
           // Offset pasted
@@ -243,8 +243,6 @@ $(function(){
             newNode.view.select();
           }
         }
-        // Set new selection
-        this.selectableStop();
         // Add edges
         for (var j=0; j<copied.edges.length; j++) {
           var oldEdge = copied.edges[j];
