@@ -736,6 +736,26 @@ div.panel {
 
 
 
+
+
+/* image/layers */
+
+.list-item {
+  border-width: 1px;
+  border-bottom: 1px #AAA dotted; 
+  background-color:rgba(255,255,255,0.5); 
+  padding-top: 5px;
+}
+.list-item.selected {
+  border-style: dotted;
+  border-color: #AAA;
+  background-color: #FFFFD3;
+}
+
+
+
+
+
 /*
   icons thanks to http://fontello.com/ and the included icon sets 
   http://meemoo.org/iframework/icons/LICENSE.txt

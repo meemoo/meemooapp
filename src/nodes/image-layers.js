@@ -4,32 +4,38 @@ $(function(){
 
   var template = 
     '<div class="layers" style="position:absolute; top:0; left:100px; bottom:0; right:0px; overflow: auto; z-index:0;">'+
-      '<canvas class="resizer"></canvas>'+
+      '<canvas class="resizer" style="position: absolute; top: 0px; left: 0px; z-index: 10;" ></canvas>'+
     '</div>'+
     '<div class="info" style="position:absolute; top:0; left:0; bottom:0; width:100px; overflow: auto;">'+
-      '<ul class="list" style="list-style-type:none; margin:0; padding:0;"></ul>'+
+      '<ul class="list" style="list-style-type:none; margin:0 0 5px 0; padding:0;"></ul>'+
+      '<button class="send" title="send flattened image">send</button>'+
     '</div>';
 
   var layerTemplate = 
-    '<li class="list-item" style="border-bottom: 1px #AAA dotted; margin-bottom: 4px;">'+
-      '<input type="checkbox" class="visible" <%= visible ? "checked" : "" %> ></input> '+
+    '<li class="list-item" title="drag to sort, select to move">'+
+      '<input type="checkbox" class="visible" title="visible" <%= visible ? "checked" : "" %> ></input> '+
       '<canvas class="preview" width="50" height="50" style="background-image:url(img/alphabg.png)"></canvas> '+
       '<span class="list-item-name"><%= name %></span>'+
-      '<span class="list-item-info" style="color:red;" ><%= name==="dropped" ? "*" : "" %></span>'+
+      '<%= name==="dropped" ? \'<span class="list-item-info" style="color:red;" title="will not save" >*</span>\' : "" %>'+
     '</li>';
 
   Iframework.NativeNodes["image-layers"] = Iframework.NativeNodes["image"].extend({
 
     info: {
       title: "layers",
-      description: "can get any of the canvases in the graph and make a stack of them"
+      description: "make a stack of canvases"
     },
     template: _.template(template),
     layerTemplate: _.template(layerTemplate),
     events: {
-      "change .visible":      "setVisible",
-      "sortstop .list":       "sortLayers",
-      "mousedown .list-item": "checkDirty"
+      "click .send":        "inputsend",
+      "change .visible":    "setVisible",
+      "sortstop .list":     "sortLayers",
+      "mousedown .preview": "checkDirty",
+      "click .list-item":   "selectLayer",
+      "dragstart .resizer": "startMove",
+      "drag .resizer":      "move",
+      "dragstop .resizer":  "stopMove"
     },
     initializeModule: function(){
       this.$(".list").sortable();
@@ -38,10 +44,21 @@ $(function(){
       // Set up layers from saved state
       this.layerInfo = {};
       var layers = this.model.get("state")["layers"];
-      for (var i=0; i<layers.length; i++) {
-        layers[i].id = layers[i].name;
-        this.layerInfo[layers[i].id] = layers[i];
+      if (layers) {
+        for (var i=0; i<layers.length; i++) {
+          var info = _.pick(layers[i], ['name', 'visible', 'sort', 'x', 'y']);
+          info.id = info.name;
+          this.layerInfo[info.id] = info;
+        }
       }
+
+      this.resizer = this.$(".resizer")[0];
+      this.resizerContext = this.resizer.getContext('2d');
+      this.$(".resizer").draggable({
+        helper: function(){
+          return $("<div>");
+        }
+      });
     },
     layerInfo: {},
     inputsend: function(){
@@ -76,7 +93,7 @@ $(function(){
         canvas.height = h;
         var context = canvas.getContext("2d");
         for (var i=0; i<stack.length; i++) {
-          context.drawImage(stack[i].canvas, 0, 0);
+          context.drawImage(stack[i].canvas, stack[i].x, stack[i].y);
         }
         return canvas;
       }
@@ -84,13 +101,15 @@ $(function(){
     },
     inputimage: function(i){
       // Find or make layer
-      var layer, sort;
+      var layer;
+      var len = this.$('.list-item').length;
+      var newLayer = false;
       if (i.id) {
         // From input, updates with input
         if (!this.layerInfo[i.id]) {
           // Add new
-          sort = this.$('.list-item').length;
-          this.layerInfo[i.id] = {id: i.id, name:i.id, visible: true, sort: sort};
+          this.layerInfo[i.id] = {id: i.id, name: i.id, visible: true, sort: len, x:0, y:0};
+          newLayer = true;
         }
         layer = this.layerInfo[i.id];
       } else {
@@ -100,8 +119,7 @@ $(function(){
           // Make sure unique
           randomId = Math.round(Math.random()*100000);
         }
-        sort = this.$('.list-item').length;
-        layer = this.layerInfo[randomId] = {id: randomId, name:"dropped", visible: true, sort: sort};
+        layer = this.layerInfo[randomId] = {id: randomId, name:"dropped", visible: true, sort: len, x:0, y:0};
       }
 
       // Reference original canvas
@@ -119,25 +137,35 @@ $(function(){
         layer.listViewDirty = false; 
         // Add to list
         this.$(".list").prepend(listView);
+        // if (layer.sort!==len) {
+          // Resort
+          var sorted = this.$('.list-item').sort(function(a, b){
+            var aa = $(a).data("iframework-image-layers-layer").sort;
+            var bb = $(b).data("iframework-image-layers-layer").sort;
+            return bb-aa;
+          });
+          this.$(".list").append(sorted);
+        // }
       }
 
       // Find or make canvas
       var canvas = layer.canvas;
       var context = layer.context;
       if (!canvas) {
-        canvas = document.createElement("canvas");
+        layer.canvas = document.createElement("canvas");
+        canvas = layer.canvas;
         canvas.width = i.width;
         canvas.height = i.height;
-        layer.canvas = canvas;
-        context = layer.context = canvas.getContext('2d');
+        layer.context = canvas.getContext('2d');
+        context = layer.context;
 
         // Canvas layout
         $(canvas).css({
-          position:"absolute", 
-          top: 0, 
-          left: 0,
-          zIndex: layer.sort,
-          display: layer.visible ? "block" : "none"
+          position: "absolute", 
+          left:     layer.x ? layer.x : 0,
+          top:      layer.y ? layer.y : 0, 
+          zIndex:   layer.sort,
+          display:  layer.visible ? "block" : "none"
         });
 
         // Add canvas to view
@@ -150,6 +178,14 @@ $(function(){
         canvas.height = i.height;
       }
 
+      // Resize widget canvas
+      if (this.resizer.width < i.width){
+        this.resizer.width = i.width;
+      }
+      if (this.resizer.height < i.height){
+        this.resizer.height = i.height;
+      }
+
       // Draw image
       if (layer.visible) {
         context.clearRect(0, 0, canvas.width, canvas.height);
@@ -159,7 +195,19 @@ $(function(){
         layer.canvasDirty = true;
       }
 
-      this.saveLayerInfo();
+      if (newLayer) {
+        // Save new tracked layer to graph
+        this.saveLayerInfo();
+      }
+
+    },
+    disconnectEdge: function(edge) {
+      // Called from Edge.disconnect();
+      if (edge.Target.id === "image") {
+        // Remove canvas
+        // Remove list preview
+        // Remove layer
+      }
     },
     sortLayers: function(event, ui){
       var layers = this.$(".list-item");
@@ -170,6 +218,9 @@ $(function(){
         canvas.style.zIndex = layer.sort = count;
         count--;
       }, this);
+
+      // Move draggable to top
+      this.$(".resizer").css("zIndex", layers.length+1);
 
       this.saveLayerInfo();
     },
@@ -191,21 +242,60 @@ $(function(){
     saveLayerInfo: _.debounce(function () {
       // Filter only relevant layers
       var saveable = _.filter(this.layerInfo, function(item){ 
-        return item.name !== "dropped"; 
+        return item.name && item.name !== "dropped"; 
       });
       // Filter relevant info
       saveable = _.map(saveable, function(value, key, list){ 
-        return _.pick(value, 'name', 'visible', 'sort');
+        return _.pick(value, ['name', 'visible', 'sort', 'x', 'y']);
+      });
+      // Sort
+      saveable = saveable.sort(function(a, b){
+        return a.sort-b.sort;
       });
       // Save to graph
       this.set("layers", saveable);
     }, 100),
     checkDirty: function(event){
       // Only update previews when clicked
-      var layer = $(event.currentTarget).data("iframework-image-layers-layer");
+      var layer = $(event.target).parent().data("iframework-image-layers-layer");
       if (layer && layer.listViewDirty) {
         Iframework.util.fitAndCopy(layer.source, layer.listViewCanvas);
       }
+    },
+    selectLayer: function(event){
+      // Deselect others
+      this.$(".list-item").removeClass("selected");
+      // Select this
+      $(event.currentTarget).addClass("selected");
+      // Only update previews when clicked
+      var layer = $(event.currentTarget).data("iframework-image-layers-layer");
+      if (layer) {
+        // Select this
+        this.selected = layer;
+      }
+    },
+    startX: 0,
+    startY: 0,
+    startMove: function(event, ui){
+      if (this.selected) {
+        this.startX = this.selected.x;
+        this.startY = this.selected.y;
+      }
+    },
+    move: function(event, ui){
+      if (this.selected) {
+        $(this.selected.canvas).css({
+          left: (this.startX+ui.position.left)+"px",
+          top: (this.startY+ui.position.top)+"px"
+        });
+      }
+    },
+    stopMove: function(event, ui){
+      if (this.selected) {
+        this.selected.x = this.startX+ui.position.left;
+        this.selected.y = this.startY+ui.position.top;
+      }
+      this.saveLayerInfo();
     },
     redraw: function(){
       // Called from NodeBoxNativeView.renderAnimationFrame()
