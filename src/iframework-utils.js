@@ -66,6 +66,35 @@ $(function(){
         self.receive(inputName, canvas);
       }
 
+    },
+    fitAndCopy: function(source, target){
+      // source and target 2d canvases
+
+      var w = target.width;
+      var h = target.height;
+      var ratio = w/h;
+
+      var inWidth = source.width;
+      var inHeight = source.height;
+      var inRatio = inWidth/inHeight;
+
+      var sx, sy, sw, sh;
+
+      if (ratio >= inRatio) {
+        sw = inWidth;
+        sh = Math.floor(inWidth/ratio);
+        sx = 0;
+        sy = Math.floor((inHeight-sh)/2);
+      } else {
+        sw = Math.floor(inHeight*ratio);
+        sh = inHeight;
+        sx = Math.floor((inWidth-sw)/2);
+        sy = 0;
+      }
+
+      var context = target.getContext("2d");
+      context.clearRect(0, 0, w, h);
+      context.drawImage(source, sx, sy, sw, sh, 0, 0, w, h);
     }
 
   };
