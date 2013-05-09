@@ -752,11 +752,19 @@ div.panel {
   background-color: #FFFFD3;
 }
 
-.list-item .list-item-controls {
+.list-item-delete {
+  width: 20px;
+  padding-left: 0px;
+  font-size: 80%;
+}
+
+.list-item-controls,
+.list-item-delete {
   display: none;
 }
-.list-item.selected .list-item-controls {
-  display: block;
+.list-item.selected .list-item-controls,
+.list-item.selected .list-item-delete {
+  display: inline;
 }
 
 

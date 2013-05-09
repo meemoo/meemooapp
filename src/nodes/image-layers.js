@@ -10,19 +10,19 @@ $(function(){
     '<div class="info" style="position:absolute; top:0; left:0; bottom:0; width:100px; overflow: auto;">'+
       '<ul class="list" style="list-style-type:none; margin:0 0 5px 0; padding:0;"></ul>'+
       // '<button class="send" title="send flattened image">send</button>'+
-      '<span class="button drag-flat canvas" title="drag flattened image">drag me</span>'+
+      '<span class="button drag-flat canvas" title="drag flattened image">drag image</span>'+
       // '<span class="button flatten" title="flatten image layer to one">flatten</span>'+
     '</div>';
 
   var layerTemplate = 
     '<li class="list-item" title="drag to sort, select to move">'+
-      '<input type="checkbox" class="visible" title="visible" <%= visible ? "checked" : "" %> ></input> '+
-      '<canvas class="preview" width="50" height="50" style="background-image:url(img/alphabg.png)"></canvas> '+
+      '<input type="checkbox" class="visible" title="visible" <%= visible ? "checked" : "" %> ></input>'+
+      '<canvas class="preview" width="50" height="50" style="background-image:url(img/alphabg.png)"></canvas>'+
+      '<button class="list-item-delete icon-trash" title="delete layer"></button>'+
       '<span class="list-item-name"><%= name %></span>'+
       '<%= ( name==="dropped" ? \'<span class="list-item-info" style="color:red;" title="will not save" >*</span>\' : "" ) %>'+
-      '<span class="list-item-controls">'+
+      '<span class="list-item-controls"><br/>'+
         'x: <span class="list-item-x"><%= x %></span>, y: <span class="list-item-y"><%= y %></span>'+
-        '<button class="list-item-delete icon-trash">delete</button>'+
       '</span>'+
     '</li>';
 
