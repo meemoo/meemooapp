@@ -9,8 +9,9 @@ $(function(){
     '</div>'+
     '<div class="info" style="position:absolute; top:0; left:0; bottom:0; width:100px; overflow: auto;">'+
       '<ul class="list" style="list-style-type:none; margin:0 0 5px 0; padding:0;"></ul>'+
-      '<button class="send" title="send flattened image">send</button>'+
+      // '<button class="send" title="send flattened image">send</button>'+
       '<span class="button drag-flat canvas" title="drag flattened image">drag</span>'+
+      // '<span class="button flatten" title="flatten image layer to one">flatten</span>'+
     '</div>';
 
   var layerTemplate = 
@@ -18,7 +19,7 @@ $(function(){
       '<input type="checkbox" class="visible" title="visible" <%= visible ? "checked" : "" %> ></input> '+
       '<canvas class="preview" width="50" height="50" style="background-image:url(img/alphabg.png)"></canvas> '+
       '<span class="list-item-name"><%= name %></span>'+
-      '<%= name==="dropped" ? \'<span class="list-item-info" style="color:red;" title="will not save" >*</span>\' : "" %>'+
+      '<%= ( name==="dropped" ? \'<span class="list-item-info" style="color:red;" title="will not save" >*</span>\' : "" ) %>'+
       '<span class="list-item-controls">'+
         'x: <span class="list-item-x"><%= x %></span>, y: <span class="list-item-y"><%= y %></span>'+
         '<button class="list-item-delete icon-trash">delete</button>'+
@@ -34,10 +35,11 @@ $(function(){
     template: _.template(template),
     layerTemplate: _.template(layerTemplate),
     events: {
-      "click .send":        "inputsend",
+      // "click .send":        "inputsend",
       "change .visible":    "setVisible",
       "sortstop .list":     "sortLayers",
       "mousedown .preview": "checkDirty",
+      // "click .flatten":     "flatten",
       "click .list-item":   "selectLayer",
       "click .list-item-delete": "deleteLayer",
       "dragstart .resizer": "startMove",
@@ -47,8 +49,13 @@ $(function(){
       "mouseout":           "mouseOut"
     },
     initializeModule: function(){
+      // Move default canvas
+      this.$(".layers").prepend(this.canvas);
+      $(this.canvas)
+        .draggable("destroy")
+        .css("maxWidth", "none");
+
       this.$(".list").sortable();
-      this.mainDiv = this.$(".canvases")[0];
 
       // Set up layers from saved state
       this.layerInfo = {};
@@ -112,43 +119,10 @@ $(function(){
       });
 
     },
-    dragCopyCanvas: function(helper){
-      if (!helper) { return; }
-      var canvasCopy = this.flatten();
-      helper.data("meemoo-drag-canvas", canvasCopy);
-      helper.append(canvasCopy);
+    inputsend: function(){
+      this.send("image", this.canvas);
     },
     layerInfo: {},
-    inputsend: function(){
-      var flat = this.flatten();
-      if (flat) {
-        this.send("image", flat);
-      }
-    },
-    flatten: function(){
-      var layers = this.layerInfo;
-      var stack = [];
-      for (var name in layers) {
-        var layer = layers[name];
-        if (layer.visible && layer.canvas) {
-          stack.push(layer);
-        }
-      }
-      stack = stack.sort(function(a, b){
-        return (a.sort - b.sort);
-      });
-      if (stack.length > 0) {
-        var canvas = document.createElement('canvas');
-        canvas.width = this._w;
-        canvas.height = this._h;
-        var context = canvas.getContext("2d");
-        for (var i=0; i<stack.length; i++) {
-          context.drawImage(stack[i].canvas, stack[i].x, stack[i].y);
-        }
-        return canvas;
-      }
-      return false;
-    },
     inputimage: function(i){
       // Find or make layer
       var layer;
@@ -158,10 +132,13 @@ $(function(){
         // From input, updates with input
         if (!this.layerInfo[i.id]) {
           // Add new
-          this.layerInfo[i.id] = {id: i.id, name: i.id, visible: true, sort: len, x:0, y:0};
+          this.layerInfo[i.id] = {id: i.id, name: i.id, visible: true, sort: len+10, x:0, y:0};
           newLayer = true;
         }
         layer = this.layerInfo[i.id];
+        if (!layer.canvas) {
+          newLayer = true;
+        }
       } else {
         // Dropped, does not update
         var randomId = Math.round(Math.random()*100000);
@@ -169,11 +146,9 @@ $(function(){
           // Make sure unique
           randomId = Math.round(Math.random()*100000);
         }
-        layer = this.layerInfo[randomId] = {id: randomId, name:"dropped", visible: true, sort: len, x:0, y:0};
+        layer = this.layerInfo[randomId] = {id: randomId, name:"dropped", visible: true, sort: len+10, x:0, y:0};
+        newLayer = true;
       }
-
-      // Reference original canvas
-      layer.source = i;
 
       // Find or make list view
       var listView = layer.listView;
@@ -187,71 +162,39 @@ $(function(){
         layer.listViewDirty = false; 
         // Add to list
         this.$(".list").prepend(listView);
-        // if (layer.sort!==len) {
-          // Resort
-          var sorted = this.$('.list-item').sort(function(a, b){
-            var aa = $(a).data("iframework-image-layers-layer").sort;
-            var bb = $(b).data("iframework-image-layers-layer").sort;
-            return bb-aa;
-          });
-          this.$(".list").append(sorted);
-        // }
-      }
-
-      // Find or make canvas
-      var canvas = layer.canvas;
-      var context = layer.context;
-      if (!canvas) {
-        layer.canvas = document.createElement("canvas");
-        canvas = layer.canvas;
-        canvas.width = i.width;
-        canvas.height = i.height;
-        layer.context = canvas.getContext('2d');
-        context = layer.context;
-
-        // Canvas layout
-        $(canvas).css({
-          position: "absolute", 
-          left:     layer.x ? layer.x : 0,
-          top:      layer.y ? layer.y : 0, 
-          zIndex:   layer.sort,
-          display:  layer.visible ? "block" : "none"
+        // Resort
+        var sorted = this.$('.list-item').sort(function(a, b){
+          var aa = $(a).data("iframework-image-layers-layer").sort;
+          var bb = $(b).data("iframework-image-layers-layer").sort;
+          return bb-aa;
         });
-
-        // Add canvas to view
-        this.$(".canvases").append(canvas);
+        this.$(".list").append(sorted);
+        // Select
+        listView.click();
       }
 
-      // Resize if needed
-      if (canvas.width !== i.width || canvas.height !== i.height) {
-        canvas.width = i.width;
-        canvas.height = i.height;
-      }
-
-      // Draw image
-      if (layer.visible) {
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.drawImage(i, 0, 0);
-      } else {
-        // Draw it later if/when made visible
-        layer.canvasDirty = true;
-      }
+      // Reference canvas
+      layer.canvas = i;
 
       if (newLayer) {
         // Save new tracked layer to graph
         this.saveLayerInfo();
+        this.rebuildDrawStack();
       }
 
+      this._triggerRedraw = true;
     },
     inputwidth: function (w) {
       this._w = w;
       this.resizer.width = w;
       this.$(".canvases").css("width", w);
+      this._triggerRedraw = true;
     },
     inputheight: function (h) {
       this._h = h;
       this.resizer.height = h;
       this.$(".canvases").css("height", h);
+      this._triggerRedraw = true;
     },
     disconnectEdge: function(edge) {
       // Called from Edge.disconnect();
@@ -266,30 +209,19 @@ $(function(){
       var count = layers.length;
       _.each(layers, function(item){
         var layer = $(item).data("iframework-image-layers-layer");
-        var canvas = layer.canvas;
-        canvas.style.zIndex = layer.sort = count;
+        layer.sort = count;
         count--;
       }, this);
 
-      // Move draggable to top
-      this.$(".resizer").css("zIndex", layers.length+1);
-
       this.saveLayerInfo();
+      this.rebuildDrawStack();
     },
     setVisible: function (event) {
       var layer = $(event.target).parent().data("iframework-image-layers-layer");
       layer.visible = event.target.checked;
 
-      // Update if dirty
-      if (layer.visible && layer.canvasDirty) {
-        layer.context.clearRect(0, 0, layer.canvas.width, layer.canvas.height);
-        layer.context.drawImage(layer.source, 0, 0);
-      }
-
-      // Show/hide
-      layer.canvas.style.display = layer.visible ? "block" : "none";
-
       this.saveLayerInfo();
+      this.rebuildDrawStack();
     },
     saveLayerInfo: _.debounce(function () {
       // Filter only relevant layers
@@ -306,12 +238,30 @@ $(function(){
       });
       // Save to graph
       this.set("layers", saveable);
+
     }, 100),
+    stack: [],
+    rebuildDrawStack: function () {
+      // Rebuild sorted stack for drawing
+      var stack = [];
+      for (var name in this.layerInfo) {
+        var layer = this.layerInfo[name];
+        if (layer.visible && layer.canvas) {
+          stack.push(layer);
+        }
+      }
+      stack = stack.sort(function(a, b){
+        return (a.sort - b.sort);
+      });
+      this.stack = stack;
+
+      this._triggerRedraw = true;
+    },
     checkDirty: function (event) {
       // Only update previews when clicked
       var layer = $(event.target).parent().data("iframework-image-layers-layer");
       if (layer && layer.listViewDirty) {
-        Iframework.util.fitAndCopy(layer.source, layer.listViewCanvas);
+        Iframework.util.fitAndCopy(layer.canvas, layer.listViewCanvas);
       }
     },
     selectLayer: function (event) {
@@ -324,13 +274,10 @@ $(function(){
       if (layer) {
         // Select this
         this.selected = layer;
-        // this._enableNudge = true;
       }
     },
     deleteLayer: function (event) {
       if (this.selected) {
-        // Remove canvas
-        $(this.selected.canvas).remove();
         // Remove list preview
         $(this.selected.listView).remove();
         // Remove layer
@@ -339,6 +286,7 @@ $(function(){
         this.selected = null;
 
         this.saveLayerInfo();
+        this.rebuildDrawStack();
       }
     },
     moveLayer: function (layer, x, y) {
@@ -352,6 +300,7 @@ $(function(){
       layer.listView.find(".list-item-y").text( y );
 
       this.saveLayerInfo();
+      this._triggerRedraw = true;
     },
     startX: 0,
     startY: 0,
@@ -382,30 +331,82 @@ $(function(){
     },
     nudgeUp: function (event) {
       if (this._enableNudge && this.selected) {
-        event.preventDefault();
+        event.preventDefault(); // Don't scroll
         this.moveLayer(this.selected, this.selected.x, this.selected.y-1);
       }
     },
     nudgeDown: function (event) {
       if (this._enableNudge && this.selected) {
-        event.preventDefault();
+        event.preventDefault(); // Don't scroll
         this.moveLayer(this.selected, this.selected.x, this.selected.y+1);
       }
     },
     nudgeLeft: function (event) {
       if (this._enableNudge && this.selected) {
-        event.preventDefault();
+        event.preventDefault(); // Don't scroll
         this.moveLayer(this.selected, this.selected.x-1, this.selected.y);
       }
     },
     nudgeRight: function (event) {
       if (this._enableNudge && this.selected) {
-        event.preventDefault();
+        event.preventDefault(); // Don't scroll
         this.moveLayer(this.selected, this.selected.x+1, this.selected.y);
       }
     },
     redraw: function(){
       // Called from NodeBoxNativeView.renderAnimationFrame()
+
+      // Resize if needed
+      if (this.canvas.width !== this._w || this.canvas.height !== this._h) {
+        this.canvas.width = this._w;
+        this.canvas.height = this._h;
+      }
+
+      // Draw stack
+      var stackLength = this.stack.length;
+      if (stackLength > 0) {
+        this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
+        for (var i=0; i<stackLength; i++) {
+          var layer = this.stack[i];
+          this.context.drawImage(layer.canvas, layer.x, layer.y);
+
+          if (this._tile) {
+            var top, right, bottom, left;
+            if (layer.x < 0) {
+              this.context.drawImage(layer.canvas, this.canvas.width+layer.x, layer.y);
+              left = true;
+            }
+            if (layer.x > this.canvas.width-layer.canvas.width) {
+              this.context.drawImage(layer.canvas, 0-(this.canvas.width-layer.x), layer.y);
+              right = true;
+            }
+            if (layer.y < 0) {
+              this.context.drawImage(layer.canvas, layer.x, this.canvas.height+layer.y);
+              top = true;
+            }
+            // HACK There may be a nicer way
+            if (layer.y > this.canvas.height-layer.canvas.height) {
+              this.context.drawImage(layer.canvas, layer.x, 0-(this.canvas.height-layer.y));
+              bottom = true;
+            }
+            if (left && top) {
+              this.context.drawImage(layer.canvas, this.canvas.width+layer.x, this.canvas.height+layer.y);
+            }
+            if (right && bottom) {
+              this.context.drawImage(layer.canvas, 0-(this.canvas.width-layer.x), 0-(this.canvas.height-layer.y));
+            } 
+            if (right && top) {
+              this.context.drawImage(layer.canvas, 0-(this.canvas.width-layer.x), this.canvas.height+layer.y);
+            } 
+            if (left && bottom) {
+              this.context.drawImage(layer.canvas, this.canvas.width+layer.x, 0-(this.canvas.height-layer.y));
+            }
+          }
+        }
+      }
+
+      this.inputsend();
+
     },
     inputs: {
       image: {
@@ -426,6 +427,11 @@ $(function(){
         max: 6826,
         "default": 500
       },
+      tile: {
+        type: "boolean",
+        description: "tile for wallpaper or textile printing",
+        "default": false
+      },
       send: {
         type: "bang",
         description: "send flattened image"
@@ -436,45 +442,6 @@ $(function(){
         type: "image",
         description: "flattened image"
       }
-    },
-    popout: function() {
-      if (this.w) {
-        // Toggle
-        this.popin();
-        return false;
-      }
-
-      // Open new window to about:blank
-      this.w = window.open("", "meemooRemoteWindow", "menubar=no,location=no,resizable=yes,scrollbars=no,status=no");
-      var self = this;
-      this.w.addEventListener("unload", function(){
-        self.popin();
-      });
-
-      // Style
-      this.w.document.body.style.backgroundColor = "black";
-      this.w.document.body.style.overflow = "hidden";
-      this.w.document.title = "meemoo.org";
-
-      // Empty it
-      var el = this.w.document.body;
-      while (el.hasChildNodes()){
-        el.removeChild(el.lastChild);
-      }
-
-      this.mainDiv.parentNode.removeChild(this.mainDiv);
-      this.w.document.body.appendChild(this.mainDiv);
-
-      return false;
-    },
-    popin: function() {
-      if (this.w) {
-        this.w = null;
-      }
-
-      this.$el.prepend(this.mainDiv);
-      
-      return false;
     }
   });
 
