@@ -4,11 +4,13 @@ $(function(){
 
   var template = 
     '<div class="layers" style="position:absolute; top:0; left:100px; bottom:0; right:0px; overflow: auto; z-index:0;">'+
-      '<canvas class="resizer" style="position: absolute; top: 0px; left: 0px; z-index: 10;" ></canvas>'+
+      '<div class="canvases" style="position:absolute; top:0; left:0px; width:500px; height:500px; overflow: hidden; z-index:1;"></div>'+
+      '<canvas class="resizer" style="position: absolute; top: 0px; left: 0px; z-index: 2;" width="500" height="500" ></canvas>'+
     '</div>'+
     '<div class="info" style="position:absolute; top:0; left:0; bottom:0; width:100px; overflow: auto;">'+
       '<ul class="list" style="list-style-type:none; margin:0 0 5px 0; padding:0;"></ul>'+
       '<button class="send" title="send flattened image">send</button>'+
+      '<span class="button drag-flat canvas" title="drag flattened image">drag</span>'+
     '</div>';
 
   var layerTemplate = 
@@ -17,6 +19,10 @@ $(function(){
       '<canvas class="preview" width="50" height="50" style="background-image:url(img/alphabg.png)"></canvas> '+
       '<span class="list-item-name"><%= name %></span>'+
       '<%= name==="dropped" ? \'<span class="list-item-info" style="color:red;" title="will not save" >*</span>\' : "" %>'+
+      '<span class="list-item-controls">'+
+        'x: <span class="list-item-x"><%= x %></span>, y: <span class="list-item-y"><%= y %></span>'+
+        '<button class="list-item-delete icon-trash">delete</button>'+
+      '</span>'+
     '</li>';
 
   Iframework.NativeNodes["image-layers"] = Iframework.NativeNodes["image"].extend({
@@ -33,13 +39,14 @@ $(function(){
       "sortstop .list":     "sortLayers",
       "mousedown .preview": "checkDirty",
       "click .list-item":   "selectLayer",
+      "click .list-item-delete": "deleteLayer",
       "dragstart .resizer": "startMove",
       "drag .resizer":      "move",
       "dragstop .resizer":  "stopMove"
     },
     initializeModule: function(){
       this.$(".list").sortable();
-      this.mainDiv = this.$(".layers")[0];
+      this.mainDiv = this.$(".canvases")[0];
 
       // Set up layers from saved state
       this.layerInfo = {};
@@ -48,6 +55,8 @@ $(function(){
         for (var i=0; i<layers.length; i++) {
           var info = _.pick(layers[i], ['name', 'visible', 'sort', 'x', 'y']);
           info.id = info.name;
+          info.x = info.x ? info.x : 0;
+          info.y = info.y ? info.y : 0;
           this.layerInfo[info.id] = info;
         }
       }
@@ -59,6 +68,30 @@ $(function(){
           return $("<div>");
         }
       });
+
+      var self = this;
+      this.$(".drag-flat").draggable({
+        cursor: "pointer",
+        cursorAt: { top: -10, left: -10 },
+        helper: function( event ) {
+          var helper = $( '<div class="drag-image"><h2>Copy this</h2></div>' )
+            .data({
+              "meemoo-drag-type": "canvas",
+              "meemoo-source-node": self
+            });
+          $(document.body).append(helper);
+          _.delay(function(){
+            self.dragCopyCanvas(helper);
+          }, 100);
+          return helper;
+        }
+      });
+    },
+    dragCopyCanvas: function(helper){
+      if (!helper) { return; }
+      var canvasCopy = this.flatten();
+      helper.data("meemoo-drag-canvas", canvasCopy);
+      helper.append(canvasCopy);
     },
     layerInfo: {},
     inputsend: function(){
@@ -69,28 +102,20 @@ $(function(){
     },
     flatten: function(){
       var layers = this.layerInfo;
-      var w = 0;
-      var h = 0;
       var stack = [];
       for (var name in layers) {
         var layer = layers[name];
-        if (layer.visible) {
+        if (layer.visible && layer.canvas) {
           stack.push(layer);
-          if (w<layer.canvas.width) {
-            w = layer.canvas.width;
-          }
-          if (h<layer.canvas.height) {
-            h = layer.canvas.height;
-          }
         }
       }
       stack = stack.sort(function(a, b){
         return (a.sort - b.sort);
       });
-      if (w > 0 && h > 0) {
+      if (stack.length > 0) {
         var canvas = document.createElement('canvas');
-        canvas.width = w;
-        canvas.height = h;
+        canvas.width = this._w;
+        canvas.height = this._h;
         var context = canvas.getContext("2d");
         for (var i=0; i<stack.length; i++) {
           context.drawImage(stack[i].canvas, stack[i].x, stack[i].y);
@@ -169,21 +194,13 @@ $(function(){
         });
 
         // Add canvas to view
-        this.$(".layers").append(canvas);
+        this.$(".canvases").append(canvas);
       }
 
       // Resize if needed
       if (canvas.width !== i.width || canvas.height !== i.height) {
         canvas.width = i.width;
         canvas.height = i.height;
-      }
-
-      // Resize widget canvas
-      if (this.resizer.width < i.width){
-        this.resizer.width = i.width;
-      }
-      if (this.resizer.height < i.height){
-        this.resizer.height = i.height;
       }
 
       // Draw image
@@ -200,6 +217,16 @@ $(function(){
         this.saveLayerInfo();
       }
 
+    },
+    inputwidth: function (w) {
+      this._w = w;
+      this.resizer.width = w;
+      this.$(".canvases").css("width", w);
+    },
+    inputheight: function (h) {
+      this._h = h;
+      this.resizer.height = h;
+      this.$(".canvases").css("height", h);
     },
     disconnectEdge: function(edge) {
       // Called from Edge.disconnect();
@@ -255,14 +282,14 @@ $(function(){
       // Save to graph
       this.set("layers", saveable);
     }, 100),
-    checkDirty: function(event){
+    checkDirty: function (event) {
       // Only update previews when clicked
       var layer = $(event.target).parent().data("iframework-image-layers-layer");
       if (layer && layer.listViewDirty) {
         Iframework.util.fitAndCopy(layer.source, layer.listViewCanvas);
       }
     },
-    selectLayer: function(event){
+    selectLayer: function (event) {
       // Deselect others
       this.$(".list-item").removeClass("selected");
       // Select this
@@ -272,6 +299,20 @@ $(function(){
       if (layer) {
         // Select this
         this.selected = layer;
+      }
+    },
+    deleteLayer: function (event) {
+      if (this.selected) {
+        // Remove canvas
+        $(this.selected.canvas).remove();
+        // Remove list preview
+        $(this.selected.listView).remove();
+        // Remove layer
+        this.layerInfo[this.selected.id] = null;
+        delete this.layerInfo[this.selected.id];
+        this.selected = null;
+
+        this.saveLayerInfo();
       }
     },
     startX: 0,
@@ -284,16 +325,25 @@ $(function(){
     },
     move: function(event, ui){
       if (this.selected) {
+        var x = this.startX+ui.position.left;
+        var y = this.startY+ui.position.top;
         $(this.selected.canvas).css({
-          left: (this.startX+ui.position.left)+"px",
-          top: (this.startY+ui.position.top)+"px"
+          left: x+"px",
+          top: y+"px"
         });
+        this.selected.listView.find(".list-item-x").text( x );
+        this.selected.listView.find(".list-item-y").text( y );
       }
     },
     stopMove: function(event, ui){
       if (this.selected) {
-        this.selected.x = this.startX+ui.position.left;
-        this.selected.y = this.startY+ui.position.top;
+        this.move(event, ui);
+        var x = this.startX+ui.position.left;
+        var y = this.startY+ui.position.top;
+        this.selected.x = x;
+        this.selected.y = y;
+        this.selected.listView.find(".list-item-x").text( x );
+        this.selected.listView.find(".list-item-y").text( y );
       }
       this.saveLayerInfo();
     },
@@ -304,6 +354,20 @@ $(function(){
       image: {
         type: "image",
         description: "all of the images that go into the layers"
+      },
+      width: {
+        type: "int",
+        description: "exported image width",
+        min: 1,
+        max: 6826,
+        "default": 500
+      },
+      height: {
+        type: "int",
+        description: "exported image height",
+        min: 1,
+        max: 6826,
+        "default": 500
       },
       send: {
         type: "bang",

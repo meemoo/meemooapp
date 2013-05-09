@@ -752,6 +752,13 @@ div.panel {
   background-color: #FFFFD3;
 }
 
+.list-item .list-item-controls {
+  display: none;
+}
+.list-item.selected .list-item-controls {
+  display: block;
+}
+
 
 
 
