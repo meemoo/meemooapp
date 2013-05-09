@@ -362,10 +362,12 @@ $(function(){
         this.canvas.height = this._h;
       }
 
+      // Clear
+      this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
+
       // Draw stack
       var stackLength = this.stack.length;
       if (stackLength > 0) {
-        this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
         for (var i=0; i<stackLength; i++) {
           var layer = this.stack[i];
           this.context.drawImage(layer.canvas, layer.x, layer.y);
