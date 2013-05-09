@@ -290,6 +290,20 @@ $(function(){
       }
     },
     moveLayer: function (layer, x, y) {
+      if (this._tile) {
+        while (x < 0-this._w){
+          x += this._w;
+        }
+        while (x > this._w){
+          x -= this._w;
+        }
+        while (y < 0-this._h){
+          y += this._h;
+        }
+        while (y > this._h){
+          y -= this._h;
+        }
+      }
       $(layer.canvas).css({
         left: x+"px",
         top: y+"px"
