@@ -10,7 +10,7 @@ $(function(){
     '<div class="info" style="position:absolute; top:0; left:0; bottom:0; width:100px; overflow: auto;">'+
       '<ul class="list" style="list-style-type:none; margin:0 0 5px 0; padding:0;"></ul>'+
       // '<button class="send" title="send flattened image">send</button>'+
-      '<span class="button drag-flat canvas" title="drag flattened image">drag</span>'+
+      '<span class="button drag-flat canvas" title="drag flattened image">drag me</span>'+
       // '<span class="button flatten" title="flatten image layer to one">flatten</span>'+
     '</div>';
 
