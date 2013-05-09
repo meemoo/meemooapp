@@ -42,7 +42,9 @@ $(function(){
       "click .list-item-delete": "deleteLayer",
       "dragstart .resizer": "startMove",
       "drag .resizer":      "move",
-      "dragstop .resizer":  "stopMove"
+      "dragstop .resizer":  "stopMove",
+      "mouseover":          "mouseOver",
+      "mouseout":           "mouseOut"
     },
     initializeModule: function(){
       this.$(".list").sortable();
@@ -61,6 +63,7 @@ $(function(){
         }
       }
 
+      // Move layers
       this.resizer = this.$(".resizer")[0];
       this.resizerContext = this.resizer.getContext('2d');
       this.$(".resizer").draggable({
@@ -69,6 +72,7 @@ $(function(){
         }
       });
 
+      // Drag canvas
       var self = this;
       this.$(".drag-flat").draggable({
         cursor: "pointer",
@@ -86,6 +90,27 @@ $(function(){
           return helper;
         }
       });
+
+      // Nudge layer
+      document.addEventListener("keydown", function(event){
+        switch (event.keyCode) {
+          case 38: // up
+            self.nudgeUp(event);
+            break;
+          case 39: // right
+            self.nudgeRight(event);
+            break;
+          case 40: // down
+            self.nudgeDown(event);
+            break;
+          case 37: // left
+            self.nudgeLeft(event);
+            break;
+          default:
+            break;
+        }
+      });
+
     },
     dragCopyCanvas: function(helper){
       if (!helper) { return; }
@@ -299,6 +324,7 @@ $(function(){
       if (layer) {
         // Select this
         this.selected = layer;
+        // this._enableNudge = true;
       }
     },
     deleteLayer: function (event) {
@@ -315,6 +341,18 @@ $(function(){
         this.saveLayerInfo();
       }
     },
+    moveLayer: function (layer, x, y) {
+      $(layer.canvas).css({
+        left: x+"px",
+        top: y+"px"
+      });
+      layer.x = x;
+      layer.y = y;
+      layer.listView.find(".list-item-x").text( x );
+      layer.listView.find(".list-item-y").text( y );
+
+      this.saveLayerInfo();
+    },
     startX: 0,
     startY: 0,
     startMove: function(event, ui){
@@ -327,25 +365,44 @@ $(function(){
       if (this.selected) {
         var x = this.startX+ui.position.left;
         var y = this.startY+ui.position.top;
-        $(this.selected.canvas).css({
-          left: x+"px",
-          top: y+"px"
-        });
-        this.selected.listView.find(".list-item-x").text( x );
-        this.selected.listView.find(".list-item-y").text( y );
+        this.moveLayer(this.selected, x, y);
       }
     },
     stopMove: function(event, ui){
       if (this.selected) {
         this.move(event, ui);
-        var x = this.startX+ui.position.left;
-        var y = this.startY+ui.position.top;
-        this.selected.x = x;
-        this.selected.y = y;
-        this.selected.listView.find(".list-item-x").text( x );
-        this.selected.listView.find(".list-item-y").text( y );
       }
-      this.saveLayerInfo();
+    },
+    _enableNudge: false,
+    mouseOver: function () {
+      this._enableNudge = true;
+    },
+    mouseOut: function () {
+      this._enableNudge = false;
+    },
+    nudgeUp: function (event) {
+      if (this._enableNudge && this.selected) {
+        event.preventDefault();
+        this.moveLayer(this.selected, this.selected.x, this.selected.y-1);
+      }
+    },
+    nudgeDown: function (event) {
+      if (this._enableNudge && this.selected) {
+        event.preventDefault();
+        this.moveLayer(this.selected, this.selected.x, this.selected.y+1);
+      }
+    },
+    nudgeLeft: function (event) {
+      if (this._enableNudge && this.selected) {
+        event.preventDefault();
+        this.moveLayer(this.selected, this.selected.x-1, this.selected.y);
+      }
+    },
+    nudgeRight: function (event) {
+      if (this._enableNudge && this.selected) {
+        event.preventDefault();
+        this.moveLayer(this.selected, this.selected.x+1, this.selected.y);
+      }
     },
     redraw: function(){
       // Called from NodeBoxNativeView.renderAnimationFrame()
