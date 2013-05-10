@@ -751,21 +751,29 @@ div.panel {
   border-color: #AAA;
   background-color: #FFFFD3;
 }
+  .list-item-visible {
+    background-image: url(img/alphabg.png);
+  }
+  .list-item-preview {
+    background-image: url(img/alphabg.png);
+    vertical-align: middle;
+  }
+  .list-item-delete {
+    padding: 1px 0;
+    font-size: 80%;
+  }
+  .list-item-info {
+    color: red;
+  }
 
-.list-item-delete {
-  width: 20px;
-  padding-left: 0px;
-  font-size: 80%;
-}
-
-.list-item-controls,
-.list-item-delete {
-  display: none;
-}
-.list-item.selected .list-item-controls,
-.list-item.selected .list-item-delete {
-  display: inline;
-}
+  .list-item-controls,
+  .list-item-delete {
+    display: none;
+  }
+  .list-item.selected .list-item-controls,
+  .list-item.selected .list-item-delete {
+    display: inline;
+  }
 
 
 
@@ -802,6 +810,12 @@ div.panel {
   /* fix buttons height */
   line-height: 1em;
   font-size: 140%; 
+}
+[class^="no-label icon-"]:before,
+[class*=" no-label icon-"]:before {
+  width: auto;
+  padding: 2px;
+  margin: 0;
 }
 
 .icon-plus:before { content: '\2b'; } /* '+' */

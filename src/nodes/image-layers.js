@@ -3,24 +3,23 @@
 $(function(){
 
   var template = 
-    '<div class="layers" style="position:absolute; top:0; left:100px; bottom:0; right:0px; overflow: auto; z-index:0;">'+
-      '<div class="canvases" style="position:absolute; top:0; left:0px; width:500px; height:500px; overflow: hidden; z-index:1;"></div>'+
-      '<canvas class="resizer" style="position: absolute; top: 0px; left: 0px; z-index: 2;" width="500" height="500" ></canvas>'+
+    '<div class="layers" style="position:absolute; top:0; left:110px; bottom:0; right:0px; overflow: auto; z-index:0;">'+
+      '<canvas class="resizer" style="position:absolute; top:0px; left:0px; z-index:2;" width="500" height="500" ></canvas>'+
     '</div>'+
-    '<div class="info" style="position:absolute; top:0; left:0; bottom:0; width:100px; overflow: auto;">'+
-      '<ul class="list" style="list-style-type:none; margin:0 0 5px 0; padding:0;"></ul>'+
-      // '<button class="send" title="send flattened image">send</button>'+
-      '<span class="button drag-flat canvas" title="drag flattened image">drag image</span>'+
+    '<div style="position:absolute; top:0; left:0; bottom:0; width:110px; overflow: auto;">'+
+      '<ul class="list" style="list-style-type:none; margin:0 0 10px 0; padding:0;"></ul>'+
+      '<span class="drag-flat canvas button icon-picture" title="drag flattened image">drag image</span>'+
       // '<span class="button flatten" title="flatten image layer to one">flatten</span>'+
+      '<div class="info"></div>'+
     '</div>';
 
   var layerTemplate = 
     '<li class="list-item" title="drag to sort, select to move">'+
-      '<input type="checkbox" class="visible" title="visible" <%= visible ? "checked" : "" %> ></input>'+
-      '<canvas class="preview" width="50" height="50" style="background-image:url(img/alphabg.png)"></canvas>'+
-      '<button class="list-item-delete icon-trash" title="delete layer"></button>'+
+      '<input class="list-item-visible" type="checkbox" title="visible" <%= visible ? "checked" : "" %> ></input>'+
+      '<canvas class="list-item-preview" width="50" height="50"></canvas>'+
+      '<button class="list-item-delete no-label icon-trash" title="delete layer"></button>'+
       '<span class="list-item-name"><%= name %></span>'+
-      '<%= ( name==="dropped" ? \'<span class="list-item-info" style="color:red;" title="will not save" >*</span>\' : "" ) %>'+
+      '<%= ( name==="dropped" ? \'<span class="list-item-info" title="will not save" >*</span>\' : "" ) %>'+
       '<span class="list-item-controls"><br/>'+
         'x: <span class="list-item-x"><%= x %></span>, y: <span class="list-item-y"><%= y %></span>'+
       '</span>'+
@@ -35,13 +34,12 @@ $(function(){
     template: _.template(template),
     layerTemplate: _.template(layerTemplate),
     events: {
-      // "click .send":        "inputsend",
-      "change .visible":    "setVisible",
       "sortstop .list":     "sortLayers",
-      "mousedown .preview": "checkDirty",
-      // "click .flatten":     "flatten",
       "click .list-item":   "selectLayer",
+      "change .list-item-visible": "setVisible",
+      "mousedown .list-item-preview": "checkDirty",
       "click .list-item-delete": "deleteLayer",
+      // "click .flatten":     "flatten",
       "dragstart .resizer": "startMove",
       "drag .resizer":      "move",
       "dragstop .resizer":  "stopMove",
@@ -157,7 +155,7 @@ $(function(){
       } else {
         listView = layer.listView = $( this.layerTemplate(layer) );
         listView.data({"iframework-image-layers-layer": layer});
-        var preview = layer.listViewCanvas = listView.find("canvas.preview")[0];
+        var preview = layer.listViewCanvas = listView.find("canvas.list-item-preview")[0];
         Iframework.util.fitAndCopy(i, preview);
         layer.listViewDirty = false; 
         // Add to list
@@ -384,40 +382,34 @@ $(function(){
       if (stackLength > 0) {
         for (var i=0; i<stackLength; i++) {
           var layer = this.stack[i];
-          this.context.drawImage(layer.canvas, layer.x, layer.y);
 
           if (this._tile) {
-            var top, right, bottom, left;
-            if (layer.x < 0) {
-              this.context.drawImage(layer.canvas, this.canvas.width+layer.x, layer.y);
-              left = true;
+            // Draw enough times to make it tile
+            var x = layer.x;
+            while (x<this._w) {
+              x += this._w;
             }
-            if (layer.x > this.canvas.width-layer.canvas.width) {
-              this.context.drawImage(layer.canvas, 0-(this.canvas.width-layer.x), layer.y);
-              right = true;
+            var y = layer.y;
+            while (y<this._h) {
+              y += this._h;
             }
-            if (layer.y < 0) {
-              this.context.drawImage(layer.canvas, layer.x, this.canvas.height+layer.y);
-              top = true;
+            var yStart = y;
+
+            while (x > 0-layer.canvas.width) {
+              while (y > 0-layer.canvas.height) {
+                if (x<this._w && x>0-layer.canvas.width && y<this._h && y>0-layer.canvas.height ) {
+                  this.context.drawImage(layer.canvas, x, y);
+                }
+                y -= this._h;
+              }
+              x -= this._w;
+              y = yStart;
             }
-            // HACK There may be a nicer way
-            if (layer.y > this.canvas.height-layer.canvas.height) {
-              this.context.drawImage(layer.canvas, layer.x, 0-(this.canvas.height-layer.y));
-              bottom = true;
-            }
-            if (left && top) {
-              this.context.drawImage(layer.canvas, this.canvas.width+layer.x, this.canvas.height+layer.y);
-            }
-            if (right && bottom) {
-              this.context.drawImage(layer.canvas, 0-(this.canvas.width-layer.x), 0-(this.canvas.height-layer.y));
-            } 
-            if (right && top) {
-              this.context.drawImage(layer.canvas, 0-(this.canvas.width-layer.x), this.canvas.height+layer.y);
-            } 
-            if (left && bottom) {
-              this.context.drawImage(layer.canvas, this.canvas.width+layer.x, 0-(this.canvas.height-layer.y));
-            }
+          } else {
+            // Draw one layer
+            this.context.drawImage(layer.canvas, layer.x, layer.y);
           }
+
         }
       }
 
