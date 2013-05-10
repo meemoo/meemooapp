@@ -122,7 +122,8 @@ div.drag-image {
     margin: 0;
     padding: 0;
   }
-  div.drag-image canvas {
+  div.drag-image canvas,
+  div.drag-image img {
     max-width: 125px;
   }
 

@@ -54,7 +54,7 @@
 
   // Open image panel by dragging over show button
   Iframework.$(".show-images").droppable({
-    accept: ".canvas",
+    accept: ".canvas, .image",
     tolerance: "pointer",
     activeClass: "drop-indicator",
     over: function (event, ui) {
@@ -65,10 +65,15 @@
   // Drop panels
   template.find(".image-drop").droppable({
     accept: ".canvas",
+    tolerance: "pointer",
     hoverClass: "drop-hover",
     activeClass: "drop-active",
     // Don't also drop on graph
     greedy: true
+  });
+  template.find(".public-drop").droppable({
+    // also accept img drops
+    accept: ".canvas, .image"
   });
   template.find(".local-drop").on("drop", function(event, ui) {
     var image = ui.helper.data("meemoo-drag-canvas");
@@ -212,34 +217,58 @@
   // Filepicker drop
   template.find(".public-drop").on("drop", function(event, ui) {
     if ( !window.filepicker ) { 
-      setInfo("Image service not yet available.");
+      setInfo("Image service not available.");
       return false; 
     }
 
-    var image = ui.helper.data("meemoo-drag-canvas");
-    if (!image) { return false; }
+    var canvas = ui.helper.data("meemoo-drag-canvas");
+    var image = ui.helper.data("meemoo-source-image");
+    if (!canvas && !image) { return false; }
 
+    var fileinfo;
     var b64;
-    try{
-      b64 = image.toDataURL().split(',', 2)[1];
-      // b64 = window.atob(b64);
-    } catch (error) {
-      setInfo('Not able to get image data. Right-click "Save as..." or take a screenshot.');
-      return false;
-    }
 
-    setInfo('Uploading...');
-
-    filepicker.store(
-      b64, 
-      {
+    if (canvas) {
+      try{
+        b64 = canvas.toDataURL().split(',', 2)[1];
+        // b64 = window.atob(b64);
+      } catch (error) {
+        setInfo('Not able to get image data. Right-click "Save as..." or take a screenshot.');
+        return false;
+      }
+      fileinfo = {
         mimetype: 'image/png',
         location: 'S3',
         path: 'v1/out/',
         filename: 'meemoo.png',
         access: 'public',
         base64decode: true
-      }, 
+      };
+    } else if (image) {
+      // Make sure data url
+      if (image.src.split(':')[0] !== "data"){ return false; }
+
+      var split = image.src.split(',', 2);
+      var type = split[0].split(':')[1].split(';')[0];
+      var ext = type.split('/')[1];
+      b64 = split[1];
+      fileinfo = {
+        mimetype: type,
+        location: 'S3',
+        path: 'v1/out/',
+        filename: 'meemoo.'+ext,
+        access: 'public',
+        base64decode: true
+      };
+    }
+
+    if (!b64 || !fileinfo) { return false; }
+
+    setInfo('Uploading...');
+
+    filepicker.store(
+      b64, 
+      fileinfo, 
       function (file) {
         // Add to local storage and make thumbnail
         var files = {main:file};
@@ -299,6 +328,8 @@
           main,
           {
             fit: "crop",
+            format: 'jpg',
+            quality: 80,
             width: 100, 
             height: 100
           },

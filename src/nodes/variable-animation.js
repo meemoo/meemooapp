@@ -204,8 +204,35 @@ $(function(){
         imageContext.drawImage(this._animation.frames[i], x, 0);
         x += this._animation.width;
       }
-      var img = '<img src="' + image.toDataURL() + '" style="max-width:100%" />';
+      var img = '<img class="image" src="' + image.toDataURL() + '" style="max-width:100%" />';
       self.$(".exports").prepend( img );
+    },
+    copyDragImage: function (helper) {
+      var img = helper.data("meemoo-source-image");
+      var imageCopy = document.createElement("img");
+      imageCopy.src = img.src;
+      helper.append(imageCopy);
+    },
+    makeImageDraggable: function (img) {
+      var self = this;
+      $(img)
+        .attr("title", "drag to images menu to save")
+        .draggable({
+          cursor: "pointer",
+          cursorAt: { top: -10, left: -10 },
+          helper: function( event ) {
+            var helper = $( '<div class="drag-image"><h2>Save this</h2></div>' )
+              .data({
+                "meemoo-drag-type": "image",
+                "meemoo-source-image": img[0]
+              });
+            $(document.body).append(helper);
+            _.delay(function(){
+              self.copyDragImage(helper);
+            }, 100);
+            return helper;
+          }
+        });
     },
     makeGif: function(){
       // Spawn worker
@@ -219,14 +246,17 @@ $(function(){
           self.$(".status").text("GIF " + e.data.data + "% encoded...");
         } else if (e.data.type === "gif") {
           var gifurl = "data:image/gif;base64,"+window.btoa(e.data.data);
-          var img = $('<img />')
+          var img = $('<img class="image" />')
             .attr({
               src: gifurl,
-              title: e.data.frameCount + " frames encoded in " + e.data.encodeTime + " seconds",
               style: "max-width:100%"
             });
+          self.$(".exports").prepend( "<div>" + e.data.frameCount + " frames encoded in " + e.data.encodeTime + " seconds</div>" );
           self.$(".exports").prepend( img );
           self.$(".status").text("");
+
+          // Make draggable
+          self.makeImageDraggable(img);
         }
       }, false);
       gifWorker.addEventListener('error', function (e) {
