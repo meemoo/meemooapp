@@ -104,7 +104,7 @@ self.onmessage = function(event) {
     type: "gif", 
     data: string,
     frameCount: framesLength,
-    encodeTime: Math.round( (Date.now()-startTime)/10 ) / 100
+    encodeTime: Date.now()-startTime
   });
 
   // Terminate self
