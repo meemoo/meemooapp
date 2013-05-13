@@ -48,8 +48,6 @@ $(function(){
       };
       this.canvas = this.$(".preview")[0];
       this.context = this.canvas.getContext('2d');
-      this.$("button").button();
-
 
       // Setup droppable
       // Add drop indicator (shown in CSS)
@@ -239,6 +237,7 @@ $(function(){
     makeGif: function(){
       // Spawn worker
       this.$(".status").text("Setting up GIF...");
+      this.$(".make-gif").prop("disabled", true).text("make gif (busy...)");
       var gifWorker = new Worker("libs/omggif/omggif-worker.js");
 
       // Setup listeners
@@ -258,11 +257,13 @@ $(function(){
           var fileSizeUnit = "kb";
           if (fileSize >= 1024) {
             fileSize = Math.round(fileSize / 1024 * 10) / 10;
-            var fileSizeUnit = "mb";
+            fileSizeUnit = "mb";
           }
-          self.$(".exports").prepend( "<div>" + e.data.frameCount + " frames ("+fileSize+fileSizeUnit+") encoded in " + e.data.encodeTime + "s</div>" );
+          var encodeTime = Math.round( e.data.encodeTime / 100 ) / 10;
+          self.$(".exports").prepend( "<div>" + e.data.frameCount + " frames ("+fileSize+fileSizeUnit+") encoded in " + encodeTime + "s</div>" );
           self.$(".exports").prepend( img );
           self.$(".status").text("");
+          self.$(".make-gif").prop("disabled", false).text("make gif");
 
           // Make draggable
           self.makeImageDraggable(img);
@@ -270,6 +271,7 @@ $(function(){
       }, false);
       gifWorker.addEventListener('error', function (e) {
         self.$(".status").text("GIF encoding error :-(");
+        self.$(".make-gif").prop("disabled", false).text("make gif");
         gifWorker.terminate();
       }, false);
 
