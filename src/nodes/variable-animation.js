@@ -245,7 +245,7 @@ $(function(){
       var self = this;
       gifWorker.addEventListener('message', function (e) {
         if (e.data.type === "progress") {
-          self.$(".status").text("GIF " + e.data.data + "% encoded...");
+          self.$(".status").text("GIF " + Math.round(e.data.data*100) + "% encoded...");
         } else if (e.data.type === "gif") {
           var gifurl = "data:image/gif;base64,"+window.btoa(e.data.data);
           var img = $('<img class="image" />')
@@ -253,7 +253,14 @@ $(function(){
               src: gifurl,
               style: "max-width:100%"
             });
-          self.$(".exports").prepend( "<div>" + e.data.frameCount + " frames encoded in " + e.data.encodeTime + " seconds</div>" );
+          // Format file size
+          var fileSize = Math.round(e.data.data.length / 1024);
+          var fileSizeUnit = "kb";
+          if (fileSize >= 1024) {
+            fileSize = Math.round(fileSize / 1024 * 10) / 10;
+            var fileSizeUnit = "mb";
+          }
+          self.$(".exports").prepend( "<div>" + e.data.frameCount + " frames ("+fileSize+fileSizeUnit+") encoded in " + e.data.encodeTime + "s</div>" );
           self.$(".exports").prepend( img );
           self.$(".status").text("");
 
@@ -263,6 +270,7 @@ $(function(){
       }, false);
       gifWorker.addEventListener('error', function (e) {
         self.$(".status").text("GIF encoding error :-(");
+        gifWorker.terminate();
       }, false);
 
       // Send image data
