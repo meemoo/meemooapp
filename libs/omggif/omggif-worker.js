@@ -90,7 +90,7 @@ self.onmessage = function(event) {
     addFrame( frames[i] );
     self.postMessage({
       type: "progress", 
-      data: Math.round( (i+1)/framesLength*100 ) 
+      data: (i+1)/framesLength
     });
   }
 
@@ -106,4 +106,7 @@ self.onmessage = function(event) {
     frameCount: framesLength,
     encodeTime: Math.round( (Date.now()-startTime)/10 ) / 100
   });
+
+  // Terminate self
+  self.close();
 };
