@@ -234,6 +234,8 @@ $(function(){
           }
         });
     },
+    _matte: [255, 255, 255],
+    _transparent: [0, 255, 0],
     makeGif: function(){
       // Spawn worker
       this.$(".status").text("Setting up GIF...");
@@ -263,20 +265,10 @@ $(function(){
         self.$(".status").text("GIF encoding error :-(");
       }, false);
 
-      // Make canvas for matte
-      var keyCanvas = document.createElement("canvas");
-      keyCanvas.width = this._animation.width;
-      keyCanvas.height = this._animation.height;
-      keyContext = keyCanvas.getContext('2d');
-      keyContext.fillStyle = "#FFFFFF";
-
       // Send image data
       var frames = [];
       for (var i = 0; i<this._animation.length; i++) {
-        // White background
-        keyContext.fillRect(0, 0, keyCanvas.width, keyCanvas.height);
-        keyContext.drawImage(this._animation.frames[i], 0, 0);
-        var imageData = keyContext.getImageData(0, 0, keyCanvas.width, keyCanvas.height);
+        var imageData = this._animation.frames[i].getContext('2d').getImageData(0, 0, this._animation.width, this._animation.height);
         frames[i] = imageData;
         if (this._pingpong && i>0 && i<this._animation.length-1) {
           frames[this._animation.length * 2 - 2 - i] = imageData;
@@ -284,7 +276,9 @@ $(function(){
       }
       gifWorker.postMessage({
         frames: frames,
-        delay: this._ms
+        delay: this._ms,
+        matte: this._matte,
+        transparent: this._transparent
       });
 
     },
