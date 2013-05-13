@@ -4,6 +4,8 @@
 
 importScripts('omggif.js', 'NeuQuant.js'); 
 
+var thereAreTransparentPixels = false;
+
 var rgba2rgb = function (data, matte, transparent) {
   var pixels = [];
   var count = 0;
@@ -18,6 +20,7 @@ var rgba2rgb = function (data, matte, transparent) {
       r = transparent[0];
       g = transparent[1];
       b = transparent[2];
+      thereAreTransparentPixels = true;
     } else if (matte && a<255) {
       // Use matte with "over" blend mode
       r = ( (r*a + (matte[0] * (255-a))) / 255 ) |0;
@@ -77,7 +80,7 @@ self.onmessage = function(event) {
 
     var options = { palette: new Uint32Array( palette ), delay: delay };
 
-    if (transparent) {
+    if (thereAreTransparentPixels) {
       options.transparent = nq.map(transparent[0], transparent[1], transparent[2]);
       options.disposal = 2; // Clear between frames
     }
