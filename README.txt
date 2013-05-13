@@ -15,6 +15,7 @@ with help from
  Media Lab Helsinki, http://mlab.taik.fi/
  NLnet Foundation, http://nlnet.nl/
  The Shuttleworth Foundation, http://www.shuttleworthfoundation.org/
+ Mozilla/Eyebeam Open(Art), http://openart.eyebeam.org/
 
 demo: http://meemoo.org/iframework
 blog: http://meemoo.org/blog
