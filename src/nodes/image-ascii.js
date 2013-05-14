@@ -2,7 +2,13 @@
 
 $(function(){
 
-  var template = '<pre class="output" style="font-family:monospace; font-stretch:expanded;"></pre>';
+  var template = '<pre class="output" style="font-family:monospace; font-size:12px; line-height:70%;"></pre>'+
+    '<div class="char-sets">'+
+      '<button class="set-chars ascii" title="#MX$SBPCxc=!~-,._ " data-h="70%">ascii</button>'+
+      '<button class="set-chars ansi" title="█░ " data-h="80%">ansi</button>'+
+      '<button class="set-chars katakana" title="テチタヌオネモキツシウミリンソトレニノ　" data-h="100%">katakana</button>'+
+      // '<button class="set-chars emoji" title="" data-h="90%">emoji</button>'+
+    '</div>';
 
   var lumR = [];
   var lumG = [];
@@ -21,6 +27,9 @@ $(function(){
       description: "ascii text or emoji art"
     },
     template: _.template(template),
+    events: {
+      "click .set-chars": "setChars"
+    },
     initializeModule: function(){
       $(this.canvas).remove();
     },
@@ -33,6 +42,13 @@ $(function(){
         this._charr[i] = split[ Math.floor(i/256*splitLength) ];
       }
       this._triggerRedraw = true;
+    },
+    setChars: function (event) {
+      var button = $(event.target);
+      this.$(".output").css("line-height", button.data("h"));
+      var chars = button.attr("title");
+      this.inputcharacters(chars);
+      this.set("characters", chars);
     },
     inputsend: function () {
       this.send("text", this.outputString);
@@ -71,11 +87,7 @@ $(function(){
       characters: {
         type: "string",
         description: "the characters that will be used in the conversion, dark to light",
-        // "default": "テチタヌオネモキツシウミリンソトレニノノノ　　"
-        "default": "¶MX¤»c¢~· "
-        // "default": "█░ "
-        // "default": "◼🌑🎱💣↗🐵🐗🌒🌓⚽😄🐳🐶🐔🌕❄⭐⚾🕓◻"
-        // "default": "🌑🌒🌘🌓🌗🌔🌖🌕"
+        "default": "#MX$SBPCxc=!~-,._ "
       },
       width: {
         type: "int",
