@@ -20,6 +20,7 @@ module.exports = function() {
           'libs/backbone.js',
           'libs/backbone.localStorage.js',
           'libs/mousetrap.js',
+          'libs/spectrum/spectrum.js',
           // 'libs/jquery.ui.touch-punch.js',
           // Iframework
           'src/iframework.js',

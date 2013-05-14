@@ -323,7 +323,48 @@ $(function(){
             "value": this.model.node.get("state")[this.model.get("name")]
           })
         );
-      } else if (typeabbr === "col" || typeabbr === "str") {
+      } else if (typeabbr === "col") {
+        // Use the spectrum event instead of standard form submit
+        showForm = true;
+        var color = this.model.node.get("state")[this.model.get("name")];
+        var input = $("<input />")
+          .attr({
+            "type": "text",
+            "maxlength": 140,
+            "value": color,
+            "style": "width: 90%"
+          });
+        inputForm.append( input );
+        // Has to be after added to page
+        var self = this;
+        input
+          .spectrum({
+            // color: color,
+            showInitial: true,
+            // showInput: true,
+            showAlpha: true,
+            showPalette: true,
+            palette: [
+              Iframework.wireColors,
+              ["red", "green", "blue", "purple", "cyan", "magenta", "yellow"],
+              ["black", "#333", "#666", "#999", "#AAA", "#CCC", "white"]
+            ],
+            showSelectionPalette: true,
+            localStorageKey: "iframework.settings.colorPalette",
+            change: function(color) {
+              var str = color.toString();
+              self.model.node.receive(portName, str);
+              self.model.node.setValue(portName, str);
+            },
+            move: function(color) {
+              input.val( color.toString() );
+            },
+            beforeShow: function () {
+              input.spectrum("set", input.val());
+            }
+          })
+          .show(); // Unhide
+      } else if (typeabbr === "str") {
         showForm = true;
         inputForm.append(
           $("<input />").attr({
@@ -353,14 +394,8 @@ $(function(){
             .html("send")
             .attr({
               "type": "submit",
-              "class": "send",
+              "class": "send icon-ok",
               "title": "send value to module"
-            })
-            .button({
-              icons: {
-                primary: "icon-ok"
-              },
-              text: false
             })
         );
         popupEl.append(inputForm);
