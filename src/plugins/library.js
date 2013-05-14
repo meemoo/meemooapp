@@ -1,4 +1,4 @@
-( function(Iframework) {
+$( function () {
 
   var template = $(
     '<div>'+
@@ -15,7 +15,6 @@
 
   // Add menu
   Iframework.addMenu("library", template, "icon-plus");
-
 
   Iframework.loadLibrary = function (library) {
 
@@ -173,4 +172,4 @@
 
   // Iframework.plugins.library.update = update;
 
-}(Iframework) );
+} );

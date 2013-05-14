@@ -4,7 +4,6 @@
 <!-- 
 
     Thanks for viewing source! 
-Try debug.html if you want to poke the insides.
 
         _________________
        /\  _____________ \
@@ -24,13 +23,13 @@ Try debug.html if you want to poke the insides.
 
 -->
 
-
 <!-- <html manifest="iframework.appcache"> -->
 <head>
   <meta charset="utf-8" />
   <title>meemoo: use, build, share, and hack creative apps in the browser</title>
 
   <script type="text/javascript">
+
   (function(){
     "use strict";
 
@@ -54,6 +53,37 @@ Try debug.html if you want to poke the insides.
         document.getElementById("iframework-info").innerHTML = "";
       }
 
+      // yepnope([
+      //   {
+      //     // Try the CDN stuff first
+      //     load: (debug ? debugLibs : buildLibs),
+      //     complete: function(){
+      //       if (!window.jQuery) {
+      //         // CDN offline?
+      //         yepnope("libs/jquery.js");
+      //         yepnope("libs/jquery-ui/jquery-ui.js");
+      //         yepnope("libs/jquery-ui/jquery-ui.css");
+      //       }
+      //       document.getElementById("iframework-info").innerHTML = "&raquo; 2/2: Loading Meemoo...";
+      //     }
+      //   },
+      //   {
+      //     // Load all of the src/ files, or just the minified one
+      //     load: (debug ? debugFiles : buildFiles),
+      //     complete: function(){
+      //       // All loaded
+      //       if (window.Iframework) {
+      //         document.getElementById("iframework-info").innerHTML = "&raquo; Loaded!";
+      //         window.setTimeout(function(){
+      //           document.getElementById("iframework-info").innerHTML = "";
+      //         }, 1500);
+      //       } else {
+      //         document.getElementById("iframework-info").innerHTML = "";
+      //         // document.getElementById("iframework-info").innerHTML = "&raquo; Something didn't work (;_;)";
+      //       }
+      //     }
+      //   }
+      // ]);
     }
 
     // This tests to see if the browser can do data clone for postMessage
@@ -95,20 +125,60 @@ Try debug.html if you want to poke the insides.
 <body>
   
   <footer style="font-size: 10px; font-family: Monaco, monospace;">
-    <span id="debug-info"></span>
+    <span id="debug-info">DEBUG &raquo; </span>
     <a href="http://meemoo.org/" target="_blank">meemoo</a> &raquo; 
     <a href="https://github.com/meemoo/iframework" target="_blank">source</a>
     <span id="iframework-info"></span>
-    <noscript>&raquo; This web app uses JavaScript (and plenty of it).</noscript>
+    <noscript>&raquo; use, build, share, and hack creative apps in the browser.</noscript>
   </footer>
+
 
   <!-- Libs -->
   <script src="libs/yepnope.min.js"></script>
   <script src="libs/jquery.js"></script>
   <script src="libs/jquery-ui/jquery-ui.js"></script>
 
-  <!-- Iframework packaged -->
-  <script src="build/meemoo-iframework.js"></script>
+  <!-- Packaged libs -->
+  <script src="libs/underscore.js"></script>
+  <script src="libs/backbone.js"></script>
+  <script src="libs/backbone.localStorage.js"></script>
+  <script src="libs/mousetrap.js"></script>
+
+  <!-- Iframework -->
+  <script src="src/iframework.js"></script>
+  <script src="src/iframework-utils.js"></script>
+  <script src="src/eventshistory.js"></script>
+  <script src="src/local-app.js"></script>
+  <script src="src/local-app-view.js"></script>
+  <script src="src/graph.js"></script>
+  <script src="src/graph-view.js"></script>
+  <script src="src/node.js"></script>
+  <script src="src/node-view.js"></script>
+  <script src="src/node-box.js"></script>
+  <script src="src/node-box-view.js"></script>
+  <script src="src/node-box-native-view.js"></script>
+  <script src="src/node-box-iframe.js"></script>
+  <script src="src/node-box-iframe-view.js"></script>
+  <script src="src/port.js"></script>
+  <script src="src/port-view.js"></script>
+  <script src="src/port-in.js"></script>
+  <script src="src/port-in-view.js"></script>
+  <script src="src/port-out.js"></script>
+  <script src="src/port-out-view.js"></script>
+  <script src="src/module.js"></script>
+  <script src="src/module-view.js"></script>
+  <script src="src/edge.js"></script>
+  <script src="src/edge-view.js"></script>
+  <script src="src/router.js"></script>
+  <script src="src/nodes/image.js"></script>
+
+  <!-- Plugins -->
+  <script src="src/plugins/source.js"></script>
+  <script src="src/plugins/library.js"></script>
+  <script src="src/plugins/images.js"></script>
+
+  <!-- Last -->
+  <script src="src/iframework-last.js"></script>
 
   <!-- Examples -->
   <script src="src/examples/module-library.js"></script>

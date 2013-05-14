@@ -1,6 +1,6 @@
 /*global filepicker:true, atob:true*/
 
-( function(Iframework) {
+$( function() {
 
   var FILEPICKER_API_KEY = "AaqPpE9LORQel03S9cCl7z";
   var IMAGE_SERVER = "http://i.meemoo.me/";
@@ -455,4 +455,4 @@
     }
   });
 
-}(Iframework) );
+} );

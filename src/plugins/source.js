@@ -1,4 +1,4 @@
-( function(Iframework) {
+$( function() {
 
   var template = $(
     '<div>'+
@@ -69,4 +69,4 @@
   };
   template.find(".sourceapply").click(sourceApply);
 
-}(Iframework) );
+} );
