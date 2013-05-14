@@ -26,7 +26,8 @@ $(function(){
       {"src":"meemoo:image/tile","info":{"title":"tile","author":"forresto","description":"tile to fill canvas, reflect mirror tile for seamless"}},
       {"src":"meemoo:image/particles","info":{"title":"particles","author":"forresto","description":"make a stream of particles from an image or spritesheet"}},
       {"src":"meemoo:image/trails","info":{"title":"trails","author":"forresto","description":"draws image without clearing, leaving motion trails"}},
-      {"src":"meemoo:image/monochrome","info":{"title":"monochrome","author":"ticky+flickr+forresto","description":"monochrome by atkinson, bayer, floydsteinberg, or no dither"}}
+      {"src":"meemoo:image/monochrome","info":{"title":"monochrome","author":"ticky+flickr+forresto","description":"monochrome by atkinson, bayer, floydsteinberg, or no dither"}},
+      {"src":"meemoo:image/ascii","info":{"title":"ascii","author":"forresto","description":"ascii text or emoji art"}}
     ],
     util: [
       {"src":"meemoo:util/stats","info":{"title":"stats.js","author":"mr.doob","description":"fps stats graph"}},

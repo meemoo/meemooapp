@@ -235,6 +235,8 @@ $(function(){
     _matte: [255, 255, 255],
     _transparent: [0, 255, 0],
     makeGif: function(){
+      if (this._animation.length <= 0) { return false; }
+      
       // Spawn worker
       this.$(".status").text("Setting up GIF...");
       this.$(".make-gif").prop("disabled", true).text("make gif (busy...)");

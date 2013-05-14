@@ -1,6 +1,28 @@
-/* message should be object with frames (array of pixel data objects), delay (ms delay per frame), matte, transparent ([r,g,b]) */
+/* 
+  Gluing OMGGIF and NeuQuant.js in a worker, by Forrest Oliphant for meemoo.org
 
-/* listen for messages back that will be either {type:"progress", data:percent done} or {type:"gif", data:binary gif data} */
+  Message to worker should be an object with 
+  {
+    frames: (array of pixel data objects), 
+    delay: (ms delay per frame), 
+    matte: ([r,g,b] (default white)),
+    transparent: ([r,g,b] (optional))
+  }
+
+  Messages from worker will either be
+  {
+    type: "progress",
+    data: (percent done, 0.0-1.0)
+  }
+  or
+  {
+    type: "gif",
+    data: (binary gif data),
+    frameCount: (number of frames),
+    encodeTime: (ms how long it took to encode)
+  }
+
+*/
 
 importScripts('omggif.js', 'NeuQuant.js'); 
 
@@ -32,7 +54,7 @@ var rgba2rgb = function (data, matte, transparent) {
     pixels[count++] = b;
   }
   return pixels;
-}
+};
 
 var rgb2num = function(palette) {
   var colors = [];
@@ -42,7 +64,7 @@ var rgb2num = function(palette) {
     colors[count++] = palette[i+2] | (palette[i+1] << 8) | (palette[i] << 16);
   }
   return colors;
-}
+};
 
 self.onmessage = function(event) {
   var frames = event.data.frames;
@@ -86,10 +108,11 @@ self.onmessage = function(event) {
     }
 
     gif.addFrame( 0, 0, frame.width, frame.height, new Uint8Array( map ), options );
-  }
+  };
 
+  var i;
   // Add all frames
-  for (var i = 0; i<framesLength; i++) {
+  for (i = 0; i<framesLength; i++) {
     addFrame( frames[i] );
     self.postMessage({
       type: "progress", 
@@ -98,14 +121,15 @@ self.onmessage = function(event) {
   }
 
   // Finish
-  var string = '';
-  for ( var i = 0, l = gif.end(); i < l; i ++ ) {
-    string += String.fromCharCode( buffer[ i ] );
+  var gifString = '';
+  var l = gif.end();
+  for (i = 0; i < l; i++) {
+    gifString += String.fromCharCode( buffer[ i ] );
   }
 
   self.postMessage({
     type: "gif", 
-    data: string,
+    data: gifString,
     frameCount: framesLength,
     encodeTime: Date.now()-startTime
   });
