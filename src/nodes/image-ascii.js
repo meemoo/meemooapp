@@ -166,7 +166,7 @@ $(function(){
   var template = '<pre class="output" style="font-family:monospace; font-size:12px; line-height:70%;"></pre>'+
     '<div class="char-sets">'+
       '<button class="set-chars ascii" title="#MBX$PxOo=*!~-^,._ " data-h="70%">ascii</button>'+
-      '<button class="set-chars ansi" title="╬╫┼╤┴┐─" data-h="90%">ansi</button>'+
+      '<button class="set-chars ansi" title="█ " data-h="90%">ansi</button>'+
       '<button class="set-chars katakana" title="テチタヌオネモキツシウミリンソトレニノ　" data-h="100%">katakana</button>'+
       // '<button class="set-chars emoji" title="🌑🌒🌘🌓🌗🌔🌖🌕" data-h="90%">emoji</button>'+
     '</div>';
@@ -239,8 +239,9 @@ $(function(){
           string += "\n";
         }
         this.$(".output").text(string);
+        this.outputString = string;
+        this.inputsend();
       }
-      this.inputsend();
     },
     inputs: {
       image: {
