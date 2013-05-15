@@ -6,26 +6,11 @@ $(function(){
       '<span class="label"><%= name %></span>'+
     '</div>'+
     '<span class="plugend plugend-in plugend-<%= type_class %>"></span>';
-        
-  // var popupTemplate =
-  //   '<div class="edge-edit">'+
-  //     '<button class="close">close</button>'+
-  //     '<h2><%= name %> (<%= type %>)</h2>'+
-  //     '<p><%= description %></p>'+
-  //   '</div>';
-
-  // var edgeEditTemplate =
-  //   '<div class="edge-edit-item" id="<%= model.cid %>">'+
-  //     '<span><%= label() %></span>'+
-  //     '<button class="disconnect" type="button">disconnect</button>'+
-  //   '</div>';
 
   Iframework.PortInView = Iframework.PortView.extend({
     tagName: "div",
     className: "port",
     portInTemplate: _.template(portInTemplate),
-    // popupTemplate: _.template(popupTemplate),
-    // edgeEditTemplate: _.template(edgeEditTemplate),
     events: {
       "mousedown":                   "highlightEdge",
       "click .hole":                 "clickhole",
@@ -286,19 +271,12 @@ $(function(){
         return;
       } 
       
-      // var popupEl = $('<div class="edge-edit" />');
       var popupEl = this.popupTemplate(this.model.toJSON());
       popupEl = $(popupEl);
       this.$el.append(popupEl);
 
       // Close button
       popupEl.children("button.close")
-        .button({
-          icons: {
-            primary: "icon-cancel"
-          },
-          text: false
-        })
         .click(function(){
           $('div.edge-edit').remove();
           Iframework.selectedPort = null;
@@ -394,7 +372,6 @@ $(function(){
       if (showForm) {
         inputForm.append(
           $("<button></button>")
-            .html("send")
             .attr({
               "type": "submit",
               "class": "send icon-ok",

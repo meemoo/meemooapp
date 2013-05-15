@@ -2,7 +2,7 @@ $(function(){
     
   var popupTemplate =
     '<div class="edge-edit">'+
-      '<button class="close">close</button>'+
+      '<button class="close icon-cancel">close</button>'+
       '<h2><%= name %> (<%= type %>)</h2>'+
       '<p><%= description %></p>'+
     '</div>';
