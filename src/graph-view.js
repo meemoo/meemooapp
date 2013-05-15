@@ -2,7 +2,7 @@ $(function(){
 
   var template = 
     '<div class="edges">'+
-      '<svg id="edgesSvg" class="edgesSvg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></svg>'+
+      '<svg id="edgesSvg" class="edgesSvg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300"></svg>'+
     '</div>'+
     '<div class="nodes" />';
 
@@ -154,15 +154,20 @@ $(function(){
       // _.debounce keeps it from getting called more than needed
       var svg = this.$('.edgesSvg')[0];
       var rect = svg.getBBox();
-      var width = rect.x+rect.width;
-      var height = rect.y+rect.height;
-      if (width === 0 && height === 0) {
+      var width = rect.x + rect.width + 100;
+      var height = rect.y + rect.height + 100;
+      if (width === 100 && height === 100) {
         // So wires on new graph show up
         width = this.$el.width();
         height = this.$el.height();
       }
-      svg.setAttribute("width", Math.round(width+50));
-      svg.setAttribute("height", Math.round(height+50));
+      // Only get bigger
+      if (svg.getAttribute("width") < width) {
+        svg.setAttribute("width", Math.round(width));
+      }
+      if (svg.getAttribute("height") < height) {
+        svg.setAttribute("height", Math.round(height));
+      }
     }, 100),
     selectableStart: function () {
       // Add a mask so that iframes don't steal mouse
