@@ -341,7 +341,7 @@ $(function(){
           .spectrum({
             // color: color,
             showInitial: true,
-            // showInput: true,
+            showInput: true,
             showAlpha: true,
             showPalette: true,
             palette: [
@@ -352,15 +352,18 @@ $(function(){
             showSelectionPalette: true,
             localStorageKey: "iframework.settings.colorPalette",
             change: function(color) {
-              var str = color.toString();
+              // TODO change to toString when https://github.com/bgrins/spectrum/issues/92 fixed
+              var str = color.toRgbString(); 
+              input.val( str );
               self.model.node.receive(portName, str);
               self.model.node.setValue(portName, str);
             },
-            move: function(color) {
-              input.val( color.toString() );
+            hide: function(color) {
+              input.show();
             },
             beforeShow: function () {
               input.spectrum("set", input.val());
+              input.hide();
             }
           })
           .show(); // Unhide
