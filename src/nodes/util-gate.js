@@ -11,6 +11,7 @@ $(function(){
     initializeModule: function(){
     },
     inputdata: function(data){
+      this._data = data;
       if (this._open) {
         this.send("data", data);        
       } else if (this._one) {
@@ -21,6 +22,11 @@ $(function(){
     _one: false,
     inputone: function(){
       this._one = true;
+    },
+    inputprev: function(){
+      if (this._data) {
+        this.send("data", this._data);        
+      }
     },
     _open: false,
     inputopen: function(b){
@@ -42,6 +48,10 @@ $(function(){
       one: {
         type: "bang",
         description: "let the next data through"
+      },
+      prev: {
+        type: "bang",
+        description: "send the previous data"
       }
     },
     outputs: {

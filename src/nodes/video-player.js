@@ -240,11 +240,11 @@ $(function(){
         max: 1,
         "default": 1
       },
-      frameForward: {
+      forward: {
         type: "bang",
         description: "skip video forward (depends on browser/codec)"
       },
-      frameBack: {
+      back: {
         type: "bang",
         description: "skip video back (depends on browser/codec)"
       },

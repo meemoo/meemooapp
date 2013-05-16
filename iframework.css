@@ -141,6 +141,8 @@ div.module {
   top: 0;
   left: 0;
   z-index:2;
+
+  cursor: default;
 }
   div.module.ui-selected {
     border: 1px #333 solid;
@@ -157,6 +159,7 @@ div.module {
     font-weight: 400;
     color: #808080;
     font-size: 14px;
+    cursor: pointer;
     
     position: absolute;
     top: 2px;

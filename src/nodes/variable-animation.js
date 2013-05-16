@@ -143,6 +143,13 @@ $(function(){
         this.showFrame(this._previewFrame);
       }
     },
+    inputclear: function () {
+      this._animation.frames = [];
+      this._animation.length = 0;
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.$(".index").text("0");
+      this.$(".length").text("0");
+    },
     _pingpong: false,
     _reverse: false,
     clickPingpong: function(event){
@@ -363,6 +370,10 @@ $(function(){
       next: {
         type: "bang",
         description: "when paused, show the next frame"
+      },
+      clear: {
+        type: "bang",
+        description: "delete all frames in the animation"
       },
       sendOne: {
         type: "int",

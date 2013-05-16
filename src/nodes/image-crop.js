@@ -60,6 +60,7 @@ $(function(){
           this.setSizes();
           this.resetSizes = false;
         }
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.context.drawImage(this._image, this._x, this._y, this._width, this._height, 0, 0, this._width, this._height);
         this.inputsend();
       }
