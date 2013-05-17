@@ -49,6 +49,11 @@ $(function(){
       this._sizeChanged = true;
       this._triggerRedraw = true;
     },
+    inputscale: function (f) {
+      f = Math.max(f, 0);
+      this._scale = f;
+      this._triggerRedraw = true;
+    },
     disconnectEdge: function(edge) {
       // Called from Edge.disconnect();
       if (edge.Target.id === "background") {
