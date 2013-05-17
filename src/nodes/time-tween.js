@@ -112,7 +112,7 @@ $(function(){
 
         this.tween.easing = TWEEN.Easing[this._type][ease];
         this.tween.value = this._from;
-        this.tween.percent = 0;
+        this.tween.percent = this._percent !== undefined ? this._percent : 0;
         this._resetTween = false;
       }
     },
@@ -193,7 +193,7 @@ $(function(){
       this._reversing = false;
     },
     gotoPercent: function (p) {
-      if (this.tween) {
+      if (this.tween && this.tween.easing) {
         this.tween.percent = p;
         this.tween.value = this._from + ( this._to - this._from ) * this.tween.easing(p);
         this.send("value", this.tween.value);
@@ -205,6 +205,7 @@ $(function(){
       if (p>1){
         p %= 1;
       }
+      this._percent = p;
       this.gotoPercent(p);
     },
     redraw: function(){
@@ -279,6 +280,7 @@ $(function(){
       percent: {
         type: "float",
         description: "skip to percent of tween",
+        "default": 0,
         min: 0,
         max: 1
       },
