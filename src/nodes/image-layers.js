@@ -39,7 +39,7 @@ $(function(){
       "change .list-item-visible": "setVisible",
       "mousedown .list-item-preview": "checkDirty",
       "click .list-item-delete": "deleteLayer",
-      // "click .flatten":     "flatten",
+      "click .drag-flat":   "deselect",
       "dragstart .resizer": "startMove",
       "drag .resizer":      "move",
       "dragstop .resizer":  "stopMove",
@@ -50,7 +50,7 @@ $(function(){
       // Move default canvas
       this.$(".layers").prepend(this.canvas);
       $(this.canvas)
-        .draggable("destroy")
+        // .draggable("destroy")
         .css("maxWidth", "none");
 
       this.$(".list").sortable();
@@ -262,6 +262,11 @@ $(function(){
         Iframework.util.fitAndCopy(layer.canvas, layer.listViewCanvas);
       }
     },
+    deselect: function () {
+      this.selected = null;
+      this.$(".list-item").removeClass("selected");
+      $(".resizer").hide();
+    },
     selectLayer: function (event) {
       // Deselect others
       this.$(".list-item").removeClass("selected");
@@ -272,6 +277,7 @@ $(function(){
       if (layer) {
         // Select this
         this.selected = layer;
+        $(".resizer").show();
       }
     },
     deleteLayer: function (event) {
@@ -281,7 +287,7 @@ $(function(){
         // Remove layer
         this.layerInfo[this.selected.id] = null;
         delete this.layerInfo[this.selected.id];
-        this.selected = null;
+        this.deselect();
 
         this.saveLayerInfo();
         this.rebuildDrawStack();
