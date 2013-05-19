@@ -232,14 +232,17 @@ $(function(){
         var count = 0;
         for (var y=0; y<this._height; y++) {
           for (var x=0; x<this._width; x++) {
-            var lum = Math.floor(lumR[imageData.data[count++]] + lumG[imageData.data[count++]] + lumB[imageData.data[count++]]);
-            string += this._charr[lum];
-            count++;
+            var r = imageData.data[count++];
+            var g = imageData.data[count++];
+            var b = imageData.data[count++];
+            var lum = Math.floor(lumR[r] + lumG[g] + lumB[b]);
+            string += (this._color ? '<span style="color:rgb('+r+','+g+','+b+')">' : "") + this._charr[lum] + (this._color ? '</span>' : "");
+            count++; // ignore alpha
           }
           string += "\n";
         }
-        this.$(".output").text(string);
-        this.outputString = string;
+        this.$(".output").html(string);
+        this.outputString = (this._color ? '<pre>' : "") + string + (this._color ? '</pre>' : "");
         this.inputsend();
       }
     },
@@ -252,6 +255,11 @@ $(function(){
         type: "string",
         description: "the characters that will be used in the conversion, dark to light",
         "default": "#MBX$PxOo=*!~-^,._ "
+      },
+      color: {
+        type: "boolean",
+        description: "each character will keep its color",
+        "default": false
       },
       width: {
         type: "int",
