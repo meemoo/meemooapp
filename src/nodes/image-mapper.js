@@ -94,16 +94,16 @@ $(function(){
 
   var template = 
     '<style type="text/css">'+
-      '.layers .control-point { position:absolute; background-color:white; border:1px red solid; border-radius:15px; padding:10px; margin: -15px 0 0 -15px; opacity:0.5; }'+
-      '.layers .control-point:hover { opacity:1; }'+
+      '.layers .control-point { position:absolute; background-color:white; border:1px red solid; border-radius:15px; padding:10px; margin: -15px 0 0 -15px; opacity:0.25; }'+
+      '.layers .control-point:hover, .layers .control-point.selected { opacity:0.5; }'+
     '</style>'+
     '<div class="layers" style="position:absolute; top:0; left:110px; bottom:0; right:0px; overflow:auto; z-index:0; background-color:black;">'+
       '<div class="canvases" style="position:absolute; top:0px; left:0px; z-index:1;" ></div>'+
       '<div class="control-points" style="position:absolute; top:0px; left:0px; z-index:2;" >'+
-        '<div title="top-left"     class="control-point tl" data-handle="0" style="position:absolute" >⌜</div>'+
-        '<div title="top-right"    class="control-point tr" data-handle="1" style="position:absolute" >⌝</div>'+
-        '<div title="bottom-left"  class="control-point bl" data-handle="2" style="position:absolute" >⌞</div>'+
-        '<div title="bottom-right" class="control-point br" data-handle="3" style="position:absolute" >⌟</div>'+
+        '<div title="top-left"     class="control-point tl c0" data-handle="0" style="position:absolute" >⌜</div>'+
+        '<div title="top-right"    class="control-point tr c1" data-handle="1" style="position:absolute" >⌝</div>'+
+        '<div title="bottom-left"  class="control-point bl c2" data-handle="2" style="position:absolute" >⌞</div>'+
+        '<div title="bottom-right" class="control-point br c3" data-handle="3" style="position:absolute" >⌟</div>'+
       '</div>'+
     '</div>'+
     '<div style="position:absolute; top:0; left:0; bottom:0; width:110px; overflow: auto;">'+
@@ -140,6 +140,7 @@ $(function(){
       "mousedown .list-item-preview": "checkDirty",
       "click .list-item-delete":      "deleteLayer",
       "click .deselect":              "deselect",
+      "click .control-point":         "selectPoint",
       "dragstart .control-point":     "startMove",
       "drag .control-point":          "move",
       "dragstop .control-point":      "stopMove",
@@ -365,11 +366,16 @@ $(function(){
     deselect: function () {
       this.selected = null;
       this.$(".list-item").removeClass("selected");
+      this.selectedPoint = null;
+      this.$(".control-point").removeClass("selected");
       this.$(".control-points").hide();
     },
+    selected: null,
     selectLayer: function (event) {
       // Deselect others
       this.$(".list-item").removeClass("selected");
+      this.selectedPoint = null;
+      this.$(".control-point").removeClass("selected");
       // Select this
       $(event.currentTarget).addClass("selected");
       // Only update previews when clicked
@@ -415,10 +421,21 @@ $(function(){
       layer["x"+point] = x;
       layer["y"+point] = y;
 
+      this.$(".control-point.c"+point).css({ left: x+"px", top: y+"px" });
+
       layer.reMatrix = true;
 
       this.saveLayerInfo();
       this._triggerRedraw = true;
+    },
+    selectedPoint: null,
+    selectPoint: function (event) {
+      if (this.selected) {
+        this.$(".control-point").removeClass("selected");
+        var dragger = $(event.target);
+        dragger.addClass("selected");
+        this.selectedPoint = dragger.data("handle");
+      }
     },
     moveLayer: function (layer, x, y) {
       // Nudge all control points
@@ -441,11 +458,7 @@ $(function(){
     // movingPointStartX: 0,
     // movingPointStartY: 0,
     startMove: function(event, ui){
-      // if (this.selected) {
-      //   var p = $(event.target).data("handle");
-      //   this.movingPointStartX = this.selected["x"+p];
-      //   this.movingPointStartY = this.selected["y"+p];
-      // }
+      this.selectPoint(event);
     },
     move: function(event, ui){
       if (this.selected) {
@@ -467,25 +480,49 @@ $(function(){
     nudgeUp: function (event) {
       if (this._enableNudge && this.selected) {
         event.preventDefault(); // Don't scroll
-        this.moveLayer(this.selected, 0, 0-1);
+        if (this.selectedPoint !== null) {
+          var x = this.selected["x"+this.selectedPoint];
+          var y = this.selected["y"+this.selectedPoint];
+          this.movePoint(this.selected, this.selectedPoint, x, y-1);
+        } else {
+          this.moveLayer(this.selected, 0, 0-1);
+        }
       }
     },
     nudgeDown: function (event) {
       if (this._enableNudge && this.selected) {
         event.preventDefault(); // Don't scroll
-        this.moveLayer(this.selected, 0, 0+1);
+        if (this.selectedPoint !== null) {
+          var x = this.selected["x"+this.selectedPoint];
+          var y = this.selected["y"+this.selectedPoint];
+          this.movePoint(this.selected, this.selectedPoint, x, y+1);
+        } else {
+          this.moveLayer(this.selected, 0, 0+1);
+        }
       }
     },
     nudgeLeft: function (event) {
       if (this._enableNudge && this.selected) {
         event.preventDefault(); // Don't scroll
-        this.moveLayer(this.selected, 0-1, 0);
+        if (this.selectedPoint !== null) {
+          var x = this.selected["x"+this.selectedPoint];
+          var y = this.selected["y"+this.selectedPoint];
+          this.movePoint(this.selected, this.selectedPoint, x-1, y);
+        } else {
+          this.moveLayer(this.selected, 0-1, 0);
+        }
       }
     },
     nudgeRight: function (event) {
       if (this._enableNudge && this.selected) {
         event.preventDefault(); // Don't scroll
-        this.moveLayer(this.selected, 0+1, 0);
+        if (this.selectedPoint !== null) {
+          var x = this.selected["x"+this.selectedPoint];
+          var y = this.selected["y"+this.selectedPoint];
+          this.movePoint(this.selected, this.selectedPoint, x+1, y);
+        } else {
+          this.moveLayer(this.selected, 0+1, 0);
+        }
       }
     },
     redraw: function(){
@@ -498,8 +535,8 @@ $(function(){
           var layer = this.stack[i];
           if (layer.reMatrix) {
             var matrix3d = quadWarpMatrix( layer.w, layer.h, layer.x0, layer.y0, layer.x1, layer.y1, layer.x2, layer.y2, layer.x3, layer.y3);
-            console.log( layer.w, layer.h, layer.x0, layer.y0, layer.x1, layer.y1, layer.x2, layer.y2, layer.x3, layer.y3 );
-            console.log( matrix3d.transform );
+            // console.log( layer.w, layer.h, layer.x0, layer.y0, layer.x1, layer.y1, layer.x2, layer.y2, layer.x3, layer.y3 );
+            // console.log( matrix3d.transform );
             $(layer.canvas).css(matrix3d);
             // layer.canvas.style.transform = matrix3d;
             layer.reMatrix = false;
