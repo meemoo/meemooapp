@@ -319,6 +319,14 @@ $(function(){
       var layer = $(event.target).parent().data("iframework-image-layers-layer");
       layer.visible = event.target.checked;
 
+      if (layer.canvas) {
+        if (layer.visible) {
+          this.$(".canvases").append(layer.canvas);
+        } else {
+          $(layer.canvas).detach();
+        }
+      }
+
       this.saveLayerInfo();
       this.rebuildDrawStack();
     },
@@ -407,6 +415,10 @@ $(function(){
       if (this.selected) {
         // Remove list preview
         $(this.selected.listView).remove();
+
+        // Remove canvas
+        $(this.selected.canvas).remove();
+
         // Remove layer
         this.layerInfo[this.selected.id] = null;
         delete this.layerInfo[this.selected.id];
