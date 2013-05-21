@@ -572,6 +572,48 @@ $(function(){
       }
 
     },
+    popout: function() {
+      if (this.w) {
+        // Toggle
+        this.popin();
+        return false;
+      }
+
+      // Open new window to about:blank
+      this.w = window.open("", "meemooRemoteWindow", "menubar=no,location=no,resizable=yes,scrollbars=no,status=no");
+      var self = this;
+      this.w.addEventListener("unload", function(){
+        self.popin();
+      });
+
+      // Popin other
+      if (Iframework.popoutModule && Iframework.popoutModule !== this) {
+        Iframework.popoutModule.popin();
+      }
+      Iframework.popoutModule = this;
+      this.w.document.body.innerHTML = "";
+
+      // Window styling
+      this.w.document.body.style.backgroundColor="black";
+      this.w.document.body.style.overflow = "hidden";
+      this.w.document.body.style.margin="0px";
+      this.w.document.body.style.padding="0px";
+      this.w.document.title = "meemoo.org";
+
+      // Move element
+      this.mainElement = this.$(".canvases")[0];
+      this.w.document.body.appendChild( this.mainElement );
+
+      return false;
+    },
+    popin: function() {
+      if (this.w) {
+        this.w = null;
+      }
+      // Replace element
+      this.$(".layers").prepend(this.mainElement);
+      return false;
+    },
     inputs: {
       image: {
         type: "image",

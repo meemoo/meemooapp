@@ -236,7 +236,7 @@ $(function(){
         // Select none
         this.$(".module").removeClass("ui-selected");
         for (var i=0; i<copied.nodes.length; i++) {
-          var oldNode = copied.nodes[i];
+          var oldNode = JSON.parse(JSON.stringify(copied.nodes[i]));
           // Offset pasted
           oldNode.x += 50;
           oldNode.y += 50;
