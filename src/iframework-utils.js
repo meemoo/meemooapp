@@ -93,7 +93,6 @@ $(function(){
       }
 
       var context = target.getContext("2d");
-      context.clearRect(0, 0, w, h);
       context.drawImage(source, sx, sy, sw, sh, 0, 0, w, h);
     }
 

@@ -10,7 +10,7 @@ $(function(){
   var edgeEditTemplate =
     '<div class="edge-edit-item" id="<%= model.cid %>">'+
       '<span><%= label() %></span>'+
-      '<button class="disconnect" type="button">disconnect</button>'+
+      '<button title="disconnect" class="disconnect icon-scissors" type="button"></button>'+
     '</div>';
 
   var accepts = {};
@@ -326,12 +326,6 @@ $(function(){
           var edgeEditEl = this.edgeEditTemplate(edge.view);
           popupEl.append(edgeEditEl);
         }, this);
-        $(".disconnect").button({
-          icons: {
-            primary: "icon-scissors"
-          },
-          text: false
-        });
       }
 
       // This input's options

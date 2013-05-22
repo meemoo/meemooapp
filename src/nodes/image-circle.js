@@ -92,7 +92,7 @@ $(function(){
     inputs: {
       matte: {
         type: "image",
-        description: "image to cut out",
+        description: "image to cut out"
       },
       x: {
         type: "float",

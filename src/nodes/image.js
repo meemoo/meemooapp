@@ -148,6 +148,7 @@ $(function(){
       this.canvas.width = this.localCanvas.width;
       this.canvas.height = this.localCanvas.height;
       this.context = this.canvas.getContext('2d');
+      this.context.drawImage(this.localCanvas, 0, 0);
       this.w.document.body.appendChild(this.canvas);
 
       // Full-screen styling

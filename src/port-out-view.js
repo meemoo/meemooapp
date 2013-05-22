@@ -263,12 +263,6 @@ $(function(){
 
       // Close button
       popupEl.children("button.close")
-        .button({
-          icons: {
-            primary: "icon-cancel"
-          },
-          text: false
-        })
         .click(function(){
           $('div.edge-edit').remove();
           Iframework.selectedPort = null;
@@ -288,12 +282,6 @@ $(function(){
           var edgeEditEl = this.edgeEditTemplate(edge.view);
           popupEl.append(edgeEditEl);
         }, this);
-        $(".disconnect").button({
-          icons: {
-            primary: "icon-scissors"
-          },
-          text: false
-        });
       }
 
       // This input's options

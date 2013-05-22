@@ -368,6 +368,7 @@ $(function(){
       // Only update previews when clicked
       var layer = $(event.target).parent().data("iframework-image-layers-layer");
       if (layer && layer.listViewDirty) {
+        layer.listViewCanvas.getContext("2d").clearRect(0, 0, layer.listViewCanvas.width, layer.listViewCanvas.height);
         Iframework.util.fitAndCopy(layer.canvas, layer.listViewCanvas);
       }
     },

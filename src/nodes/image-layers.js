@@ -156,6 +156,7 @@ $(function(){
         listView = layer.listView = $( this.layerTemplate(layer) );
         listView.data({"iframework-image-layers-layer": layer});
         var preview = layer.listViewCanvas = listView.find("canvas.list-item-preview")[0];
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         Iframework.util.fitAndCopy(i, preview);
         layer.listViewDirty = false; 
         // Add to list
@@ -259,6 +260,7 @@ $(function(){
       // Only update previews when clicked
       var layer = $(event.target).parent().data("iframework-image-layers-layer");
       if (layer && layer.listViewDirty) {
+        layer.listViewCanvas.getContext("2d").clearRect(0, 0, layer.listViewCanvas.width, layer.listViewCanvas.height);
         Iframework.util.fitAndCopy(layer.canvas, layer.listViewCanvas);
       }
     },

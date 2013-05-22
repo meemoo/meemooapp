@@ -225,6 +225,7 @@ $(function(){
         if (this.canvas.height !== this._height) {
           this.canvas.height = this._height;
         }
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         Iframework.util.fitAndCopy(this._image, this.canvas);
         var imageData = this.context.getImageData(0,0, this.canvas.width, this.canvas.height);
 

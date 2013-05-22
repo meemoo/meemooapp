@@ -393,12 +393,6 @@ $(function(){
           var edgeEditEl = this.edgeEditTemplate(edge.view);
           popupEl.append(edgeEditEl);
         }, this);
-        $(".disconnect").button({
-          icons: {
-            primary: "icon-scissors"
-          },
-          text: false
-        });
       }
 
       // This input's options
