@@ -11,6 +11,10 @@ $(function(){
     initializeModule: function(){
       
     },
+    inputmatte: function (image) {
+      this._matte = image;
+      this._triggerRedraw = true;
+    },
     inputfill: function (color) {
       this._triggerRedraw = true;
       this._fill = color;
@@ -28,8 +32,8 @@ $(function(){
     },
     disconnectEdge: function(edge) {
       // Called from Edge.disconnect();
-      if (edge.Target.id === "background") {
-        this._background = null;
+      if (edge.Target.id === "matte") {
+        this._matte = null;
         this._triggerRedraw = true;
       }
     },
@@ -49,19 +53,18 @@ $(function(){
     redraw: function(){
       // Called from NodeBoxNativeView.renderAnimationFrame()
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      var setSettings = false;
 
+      var setSettings = false;
       var width = 2*this._x;
       if (this.canvas.width !== width) {
-        this.canvas.width = 2*this._x;
+        this.canvas.width = width;
         setSettings = true;
       }
       var height = 2*this._y;
       if (this.canvas.height !== height) {
-        this.canvas.height = 2*this._y;
+        this.canvas.height = height;
         setSettings = true;
       }
-
       if (setSettings) {
         this.canvasSettings();
       }
@@ -75,12 +78,22 @@ $(function(){
       if (this._stroke && this._stroke!=="" && this._strokewidth && this._strokewidth>0) {
         this.context.stroke();
       }
+      if (this._matte) {
+        this.context.globalCompositeOperation = "source-in";
+        this.context.drawImage(this._matte, 0, 0);
+        // Iframework.util.fitAndCopy(this._matte, this.canvas);
+        this.context.globalCompositeOperation = "source-over";
+      }
       this.inputsend();
     },
     inputsend: function () {
       this.send("image", this.canvas);
     },
     inputs: {
+      matte: {
+        type: "image",
+        description: "image to cut out",
+      },
       x: {
         type: "float",
         description: "x of center",
