@@ -357,6 +357,7 @@ $(function(){
       } else if (typeabbr === "arr") {
         showForm = true;
         var a = this.model.node.get("state")[this.model.get("name")];
+        if (Iframework.util.type(a) !== "array") { a = []; }
         var s = "";
         for (var i=0; i<a.length; i++) {
           s += (i>0 ? ", " : "") + a[i];
@@ -364,7 +365,6 @@ $(function(){
         inputForm.append(
           $("<input />").attr({
             "type": "text",
-            "maxlength": hole.data("max"),
             "value": s
           })
         );

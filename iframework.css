@@ -87,7 +87,8 @@ div.edge-edit {
   div.edge-edit form button {
     vertical-align: middle;
   }
-  div.edge-edit form input {
+  div.edge-edit form input[type='text'],
+  div.edge-edit form input[type='number'] {
     width: 75%;    
   }
   div.edge-edit button.close {
@@ -687,6 +688,20 @@ div.panel {
 }
 
 
+
+
+
+/* Color picker */
+
+.sp-input-container {
+  width: 150px;
+}
+.sp-initial {
+  width: 150px;
+}
+.sp-initial span {
+  width: 74px;
+}
 
 
 /* Plugins */

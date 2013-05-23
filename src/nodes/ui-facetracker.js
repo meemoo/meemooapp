@@ -75,19 +75,17 @@ $(function(){
       }
     },
     sendfaceRect: function (event) {
-      var o = {
-        x: event.x - Math.round(event.width/2),
-        y: event.y - Math.round(event.height/2),
-        width: event.width,
-        height: event.height
-        // angle: event.angle / (Math.PI * 2) - 1
-      };
-      this.send("faceRect", o);
+      var a = [
+        event.x - Math.round(event.width/2),
+        event.y - Math.round(event.height/2),
+        event.width,
+        event.height
+      ];
+      this.send("faceRect", a);
       this.send("x", event.x);
       this.send("y", event.y);
       this.send("width", event.width);
       this.send("height", event.height);
-      // this.send("angle", o.angle);
     },
     inputs: {
       image: {
@@ -97,8 +95,8 @@ $(function(){
     },
     outputs: {
       faceRect: {
-        type: "f4",
-        description: "a rectangle object containing x, y, width, height"
+        type: "array:f4",
+        description: "a rectangle array with x, y, width, height"
       },
       x: {
         type: "float",

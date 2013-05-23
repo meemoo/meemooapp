@@ -71,10 +71,8 @@ $(function(){
       }
       minX = Math.max(minX, 0);
       minY = Math.max(minY, 0);
-      console.log(minX, maxX, minY, maxY);
       maxX = Math.ceil(minX+maxX);
       maxY = Math.ceil(minY+maxY);
-      console.log(minX, maxX, minY, maxY);
       if (this.canvas.width !== maxX) {
         this.canvas.width = maxX;
         setSettings = true;
@@ -119,17 +117,17 @@ $(function(){
       },
       point0: {
         type: "array:f2",
-        description: "xy of point 0",
+        description: "x, y for point 0",
         "default": [10, 10]
       },
       point1: {
         type: "array:f2",
-        description: "xy of point 1",
+        description: "x, y for point 1",
         "default": [290,10]
       },
       point2: {
         type: "array:f2",
-        description: "xy of point 2",
+        description: "x, y for point 2",
         "default": [150,290]
       },
       fill: {

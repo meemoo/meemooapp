@@ -12,11 +12,10 @@ $(function(){
       
     },
     inputrect: function (rect) {
-      this._x = rect.x;
-      this._y = rect.y;
-      this._w = rect.width;
-      this._h = rect.height;
-      // this._angle = (rect.angle + 1) * (Math.PI * 2);
+      this._x = rect[0];
+      this._y = rect[1];
+      this._w = rect[2];
+      this._h = rect[3];
     },
     inputfill: function (color) {
       this._triggerRedraw = true;
@@ -110,8 +109,8 @@ $(function(){
         description: "first image layer"
       },
       rect: {
-        type: "f4",
-        description: "a rectangle object containing x, y, width, height"
+        type: "array:f4",
+        description: "a rectangle array with x, y, width, height"
       },
       x: {
         type: "float",

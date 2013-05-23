@@ -74,6 +74,7 @@ $(function(){
       if (this._fill && this._fill!=="") {
         this.context.fill();
       }
+      this.context.closePath();
       // Stroke
       if (this._stroke && this._stroke!=="" && this._strokewidth && this._strokewidth>0) {
         this.context.stroke();
