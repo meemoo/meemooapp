@@ -6,10 +6,11 @@ $(function(){
       '<div class="ports ports-in"></div>'+
       '<div class="ports ports-out"></div>'+
       '<h1 class="title">...</h1>'+
-      '<button type="button" class="showcontrols">show controls</button>'+
+      '<button title="show controls" type="button" class="showcontrols icon-left-open"></button>'+
       '<div class="controls">'+
-        '<button type="button" class="remove">remove</button>'+
-        '<button type="button" class="hidecontrols">hide controls</button>'+
+        '<button title="remove module" type="button" class="remove icon-trash"></button>'+
+        '<a title="view source" type="button" class="viewsource button icon-cog"></a>'+
+        '<button title="hide controls" type="button" class="hidecontrols icon-right-open"></button>'+
       '</div>'+
       '<div class="inner"></div>'+
     '</div>';
@@ -32,7 +33,8 @@ $(function(){
       "click .module, .title": "click",
       "click .showcontrols": "showControls",
       "click .hidecontrols": "hideControls",
-      "click .remove":       "removeModel"
+      "click .remove":       "removeModel",
+      "click .viewsource":   "viewSource"
     },
     initialize: function () {
       this.render();
@@ -50,12 +52,16 @@ $(function(){
           minWidth: 100, 
           helper: "ui-draggable-helper"
         });
-      this.$(".showcontrols")
-        .button({ icons: { primary: "icon-left-open" }, text: false });
-      this.$(".hidecontrols")
-        .button({ icons: { primary: "icon-right-open" }, text: false });
-      this.$(".remove")
-        .button({ icons: { primary: "icon-trash" }, text: false });
+
+      // View source button
+      if (this.model.lazyLoadType) {
+        this.$(".viewsource").attr({
+          "href": "src/nodes/"+this.model.lazyLoadType+".js",
+          "target": "_blank"
+        });
+      } else {
+        this.$(".viewsource").hide();
+      }
 
       // Disable selection for better drag+drop
       this.$("h1").disableSelection();

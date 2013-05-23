@@ -1,3 +1,6 @@
+/* apply a natural box layout model to all elements */
+* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+
 html, body {
   font-family: Verdana;
   margin:0;
@@ -8,13 +11,14 @@ html, body {
 
 button,
 .button {
-  padding: 3px 3px;
+  padding: 1px;
   margin: 0px 1px;
   color: #555555;
   background-color: #E6E6E6;
   border: 1px #D3D3D3 solid;
   border-radius: 3px;
   text-decoration: none;
+  display: inline-block;
 }
   button:hover, button:focus,
   .button:hover, .button:focus {
@@ -192,10 +196,11 @@ div.module {
     text-align: right;
   }
     div.module button.showcontrols,
-    div.module div.controls button {
-      margin-left: 3px;
-      width: 18px;
-      height: 18px;
+    div.module div.controls button,
+    div.module div.controls .button {
+      width: 20px;
+      height: 20px;
+      font-size: 10px;
     }
   div.module .outer {
     position: absolute;
@@ -806,10 +811,7 @@ div.panel {
   speak: none;
   display: inline-block;
   text-decoration: inherit;
-  width: 1em;
-  margin: 0 2px;
-  text-align: center;
-  vertical-align: middle;
+  padding: 2px;
   opacity: 0.7;
   /* fix buttons height */
   line-height: 1em;

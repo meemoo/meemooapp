@@ -16,8 +16,8 @@ $(function(){
       var self = this;
       this.model.view.$("button.remove")
         .after(
-          $('<button type="button" class="popout">popout</button>')
-            .button({ icons: { primary: "icon-popup" }, text: false })
+          $('<button title="popout" type="button" class="popout icon-popup"></button>')
+            // .button({ icons: { primary: "icon-popup" }, text: false })
             .click(function(){
               self.popout();
             })

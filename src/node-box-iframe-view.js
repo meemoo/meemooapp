@@ -11,8 +11,7 @@ $(function(){
       // Add refresh button
       this.$("button.remove")
         .after(
-          $('<button type="button" class="refresh">refresh</button>')
-            .button({ icons: { primary: "icon-cw" }, text: false })
+          $('<button title="reload iframe" type="button" class="refresh icon-cw"></button>')
         );
       // Add refresh event
       this.events["click .refresh"] = "refresh";
