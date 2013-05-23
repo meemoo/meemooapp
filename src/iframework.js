@@ -567,7 +567,7 @@ $(function(){
             this.$(".currentapp .permalink")
               .empty()
               .append(gistUrlSelect).append(" ")
-              .append(gistLink).append(" ")
+              .append(gistLink)
               .append(fbLink)
               .append(twitterLink);
           }

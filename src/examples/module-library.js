@@ -11,10 +11,12 @@ $(function(){
       {"src":"meemoo:image/crop","info":{"title":"crop","author":"meemoo","description":"crop an image to a rectangle"}},
       {"src":"meemoo:image/rectangle","info":{"title":"rectangle","author":"meemoo","description":"draw a rectangle"}},
       {"src":"meemoo:image/circle","info":{"title":"circle","author":"meemoo","description":"draw a circle"}},
+      {"src":"meemoo:image/triangle","info":{"title":"triangle","author":"meemoo","description":"draw a triangle"}},
       {"src":"meemoo:image/text","info":{"title":"text","author":"meemoo","description":"draw text to a canvas"}},
       {"src":"meemoo:video/player","info":{"title":"video","author":"meemoo","description":"HTML5 video player"}},
       {"src":"meemoo:image/in","info":{"title":"image","author":"forresto","description":"hold a canvas or get image from url or service"}},
       {"src":"meemoo:image/layers","info":{"title":"layers","author":"meemoo","description":"make a stack of images"}},
+      {"src":"meemoo:image/mapper","info":{"title":"mapper","author":"meemoo","description":"projection mapping corner pin image warp"}},
       {"src":"meemoo:variable/animation","info":{"title":"animation","author":"meemoo","description":"holds a stack of canvases to use as an animation"}}
     ],
     effects: [

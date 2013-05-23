@@ -354,6 +354,20 @@ $(function(){
             "value": this.model.node.get("state")[this.model.get("name")]
           })
         );
+      } else if (typeabbr === "arr") {
+        showForm = true;
+        var a = this.model.node.get("state")[this.model.get("name")];
+        var s = "";
+        for (var i=0; i<a.length; i++) {
+          s += (i>0 ? ", " : "") + a[i];
+        }
+        inputForm.append(
+          $("<input />").attr({
+            "type": "text",
+            "maxlength": hole.data("max"),
+            "value": s
+          })
+        );
       } else if (typeabbr === "boo") {
         showForm = true;
         var val = this.model.node.get("state")[this.model.get("name")];
@@ -408,6 +422,9 @@ $(function(){
     },
     manualinput: function (event) {
       var inputname = this.model.get("name");
+      var type = this.model.get("type");
+      var typeabbr = type.substring(0,3);
+
       var val;
       var saveToState = true;
       if (this.$(".manualinput").children("input")){
@@ -420,11 +437,19 @@ $(function(){
           val = false;
         }
       }
-      if (this.model.get("type") === "int") {
+      if (type === "int") {
         val = parseInt(val, 10);
       }
-      if (this.model.get("type") === "number" || this.model.get("type") === "float") {
+      if (type === "number" || type === "float") {
         val = parseFloat(val);
+      }
+      if (typeabbr === "arr") {
+        try {
+          val = JSON.parse( "[" + val + "]" );
+        } catch (error) {
+          // boo
+          return false;
+        }
       }
       if (val === undefined) {
         // Bang

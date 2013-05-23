@@ -87,6 +87,9 @@ div.edge-edit {
   div.edge-edit form button {
     vertical-align: middle;
   }
+  div.edge-edit form input {
+    width: 75%;    
+  }
   div.edge-edit button.close {
     position: absolute;
     top: 5px;
@@ -624,7 +627,6 @@ div.panel {
   .menu-load .permalink .share {
     color: #999;
     opacity: 0.5;
-    margin-left: 4px;
     text-decoration: none;
   }
   .menu-load .permalink:hover .share {
