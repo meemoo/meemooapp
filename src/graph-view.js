@@ -12,6 +12,8 @@ $(function(){
     template: _.template(template),
     events: {
       "click": "click",
+      "dragenter": "ignoreDrag",
+      "dragover": "ignoreDrag",
       "drop":  "drop",
       "selectablestart": "selectableStart",
       "selectablestop":  "selectableStop",
@@ -77,7 +79,44 @@ $(function(){
       // Deselect modules
       this.$(".module").removeClass("ui-selected");
     },
+    ignoreDrag: function (event) {
+      event.originalEvent.stopPropagation();
+      event.originalEvent.preventDefault();
+    },
     drop: function (event, ui) {
+      this.ignoreDrag(event);
+
+      // Drop files
+      var dt = event.originalEvent.dataTransfer;
+      if (dt) {
+        var files = dt.files;
+        if ( dt.files.length > 0 ) {
+          var file = dt.files[0];
+          var split = file.type.split("/");
+          if (split[0]==="image"){
+            // Make image
+            var dropCanvas = document.createElement('canvas');
+            var dropImage = document.createElement('img');
+            var o = {
+              x: this.$el.scrollLeft() + event.originalEvent.clientX + 10,
+              y: this.$el.scrollTop() + event.originalEvent.clientY + 35,
+              src: "meemoo:image/in",
+              canvas: dropCanvas
+            };
+            dropImage.onload = function (e) {
+              dropCanvas.width = dropImage.width;
+              dropCanvas.height = dropImage.height;
+              dropCanvas.getContext('2d').drawImage(dropImage, 0, 0);
+              Iframework.shownGraph.addNode( o );
+            };
+            dropImage.src = window.URL.createObjectURL( file );
+          }
+        }
+      }
+
+      // Drop images or mods from libraries
+      if (!ui) {return false;}
+
       var type = ui.helper.data("meemoo-drag-type");
       if (!type) {return false;}
 

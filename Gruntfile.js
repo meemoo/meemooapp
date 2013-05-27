@@ -78,7 +78,7 @@ module.exports = function() {
         browser: true,
         sub: true,
         globals: {
-          "console": true,
+          // "console": true,
           "_": true,
           "$": true,
           "jQuery": true,

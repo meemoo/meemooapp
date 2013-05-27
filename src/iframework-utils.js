@@ -31,6 +31,9 @@ $(function(){
       // Used in image.js and variable-animation.js
       // TODO only drop to top
 
+      // Don't deal with dropped file
+      if (!ui) { return false; }
+
       // Don't also drop on graph
       event.stopPropagation();
 
