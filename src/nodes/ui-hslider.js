@@ -15,8 +15,10 @@ $(function(){
       title: "hslider",
       description: "horizontal slider"
     },
+    events: {
+      "slide .slider": "slide"
+    },
     initializeModule: function(){
-      var self = this;
       if (this._value === undefined) { this._value = 0; }
       if (this._min === undefined) { this._min = 0; }
       if (this._max === undefined) { this._max = 1; }
@@ -26,15 +28,15 @@ $(function(){
           value: this._value,
           min: this._min,
           max: this._max,
-          step: this._step === 0 ? 0.001 : this._step,
-          slide: function(e, ui){
-            self.setValue(ui.value);
-            self.inputsend();
-          }
+          step: this._step === 0 ? 0.001 : this._step
         });
       this.$el.css({
         overflow: "hidden"
       });
+    },
+    slide: function (event, ui) {
+      this.setValue(ui.value);
+      this.inputsend();
     },
     inputvalue: function(val){
       this.setValue(val);
@@ -57,7 +59,8 @@ $(function(){
     inputs: {
       value: {
         type: "float",
-        description: "manual input value; sets default"
+        description: "manual input value; sets default",
+        "default": 0
       },
       min: {
         type: "float",
