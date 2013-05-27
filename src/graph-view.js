@@ -93,23 +93,26 @@ $(function(){
         if ( dt.files.length > 0 ) {
           var file = dt.files[0];
           var split = file.type.split("/");
+          var o = {
+            x: this.$el.scrollLeft() + event.originalEvent.clientX + 10,
+            y: this.$el.scrollTop() + event.originalEvent.clientY + 35
+          };
           if (split[0]==="image"){
-            // Make image
-            var dropCanvas = document.createElement('canvas');
-            var dropImage = document.createElement('img');
-            var o = {
-              x: this.$el.scrollLeft() + event.originalEvent.clientX + 10,
-              y: this.$el.scrollTop() + event.originalEvent.clientY + 35,
-              src: "meemoo:image/in",
-              canvas: dropCanvas
-            };
-            dropImage.onload = function (e) {
-              dropCanvas.width = dropImage.width;
-              dropCanvas.height = dropImage.height;
-              dropCanvas.getContext('2d').drawImage(dropImage, 0, 0);
+            o.src = "meemoo:image/in";
+            o.state = { url: window.URL.createObjectURL( file ) };
+            Iframework.shownGraph.addNode( o );
+          } else if (split[0]==="video"){
+            o.src = "meemoo:video/player";
+            o.state = { url: window.URL.createObjectURL( file ) };
+            Iframework.shownGraph.addNode( o );
+          } else if (split[0]==="text"){
+            var reader = new FileReader();
+            reader.onload = function(e) {
+              o.src = "meemoo:ui/textarea";
+              o.state = { value: e.target.result };
               Iframework.shownGraph.addNode( o );
             };
-            dropImage.src = window.URL.createObjectURL( file );
+            reader.readAsText(file);
           }
         }
       }
