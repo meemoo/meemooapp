@@ -21,7 +21,8 @@ $(function(){
       '<span class="list-item-name"><%= name %></span>'+
       '<%= ( name==="dropped" ? \'<span class="list-item-info" title="will not save" >*</span>\' : "" ) %>'+
       '<span class="list-item-controls"><br/>'+
-        'x: <span class="list-item-x"><%= x %></span>, y: <span class="list-item-y"><%= y %></span>'+
+        'alpha: <input class="list-item-alpha" type="number" value="<%= alpha %>" min="0" max="1" style="width:40px;"></input>,<br />'+
+        'x: <span class="list-item-x"><%= x %></span>, y: <span class="list-item-y"><%= y %></span> '+
       '</span>'+
     '</li>';
 
@@ -36,15 +37,19 @@ $(function(){
     events: {
       "sortstop .list":     "sortLayers",
       "click .list-item":   "selectLayer",
+      "focus .list-item-visible": "focusLayer",
       "change .list-item-visible": "setVisible",
+      "focus .list-item-alpha": "disableNudge",
+      "click .list-item-alpha": "disableNudge",
+      "change .list-item-alpha": "setAlpha",
       "mousedown .list-item-preview": "checkDirty",
       "click .list-item-delete": "deleteLayer",
       "click .drag-flat":   "deselect",
       "dragstart .resizer": "startMove",
       "drag .resizer":      "move",
       "dragstop .resizer":  "stopMove",
-      "mouseover":          "mouseOver",
-      "mouseout":           "mouseOut"
+      "mouseover":          "enableNudge",
+      "mouseout":           "disableNudge"
     },
     initializeModule: function(){
       // Move default canvas
@@ -60,7 +65,7 @@ $(function(){
       var layers = this.model.get("state")["layers"];
       if (layers) {
         for (var i=0; i<layers.length; i++) {
-          var info = _.pick(layers[i], ['name', 'visible', 'sort', 'x', 'y']);
+          var info = _.pick(layers[i], ['name', 'visible', 'sort', 'x', 'y', 'alpha']);
           info.id = info.name;
           info.x = info.x ? info.x : 0;
           info.y = info.y ? info.y : 0;
@@ -130,7 +135,7 @@ $(function(){
         // From input, updates with input
         if (!this.layerInfo[i.id]) {
           // Add new
-          this.layerInfo[i.id] = {id: i.id, name: i.id, visible: true, sort: len+10, x:0, y:0};
+          this.layerInfo[i.id] = {id: i.id, name: i.id, visible: true, sort: len+10, x:0, y:0, alpha:1};
           newLayer = true;
         }
         layer = this.layerInfo[i.id];
@@ -144,7 +149,7 @@ $(function(){
           // Make sure unique
           randomId = Math.round(Math.random()*100000);
         }
-        layer = this.layerInfo[randomId] = {id: randomId, name:"dropped", visible: true, sort: len+10, x:0, y:0};
+        layer = this.layerInfo[randomId] = {id: randomId, name:"dropped", visible: true, sort: len+10, x:0, y:0, alpha:1};
         newLayer = true;
       }
 
@@ -153,6 +158,11 @@ $(function(){
       if (listView) {
         layer.listViewDirty = true;
       } else {
+        // Defaults
+        if (layer.x === undefined) { layer.x = 0; }
+        if (layer.y === undefined) { layer.x = 0; }
+        if (layer.alpha === undefined) { layer.alpha = 1; }
+        // Make list item
         listView = layer.listView = $( this.layerTemplate(layer) );
         listView.data({"iframework-image-layers-layer": layer});
         var preview = layer.listViewCanvas = listView.find("canvas.list-item-preview")[0];
@@ -215,9 +225,20 @@ $(function(){
       this.saveLayerInfo();
       this.rebuildDrawStack();
     },
+    focusLayer: function (event) {
+      // Select layer when tab to visible checkbox
+      $(event.target).parent().click();
+    },
     setVisible: function (event) {
       var layer = $(event.target).parent().data("iframework-image-layers-layer");
       layer.visible = event.target.checked;
+
+      this.saveLayerInfo();
+      this.rebuildDrawStack();
+    },
+    setAlpha: function (event) {
+      var layer = $(event.target).parent().parent().data("iframework-image-layers-layer");
+      layer.alpha = parseFloat( event.target.value );
 
       this.saveLayerInfo();
       this.rebuildDrawStack();
@@ -229,7 +250,7 @@ $(function(){
       });
       // Filter relevant info
       saveable = _.map(saveable, function(value, key, list){ 
-        return _.pick(value, ['name', 'visible', 'sort', 'x', 'y']);
+        return _.pick(value, ['name', 'visible', 'sort', 'x', 'y', 'alpha']);
       });
       // Sort
       saveable = saveable.sort(function(a, b){
@@ -281,6 +302,7 @@ $(function(){
         this.selected = layer;
         $(".resizer").show();
       }
+      this.enableNudge();
     },
     deleteLayer: function (event) {
       if (this.selected) {
@@ -343,10 +365,13 @@ $(function(){
       }
     },
     _enableNudge: false,
-    mouseOver: function () {
+    enableNudge: function () {
       this._enableNudge = true;
     },
-    mouseOut: function () {
+    disableNudge: function (event) {
+      if (event) {
+        event.stopPropagation();
+      }
       this._enableNudge = false;
     },
     nudgeUp: function (event) {
@@ -391,6 +416,10 @@ $(function(){
         for (var i=0; i<stackLength; i++) {
           var layer = this.stack[i];
 
+          // Layer alpha
+          this.context.globalAlpha = layer.alpha;
+
+          // Draw layer
           if (this._tile) {
             // Draw enough times to make it tile
             var x = layer.x;
@@ -417,6 +446,9 @@ $(function(){
             // Draw one layer
             this.context.drawImage(layer.canvas, layer.x, layer.y);
           }
+
+          // Reset alpha
+          this.context.globalAlpha = 1;
 
         }
       }
