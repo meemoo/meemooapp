@@ -294,6 +294,24 @@ $(function(){
 
       this._triggerRedraw = true;
     },
+    // inputimg: function(url){
+    //   var randomId = Math.round(Math.random()*100000);
+    //   while ( this.layerInfo[randomId] ) {
+    //     // Make sure unique
+    //     randomId = Math.round(Math.random()*100000);
+    //   }
+    //   var img = document.createElement("img");
+    //   img.onload = function (e) {
+    //     layer = this.layerInfo[randomId] = {
+    //       id: randomId, name: url, visible: true, sort: len+10, 
+    //       w: img.width, h: img.height,
+    //       x0: 0, y0: 0,          x1: img.width, y1: 0, 
+    //       x2: 0, y2: img.height, x3: img.width, y3: img.height
+    //     };
+    //     newLayer = true;
+    //   };
+    //   img.src = url;
+    // },
     disconnectEdge: function(edge) {
       // Called from Edge.disconnect();
       if (edge.Target.id === "image") {
@@ -620,6 +638,10 @@ $(function(){
         type: "image",
         description: "all of the images that go into the layers"
       }
+      // url: {
+      //   type: "string",
+      //   description: "(experimental) hotlink image url"
+      // }
     },
     outputs:{}
   });

@@ -16,10 +16,7 @@ $(function(){
       "dragover": "ignoreDrag",
       "drop":  "drop",
       "selectablestart": "selectableStart",
-      "selectablestop":  "selectableStop",
-      "touchstart":  "touch",
-      "touchmove":   "touch",
-      "touchend":    "touch"
+      "selectablestop":  "selectableStop"
     },
     initialize: function () {
       this.render();
@@ -33,15 +30,19 @@ $(function(){
       this.model.get("nodes").each(this.addNode);
 
       // Drag helper from module library
-      this.$el
-        .droppable({ 
-          accept: ".addnode, .canvas, .meemoo-plugin-images-thumbnail"
-        })
-        .selectable({
+      this.$el.droppable({ 
+        accept: ".addnode, .canvas, .meemoo-plugin-images-thumbnail"
+      });
+
+      // Thanks Stu Cox http://stackoverflow.com/a/14578826/592125
+      var supportsTouch = 'ontouchstart' in document;
+      if (!supportsTouch) {
+        // Selectable messes up scroll on touch devices
+        this.$el.selectable({
           filter: ".module",
-          // distance: 1,
           delay: 20
         });
+      }
 
       this.resizeEdgeSVG();
 
@@ -64,10 +65,6 @@ $(function(){
           }
         });
       }
-    },
-    touch: function (event) {
-      // Don't touchpunch selectable (it messes up scrolling)
-      event.stopPropagation();
     },
     click: function (event) {
       // Hide dis/connection boxes
