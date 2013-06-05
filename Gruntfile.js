@@ -16,6 +16,7 @@ module.exports = function() {
       dist: {
         src: [
           // Libs
+          'libs/jquery.ui.touch-punch.js',
           'libs/underscore.js',
           'libs/backbone.js',
           'libs/backbone.localStorage.js',
@@ -94,6 +95,10 @@ module.exports = function() {
       }
     },
     connect: {
+      options : {
+        port : 8000,
+        hostname : '*' // available from ipaddress:8000 on same network (or name.local:8000)
+      },
       uses_defaults: {}
     },
     watch: {
