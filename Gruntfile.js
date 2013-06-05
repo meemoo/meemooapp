@@ -16,13 +16,12 @@ module.exports = function() {
       dist: {
         src: [
           // Libs
-          'libs/jquery.ui.touch-punch.js',
           'libs/underscore.js',
           'libs/backbone.js',
           'libs/backbone.localStorage.js',
           'libs/mousetrap.js',
           'libs/spectrum/spectrum.js',
-          // 'libs/jquery.ui.touch-punch.js',
+          'libs/jquery.ui.touch-punch.js',
           // Iframework
           'src/iframework.js',
           'src/iframework-utils.js',
