@@ -6,6 +6,7 @@ $(function(){
   var library = {
     image: [
       {"src":"meemoo:image/cam","info":{"title":"cam","author":"meemoo","description":"HTML5 webcam with getUserMedia."}},
+      {"src":"meemoo:image/paint","info":{"title":"paint","author":"meemoo","description":"paint on, trace, or cut out an image"}},
       {"src":"meemoo:image/transform","info":{"title":"transform","author":"meemoo","description":"scale, translate, and/or rotate image (centered)"}},
       {"src":"meemoo:image/fit","info":{"title":"fit","author":"meemoo","description":"scale and crop an image to fit the given size. easy way to make thumbnails."}},
       {"src":"meemoo:image/crop","info":{"title":"crop","author":"meemoo","description":"crop an image to a rectangle"}},

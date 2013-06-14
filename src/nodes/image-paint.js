@@ -44,10 +44,10 @@ $(function(){
           tools.mouseX = e.pageX - tools.canvasPosition.left;
           tools.mouseY = e.pageY - tools.canvasPosition.top;
           // find all points between        
-          var x1 = mouseX;
-          var x2 = lastX;
-          var y1 = mouseY;
-          var y2 = lastY;
+          var x1 = tools.mouseX;
+          var x2 = tools.lastX;
+          var y1 = tools.mouseY;
+          var y2 = tools.lastY;
           var x, y;
           var steep = (Math.abs(y2 - y1) > Math.abs(x2 - x1));
           if (steep){
@@ -83,9 +83,9 @@ $(function(){
           }
           for (x = x1; x < x2; x++) {
             if (steep) {
-              ctx.fillRect(y, x, lineThickness , lineThickness );
+              tools.ctx.fillRect(y, x, lineThickness , lineThickness );
             } else {
-              ctx.fillRect(x, y, lineThickness , lineThickness );
+              tools.ctx.fillRect(x, y, lineThickness , lineThickness );
             }
             error += de;
             if (error >= 0.5) {
@@ -118,6 +118,11 @@ $(function(){
 
       $(this.canvas).css("max-width", "none");
 
+      this.combine = document.createElement("canvas");
+      this.combine.width = this.canvas.width;
+      this.combine.height = this.canvas.height;
+      this.combineContext = this.combine.getContext("2d");
+
       this.trace = document.createElement("canvas");
       this.trace.width = this.canvas.width;
       this.trace.height = this.canvas.height;
@@ -144,12 +149,22 @@ $(function(){
       var setOffset = function(){
         self.tools.canvasPosition.left = self.model.get("x") - scrollParent.scrollLeft - scrollGraph.scrollLeft + 3;
         self.tools.canvasPosition.top = self.model.get("y") - scrollParent.scrollTop - scrollGraph.scrollTop + 3;
-        console.log(self.tools.canvasPosition);
       };
       $(scrollParent).scroll(setOffset);
       $(scrollGraph).scroll(setOffset);
       this.model.on("change:x, change:y", setOffset);
       setOffset();
+
+      this.draw.onmouseover = function(e){
+        if (self._mode === "trace" || self._mode === "cutout") {
+          self.canvas.style.backgroundColor = "rgba(255,255,255,0.5)";
+        }
+      };
+      this.draw.onmouseout = function(e){
+        if (self._mode === "trace" || self._mode === "cutout") {
+          self.canvas.style.backgroundColor = "rgba(255,255,255,1)";
+        }
+      };
 
       this.draw.onmousedown = function(e){
         self.startLine(e);
@@ -176,6 +191,10 @@ $(function(){
         // TODO undo stack
       }
     },
+    inputimage: function (image) {
+      this._image = image;
+      this.traceContext.drawImage(image, 0, 0);
+    },
     inputstamp: function (image) {
       this.tools.stamp = image;
       this.tools.stampW = Math.floor(image.width/2);
@@ -198,6 +217,8 @@ $(function(){
           this.draw.onmousemove = this.tools.drawPixelBrush;
           break;
         default: // pixelPencil
+          this._tool = "pixelPencil";
+
           this.tools.minThickness = this._strokewidth;
           this.tools.maxThickness = this._strokewidth;
           this.drawContext.fillStyle = this._stroke;
@@ -206,9 +227,20 @@ $(function(){
           break;
       }
     },
-    inputimage: function (image) {
-      this._image = image;
-      this._triggerRedraw = true;
+    inputmode: function (mode) {
+      this._mode = mode;
+      switch (mode) {
+        case "trace" :
+          this.canvas.style.backgroundColor = "rgba(255,255,255,1)";
+          break;
+        case "cutout" :
+          this.canvas.style.backgroundColor = "rgba(255,255,255,1)";
+          break;
+        default: // on
+          this._mode = "on";
+          this.canvas.style.backgroundColor = "transparent";
+          break;
+      }    
     },
     inputfill: function (color) {
       this._triggerRedraw = true;
@@ -254,12 +286,14 @@ $(function(){
         this.canvas.width = this._width;
         this.trace.width = this._width;
         this.draw.width = this._width;
+        this.combine.width = this._width;
         this.canvasSettings();
       }
       if (this.canvas.height !== this._height) {
         this.canvas.height = this._height;
         this.trace.height = this._height;
         this.draw.height = this._height;
+        this.combine.height = this._height;
         this.canvasSettings();
       }
       // this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -269,13 +303,30 @@ $(function(){
       this.context.clearRect(0, 0, this._width, this._height);
     },
     inputsend: function () {
-      this.send("image", this.canvas);
+      if (this._mode === "on") {
+        this.combineContext.clearRect(0, 0, this._width, this._height);
+        this.combineContext.globalCompositeOperation = "source-over";
+        this.combineContext.drawImage(this.trace, 0, 0);
+        this.combineContext.drawImage(this.canvas, 0, 0);
+        this.send("image", this.combine);
+      } else if (this._mode === "cutout") {
+        this.combineContext.clearRect(0, 0, this._width, this._height);
+        this.combineContext.globalCompositeOperation = "source-over";
+        this.combineContext.drawImage(this.trace, 0, 0);
+        this.combineContext.globalCompositeOperation = "destination-in";
+        this.combineContext.drawImage(this.canvas, 0, 0);
+        this.combineContext.globalCompositeOperation = "source-over";
+        this.send("image", this.combine);
+      } else {
+        // trace
+        this.send("image", this.canvas);
+      }
     },
     inputs: {
-      // image: {
-      //   type: "image",
-      //   description: "image paint on"
-      // },
+      image: {
+        type: "image",
+        description: "image to paint on, trace, or cut out"
+      },
       width: {
         type: "int",
         description: "canvas width",
@@ -311,12 +362,12 @@ $(function(){
         options: "pixelPencil pixelBrush smoothPencil rect fillRect strokeRect stamp".split(" "),
         "default": "smoothPencil"
       },
-      // mode: {
-      //   type: "string",
-      //   description: "how to combine drawing and image: on (draw on the image), trace (don't use image), or cutout (draw the matte for the image)",
-      //   options: "on trace cutout".split(" "),
-      //   "default": "on"
-      // },
+      mode: {
+        type: "string",
+        description: "how to combine drawing and image: on (draw on the image), trace (don't use image), or cutout (draw the matte for the image)",
+        options: "on trace cutout".split(" "),
+        "default": "on"
+      },
       clear: {
         type: "bang",
         description: "clear the canvas"
