@@ -19,18 +19,22 @@ $(function(){
       stamp: null, 
       stampW: null, 
       stampH: null,
-      drawStamp: function(e) {
-        if (!tools.painting || !tools.stamp) { return; }
+      move: function(){
         tools.mouseX = e.pageX - tools.canvasPosition.left;
         tools.mouseY = e.pageY - tools.canvasPosition.top;
+      },
+      drawStamp: function(e) {
+        if (!tools.painting || !tools.stamp) { return; }
+        tools.move(e);
+
         tools.ctx.drawImage(tools.stamp, tools.mouseX-tools.stampW, tools.mouseY-tools.stampH);
         tools.lastX = tools.mouseX;
         tools.lastY = tools.mouseY;
       },
       drawSmoothPencil: function(e) {
         if (!tools.painting) { return; }
-        tools.mouseX = e.pageX - tools.canvasPosition.left;
-        tools.mouseY = e.pageY - tools.canvasPosition.top;
+        tools.move(e);
+
         tools.ctx.beginPath();
         tools.ctx.moveTo(tools.lastX, tools.lastY);
         tools.ctx.lineTo(tools.mouseX, tools.mouseY);
@@ -38,64 +42,68 @@ $(function(){
         tools.lastX = tools.mouseX;
         tools.lastY = tools.mouseY;
       },
+      drawRect: function(e){
+        if (!tools.painting) { return; }
+        tools.move(e);
+
+      },
       drawPixelBrush: function(e) {
         // Thanks Loktar! http://stackoverflow.com/a/10130705/592125
-        if (tools.painting) {
-          tools.mouseX = e.pageX - tools.canvasPosition.left;
-          tools.mouseY = e.pageY - tools.canvasPosition.top;
-          // find all points between        
-          var x1 = tools.mouseX;
-          var x2 = tools.lastX;
-          var y1 = tools.mouseY;
-          var y2 = tools.lastY;
-          var x, y;
-          var steep = (Math.abs(y2 - y1) > Math.abs(x2 - x1));
-          if (steep){
-            x = x1;
-            x1 = y1;
-            y1 = x;
+        if (!tools.painting) { return; }
+        tools.move(e);
 
-            y = y2;
-            y2 = x2;
-            x2 = y;
-          }
-          if (x1 > x2) {
-            x = x1;
-            x1 = x2;
-            x2 = x;
+        // find all points between        
+        var x1 = tools.mouseX;
+        var x2 = tools.lastX;
+        var y1 = tools.mouseY;
+        var y2 = tools.lastY;
+        var x, y;
+        var steep = (Math.abs(y2 - y1) > Math.abs(x2 - x1));
+        if (steep){
+          x = x1;
+          x1 = y1;
+          y1 = x;
 
-            y = y1;
-            y1 = y2;
-            y2 = y;
-          }
-          var dx = x2 - x1;
-          var dy = Math.abs(y2 - y1);
-          var error = 0;
-          var de = dy / dx;
-          var yStep = -1;
-          y = y1;
-          if (y1 < y2) {
-            yStep = 1;
-          }
-          lineThickness = tools.maxThickness - Math.sqrt((x2 - x1) *(x2-x1) + (y2 - y1) * (y2-y1))/10;
-          if(lineThickness < tools.minThickness){
-            lineThickness = tools.minThickness;
-          }
-          for (x = x1; x < x2; x++) {
-            if (steep) {
-              tools.ctx.fillRect(y, x, lineThickness , lineThickness );
-            } else {
-              tools.ctx.fillRect(x, y, lineThickness , lineThickness );
-            }
-            error += de;
-            if (error >= 0.5) {
-              y += yStep;
-              error -= 1.0;
-            }
-          }
-          tools.lastX = tools.mouseX;
-          tools.lastY = tools.mouseY;
+          y = y2;
+          y2 = x2;
+          x2 = y;
         }
+        if (x1 > x2) {
+          x = x1;
+          x1 = x2;
+          x2 = x;
+
+          y = y1;
+          y1 = y2;
+          y2 = y;
+        }
+        var dx = x2 - x1;
+        var dy = Math.abs(y2 - y1);
+        var error = 0;
+        var de = dy / dx;
+        var yStep = -1;
+        y = y1;
+        if (y1 < y2) {
+          yStep = 1;
+        }
+        lineThickness = tools.maxThickness - Math.sqrt((x2 - x1) *(x2-x1) + (y2 - y1) * (y2-y1))/10;
+        if(lineThickness < tools.minThickness){
+          lineThickness = tools.minThickness;
+        }
+        for (x = x1; x < x2; x++) {
+          if (steep) {
+            tools.ctx.fillRect(y, x, lineThickness , lineThickness );
+          } else {
+            tools.ctx.fillRect(x, y, lineThickness , lineThickness );
+          }
+          error += de;
+          if (error >= 0.5) {
+            y += yStep;
+            error -= 1.0;
+          }
+        }
+        tools.lastX = tools.mouseX;
+        tools.lastY = tools.mouseY;
       }
     };
 
@@ -167,18 +175,23 @@ $(function(){
       };
 
       this.draw.onmousedown = function(e){
-        self.startLine(e);
+        self.tools.painting = true;
+        self.tools.startX = self.tools.lastX = e.pageX - self.tools.canvasPosition.left;
+        self.tools.startY = self.tools.lastY = e.pageY - self.tools.canvasPosition.top;
+        self.draw.onmousemove(e);
+        // $(this.draw).trigger("mousemove", e);
       };
       $(window).mouseup(function(e){
         self.endLine(e);
       });
 
     },
-    startLine: function(e) {
-      this.tools.painting = true;
-      this.tools.startX = this.tools.lastX = e.pageX - this.tools.canvasPosition.left;
-      this.tools.startY = this.tools.lastY = e.pageY - this.tools.canvasPosition.top;
-    },
+    // startLine: function(e) {
+    //   this.tools.painting = true;
+    //   this.tools.startX = this.tools.lastX = e.pageX - this.tools.canvasPosition.left;
+    //   this.tools.startY = this.tools.lastY = e.pageY - this.tools.canvasPosition.top;
+    //   $(this.draw).trigger("mousemove", e);
+    // },
     endLine: function(e){
       if (this.tools.painting) {
         this.tools.painting = false;
@@ -287,6 +300,7 @@ $(function(){
         this.trace.width = this._width;
         this.draw.width = this._width;
         this.combine.width = this._width;
+        this.tools.width =  this._width;
         this.canvasSettings();
       }
       if (this.canvas.height !== this._height) {
@@ -294,6 +308,7 @@ $(function(){
         this.trace.height = this._height;
         this.draw.height = this._height;
         this.combine.height = this._height;
+        this.tools.height =  this._height;
         this.canvasSettings();
       }
       // this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
