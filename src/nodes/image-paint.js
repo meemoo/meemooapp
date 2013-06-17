@@ -19,13 +19,13 @@ $(function(){
       stamp: null, 
       stampW: null, 
       stampH: null,
-      move: function(){
+      move: function(e){
         tools.mouseX = e.pageX - tools.canvasPosition.left;
         tools.mouseY = e.pageY - tools.canvasPosition.top;
       },
       drawStamp: function(e) {
         if (!tools.painting || !tools.stamp) { return; }
-        tools.move(e);
+        if (e) { tools.move(e); }
 
         tools.ctx.drawImage(tools.stamp, tools.mouseX-tools.stampW, tools.mouseY-tools.stampH);
         tools.lastX = tools.mouseX;
@@ -33,7 +33,7 @@ $(function(){
       },
       drawSmoothPencil: function(e) {
         if (!tools.painting) { return; }
-        tools.move(e);
+        if (e) { tools.move(e); }
 
         tools.ctx.beginPath();
         tools.ctx.moveTo(tools.lastX, tools.lastY);
@@ -44,13 +44,13 @@ $(function(){
       },
       drawRect: function(e){
         if (!tools.painting) { return; }
-        tools.move(e);
+        if (e) { tools.move(e); }
 
       },
       drawPixelBrush: function(e) {
         // Thanks Loktar! http://stackoverflow.com/a/10130705/592125
         if (!tools.painting) { return; }
-        tools.move(e);
+        if (e) { tools.move(e); }
 
         // find all points between        
         var x1 = tools.mouseX;
@@ -212,6 +212,9 @@ $(function(){
       this.tools.stamp = image;
       this.tools.stampW = Math.floor(image.width/2);
       this.tools.stampH = Math.floor(image.height/2);
+      if (this._tool === "stamp" && this.tools.painting) {
+        this.draw.onmousemove();
+      }
     },
     inputtool: function (tool) {
       this._tool = tool;
