@@ -206,6 +206,7 @@ $(function(){
     },
     inputimage: function (image) {
       this._image = image;
+      this.traceContext.clearRect(0, 0, this._width, this._height);
       this.traceContext.drawImage(image, 0, 0);
     },
     inputstamp: function (image) {
