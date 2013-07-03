@@ -37,6 +37,7 @@ $(function(){
       {"src":"meemoo:image/palette","info":{"title":"palette","author":"nrabinowitz","description":"get color palette from image color quantize"}},
       {"src":"meemoo:util/color-hsla","info":{"title":"color-hsla","author":"meemoo","description":"make hsla() css color (hue, saturation, lightness, alpha)"}},
       {"src":"meemoo:util/math","info":{"title":"math","author":"silentmatt","description":"math equation evaluator"}},
+      {"src":"meemoo:util/logic","info":{"title":"logic","author":"meemoo","description":"greater than (>) less than (<) equal (==) not equal (!=) logic"}},
       {"src":"meemoo:file/webm","info":{"title":"webm","author":"antimatter15","description":"(Chrome only) Canvas to WebM video encoder thanks to antimatter15/whammy."}}
     ],
     flow: [
