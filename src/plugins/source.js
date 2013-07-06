@@ -20,16 +20,16 @@ $( function() {
 
   // On change update code view
   Iframework.on("change", function(graph){
-    if (Iframework.shownGraph && Iframework.$(".menu-source").is(":visible")) {
+    if (Iframework.graph && Iframework.$(".menu-source").is(":visible")) {
       // Bookmark to scroll back to
       var scrollBackTop = code.prop("scrollTop");
-      code.val( JSON.stringify(Iframework.shownGraph.toJSON(), null, "  ") );
+      code.val( JSON.stringify(Iframework.graph.toJSON(), null, "  ") );
       code.scrollTop( scrollBackTop );
     }
   });
 
   var sourceRefresh = function(){
-    code.val( JSON.stringify(Iframework.shownGraph, null, "  ") );
+    code.val( JSON.stringify(Iframework.graph, null, "  ") );
   };
   template.find(".sourcerefresh").click(sourceRefresh);
 
@@ -37,7 +37,7 @@ $( function() {
   Iframework.on("showmenu:source", sourceRefresh);
 
   var sourceCompress = function(){
-    code.val( JSON.stringify(Iframework.shownGraph, null, "") );
+    code.val( JSON.stringify(Iframework.graph, null, "") );
   };
   template.find(".sourcecompress").click(sourceCompress);
 

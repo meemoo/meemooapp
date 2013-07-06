@@ -12,12 +12,12 @@ $(function(){
         // No type set, connect to anything
         this.set("type", "all");
       }
+      this.parentNode = this.get("parentNode");
       // To sanitize data:image/gif types for css class
       // this.set( "type_class", this.get("type").split("/")[0].replace(":", "_") );
       this.set( "type_class", this.get("type").split(":")[0] );
       this.Edges = new Iframework.Edges();
 
-      this.parentNode = this.get("parentNode");
     },
     // Ports keep track of connected edges
     connect: function (edge) {

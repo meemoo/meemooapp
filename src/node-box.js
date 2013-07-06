@@ -38,7 +38,6 @@ $(function(){
       _.defer(function(){
         self.trigger("send:"+name, value);
       });
-
     },
     receive: function (name, value) {
       // The listener that hits this is added in the edge
@@ -71,11 +70,12 @@ $(function(){
       }
     },
     addInput: function (info) {
-      // Set id to name
-      info.id = info.name;
+      if (info.id === undefined) {
+        info.id = info.name;
+      }
       info.parentNode = this;
       // Name must be unique
-      var replace = this.Inputs.get(info.name);
+      var replace = this.Inputs.get(info.id);
       if (replace) {
         replace.set(info);
         return;
@@ -83,7 +83,7 @@ $(function(){
       var newPort = new Iframework.PortIn(info);
       newPort.isIn = true;
       newPort.node = this;
-      newPort.graph = this.graph;
+      newPort.parentGraph = this.parentGraph;
       this.Inputs.add(newPort);
       if (this.view) {
         this.view.addInput(newPort);
@@ -93,13 +93,15 @@ $(function(){
       if ( info.hasOwnProperty("default") && info["default"] !== "" && !currentState.hasOwnProperty(info.name) ) {
         currentState[info.name] = info["default"];
       }
+      return newPort;
     },
     addOutput: function (info) {
-      // Set id to name
-      info.id = info.name;
+      if (info.id === undefined) {
+        info.id = info.name;
+      }
       info.parentNode = this;
       // Name must be unique
-      var replace = this.Outputs.get(info.name);
+      var replace = this.Outputs.get(info.id);
       if (replace) {
         replace.set(info);
         return;
@@ -107,22 +109,23 @@ $(function(){
       var newPort = new Iframework.PortOut(info);
       newPort.isIn = false;
       newPort.node = this;
-      newPort.graph = this.graph;
+      newPort.parentGraph = this.parentGraph;
       this.Outputs.add(newPort);
       if (this.view) {
         this.view.addOutput(newPort);
       }
+      return newPort;
     },
     nodeChanged: function () {
-      if (this.graph) {
-        this.graph.trigger("change");
+      if (this.parentGraph) {
+        this.parentGraph.trigger("change");
       }
     },
     remove: function (fromView) {
       if (fromView) {
         // Called from NodeBoxView.removeModel
         // User initiated undo, so make it undoable
-        this.graph.removeNode(this);
+        this.parentGraph.removeNode(this);
       } else {
         // Called from Graph.remove
         // Just remove it
@@ -142,7 +145,7 @@ $(function(){
       this.nodeChanged();
     },
     toString: function() {
-      if (!!this.info) {
+      if (this.info) {
         return "Native node "+this.get("id")+": "+this.info.title;
       } else {
         return "Native node "+this.get("id");

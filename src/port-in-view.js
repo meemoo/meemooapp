@@ -22,7 +22,8 @@ $(function(){
       "dragstop .plugend":           "unplugstop",
       "drop":                        "drop",
       "click .disconnect":           "disconnect",
-      "submit .manualinput":         "manualinput"
+      "submit .manualinput":         "manualinput",
+      "click .publish-port":         "publishPort"
     },
     render: function () {
       this.$el.html( this.portInTemplate(this.model.toJSON()) );
@@ -76,7 +77,7 @@ $(function(){
     },
     dragstart: function (event, ui) {
       // Add a mask so that iframes don't steal mouse
-      this.model.node.graph.view.maskFrames();
+      this.model.node.parentGraph.view.maskFrames();
       
       // Highlight matching ins or outs
       $("div.ports-"+(this.model.isIn ? "out" : "in")+" span.hole")
@@ -95,8 +96,8 @@ $(function(){
     },
     drag: function (event, ui) {
       if (Iframework.edgePreview) {
-        var dragX = ui.offset.left + $('.graph').scrollLeft();
-        var dragY = ui.offset.top + 8 + $('.graph').scrollTop();
+        var dragX = ui.offset.left + Iframework.shownGraph.view.el.scrollLeft;
+        var dragY = ui.offset.top + 8 + Iframework.shownGraph.view.el.scrollTop;
         var thisX = this.portOffsetLeft();
         var thisY = this.portOffsetTop();
         
@@ -115,7 +116,7 @@ $(function(){
     },
     dragstop: function (event, ui) {
       // Remove iframe masks
-      this.model.node.graph.view.unmaskFrames();
+      this.model.node.parentGraph.view.unmaskFrames();
 
       $(".hole").removeClass("fade highlight");
       
@@ -141,14 +142,14 @@ $(function(){
         var source = (this.model.isIn ? from : to);
         var target = (this.model.isIn ? to : from);
         var edge = new Iframework.Edge({
-          source: [source.node.get("id"), source.get("name")],
-          target: [target.node.get("id"), target.get("name")]
+          source: [source.node.id, source.id],
+          target: [target.node.id, target.id],
+          parentGraph: this.model.parentNode.parentGraph
         });
-        edge.graph = this.model.graph;
         if (Iframework.edgePreview) {
           edge._color = Iframework.edgePreview._color;
         }
-        if (edge.graph.addEdge(edge)){
+        if (edge.parentGraph.addEdge(edge)){
           edge.connect();
         }
       }
@@ -171,7 +172,7 @@ $(function(){
     },
     unplugstart: function (event, ui) {
       // Add a mask so that iframes don't steal mouse
-      this.model.node.graph.view.maskFrames();
+      this.model.node.parentGraph.view.maskFrames();
 
       // Find top connected wire
       var lastConnected = this.topConnectedEdge();
@@ -202,8 +203,8 @@ $(function(){
     },
     unplugdrag: function (event, ui) {
       if (Iframework.edgePreview && this.unpluggingEdge) {
-        var dragX = ui.offset.left + $('.graph').scrollLeft();
-        var dragY = ui.offset.top + 6 + $('.graph').scrollTop();
+        var dragX = ui.offset.left + Iframework.shownGraph.view.el.scrollLeft;
+        var dragY = ui.offset.top + 6 + Iframework.shownGraph.view.el.scrollTop;
         var thatPortView = this.model.isIn ? this.unpluggingEdge.Source.view : this.unpluggingEdge.Target.view;
         var thatX = thatPortView.portOffsetLeft();
         var thatY = thatPortView.portOffsetTop();
@@ -223,7 +224,7 @@ $(function(){
     },
     unplugstop: function (event, ui) {
       if (this.armDelete && this.unpluggingEdge) {
-        this.model.graph.removeEdge(this.unpluggingEdge);
+        this.model.parentGraph.removeEdge(this.unpluggingEdge);
       } else {
         this.$(".plugend").show();
         this.unpluggingEdge.view.undim();
@@ -242,34 +243,6 @@ $(function(){
       // Show connected edges editor
       var isIn = this.model.isIn;
       var portName = this.model.get("name");
-  
-      if ( Iframework.selectedPort && (isIn !== Iframework.selectedPort.isIn) ) {
-        // Connect
-        var edge;
-        if (isIn) {
-          edge = new Iframework.Edge({
-            source: [Iframework.selectedPort.node.get("id"), Iframework.selectedPort.get("name")],
-            target: [this.model.node.get("id"), this.model.get("name")]
-          });
-        } else {
-          edge = new Iframework.Edge({
-            source: [this.model.node.get("id"), this.model.get("name")],
-            target: [Iframework.selectedPort.node.get("id"), Iframework.selectedPort.get("name")]
-          });
-        }
-        edge.graph = Iframework.shownGraph;
-        if (edge.graph.addEdge(edge)){
-          edge.connect();
-        }
-        // Tap-connect edge preview
-        if ( Iframework.edgePreview ) {
-          Iframework.shownGraph.view.$(".edges").children(".preview").remove();
-          Iframework.edgePreview = undefined;
-        }
-        // Don't show popup
-        Iframework.selectedPort = null;
-        return;
-      } 
       
       var popupEl = this.popupTemplate(this.model.toJSON());
       popupEl = $(popupEl);
@@ -465,9 +438,9 @@ $(function(){
     },
     disconnect: function (event) {
       //HACK
-      var edge = this.model.graph.get("edges").getByCid( $(event.target).parents(".edge-edit-item").attr("id") );
+      var edge = this.model.parentGraph.get("edges").getByCid( $(event.target).parents(".edge-edit-item").attr("id") );
       if (edge) {
-        this.model.graph.removeEdge(edge);
+        this.model.parentGraph.removeEdge(edge);
       }
       $('div.edge-edit').remove();
       Iframework.selectedPort = null;
@@ -475,29 +448,11 @@ $(function(){
       // Don't bubble
       event.stopPropagation();
     },
-    portOffsetLeft: function () {
-      var holeoffset = this.$('.hole').offset();
-      if (holeoffset) {
-        // HACK
-        return holeoffset.left + 7 + $('.graph').scrollLeft();
-      } else {
-        return 0;
-      }
-    },
-    portOffsetTop: function () {
-      var holeoffset = this.$('.hole').offset();
-      if (holeoffset) {
-        // HACK
-        return holeoffset.top + 10 + $('.graph').scrollTop();
-      } else {
-        return 0;
-      }
-    },
     _relatedEdges: null,
     relatedEdges: function () {
       // Resets to null on dis/connect
       if ( this._relatedEdges === null ) {
-        this._relatedEdges = this.model.graph.get("edges").filter( function (edge) {
+        this._relatedEdges = this.model.parentGraph.get("edges").filter( function (edge) {
           return ( edge.Source === this.model || edge.Target === this.model );
         }, this);
         // Toggle plugends
@@ -530,6 +485,27 @@ $(function(){
       setTimeout(function(){
         plugend.removeClass("highlight");
       }, 1000);
+    },
+    publishPort: function () {
+      // Make breakout
+      var breakout = this.model.parentNode.parentGraph.addNode({
+        src: "meemoo:subgraph/input",
+        x: 100,
+        y: 100,
+        w: 80,
+        h: 60,
+        state: {
+          label: this.model.id
+        },
+        parentGraph: this.model.parentNode.parentGraph
+      });
+      // Connect edge
+      var edge = new Iframework.Edge({
+        source: [breakout.id, "data"], 
+        target: [this.model.parentNode.id, this.model.id],
+        parentGraph: this.model.parentNode.parentGraph
+      });
+      this.model.parentNode.parentGraph.addEdge( edge );
     }
 
   });

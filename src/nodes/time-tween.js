@@ -95,7 +95,7 @@ $(function(){
       if (this._type !== "Linear" && this._ease === "None") {
         ease = "InOut";
       }
-      if (!!window.TWEEN) {
+      if (window.TWEEN) {
 
         if (!TWEEN.Easing.hasOwnProperty(this._type)) {
           this._type = "Sinusoidal";
@@ -226,7 +226,7 @@ $(function(){
           }
         }
       }
-      if (!!window.TWEEN && this.tween && this.tween.playing) {
+      if (window.TWEEN && this.tween && this.tween.playing) {
         var p = (timeNow() - this.tween.start) / this._duration;
         if (p>1) {
           p = 1;

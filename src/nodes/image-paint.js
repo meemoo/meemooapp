@@ -152,7 +152,7 @@ $(function(){
 
       this.tools.canvasPosition = {};
       var scrollParent = this.model.view.$(".inner")[0];
-      var scrollGraph = $(".graph")[0];
+      var scrollGraph = this.model.parentGraph.view.el;
       var self = this;
       var setOffset = function(){
         self.tools.canvasPosition.left = self.model.get("x") - scrollParent.scrollLeft - scrollGraph.scrollLeft + 3;

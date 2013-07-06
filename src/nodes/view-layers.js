@@ -61,7 +61,7 @@ $(function(){
         if (!this.visible[id]) {
           var vis = {};
           this.visible[id] = vis;
-          vis.nativeView = this.model.graph.get("nodes").get(id).view.Native;
+          vis.nativeView = this.model.parentGraph.get("nodes").get(id).view.Native;
           vis.original = $(event.target).data("canvas");
           vis.copy = document.createElement("canvas");
           vis.copy.width = vis.original.width;

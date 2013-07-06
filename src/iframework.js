@@ -45,6 +45,18 @@ $(function(){
     '</div>'+
     '<div class="permalink" title="last publicly saved version">'+
     '</div>';
+
+  // requestAnimationFrame shim from http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+  window.requestAnimationFrame = (function(){
+    return  window.requestAnimationFrame || 
+      window.webkitRequestAnimationFrame || 
+      window.mozRequestAnimationFrame    || 
+      window.oRequestAnimationFrame      || 
+      window.msRequestAnimationFrame     || 
+      function( callback ){
+        window.setTimeout(callback, 1000 / 60);
+      };
+  }());    
   
   var IframeworkView = Backbone.View.extend({
     tagName: "div",
@@ -82,11 +94,25 @@ $(function(){
     },
     allLoaded: function () {
       this.trigger("allLoaded");
+
+      // Start animation loop
+      window.requestAnimationFrame( this.renderAnimationFrame.bind(this) );
     },
     render: function () {
       this.$el.html(this.template());
       return this;
     },
+    renderAnimationFrame: function (timestamp) {
+      // Safari doesn't pass timestamp
+      timestamp = timestamp !== undefined ? timestamp : Date.now();
+      // Queue next frame
+      window.requestAnimationFrame( this.renderAnimationFrame.bind(this) );
+      // Hit graph, which hits nodes
+      if (this.graph && this.graph.view) {
+        this.graph.view.renderAnimationFrame(timestamp);
+      }
+    },
+    graph: null,
     shownGraph: null,
     // Thanks http://www.madebypi.co.uk/labs/colorutils/examples.html :: red.equal(7, true);
     wireColors: ["#FF9292", "#00C2EE", "#DCA761", "#8BB0FF", "#96BD6D", "#E797D7", "#29C6AD"],
@@ -124,23 +150,44 @@ $(function(){
       this.$(".menu-"+parentMenu+" .listing").append(title, html);
     },
     loadGraph: function (graph) {
-      if (this.shownGraph) {
-        this.shownGraph.remove();
-        this.shownGraph = null;
+      // Load a new parent graph
+
+      if (this.graph) {
+        this.graph.remove();
+        this.graph = null;
       }
       this.wireColorIndex = 0;
-      this.shownGraph = new Iframework.Graph(graph);
-      if (graph["info"]["title"]) {
+      this.graph = new Iframework.Graph(graph);
+      if (graph["info"] && graph["info"]["title"]) {
         document.title = "Meemoo: "+graph["info"]["title"];
       }
 
       this.updateCurrentInfo();
 
-      return this.shownGraph;
+      this.shownGraph = this.graph;
+
+      return this.graph;
+    },
+    showGraph: function (graph) {
+      // Show a child graph / subgraph / macro
+      if (this.shownGraph && this.shownGraph.view) {
+        this.shownGraph.view.$el.hide();
+      }
+      if (!graph.view) {
+        graph.initializeView();
+      }
+      this.shownGraph = graph;
+      this.shownGraph.view.$el.show();
+      // Rerender edges once
+      if (!this.shownGraph.view.unhidden) {
+        this.shownGraph.view.unhidden = true;
+        this.shownGraph.view.rerenderEdges();
+      }
     },
     gotMessage: function (e) {
-      if (Iframework.shownGraph) {
-        var node = Iframework.shownGraph.get("nodes").get(e.data.nodeid);
+      if (Iframework.graph) {
+        var node = Iframework.graph.get("nodes").get(e.data.nodeid);
+        // TODO: iframes in subgraphs?
         if (node) {
           for (var name in e.data) {
             if (e.data.hasOwnProperty(name)) {
@@ -188,7 +235,7 @@ $(function(){
       this.$(".menu-load .examples").append(exampleLinks);
 
       // None shown
-      if (!this.shownGraph){
+      if (!this.graph){
         if (this._loadedExample) {
           // Router tried to load this already, try again
           this.loadExample(this._loadedExample);
@@ -317,7 +364,7 @@ $(function(){
     },
     saveGist: function () {
       // Save app to gist
-      var graph = this.shownGraph.toJSON();
+      var graph = this.graph.toJSON();
       var data = {
         "description": "meemoo app: "+graph["info"]["title"],
         "public": true
@@ -341,7 +388,7 @@ $(function(){
       })
       .success(function(e){
         // Save gist url to graph's info.parents
-        var info = Iframework.shownGraph.get("info");
+        var info = Iframework.graph.get("info");
         if (!info.hasOwnProperty("parents") || !info.parents.push) {
           graph.info.parents = [];
         }
@@ -354,7 +401,7 @@ $(function(){
         Iframework.analyze("save", "gist", e.id);
       })
       .error(function(e){
-        var description = "meemoo app: " + Iframework.shownGraph.toJSON()["info"]["title"];
+        var description = "meemoo app: " + Iframework.graph.toJSON()["info"]["title"];
         Iframework.$(".permalink").html('api is down (;_;) copy your app source code to <a href="https://gist.github.com/?description='+encodeURIComponent(description)+'" target="_blank">gist.github.com</a>');
         console.warn("gist save error", e);
       })
@@ -374,7 +421,7 @@ $(function(){
             app.initializeView();
           });
           // None shown
-          if (!Iframework.shownGraph){
+          if (!Iframework.graph){
             if (Iframework._loadedLocal) {
               // Router tried to load this already, try again
               Iframework.loadLocal(Iframework._loadedLocal);
@@ -411,7 +458,7 @@ $(function(){
       var key = window.prompt("Enter a url key", current);
       if (key) {
         key = this.encodeKey(key);
-        this.shownGraph.setInfo("url", key);
+        this.graph.setInfo("url", key);
       }
       return key;
     },
@@ -421,15 +468,15 @@ $(function(){
       return key;
     },
     saveLocal: function () {
-      if (!this.shownGraph.get("info")){
-        this.shownGraph.set({
+      if (!this.graph.get("info")){
+        this.graph.set({
           info: {}
         });
       }
-      while (!this.shownGraph.get("info").hasOwnProperty("url") || this.shownGraph.get("info")["url"]==="") {
+      while (!this.graph.get("info").hasOwnProperty("url") || this.graph.get("info")["url"]==="") {
         var keysuggestion;
-        if (this.shownGraph.get("info").hasOwnProperty("title") && this.shownGraph.get("info")["title"]!=="") {
-          keysuggestion = this.shownGraph.get("info")["title"];
+        if (this.graph.get("info").hasOwnProperty("title") && this.graph.get("info")["title"]!=="") {
+          keysuggestion = this.graph.get("info")["title"];
         } else {
           keysuggestion = "app-" + new Date().getTime();
         }
@@ -438,7 +485,7 @@ $(function(){
           return false;
         }
       }
-      var currentAppGraph = JSON.parse(JSON.stringify(this.shownGraph));
+      var currentAppGraph = JSON.parse(JSON.stringify(this.graph));
       var key = currentAppGraph["info"]["url"];
       var app;
       if (this._loadedLocalApp) {
@@ -477,7 +524,7 @@ $(function(){
       // This makes it save the app as a new local app
       this._loadedLocalApp = null;
       // Suggested name
-      var url = this.shownGraph.get("info")["url"]+"-copy";
+      var url = this.graph.get("info")["url"]+"-copy";
       this.setKey(url);
       // Do the overwrite checks and save
       this.saveLocal();
@@ -490,25 +537,25 @@ $(function(){
     },
     setTitle: function () {
       var input = this.$(".currentapp .info .settitle").text();
-      if (input !== this.shownGraph.get("info")["title"]) {
-        this.shownGraph.setInfo("title", input);
+      if (input !== this.graph.get("info")["title"]) {
+        this.graph.setInfo("title", input);
       }
     },
     setDescription: function () {
       var input = this.$(".currentapp .info .setdescription").text();
-      if (input !== this.shownGraph.get("info")["description"]) {
-        this.shownGraph.setInfo("description", input);
+      if (input !== this.graph.get("info")["description"]) {
+        this.graph.setInfo("description", input);
       }
     },
     setUrl: function () {
       var input = this.$(".currentapp .info .seturl").text();
       input = this.encodeKey(input);
-      if (input !== this.shownGraph.get("info")["url"]) {
-        this.shownGraph.setInfo("url", input);
+      if (input !== this.graph.get("info")["url"]) {
+        this.graph.setInfo("url", input);
       }
     },
     updateCurrentInfo: function () {
-      var graph = this.shownGraph.toJSON();
+      var graph = this.graph.toJSON();
       this.$(".currentapp")
         .html( this.currentTemplate(graph) );
 

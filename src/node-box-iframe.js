@@ -45,10 +45,10 @@ $(function(){
     },
     iframeLoaded: function () {
       this.loaded = true;
-      this.graph.checkLoaded();
+      this.parentGraph.checkLoaded();
     },
     toString: function() {
-      if (!!this.info) {
+      if (this.info) {
         return "Iframe node "+this.get("id")+": "+this.info.title;
       } else {
         return "Iframe node "+this.get("id");

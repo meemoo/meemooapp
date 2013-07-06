@@ -12,7 +12,12 @@ $(function(){
     elementShadow: null,
     isPreview: false,
     initialize: function () {
-      this.graphSVGElement = document.getElementById('edgesSvg');
+      if (this.model) {
+        this.graphSVGElement = this.model.parentGraph.view.edgesSvg;
+      } else {
+        // Preview edge
+        this.graphSVGElement = Iframework.shownGraph.view.edgesSvg;
+      }
       this.positions = {fromX: 0, fromY: 0, toX: 0, toY: 0};
       if (!this.model) {
         this.isPreview = true;
@@ -24,7 +29,7 @@ $(function(){
 
       if (this.model) {
         // Used to know which wire is on top when pulling from plugend
-        this._z = this.model.graph.edgeCount++;
+        this._z = this.model.parentGraph.edgeCount++;
 
         $(this.elementWire)
           .data({
@@ -70,7 +75,7 @@ $(function(){
       if (this.model) {
         this.model.Source.view.$(".plugend").show();
         this.model.Target.view.$(".plugend").show();
-        this.model.graph.view.resizeEdgeSVG();
+        this.model.parentGraph.view.resizeEdgeSVG();
       }
 
       return this;
@@ -82,7 +87,7 @@ $(function(){
       $(this.elementShadow).attr( "d", this.svgPathShadow() );
 
       if (this.model) {
-        this.model.graph.view.resizeEdgeSVG();
+        this.model.parentGraph.view.resizeEdgeSVG();
       } else {
         Iframework.shownGraph.view.resizeEdgeSVG();
       }
@@ -182,10 +187,10 @@ $(function(){
     },
     click: function(event) {
       // If not on top already
-      if (this._z < this.model.graph.edgeCount-1) {
+      if (this._z < this.model.parentGraph.edgeCount-1) {
         // Bring to top (z-order of SVG can't be done with CSS)
         this.graphSVGElement.appendChild(this.elementGroup);
-        this._z = this.model.graph.edgeCount++;
+        this._z = this.model.parentGraph.edgeCount++;
       }
       this.highlight();
     },

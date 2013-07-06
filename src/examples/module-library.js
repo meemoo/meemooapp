@@ -40,6 +40,11 @@ $(function(){
       {"src":"meemoo:util/logic","info":{"title":"logic","author":"meemoo","description":"greater than (>) less than (<) equal (==) not equal (!=) logic"}},
       {"src":"meemoo:file/webm","info":{"title":"webm","author":"antimatter15","description":"(Chrome only) Canvas to WebM video encoder thanks to antimatter15/whammy."}}
     ],
+    subgraph: [
+      {"src":"meemoo:subgraph/subgraph","info":{"title":"subgraph","author":"meemoo","description":"encapsulate some nodes into a nested macro subgraph"}},
+      {"src":"meemoo:subgraph/input","info":{"title":"input","author":"meemoo","description":"publish input for when this graph is a subgraph"}},
+      {"src":"meemoo:subgraph/output","info":{"title":"output","author":"meemoo","description":"publish output for when this graph is a subgraph"}}
+    ],
     flow: [
       {"src":"meemoo:util/gate","info":{"title":"gate","author":"meemoo","description":"stop the data flow and let one through"}},
       {"src":"meemoo:time/throttle","info":{"title":"throttle","author":"meemoo","description":"too many fps? use throttle to limit data rate passing through flow."}},

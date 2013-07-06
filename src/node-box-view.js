@@ -78,7 +78,7 @@ $(function(){
           this.$(".inner").append( this.Native.$el );
           // Check if all modules are loaded
           this.model.loaded = true;
-          this.model.graph.checkLoaded();
+          this.model.parentGraph.checkLoaded();
         } else {
           // console.warn("No native node found.");
         }
@@ -101,7 +101,7 @@ $(function(){
       if (event.target !== this.$(".module")[0]) { return; }
 
       // Add a mask so that iframes don't steal mouse
-      this.model.graph.view.maskFrames();
+      this.model.parentGraph.view.maskFrames();
 
       // Select
       if (!this.$(".module").hasClass("ui-selected")){
@@ -178,7 +178,7 @@ $(function(){
       }
 
       // Remove iframe masks
-      this.model.graph.view.unmaskFrames();
+      this.model.parentGraph.view.unmaskFrames();
     },
     moveToPosition: function(x, y){
       this.$(".module").css({
@@ -192,15 +192,13 @@ $(function(){
     },
     resizestart: function (event, ui) {
       // Add a mask so that iframes don't steal mouse
-      this.model.graph.view.maskFrames();
+      this.model.parentGraph.view.maskFrames();
     },
     resize: function (event, ui) {
-      // Rerender related edges
-      // this.drag();
     },
     resizestop: function (event, ui) {
       // Remove iframe masks
-      this.model.graph.view.unmaskFrames();
+      this.model.parentGraph.view.unmaskFrames();
       
       // Set model w/h
       var newW = ui.size.width;
@@ -212,7 +210,7 @@ $(function(){
       if (this.Native) {
         this.Native.resize(newW,newH);
       }
-      this.model.graph.view.resizeEdgeSVG();
+      this.model.parentGraph.view.resizeEdgeSVG();
     },
     mousedown: function (event, ui) {
       // Bring to top

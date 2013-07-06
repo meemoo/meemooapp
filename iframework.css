@@ -52,7 +52,7 @@ button,
     opacity: 0.35;
   }
 
-div.graph {
+.graph {
   background: #EEE url(img/meemoo-bg-graph.png) scroll repeat;
   background-attachment: local;
   position: absolute;
@@ -63,11 +63,17 @@ div.graph {
   overflow: auto;
   border-right: 1px dotted #666;
 }
-  div.edges {
+  .edges {
     z-index: 1;
   }
-  div.nodes {
+  .nodes {
     z-index: 2;
+  }
+  .iframework-graph-nav {
+    z-index: 3;
+    position: fixed;
+    top: 15px;
+    left: 0px;
   }
 
 .alpha-bg {
@@ -93,6 +99,11 @@ div.edge-edit {
     margin-left: 5px;
     width: 25px;
     height: 25px;
+  }
+  div.edge-edit button.publish-port {
+    margin-left: auto;
+    width: auto;
+    height: auto;
   }
   div.edge-edit form input,
   div.edge-edit form label,

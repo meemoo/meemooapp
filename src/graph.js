@@ -16,8 +16,16 @@ $(function(){
     usedIds: [],
     edgeCount: 0,
     eventsHistory: [],
+    isSubgraph: false,
     // loadingNodes: [],
     initialize: function () {
+      // Is this a subgraph?
+      var parentGraph = this.get("parentGraph");
+      if (parentGraph) {
+        this.isSubgraph = true;
+        this.parentGraph = parentGraph;
+      }
+      //
       this.usedIds = [];
       // Convert arrays into Backbone Collections
       if (this.attributes.nodes) {
@@ -34,15 +42,16 @@ $(function(){
         var edges = this.attributes.edges;
         this.attributes.edges = new Iframework.Edges();
         for (var j=0; j<edges.length; j++) {
+          edges[j].parentGraph = this;
           var edge = new Iframework.Edge(edges[j]);
-          edge.graph = this;
           this.addEdge(edge);
         }
       }
       this.eventsHistory = new Iframework.EventsHistory();
 
+      var self = this;
       _.defer(function(){
-        Iframework.shownGraph.testLoaded();
+        self.testLoaded();
       });
 
       // Change event
@@ -109,6 +118,7 @@ $(function(){
         // HACK only for loading meemoo:group/node
         //   from src/nodes/group-node.js 
         //   to Iframework.NativeNodes[group-node]
+        var self = this;
         if (path[0] && path[1]) {
           yepnope([
             {
@@ -120,7 +130,7 @@ $(function(){
               nope: "src/nodes/"+path[0]+"-"+path[1]+".js",
               complete: function() {
                 _.defer(function(){
-                  Iframework.shownGraph.testLoaded();
+                  self.testLoaded();
                 });
               }
             }
@@ -143,8 +153,6 @@ $(function(){
           return false;
         }
       }
-
-      node.graph = this;
 
       var count = this.get("nodes").length;
       // Give id if not defined or NaN
@@ -205,8 +213,10 @@ $(function(){
 
       // Disconnect edges
       this.get("edges").each(function (edge) {
-        if (edge.Source.parentNode === node || edge.Target.parentNode === node) {
-          connected.push(edge);
+        if (edge.Source && edge.Target) {
+          if (edge.Source.parentNode === node || edge.Target.parentNode === node) {
+            connected.push(edge);
+          }
         }
       }, this);
 
@@ -263,8 +273,9 @@ $(function(){
         this.get("edges").at(i).disconnect();
       }
       // Connect edges when all modules have loaded (+.5 seconds)
-      setTimeout(function(){
-        Iframework.shownGraph.connectEdges();
+      var self = this;
+      _.delay(function(){
+        self.connectEdges();
       }, 500);
     },
     connectEdges: function () {

@@ -6,6 +6,7 @@ $(function(){
       target: [0, "default"]
     },
     initialize: function () {
+      this.parentGraph = this.get("parentGraph");
     },
     initializeView: function () {
       this.view = new Iframework.EdgeView({model:this});
@@ -18,8 +19,8 @@ $(function(){
     connect: function () {
       // Called from graph.connectEdges()
       try {
-        this.Source = this.graph.get("nodes").get( this.get("source")[0] ).Outputs.get( this.get("source")[1] );
-        this.Target = this.graph.get("nodes").get( this.get("target")[0] ).Inputs.get( this.get("target")[1] );
+        this.Source = this.parentGraph.get("nodes").get( this.get("source")[0] ).Outputs.get( this.get("source")[1] );
+        this.Target = this.parentGraph.get("nodes").get( this.get("target")[0] ).Inputs.get( this.get("target")[1] );
       } catch (e) {
         console.warn("Edge source or target port not found, try #"+this.connectTryCount+": "+this.toString());
         if (this.connectTryCount > 0) {
@@ -42,8 +43,8 @@ $(function(){
           target: [this.Target.node.id, this.Target.id]
         }
       });
-      if (this.graph.view) {
-        this.graph.view.addEdge(this);
+      if (this.parentGraph.view) {
+        this.parentGraph.view.addEdge(this);
       }
       if (this.Target.node.view && this.Target.node.view.Native) {
         this.Target.node.view.Native.connectEdge(this);
@@ -51,7 +52,6 @@ $(function(){
       this.connected = true;
 
       // Set up listener
-      // var sourceNode = this.graph.get("nodes").get( this.get("source")[0] );
       this.Source.node.on( "send:"+this.Source.id, this.send, this );
 
       return this;
@@ -84,7 +84,13 @@ $(function(){
       this.connected = false;
     },
     remove: function(){
-      this.graph.removeEdge(this);
+      this.parentGraph.removeEdge(this);
+    },
+    toJSON: function () {
+      return {
+        source: this.get("source"),
+        target: this.get("target")
+      };
     },
     toString: function(){
       return this.get("source")[0]+":"+this.get("source")[1]+"->"+this.get("target")[0]+":"+this.get("target")[1];

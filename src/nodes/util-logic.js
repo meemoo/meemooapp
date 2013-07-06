@@ -61,7 +61,7 @@ $(function(){
       this._triggerRedraw = true;
     },
     redraw: function(timestamp){
-      this.$(".info").text( this._number1 + this._logic + this._number2 + " " + this._result );
+      this.$(".info").text( this._number1 + " " + this._logic + " " + this._number2 + " " + this._result );
     },
     inputs: {
       number1: {
