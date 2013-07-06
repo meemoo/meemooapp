@@ -20,12 +20,14 @@ $(function(){
       this.graph = new Iframework.Graph(graph);
       this.model.get("state").graph = this.graph;
 
+      this.graph.initializeView();
+
       // Sync i/o ports
       this.graph.get("nodes").each(this.nodeAdded, this);
       this.graph.get("nodes").on("add", this.nodeAdded, this);
     },
     inputlabel: function (label) {
-      this.model.view.$("h1.title").text(label);
+      this.model.view.$("h1.title").text(this.model.id + ": " + label);
     },
     nodeAdded: function (node) {
       // Check if i/o
@@ -70,7 +72,7 @@ $(function(){
       }
       // Forward to subgraph
       var fwd = this.graph.get("nodes").get(name);
-      if (fwd) {
+      if (fwd && fwd.view) {
         fwd.view.Native.inputdata(value);
       }
     },
