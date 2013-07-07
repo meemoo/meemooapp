@@ -25,6 +25,17 @@ $(function(){
     },
     disconnect: function (edge) {
       this.Edges.remove(edge);
+    },
+    remove: function () {
+      // Disconnect edges
+      while(this.Edges.length > 0) {
+        var edge = this.Edges.at(0);
+        this.parentNode.parentGraph.removeEdge(edge);
+      }
+      // Remove view
+      if (this.view) {
+        this.view.remove();
+      }
     }
   });
   

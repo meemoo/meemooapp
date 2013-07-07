@@ -25,6 +25,7 @@ $(function(){
       // Sync i/o ports
       this.graph.get("nodes").each(this.nodeAdded, this);
       this.graph.get("nodes").on("add", this.nodeAdded, this);
+      this.graph.get("nodes").on("remove", this.nodeRemoved, this);
     },
     inputlabel: function (label) {
       this.model.view.$("h1.title").text(this.model.id + ": " + label);
@@ -54,6 +55,18 @@ $(function(){
             port.view.$(".label").text(label);
           }
         }, this);
+      }
+    },
+    nodeRemoved: function (node) {
+      // Check if i/o
+      var port;
+      if (node.get("src") === "meemoo:subgraph/input") {
+        port = this.model.Inputs.get(node.id);
+      } else if (node.get("src") === "meemoo:subgraph/output") {
+        port = this.model.Outputs.get(node.id);
+      }
+      if (port) {
+        port.remove();
       }
     },
     openSubgraph: function () {

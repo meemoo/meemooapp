@@ -412,7 +412,9 @@ $(function(){
     },
     publishPort: function () {
       // i/o
-    }
+    }//,
+    // remove: function () {
+    // }
 
   });
 
