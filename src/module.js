@@ -9,6 +9,11 @@ $(function(){
       "info": {}
     },
     initialize: function () {
+      var srcSplit = this.get("src").split(":");
+      this.isNative = (srcSplit[0] === "meemoo");
+      if (this.isNative) {
+        this.groupAndName = srcSplit[1].split("/");
+      }
     },
     initializeView: function () {
       if (!this.view) {

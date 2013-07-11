@@ -594,39 +594,6 @@ div.panel {
       font-size: 14px;
     }
 
-    .library-module {
-      margin-bottom: 7px;
-    }
-
-    .localapp h2,
-    .localapp p,
-    .menu-library h2,
-    .menu-library p{
-      margin: 0;
-      padding: 0;
-    }
-    .localapp h2,
-    .menu-library h2{
-      font-size: 14px;
-      line-height: 14px;
-    }
-    .localapp .description,
-    .menu-library .description{
-      font-size: 10px;
-      line-height: 14px;
-    }
-    .localapp .src,
-    .menu-library .src{
-      font-size: 10px;
-      line-height: 10px;
-      color: #999;
-    }
-    .localapp .loadapp,
-    .menu-library .addnode {
-      float: left;
-      clear: left;
-    }
-
 .menu-load .editable {
   margin: 0 0 5px 0;
 }
@@ -676,6 +643,113 @@ div.panel {
 
 
 
+
+
+
+
+
+/* Library menu */
+
+.library-module {
+  float: left;
+  margin-bottom: 10px;
+  width: 70px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.menu-library h2,
+.menu-library p {
+  margin: 0;
+  padding: 0;
+}
+.menu-library h2 {
+  font-weight: normal;
+  font-size: 11px;
+  line-height: 13px;
+}
+.menu-library .addnode {
+}
+
+.module-icon {
+  background-image: url("img/library-icons-by-soulfulsock.png");
+  background-position: -50px -1700px;
+  background-repeat: no-repeat;
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+}
+
+/* image */
+.module-icon-image-cam       { background-position: 0      0; }
+.module-icon-image-paint     { background-position: -50px  0; }
+.module-icon-image-transform { background-position: -100px 0; }
+.module-icon-image-fit       { background-position: -150px 0; }
+.module-icon-image-crop      { background-position: 0      -50px; }
+.module-icon-image-rectangle { background-position: -50px  -50px; }
+.module-icon-image-circle    { background-position: -100px -50px; }
+.module-icon-image-triangle  { background-position: -150px -50px; }
+.module-icon-image-text      { background-position: 0      -100px; }
+.module-icon-video-player    { background-position: -50px  -100px; }
+.module-icon-image-in        { background-position: -100px -100px; }
+.module-icon-image-layers    { background-position: -150px -100px; }
+.module-icon-image-mapper    { background-position: 0      -150px; }
+.module-icon-variable-animation { background-position: -50px -150px; }
+/* effects */
+.module-icon-image-chromakey { background-position: 0      -350px; }
+.module-icon-image-lumakey   { background-position: -50px  -350px; }
+.module-icon-image-grid      { background-position: -100px -350px; }
+.module-icon-image-interlace { background-position: -150px -350px; }
+.module-icon-image-slitscan  { background-position: 0      -400px; }
+.module-icon-image-tile      { background-position: -50px  -400px; }
+.module-icon-image-particles { background-position: -100px -400px; }
+.module-icon-image-trails    { background-position: -150px -400px; }
+.module-icon-image-monochrome { background-position: 0     -450px; }
+.module-icon-image-ascii     { background-position: -50px  -450px; }
+/* util */
+.module-icon-util-stats      { background-position: 0      -650px; }
+.module-icon-image-palette   { background-position: -50px  -650px; }
+.module-icon-util-color-hsla { background-position: -100px -650px; }
+.module-icon-util-math       { background-position: -150px -650px; }
+.module-icon-util-logic      { background-position: 0      -700px; }
+.module-icon-file-webm       { background-position: -50px  -700px; }
+/* subgraph */
+.module-icon-subgraph-subgraph { background-position: -100px -700px; }
+.module-icon-subgraph-input  { background-position: -150px -700px; }
+.module-icon-subgraph-output { background-position: 0      -750px; }
+/* flow */
+.module-icon-util-gate       { background-position: 0      -950px; }
+.module-icon-time-throttle   { background-position: -50px  -950px; }
+.module-icon-time-delay      { background-position: -100px -950px; }
+.module-icon-util-count      { background-position: -150px -950px; }
+/* time */
+.module-icon-time-tween      { background-position: 0      -1150px; }
+.module-icon-time-countdown  { background-position: -50px  -1150px; }
+.module-icon-time-metronome  { background-position: -100px -1150px; }
+/* ui */
+.module-icon-ui-button       { background-position: 0      -1350px; }
+.module-icon-ui-hslider      { background-position: -50px  -1350px; }
+.module-icon-ui-vslider      { background-position: -100px -1350px; }
+.module-icon-ui-number       { background-position: -150px -1350px; }
+.module-icon-ui-text         { background-position: 0      -1400px; }
+.module-icon-ui-textarea     { background-position: -50px  -1400px; }
+.module-icon-ui-checkbox     { background-position: -100px -1400px; }
+.module-icon-ui-xy           { background-position: -150px -1400px; }
+.module-icon-ui-mouse        { background-position: 0      -1450px; }
+.module-icon-ui-motion       { background-position: -50px  -1450px; }
+.module-icon-ui-leap         { background-position: -100px -1450px; }
+.module-icon-ui-facetracker  { background-position: -150px -1450px; }
+.module-icon-ui-makeymakey   { background-position: 0      -1500px; }
+/*.module-icon-ui-smartphone   { background-position: -50px -1500px; }*/
+
+
+
+
+
+
+
+
+
 /* jQuery UI overrides */
 
 .ui-draggable {
@@ -698,7 +772,7 @@ div.panel {
   width: 18px;
 }
 .ui-accordion .ui-accordion-content {
-  padding: 10px 10px 10px 15px;
+  padding: 10px 5px 5px 5px;
 }
 
 .ui-button [class^="icon-"],
@@ -893,6 +967,8 @@ div.panel {
 .icon-folder-open:before { content: '📂'; } /* '\1f4c2' */
 .icon-camera:before { content: '📷'; } /* '\1f4f7' */
 .icon-link:before { content: '🔗'; } /* '\1f517' */
+
+
 
 
 

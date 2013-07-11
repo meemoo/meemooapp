@@ -1,10 +1,8 @@
 $(function(){
 
   var template = 
-    '<div class="addnode button icon-window" title="drag to graph"></div>' +
-    '<h2 class="title"><%= info.title %></h2>' +
-    '<p class="description"><%= info.description %></p>' +
-    '<p class="src"><%= src %></p>';
+    '<div class="addnode button module-icon" title="<%= info.description %>"></div>' +
+    '<h2 class="title" title="<%= src %>"><%= info.title %></h2>';
 
   Iframework.ModuleView = Backbone.View.extend({
     tagName: "div",
@@ -18,19 +16,28 @@ $(function(){
     initialize: function () {
       this.render();
 
+      var self = this;
       this.$(".addnode")
         .data({module: this.model})
         .draggable({
           helper: function () {
-            var h = $('<div class="addnode-drag-helper" />')
+            var h = $('<div class="addnode-drag-helper module-icon" />')
               .data({
                 "meemoo-drag-type": "library-module"
-              })
-              .text($(this).data("module").get("info")["title"]);
+              });
+              // .text( self.model.get("info")["title"]);
+            if (self.model.isNative) {
+              h.addClass("module-icon-"+self.model.groupAndName[0]+"-"+self.model.groupAndName[1]);
+            }
             $(".app").append(h);
             return h;
           }
         });
+      
+      if (this.model.isNative) {
+        this.$(".addnode").addClass("module-icon-"+this.model.groupAndName[0]+"-"+this.model.groupAndName[1]);
+      }
+
       return this;
     },
     render: function () {
