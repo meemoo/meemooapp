@@ -186,7 +186,7 @@ div.module {
     background-color: #FFFFE9;
   }
   div.module h1.title {
-    font-family: 'Nova Flat', Monaco, monospace;
+    font-family: 'Noto Sans', Monaco, sans-serif;
     font-weight: 400;
     color: #808080;
     font-size: 14px;
@@ -342,7 +342,7 @@ div.module {
       }
       div.portshown-in .label{
         position: absolute;
-        top: 4px;
+        top: 3px;
         left: 18px;
       }
       div.portshown-in div.edge-edit{
@@ -373,7 +373,7 @@ div.module {
       }
       div.portshown-out .label{
         position: absolute;
-        top: 4px;
+        top: 3px;
         right: 15px;
       }
       div.portshown-out div.edge-edit{
@@ -435,7 +435,7 @@ div.module {
       margin-top: -2px;
     }
   div.port span.label {
-    font-family: 'Nova Flat', Monaco, monospace;
+    font-family: 'Noto Sans', Monaco, sans-serif;
     color: #666;
     font-size: 10px;
     overflow: hidden;
