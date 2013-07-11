@@ -5,7 +5,10 @@ $(function(){
       '<div class="outer"></div>'+
       '<div class="ports ports-in"></div>'+
       '<div class="ports ports-out"></div>'+
-      '<h1 class="title">...</h1>'+
+      '<h1 class="title">'+
+        '<span class="module-icon module-icon-small"></span>'+
+        '<span class="node-box-title-name">...</span>'+
+      '</h1>'+
       '<button title="show controls" type="button" class="showcontrols icon-left-open"></button>'+
       '<div class="controls">'+
         '<button title="remove module" type="button" class="remove icon-trash"></button>'+
@@ -33,8 +36,7 @@ $(function(){
       "click .module, .title": "click",
       "click .showcontrols": "showControls",
       "click .hidecontrols": "hideControls",
-      "click .remove":       "removeModel",
-      "click .viewsource":   "viewSource"
+      "click .remove":       "removeModel"
     },
     initialize: function () {
       this.render();
@@ -90,10 +92,13 @@ $(function(){
     },
     infoLoaded: function (info) {
       this.$('h1')
-        .text(this.model.get("id") + ": " + info.title)
-        .attr({
-          title: (info.author ? "by "+info.author+": " : "" ) + info.description
-        });
+        .attr("title", this.model.get("id") + ": " + (info.author ? "by "+info.author+": " : "" ) + info.description);
+      this.$('.node-box-title-name')
+        .text(info.title);
+
+      if (this.model.lazyLoadType) {
+        this.$(".module-icon").addClass("module-icon-"+this.model.lazyLoadType);
+      }
     },
     _alsoDrag: [],
     _dragDelta: {},

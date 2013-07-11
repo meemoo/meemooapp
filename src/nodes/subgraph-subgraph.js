@@ -28,7 +28,7 @@ $(function(){
       this.graph.get("nodes").on("remove", this.nodeRemoved, this);
     },
     inputlabel: function (label) {
-      this.model.view.$("h1.title").text(this.model.id + ": " + label);
+      this.model.view.$(".node-box-title-name").text( label );
     },
     nodeAdded: function (node) {
       // Check if i/o

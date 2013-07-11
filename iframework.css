@@ -193,8 +193,8 @@ div.module {
     cursor: pointer;
     
     position: absolute;
-    top: 2px;
-    left: 10px;
+    top: 0px;
+    left: 5px;
     right: 25px;
 
     white-space: nowrap;
@@ -207,6 +207,9 @@ div.module {
     div.module.ui-selecting h1.title {
       color: #333;
     }
+  .node-box-title-name {
+    vertical-align: 40%;
+  }
   div.module button.showcontrols,
   div.module div.controls {
     /*/*display: none;*/
@@ -678,6 +681,24 @@ div.panel {
   width: 50px;
   height: 50px;
   overflow: hidden;
+}
+
+.module-icon-small {
+  display: inline-block;
+  margin: -2px -23px -25px 0;
+/*  position: absolute;
+  top: 1px;
+  left: 0;
+*/  transform-origin: top left;
+  -moz-transform-origin: top left;
+  -webkit-transform-origin: top left;
+  -ms-transform-origin: top left;
+  -o-transform-origin: top left;
+  transform: scale(0.5);
+  -moz-transform: scale(0.5);
+  -webkit-transform: scale(0.5);
+  -ms-transform: scale(0.5);
+  -o-transform: scale(0.5);
 }
 
 /* image */
