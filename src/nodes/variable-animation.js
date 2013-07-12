@@ -241,8 +241,10 @@ $(function(){
     },
     _matte: [255, 255, 255],
     _transparent: [0, 255, 0],
-    makeGif: function(){
+    makeGif: function(stackUp){
       if (this._animation.length <= 0) { return false; }
+
+      if (stackUp!==false) { stackUp = true; }
       
       // Spawn worker
       this.$(".status").text("Setting up GIF...");
@@ -256,23 +258,28 @@ $(function(){
           self.$(".status").text("GIF " + Math.round(e.data.data*100) + "% encoded...");
         } else if (e.data.type === "gif") {
           var gifurl = "data:image/gif;base64,"+window.btoa(e.data.data);
-          var img = $('<img class="image" />')
-            .attr({
-              src: gifurl,
-              style: "max-width:100%"
-            });
-          // Format file size
-          var fileSize = Math.round(e.data.data.length / 1024);
-          var fileSizeUnit = "kb";
-          if (fileSize >= 1024) {
-            fileSize = Math.round(fileSize / 1024 * 10) / 10;
-            fileSizeUnit = "mb";
+          if (stackUp) {
+            var img = $('<img class="image" />')
+              .attr({
+                src: gifurl,
+                style: "max-width:100%"
+              });
+            // Format file size
+            var fileSize = Math.round(e.data.data.length / 1024);
+            var fileSizeUnit = "kb";
+            if (fileSize >= 1024) {
+              fileSize = Math.round(fileSize / 1024 * 10) / 10;
+              fileSizeUnit = "mb";
+            }
+            var encodeTime = Math.round( e.data.encodeTime / 100 ) / 10;
+            self.$(".exports").prepend( "<div>" + e.data.frameCount + " frames ("+fileSize+fileSizeUnit+") encoded in " + encodeTime + "s</div>" );
+            self.$(".exports").prepend( img );
           }
-          var encodeTime = Math.round( e.data.encodeTime / 100 ) / 10;
-          self.$(".exports").prepend( "<div>" + e.data.frameCount + " frames ("+fileSize+fileSizeUnit+") encoded in " + encodeTime + "s</div>" );
-          self.$(".exports").prepend( img );
           self.$(".status").text("");
           self.$(".make-gif").prop("disabled", false).text("make gif");
+
+          // Send data url
+          self.send("gif", gifurl);
 
           // Make draggable
           self.makeImageDraggable(img);
@@ -300,6 +307,11 @@ $(function(){
         transparent: this._transparent
       });
 
+    },
+    inputsendGif: function() {
+      if ( self.$(".make-gif")[0].disabled ) { return false; }
+
+      this.makeGif(false);
     },
     inputsend: function(){
       this.send("animation", this._animation);
@@ -379,6 +391,10 @@ $(function(){
         type: "int",
         description: "sends canvas with this index"
       },
+      sendGif: {
+        type: "bang",
+        description: "encodes and sends gif as data url"
+      },
       send: {
         type: "bang",
         description: "sends animation object"
@@ -393,9 +409,9 @@ $(function(){
         type: "animation",
         description: "animation object has width, height, fps, frames (array of canvases), and length (frames.length)"
       },
-      shift: {
-        type: "image",
-        description: "overflow canvas that is shifted from array"        
+      gif: {
+        type: "data:image/gif",
+        description: "completed gif"        
       }
     }
 

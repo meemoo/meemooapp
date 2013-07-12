@@ -1,7 +1,8 @@
 $(function(){
 
   var template = 
-    '<b>makeymakey</b><br /><div class="info"></div>'+
+    '<img src="img/makeymakey.jpg" style="max-width:100%;" />'+
+    '<div class="info"></div>'+
     '<label><input type="checkbox" class="active" checked /> active</label>';
 
   Iframework.NativeNodes["ui-makeymakey"] = Iframework.NativeNodes["ui"].extend({

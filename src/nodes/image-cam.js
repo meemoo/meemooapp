@@ -153,6 +153,15 @@ $(function(){
       }
     },
     _showOnionskin: false,
+    inputshowOnionskin: function (boo) {
+      this.$(".showonionskin").prop('checked', boo);
+      this._showOnionskin = boo;
+      if (boo) {
+        $(this.onionskin).show();
+      } else {
+        $(this.onionskin).hide();
+      }
+    },
     changeShowOnionskin: function(event) {
       // Show last frame as overlay
       if (event.target.checked) {
@@ -163,25 +172,6 @@ $(function(){
         $(this.onionskin).hide();
       }
     },
-    // setupPlaceholderVideo: function(){
-    //   // Video file instead of webcam
-    //   $(this._video)
-    //     .attr({
-    //       "autoplay": "true",
-    //       "loop": "true"
-    //     })
-    //     .html(
-    //       '<source src="img/no-webcam.mp4" type="video/mp4" />'+
-    //       '<source src="img/no-webcam.webm" type="video/webm" />'
-    //     )
-    //     .on('ended', function(){
-    //       this.play();
-    //     });
-    //   // Sets up frame draw ms
-    //   this.inputfps(10);
-    //   this._camStarted = true;
-    //   this._triggerRedraw = true;
-    // },
     setSizes: function(){
       var input;
       if (this._video) {
@@ -383,10 +373,14 @@ $(function(){
         max: 30,
         "default": 20
       },
-      onionskin: {
-        type: "image",
-        description: "onionskin image"
+      showOnionskin: {
+        type: "boolean",
+        description: "show/hide onionskin"
       },
+      // onionskin: {
+      //   type: "boolean",
+      //   description: "default onionskin"
+      // },
       start: {
         type: "bang",
         description: "start the camera"

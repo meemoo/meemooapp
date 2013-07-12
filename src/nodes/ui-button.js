@@ -23,6 +23,12 @@ $(function(){
     },
     inputbang: function(){
       this.send("bang", "!");
+      this.$(".button").addClass("active");
+
+      var self = this;
+      _.delay(function(){
+        self.$(".button").removeClass("active");
+      }, 100);
       return false;
     },
     inputlabel: function (label) {

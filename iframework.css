@@ -38,8 +38,8 @@ button,
     background-color: #DADADA;
     border-color: #999999;
   }
-  button:active,
-  .button:active {
+  button:active, button.active,
+  .button:active, .button.active {
     color: #212121;
     background-color: #ffffff;
     border-color: #AAAAAA;
