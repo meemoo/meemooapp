@@ -274,15 +274,15 @@ $(function(){
             var encodeTime = Math.round( e.data.encodeTime / 100 ) / 10;
             self.$(".exports").prepend( "<div>" + e.data.frameCount + " frames ("+fileSize+fileSizeUnit+") encoded in " + encodeTime + "s</div>" );
             self.$(".exports").prepend( img );
+
+            // Make draggable
+            self.makeImageDraggable(img);
           }
           self.$(".status").text("");
           self.$(".make-gif").prop("disabled", false).text("make gif");
 
           // Send data url
           self.send("gif", gifurl);
-
-          // Make draggable
-          self.makeImageDraggable(img);
         }
       }, false);
       gifWorker.addEventListener('error', function (e) {
@@ -391,10 +391,10 @@ $(function(){
         type: "int",
         description: "sends canvas with this index"
       },
-      sendGif: {
-        type: "bang",
-        description: "encodes and sends gif as data url"
-      },
+      // sendGif: {
+      //   type: "bang",
+      //   description: "encodes and sends gif as data url"
+      // },
       send: {
         type: "bang",
         description: "sends animation object"
@@ -408,11 +408,11 @@ $(function(){
       animation: {
         type: "animation",
         description: "animation object has width, height, fps, frames (array of canvases), and length (frames.length)"
-      },
-      gif: {
-        type: "data:image/gif",
-        description: "completed gif"        
-      }
+      }//,
+      // gif: {
+      //   type: "data:image/gif",
+      //   description: "completed gif"        
+      // }
     }
 
   });
