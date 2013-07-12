@@ -391,10 +391,10 @@ $(function(){
         type: "int",
         description: "sends canvas with this index"
       },
-      // sendGif: {
-      //   type: "bang",
-      //   description: "encodes and sends gif as data url"
-      // },
+      sendGif: {
+        type: "bang",
+        description: "encodes and sends gif as data url"
+      },
       send: {
         type: "bang",
         description: "sends animation object"
@@ -408,11 +408,11 @@ $(function(){
       animation: {
         type: "animation",
         description: "animation object has width, height, fps, frames (array of canvases), and length (frames.length)"
-      }//,
-      // gif: {
-      //   type: "data:image/gif",
-      //   description: "completed gif"        
-      // }
+      },
+      gif: {
+        type: "data:image/gif",
+        description: "completed gif as dataurl"        
+      }
     }
 
   });
