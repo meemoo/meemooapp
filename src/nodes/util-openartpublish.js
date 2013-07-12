@@ -66,14 +66,14 @@ $(function(){
           });
 
           // Info
-          self.$(".info").text('Find your image at openart.eyebeam.org/gallery ' + s3url);
+          self.$(".info").text('Find your image at openart.eyebeam.org/gallery ');
         }, 
         function (error) {
-          self.$(".info").text('Upload error :-(');
+          self.$(".info").text('Upload error :-( ');
           self.lastimg = "";
         }, 
         function (percent) {
-          self.$(".info").text(percent + "% uploaded.");
+          self.$(".info").text(percent + "% uploaded. ");
         }
       );
 
