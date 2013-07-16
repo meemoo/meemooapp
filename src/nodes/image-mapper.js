@@ -93,17 +93,13 @@ $(function(){
 
 
   var template = 
-    '<style type="text/css">'+
-      '.layers .control-point { position:absolute; background-color:white; border:1px red solid; border-radius:15px; padding:10px; margin: -15px 0 0 -15px; opacity:0.25; }'+
-      '.layers .control-point:hover, .layers .control-point.selected { opacity:0.5; }'+
-    '</style>'+
     '<div class="layers" style="position:absolute; top:0; left:110px; bottom:0; right:0px; overflow:auto; z-index:0; background-color:black;">'+
       '<div class="canvases" style="position:absolute; top:0px; left:0px; z-index:1;" ></div>'+
       '<div class="control-points" style="position:absolute; top:0px; left:0px; z-index:2;" >'+
-        '<div title="top-left"     class="control-point tl c0" data-handle="0" style="position:absolute" >⌜</div>'+
-        '<div title="top-right"    class="control-point tr c1" data-handle="1" style="position:absolute" >⌝</div>'+
-        '<div title="bottom-left"  class="control-point bl c2" data-handle="2" style="position:absolute" >⌞</div>'+
-        '<div title="bottom-right" class="control-point br c3" data-handle="3" style="position:absolute" >⌟</div>'+
+        '<div title="top-left"     class="control-point tl c0" data-handle="0" style="position:absolute" ></div>'+
+        '<div title="top-right"    class="control-point tr c1" data-handle="1" style="position:absolute" ></div>'+
+        '<div title="bottom-left"  class="control-point bl c2" data-handle="2" style="position:absolute" ></div>'+
+        '<div title="bottom-right" class="control-point br c3" data-handle="3" style="position:absolute" ></div>'+
       '</div>'+
     '</div>'+
     '<div style="position:absolute; top:0; left:0; bottom:0; width:110px; overflow: auto;">'+

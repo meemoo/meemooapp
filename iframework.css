@@ -919,6 +919,23 @@ div.panel {
     display: inline;
   }
 
+.layers .control-point { 
+  position: absolute; 
+  background-color: white; 
+  border: 1px red solid; 
+  border-radius: 15px; 
+  padding: 10px; 
+  margin: -15px 0 0 -15px; 
+  opacity: 0.25; 
+}
+.layers .control-point:hover, 
+.layers .control-point.selected { 
+  opacity: 0.5; 
+}
+.control-point.tl:before { content: "⌜" }
+.control-point.tr:before { content: "⌝" }
+.control-point.bl:before { content: "⌞" }
+.control-point.br:before { content: "⌟" }
 
 
 
