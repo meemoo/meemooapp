@@ -6,7 +6,7 @@ $(function(){
 
   // Average and normalize FFT to 3 values
   var lowMidHigh = function(fft) {
-    var low = mid = high = 0;
+    var low = 0; var mid = 0; var high = 0;
     var max = 255;
     for (var i=0; i<3; i++) {
       low += fft[i];
@@ -33,7 +33,7 @@ $(function(){
       description: "webrtc mic to web audio api"
     },
     initializeModule: function(){
-      this.audioOutput = this.audioContext.createGainNode();
+      this.audioOutput = this.audioContext.createGain();
       this.analyser = this.audioContext.createAnalyser();
       this.analyser.fftSize = 32;
       this.audioOutput.connect(this.analyser);
@@ -42,7 +42,9 @@ $(function(){
     started: false,
     inputstart: function(){
       var self = this;
-      navigator.webkitGetUserMedia(
+      navigator._meemoo_gum = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || null;
+      if (!navigator._meemoo_gum) { return; }
+      navigator._meemoo_gum(
         {audio: true}, 
         function(stream) {
           self._stream = stream;
