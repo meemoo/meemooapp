@@ -44,12 +44,6 @@ $(function(){
       if (this.view.Native) {
         this.view.Native.receive(name, value);
       }
-
-      // for (var name in message) {
-      //   if (this.view.Native) {
-      //     this.view.Native.receive(name, message[name]);
-      //   }
-      // }
     },
     infoLoaded: function (info) {
       this.info = info;
@@ -61,6 +55,7 @@ $(function(){
       var state = this.get("state");
       if (state && this.view.Native){
         for (var name in state) {
+          this.setEquation(name, state[name]);
           if (this.view.Native["input"+name]){
             this.view.Native["input"+name](state[name]);
           } else {
@@ -136,13 +131,27 @@ $(function(){
     },
     setValues: function(info) {
       for (var name in info) {
-        this.get("state")[name] = info[name];
+        this.setValue(name, info[name]);
       }
       this.nodeChanged();
     },
     setValue: function(name, value) {
+      this.setEquation(name, value);
       this.get("state")[name] = value;
       this.nodeChanged();
+    },
+    setEquation: function (name, value) {
+      if (!this.view.Native) { return; }
+      var input = this.Inputs.get(name);
+      if (!input) { return; }
+      var type = input.get("type");
+      if ( type === "int" || type === "float" || type === "number" ) {
+        if (value.toString().substr(0,1) === "=") {
+          this.view.Native.setEquation(name, value.substr(1));
+        } else {
+          this.view.Native.setEquation(name);
+        }
+      }
     },
     toString: function() {
       if (this.info) {

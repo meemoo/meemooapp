@@ -261,17 +261,19 @@ $(function(){
       var inputForm = $('<form />')
         .attr({
           "id": this.model.node.id + "_" + this.model.get("name"),
-          "class": "manualinput"
+          "class": "manualinput",
+          "novalidate": ""
         });
       if (typeabbr === "int" || typeabbr === "num" || typeabbr === "flo" ) {
         showForm = true;
         inputForm.append(
           $("<input />").attr({
-            "type": "number",
-            "min": hole.data("min"),
-            "max": hole.data("max"),
-            "step": "any",
-            "value": this.model.node.get("state")[this.model.get("name")]
+            // "type": "number",
+            // "min": hole.data("min"),
+            // "max": hole.data("max"),
+            // "step": "any",
+            "value": this.model.node.get("state")[this.model.get("name")],
+            "title": 'use equations like "=x*100" to change all incoming values'
           })
         );
       } else if (typeabbr === "col") {
@@ -410,11 +412,14 @@ $(function(){
           val = false;
         }
       }
-      if (type === "int") {
-        val = parseInt(val, 10);
-      }
-      if (type === "number" || type === "float") {
-        val = parseFloat(val);
+      if (type === "int" || type === "number" || type === "float") {
+        if (typeof val === "string" && val.toString().substr(0,1)==="=") {
+          // Try to parse equation
+        } else if (type === "int") {
+          val = parseInt(val, 10);
+        } else if (type === "number" || type === "float") {
+          val = parseFloat(val);
+        }
       }
       if (typeabbr === "arr") {
         try {
@@ -429,11 +434,10 @@ $(function(){
         val = "!";
         saveToState = false;
       }
-      this.model.node.receive(inputname, val);
       if (saveToState) {
         this.model.node.setValue(inputname, val);
       }
-      // $('div.edge-edit').remove();
+      this.model.node.receive(inputname, val);
       return false;
     },
     disconnect: function (event) {

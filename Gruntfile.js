@@ -22,6 +22,8 @@ module.exports = function() {
           'libs/mousetrap.js',
           'libs/spectrum/spectrum.js',
           'libs/jquery.ui.touch-punch.js',
+          'libs/jquery.ui.touch-punch.js',
+          'libs/js-expression-eval/parser.js',
           // Iframework
           'src/iframework.js',
           'src/iframework-utils.js',

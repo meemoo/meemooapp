@@ -70,7 +70,29 @@ $(function(){
     send: function (name, value) {
       this.model.send(name, value);
     },
+    setEquation: function (name, value) {
+      if (!this.equations) {
+        this.equations = {};
+      }
+      if (value) {
+        try {
+          var expression = Parser.parse(value);
+          // var func = expression.toJSFunction();
+          this.equations[name] = expression;
+        } catch (error) {
+          // If equation doesn't parse, pass through val
+          this.equations[name] = function(vars){return vars.x;};
+        }
+      } else {
+        if (this.equations[name]) {
+          this.equations[name] = undefined;
+        }
+      }
+    },
     receive: function (name, value) {
+      if (this.equations && this.equations[name]){
+        value = this.equations[name].evaluate({x:value});
+      }
       if (this["input"+name]){
         this["input"+name](value);
         // Must manually set _triggerRedraw in that function if needed
