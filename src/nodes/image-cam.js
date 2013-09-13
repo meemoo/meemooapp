@@ -62,7 +62,7 @@ $(function(){
         window.URL = window.webkitURL || window.msURL || window.oURL || false;
       }
       if ( !navigator.getUserMedia ) {
-        navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || false;
+        navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || null;
       }
       if ( !navigator.getUserMedia ) {
         this.$(".startcamera")

@@ -42,9 +42,11 @@ $(function(){
     started: false,
     inputstart: function(){
       var self = this;
-      navigator._meemoo_gum = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || null;
-      if (!navigator._meemoo_gum) { return; }
-      navigator._meemoo_gum(
+      if ( !navigator.getUserMedia ) {
+        navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || null;
+      }
+      if (!navigator.getUserMedia) { return; }
+      navigator.getUserMedia(
         {audio: true}, 
         function(stream) {
           self._stream = stream;
