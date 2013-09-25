@@ -4,3 +4,6 @@ node_js:
 
 script:
   - npm test
+
+notifications:
+  irc: "chat.freenode.net#meemoo"
