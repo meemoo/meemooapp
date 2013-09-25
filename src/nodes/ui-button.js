@@ -41,6 +41,12 @@ $(function(){
       }
       this.$(".button").text(label);
     },
+    inputcolor: function (color) {
+      this.$(".button").css("color", color);
+    },
+    inputbackground: function (color) {
+      this.$(".button").css("background-color", color);
+    },
     inputkey: function(key){
       // Unbind the old 
       if (this._key && this._key !== "") {
@@ -72,6 +78,16 @@ $(function(){
       label: {
         type: "string",
         description: "label for button",
+        "default": ""
+      },
+      color: {
+        type: "color",
+        description: "color of button text",
+        "default": ""
+      },
+      background: {
+        type: "color",
+        description: "color of button background",
         "default": ""
       },
       key: {
