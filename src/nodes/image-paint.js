@@ -35,12 +35,28 @@ $(function(){
         if (!tools.painting) { return; }
         if (e) { tools.move(e); }
 
-        tools.ctx.beginPath();
-        tools.ctx.moveTo(tools.lastX, tools.lastY);
-        tools.ctx.lineTo(tools.mouseX, tools.mouseY);
-        tools.ctx.stroke();
+        if (tools.lastX===tools.mouseX && tools.lastY===tools.mouseY) {
+          // Draw circle
+          tools.ctx.beginPath();
+          tools.ctx.moveTo(tools.lastX, tools.lastY);
+          tools.ctx.arc(tools.mouseX, tools.mouseY, tools.maxThickness/2, 0, Math.PI*2);
+          var oldW = tools.ctx.lineWidth;
+          var oldC = tools.ctx.fillStyle;
+          tools.ctx.lineWidth = 1;
+          tools.ctx.fillStyle = tools.ctx.strokeStyle;
+          tools.ctx.fill();
+          tools.ctx.lineWidth = oldW;
+          tools.ctx.fillStyle = oldC;
+        } else {
+          // Draw line
+          tools.ctx.beginPath();
+          tools.ctx.moveTo(tools.lastX, tools.lastY);
+          tools.ctx.lineTo(tools.mouseX, tools.mouseY);
+          tools.ctx.stroke();
+        }
         tools.lastX = tools.mouseX;
         tools.lastY = tools.mouseY;
+
       },
       drawRect: function(e){
         if (!tools.painting) { return; }
@@ -150,18 +166,7 @@ $(function(){
 
       this.$("canvas").css({position:"absolute", top:0, left:0});
 
-      this.tools.canvasPosition = {};
-      var scrollParent = this.model.view.$(".inner")[0];
-      var scrollGraph = this.model.parentGraph.view.el;
       var self = this;
-      var setOffset = function(){
-        self.tools.canvasPosition.left = self.model.get("x") - scrollParent.scrollLeft - scrollGraph.scrollLeft + 3;
-        self.tools.canvasPosition.top = self.model.get("y") - scrollParent.scrollTop - scrollGraph.scrollTop + 3;
-      };
-      $(scrollParent).scroll(setOffset);
-      $(scrollGraph).scroll(setOffset);
-      this.model.on("change:x, change:y", setOffset);
-      setOffset();
 
       this.draw.onmouseover = function(e){
         if (self._mode === "trace" || self._mode === "cutout") {
@@ -185,6 +190,23 @@ $(function(){
         self.endLine(e);
       });
 
+      _.defer( function(){self.bindOffset();} );
+
+    },
+    bindOffset: function () {
+      // Offset is a pain in the ass
+      this.tools.canvasPosition = {};
+      var scrollParent = this.model.view.$(".inner")[0];
+      var scrollGraph = this.model.parentGraph.view.el;
+      var self = this;
+      var setOffset = function(){
+        self.tools.canvasPosition.left = self.model.get("x") - scrollParent.scrollLeft - scrollGraph.scrollLeft + 3;
+        self.tools.canvasPosition.top = self.model.get("y") - scrollParent.scrollTop - scrollGraph.scrollTop + 3;
+      };
+      $(scrollParent).scroll(setOffset);
+      $(scrollGraph).scroll(setOffset);
+      this.model.on("change:x, change:y", setOffset);
+      setOffset();
     },
     // startLine: function(e) {
     //   this.tools.painting = true;
@@ -224,6 +246,8 @@ $(function(){
           this.draw.onmousemove = this.tools.drawStamp;
           break;
         case "smoothPencil" :
+          this.tools.minThickness = this._strokewidth;
+          this.tools.maxThickness = this._strokewidth;
           this.draw.onmousemove = this.tools.drawSmoothPencil;
           break;
         case "pixelBrush" :
@@ -377,8 +401,8 @@ $(function(){
       },
       tool: {
         type: "string",
-        description: "pixelPencil, pixelBrush, smoothPencil, rect, fillRect, strokeRect, stamp",
-        options: "pixelPencil pixelBrush smoothPencil rect fillRect strokeRect stamp".split(" "),
+        description: "pixelPencil, pixelBrush, smoothPencil, stamp",
+        options: "pixelPencil pixelBrush smoothPencil stamp".split(" "),
         "default": "smoothPencil"
       },
       mode: {
