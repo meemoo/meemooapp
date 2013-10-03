@@ -201,12 +201,18 @@ $(function(){
       }
     },
     inputpercent: function(p){
-      this.inputstop();
       if (p>1){
         p %= 1;
       }
       this._percent = p;
       this.gotoPercent(p);
+    },
+    inputtime: function(t){
+      t = (t * 1000) % this._duration;
+      if (t<0) {
+        t += this._duration;
+      }
+      this.gotoPercent( t / this._duration );
     },
     redraw: function(){
       if (this.tween) {
@@ -280,9 +286,12 @@ $(function(){
       percent: {
         type: "float",
         description: "skip to percent of tween",
-        "default": 0,
         min: 0,
         max: 1
+      },
+      time: {
+        type: "float",
+        description: "skip to time of tween"
       },
       start: {
         type: "bang",
