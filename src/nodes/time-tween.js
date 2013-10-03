@@ -208,9 +208,12 @@ $(function(){
       this.gotoPercent(p);
     },
     inputtime: function(t){
-      t = (t * 1000) % this._duration;
-      if (t<0) {
-        t += this._duration;
+      t *= 1000;
+      if (t !== this._duration) {
+        t %= this._duration;
+        if (t<0) {
+          t += this._duration;
+        }
       }
       this.gotoPercent( t / this._duration );
     },
