@@ -3,7 +3,12 @@
 
   Message to worker should be an object with 
   {
-    frames: (array of pixel data objects), 
+    frames: (array of frames)
+            {
+              data: (pixel data of frame),
+              width: (width of frame),
+              height: (height of frame)
+            }
     delay: (ms delay per frame), 
     matte: ([r,g,b] (default white)),
     transparent: ([r,g,b] (optional))
