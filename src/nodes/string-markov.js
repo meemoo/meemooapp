@@ -117,7 +117,7 @@ var markov = function(input, type, reg) {
     },
     inputstring: function (string) {
       string = string.toLowerCase();
-      string = string.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+      // string = string.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"");
       this.markov = new markov(string);
     },
     inputgenerate: function () {
