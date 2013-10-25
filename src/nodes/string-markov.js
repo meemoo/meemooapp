@@ -15,7 +15,7 @@ $(function(){
 
 */ 
 var markov = function(input, type, reg) {
-  var data;
+  var data, s;
   if (reg===undefined) {
     reg = /[.,?"();\-!':—^\w]+ /g;
   }
@@ -38,6 +38,7 @@ var markov = function(input, type, reg) {
     data = JSON.parse(input);
   }
   this.data = data;
+  this.length = s.length;
   
   var gen = function(l) {
     var sanitycheck = false;
@@ -108,23 +109,31 @@ var markov = function(input, type, reg) {
     template: _.template(template),
     info: {
       title: "markov",
-      description: "makes a markov chain based "
+      description: "makes a markov chain based on seed text, useful for gibberish, a kind of cutup method.",
+      author: "BrianHicks"
     },
     events: {
       "click .gen":  "inputgenerate"
     },
     initializeModule: function(){
     },
-    inputstring: function (string) {
-      string = string.toLowerCase();
-      // string = string.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"");
-      this.markov = new markov(string);
-    },
     inputgenerate: function () {
-      if (!this.markov) { return; }
-      var out = this.markov.gen(this._len);
+      if (!this._string) { return; }
+      var s = this._string.toLowerCase();
+      if (!this._punctuation) {
+        s = s.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()?]/g,"");
+      }
+      var m = new markov(s);
+      var out = m.gen(this._len);
+      // Capitalize sentences.
+      if (this._punctuation) {
+        out = out.replace(/[.?!]\s([a-z])/g, function (match) {
+          return match.toUpperCase();
+        });
+        out = out.substr(0,1).toUpperCase() + out.substr(1);
+      }
       this.$(".chain").text(out);
-      this.$(".info").text("(" + this._len + " words, " + out.length + " characters)");
+      this.$(".info").text("(input " + m.length + " words; output " + this._len + " words, " + out.length + " characters)");
       this.send("chain", out);
     },
     inputs: {
@@ -136,6 +145,11 @@ var markov = function(input, type, reg) {
         type: "int",
         description: "how many words in the chain",
         "default": 20
+      },
+      punctuation: {
+        type: "boolean",
+        description: "maintain punctuation, which can make interesting sentences",
+        "default": true
       },
       generate: {
         type: "bang",
