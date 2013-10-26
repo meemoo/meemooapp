@@ -123,7 +123,7 @@ var markov = function(input, type, reg) {
       s = s.replace(/[`’]/g, "'");
       s = s.replace(/[“”]/g, '"');
       if (!this._punctuation) {
-        s = s.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()?"]/g,"");
+        s = s.replace(/[\.\/\^\*,#!$%&;:{}=_~()?"]/g,"");
       }
       var m = new markov(s);
       var out = m.gen(this._len);
