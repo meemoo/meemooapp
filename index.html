@@ -35,7 +35,7 @@ Try debug.html if you want to poke the insides.
     
     // Force HTTPS
     if (window.location.host === 'app.meemoo.org' && window.location.protocol === 'http:') {
-      window.location.protocol = 'https:';
+      window.location.href = window.location.href.replace('http:', 'https:');
     }
   
   
