@@ -32,6 +32,13 @@ Try debug.html if you want to poke the insides.
   <title>meemoo: use, build, share, and hack creative apps in the browser</title>
 
   <script type="text/javascript">
+    
+    // Force HTTPS
+    if (window.location.host === 'app.meemoo.org' && window.location.protocol === 'http:') {
+      window.location.protocol = 'https:';
+    }
+  
+  
   (function(){
     "use strict";
 
