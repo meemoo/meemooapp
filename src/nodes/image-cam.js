@@ -89,23 +89,25 @@ $(function(){
         });
       }
 
-      if (navigator.getUserMedia) {
-        navigator.getUserMedia( { video: true, audio: false }, function(stream){
-          self._stream = stream;
-          if (window.URL.createObjectURL) {
-            self._video.src = window.URL.createObjectURL(stream);
-          } else {
-            self._video.src = stream;
-          }
-          // Sets up frame draw ms
-          self.inputfps(self._fps);
-          self._placeholderWarning = null;
-          self._camStarted = true;
-          self._triggerRedraw = true;
-        }, function(error){
-          self._placeholderWarning = "(denied webcam access)";
-          self.stopCam();
-        });
+      if (navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices
+          .getUserMedia({video: true, audio: false})
+          .then(function(mediaStream) {
+            try {
+              self._video.srcObject = mediaStream;
+            } catch (error) {
+              self._video.src = URL.createObjectURL(mediaStream);
+            }
+            // Sets up frame draw ms
+            self.inputfps(self._fps);
+            self._placeholderWarning = null;
+            self._camStarted = true;
+            self._triggerRedraw = true;
+          })
+          .catch(function() {
+            self._placeholderWarning = "(denied webcam access)";
+            self.stopCam();
+          })
       } else {
         this._placeholderWarning = "(no getUserMedia webcam)";
         self.stopCam();
