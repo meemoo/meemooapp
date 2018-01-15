@@ -42,6 +42,8 @@
     "grunt-contrib-watch": "~0.3.1"
   },
   "scripts": {
-    "test": "./node_modules/.bin/grunt test"
+    "test": "grunt test",
+    "build": "grunt build",
+    "start": "grunt dev"
   }
 }
