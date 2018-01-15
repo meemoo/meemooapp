@@ -92,16 +92,10 @@ $(function(){
       if (navigator.getUserMedia) {
         navigator.getUserMedia( { video: true, audio: false }, function(stream){
           self._stream = stream;
-          if (navigator.mozGetUserMedia) {
-            // HACK for ff
-            self._video.mozSrcObject = stream;
-            self._video.play();
+          if (window.URL.createObjectURL) {
+            self._video.src = window.URL.createObjectURL(stream);
           } else {
-            if (window.URL.createObjectURL) {
-              self._video.src = window.URL.createObjectURL(stream);
-            } else {
-              self._video.src = stream;
-            }
+            self._video.src = stream;
           }
           // Sets up frame draw ms
           self.inputfps(self._fps);
