@@ -7,7 +7,7 @@ $(function(){
   var template = 
     '<form class="textform">'+
       '<label><span class="label"></span> '+
-        '<input type="number" class="number" style="width:90%"></input>'+
+        '<input type="number" class="number" step="any" style="width:90%"></input>'+
       '</label>'+
       '<button class="send" type="submit">send</button>'+
     '</form>';
