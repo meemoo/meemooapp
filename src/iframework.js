@@ -576,7 +576,7 @@ $(function(){
           var split = last.split("/");
           if (split.length > 0) {
             var id = split[split.length-1];
-            var gisturl = "http://meemoo.org/iframework/#gist/"+id;
+            var gisturl = "https://app.meemoo.org/#gist/"+id;
             var gisturlE = encodeURIComponent(gisturl);
             var titleE = encodeURIComponent(graph["info"]["title"]);
 
