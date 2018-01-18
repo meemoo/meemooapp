@@ -79,6 +79,10 @@ $(function(){
           var expression = Parser.parse(value);
           // var func = expression.toJSFunction();
           this.equations[name] = expression;
+          if (value.indexOf('x') === -1) {
+            // Without x, evaluate equation as initial information
+            this.receive(name, 0);
+          }
         } catch (error) {
           // If equation doesn't parse, pass through val
           this.equations[name] = function(vars){return vars.x;};

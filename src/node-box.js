@@ -55,11 +55,9 @@ $(function(){
       var state = this.get("state");
       if (state && this.view.Native){
         for (var name in state) {
-          this.setEquation(name, state[name]);
-          if (this.view.Native["input"+name]){
-            this.view.Native["input"+name](state[name]);
-          } else {
-            this.view.Native["_"+name] = state[name];
+          var eqSet = this.setEquation(name, state[name]);
+          if (!eqSet) {
+            this.receive(name, state[name]);
           }
         }
       }
@@ -146,8 +144,9 @@ $(function(){
       if (!input) { return; }
       var type = input.get("type");
       if ( type === "int" || type === "float" || type === "number" ) {
-        if (value.toString().substr(0,1) === "=") {
+        if (value && value.toString().substr(0,1) === "=") {
           this.view.Native.setEquation(name, value.substr(1));
+          return true;
         } else {
           this.view.Native.setEquation(name);
         }
