@@ -85,7 +85,7 @@ $(function(){
       }
       // Forward to subgraph
       var fwd = this.graph.get("nodes").get(name);
-      if (fwd && fwd.view) {
+      if (fwd && fwd.view && fwd.view.Native) {
         fwd.view.Native.inputdata(value);
       }
     },
