@@ -196,7 +196,12 @@ $(function(){
     resizeEdgeSVG: _.debounce( function () {
       // _.debounce keeps it from getting called more than needed
       var svg = this.$('.edgesSvg')[0];
-      var rect = svg.getBBox();
+      // Don't choke on off-screen svg
+      try {
+        var rect = svg.getBBox();
+      } catch (e) {
+        return;
+      }
       var width = rect.x + rect.width + 100;
       var height = rect.y + rect.height + 100;
       if (width === 100 && height === 100) {
