@@ -5,7 +5,7 @@ $(function(){
       '<button title="close" class="close icon-cancel"></button>'+
       '<h2><%= name %> (<%= type %>)</h2>'+
       '<p><%= description %></p>'+
-      '<p><button class="publish-port">Publish</button></p>'+
+      // '<p><button class="publish-port">Publish</button></p>'+
     '</div>';
 
   var edgeEditTemplate =
@@ -32,8 +32,8 @@ $(function(){
       "dragstop .plugend":           "unplugstop",
       "drop":                        "drop",
       "click .disconnect":           "disconnect",
-      "submit .manualinput":         "manualinput",
-      "click .publish-port":         "publishPort"
+      "submit .manualinput":         "manualinput"
+      // "click .publish-port":         "publishPort"
     },
     initialize: function () {
       this.render();

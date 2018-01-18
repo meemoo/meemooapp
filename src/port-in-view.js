@@ -22,8 +22,8 @@ $(function(){
       "dragstop .plugend":           "unplugstop",
       "drop":                        "drop",
       "click .disconnect":           "disconnect",
-      "submit .manualinput":         "manualinput",
-      "click .publish-port":         "publishPort"
+      "submit .manualinput":         "manualinput"
+      // "click .publish-port":         "publishPort"
     },
     render: function () {
       this.$el.html( this.portInTemplate(this.model.toJSON()) );

@@ -36,8 +36,8 @@ $(function(){
       "drag .plugend":               "unplugdrag",
       "dragstop .plugend":           "unplugstop",
       "drop":                        "drop",
-      "click .disconnect":           "disconnect",
-      "click .publish-port":         "publishPort"
+      "click .disconnect":           "disconnect"
+      // "click .publish-port":         "publishPort"
     },
     render: function () {
       this.$el.html( this.portOutTemplate(this.model.toJSON()) );
