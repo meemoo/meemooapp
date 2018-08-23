@@ -1,119 +1,139 @@
-/*global Whammy:true*/
+$(function() {
+  var template =
+    '<div class="info" /><button class="start">start capture</button><button class="stop">stop</button><div class="videos" />';
 
-$(function(){
-
-  var template = '<div class="info" /><button class="encode">encode video</button><div class="videos" />';
-
-  Iframework.NativeNodes["file-webm"] = Iframework.NativeNodes["file"].extend({
-
+  Iframework.NativeNodes['file-webm'] = Iframework.NativeNodes['file'].extend({
     template: _.template(template),
     info: {
-      title: "webm",
-      description: "encode canvases to WebM video (requires WebP = Chrome only for now)"
+      title: 'webm',
+      description: 'encode canvas stream to WebM video',
     },
-    initializeModule: function(){      
+    initializeModule: function() {
       var self = this;
-      if (window.Whammy) {
-        this.$('.info').text("ready");
-        this._ready = true;
-      } else {
-        yepnope({
-          load: "libs/whammy/whammy.js",
-          complete: function () {
-            self.initializeModule();
-          }
-        });
-      }
-      this.$(".encode")
+      this.$('.start')
         .button()
-        .click(function(){
-          self.inputencode();
+        .click(function() {
+          self.inputstart();
         })
-        .hide();
+        .prop('disabled', true);
+      this.$('.stop')
+        .button()
+        .click(function() {
+          self.inputstop();
+        })
+        .prop('disabled', true);
+      if (!window.MediaRecorder) {
+        this.$('.info').text(
+          'Unsupported browser: https://caniuse.com/#feat=mediarecorder'
+        );
+      }
     },
-    _frameCount: 0,
-    inputimage: function (image) {
-      if (this._ready) {
-        if (!this._encoder) {
-          // Setup encoder
-          this._encoder = new Whammy.Video(this._fps);
+    _image: null,
+    inputimage: function(image) {
+      if (image !== this._image) {
+        this._image = image;
+        this.$('.start').prop('disabled', false);
+      }
+    },
+    inputstart: function() {
+      this.$('.start').prop('disabled', true);
+      this.$('.stop').prop('disabled', false);
+
+      if (!MediaRecorder || !this._image || !this._image.captureStream) return;
+
+      // Check support
+      var options;
+      if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
+        options = {mimeType: 'video/webm; codecs=vp9'};
+      } else if (MediaRecorder.isTypeSupported('video/webm')) {
+        options = {mimeType: 'video/webm'};
+      } else {
+        return;
+      }
+
+      var stream = this._image.captureStream(this._fps);
+
+      var recordedChunks = [];
+      this._recordedChunks = recordedChunks;
+
+      mediaRecorder = new MediaRecorder(stream, options);
+      this._mediaRecorder = mediaRecorder;
+      mediaRecorder.ondataavailable = handleDataAvailable;
+      mediaRecorder.start();
+
+      var self = this;
+      function handleDataAvailable(event) {
+        console.log(event, event.data.size);
+        if (event.data.size > 0) {
+          recordedChunks.push(event.data);
         }
-        this._encoder.add(image);
-        this._frameCount++;
-        this.$('.info').text(this._frameCount+" frames");
-        if (this._frameCount === 1) {
-          this.$(".encode").show();
+        if (event.target.state === 'inactive') {
+          self.makeUrl();
         }
       }
     },
-    inputencode: function () {
-      if (!this._encoder) {
-        // No frames yet
-        return false;
-      }
-
-      this.$(".encode").hide();
-
-      // Encode
-      var start_time = new Date();
-      var output = this._encoder.compile();
-      var end_time = new Date();
-      var url = (window.webkitURL || window.URL).createObjectURL(output);
-
-      var videoDiv = $('<div class="video" />');
-
-      // Video element
-      var videoEl = '<video src="'+url+'" controls autoplay loop style="max-width:100%;"></video>';
-      videoDiv.append(videoEl);
+    inputstop: function() {
+      this.$('.start').prop('disabled', false);
+      this.$('.stop').prop('disabled', true);
+      if (!this._mediaRecorder) return;
+      this._mediaRecorder.stop();
+    },
+    makeUrl: function() {
+      var buffer = new Blob(this._recordedChunks, {
+        type: 'video/webm',
+      });
+      var url = window.URL.createObjectURL(buffer);
 
       // Send blob URL
-      this.send("url", url);
+      this.send('url', url);
 
       // Info
-      var info = $('<p>'+
-          '<a href="'+url+'" target="_blank">Download</a> (add .webm) <br />'+
-          'Compiled '+ this._frameCount +' frames to video in ' + (end_time - start_time) + 'ms, '+
-          'video length: '+ Math.round(this._frameCount / this._fps * 100)/100 +'s ('+this._fps+'fps), '+
-          'file size: '+ Math.ceil(output.size / 1024) +'KB <br />'+
-        '</p>');
-      var deleteLink = $('<a href="#">Delete</a>')
-        .click(function(){
-          $(this).parent().parent().remove();
-          return false;
-        });
-      info.append(deleteLink);
-      videoDiv.append(info);
+      var info = $(
+        `<p>
+          <a href="${url}" target="_blank" download="meemoo.webm">Download</a>
+        </p>`
+      );
+      // 'Compiled ' +
+      // this._frameCount +
+      // ' frames to video in ' +
+      // (end_time - start_time) +
+      // 'ms, ' +
+      // 'video length: ' +
+      // Math.round((this._frameCount / this._fps) * 100) / 100 +
+      // 's (' +
+      // this._fps +
+      // 'fps), ' +
+      // 'file size: ' +
+      // Math.ceil(output.size / 1024) +
+      // 'KB <br />' +
 
-      this.$(".videos").prepend(videoDiv);
-
-      // Set encoder to null, ready for next
-      this._encoder = null;
-      this._frameCount = 0;
-      this.$('.info').text("ready");
+      // TODO: delete option w/ window.URL.revokeObjectURL(url);
+      this.$('.videos').prepend(info);
     },
     inputs: {
       image: {
-        type: "image",
-        description: "canvas images to be added to the webm video"
+        type: 'image',
+        description: 'canvas to be captured to the webm video',
       },
       fps: {
-        type: "int",
-        description: "framerate in frames per second",
-        "default": 30
+        type: 'int',
+        description: 'framerate in frames per second',
+        default: 30,
       },
-      encode: {
-        type: "bang",
-        description: "encode the stack of frames into a video"
-      }
+      start: {
+        type: 'bang',
+        description: 'start capturing frames into a video',
+      },
+      stop: {
+        type: 'bang',
+        description: 'stop capturing frames, save video',
+      },
     },
     outputs: {
       url: {
-        type: "string",
-        description: "local blob url of video"
-      }
-    }
-
+        type: 'string',
+        description: 'local blob url of video',
+      },
+    },
   });
-
-
 });
