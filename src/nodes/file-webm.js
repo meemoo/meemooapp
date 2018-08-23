@@ -1,6 +1,10 @@
 $(function() {
-  var template =
-    '<div class="info" /><button class="start">start capture</button><button class="stop">stop</button><div class="videos" />';
+  var template = `
+    <div class="info" />
+    <button class="start">start capture</button>
+    <button class="stop">stop</button><br />
+    <video class="video" autoplay controls style="max-width: 100%"/>
+    <div class="videos" />`;
 
   Iframework.NativeNodes['file-webm'] = Iframework.NativeNodes['file'].extend({
     template: _.template(template),
@@ -22,6 +26,7 @@ $(function() {
           self.inputstop();
         })
         .prop('disabled', true);
+      this.$('.video').hide();
       if (!window.MediaRecorder) {
         this.$('.info').text(
           'Unsupported browser: https://caniuse.com/#feat=mediarecorder'
@@ -68,6 +73,7 @@ $(function() {
           recordedChunks.push(event.data);
         }
         if (event.target.state === 'inactive') {
+          // MediaRecorder.stop() hits this codepath
           self.makeUrl();
         }
       }
@@ -89,26 +95,17 @@ $(function() {
 
       // Info
       var info = $(
-        `<p>
-          <a href="${url}" target="_blank" download="meemoo.webm">Download</a>
-        </p>`
+        `<p><a href="${url}" target="_blank" download="meemoo.webm">Download</a> ☙ ${Math.ceil(
+          buffer.size / 1024
+        )}kb</p>`
       );
-      // 'Compiled ' +
-      // this._frameCount +
-      // ' frames to video in ' +
-      // (end_time - start_time) +
-      // 'ms, ' +
-      // 'video length: ' +
-      // Math.round((this._frameCount / this._fps) * 100) / 100 +
-      // 's (' +
-      // this._fps +
-      // 'fps), ' +
-      // 'file size: ' +
-      // Math.ceil(output.size / 1024) +
-      // 'KB <br />' +
 
       // TODO: delete option w/ window.URL.revokeObjectURL(url);
       this.$('.videos').prepend(info);
+
+      this.$('.video')
+        .attr('src', url)
+        .show();
     },
     inputs: {
       image: {
