@@ -38,7 +38,7 @@ $(function(){
       {"src":"meemoo:util/color-hsla","info":{"title":"color-hsla","author":"meemoo","description":"make hsla() css color (hue, saturation, lightness, alpha)"}},
       {"src":"meemoo:util/math","info":{"title":"math","author":"silentmatt","description":"math equation evaluator"}},
       {"src":"meemoo:util/logic","info":{"title":"logic","author":"meemoo","description":"greater than (>) less than (<) equal (==) not equal (!=) logic"}},
-      {"src":"meemoo:file/webm","info":{"title":"webm","author":"antimatter15","description":"(Chrome only) Canvas to WebM video encoder thanks to antimatter15/whammy."}},
+      {"src":"meemoo:file/webm","info":{"title":"webm","author":"meemoo","description":"Canvas to WebM video encoder"}},
       {"src":"meemoo:string/markov","info":{"title":"markov","author":"BrianHicks","description":"makes a markov chain based on seed text. useful for gibberish, a kind of cutup method."}}
     ],
     subgraph: [

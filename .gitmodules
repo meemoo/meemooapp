@@ -1,9 +1,6 @@
 [submodule "libs/Seriously.js"]
 	path = libs/Seriously.js
 	url = https://github.com/brianchirls/Seriously.js.git
-[submodule "libs/whammy"]
-	path = libs/whammy
-	url = https://github.com/antimatter15/whammy.git
 [submodule "libs/js-expression-eval"]
 	path = libs/js-expression-eval
 	url = https://github.com/silentmatt/js-expression-eval.git
