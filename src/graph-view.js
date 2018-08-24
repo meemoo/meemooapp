@@ -197,8 +197,9 @@ $(function(){
       // _.debounce keeps it from getting called more than needed
       var svg = this.$('.edgesSvg')[0];
       // Don't choke on off-screen svg
+      var rect;
       try {
-        var rect = svg.getBBox();
+        rect = svg.getBBox();
       } catch (e) {
         return;
       }

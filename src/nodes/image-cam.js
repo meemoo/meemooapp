@@ -88,7 +88,8 @@ $(function(){
           self.setSizes();
         });
       }
-
+      /* Let's ignore we're using reserved `catch` word for now */
+      /* jshint -W024 */
       if (navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices
           .getUserMedia({video: true, audio: false})
@@ -107,7 +108,7 @@ $(function(){
           .catch(function() {
             self._placeholderWarning = "(denied webcam access)";
             self.stopCam();
-          })
+          });
       } else {
         this._placeholderWarning = "(no getUserMedia webcam)";
         self.stopCam();
