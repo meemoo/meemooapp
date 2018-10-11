@@ -43,7 +43,7 @@ $(function() {
         self.loadedMetadata();
       });
       $(this._video).on('ended', function(e) {
-        self.ended();
+        self.send('ended');
       });
     },
     inputurl: function(url) {
@@ -235,9 +235,6 @@ $(function() {
         this._lastTimeSent = currentTime;
         this._lastRedraw = timestamp;
       }
-    },
-    ended: function() {
-      this.send('ended');
     },
     inputs: {
       url: {
