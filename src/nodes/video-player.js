@@ -1,46 +1,52 @@
 // extends src/nodes/video.js which extends src/node-box-native-view.js
 
-$(function(){
-
-  var template = 
-    '<video id="video-<%= id %>" class="video" controls="true" autoplay="true" crossorigin="anonymous" style="max-width:100%;" /><br />'+
-    '<button class="play">play</button>'+
-    '<button class="pause">pause</button>'+
-    '<button class="send">send</button>'+
-    '<button class="back">back</button>'+
-    '<button class="forward">forward</button><br />'+
-    '<span style="position:absolute;width:0px;overflow:hidden;"><input type="file" class="fileinput" accept="video/*" /></span>'+
-    '<button class="choosefile">choose file</button>'+
+$(function() {
+  var template =
+    '<video id="video-<%= id %>" class="video" controls="" playsinline="" crossorigin="anonymous" style="max-width:100%;" /><br />' +
+    '<button class="play">play</button>' +
+    '<button class="pause">pause</button>' +
+    '<button class="send">send</button>' +
+    '<button class="back">back</button>' +
+    '<button class="forward">forward</button><br />' +
+    '<span style="position:absolute;width:0px;overflow:hidden;"><input type="file" class="fileinput" accept="video/*" /></span>' +
+    '<button class="choosefile">choose file</button>' +
     '<div class="info" />';
 
-  Iframework.NativeNodes["video-player"] = Iframework.NativeNodes["video"].extend({
-
+  Iframework.NativeNodes['video-player'] = Iframework.NativeNodes[
+    'video'
+  ].extend({
     template: _.template(template),
     info: {
-      title: "video",
-      description: "HTML5 video player"
+      title: 'video',
+      description: 'HTML5 video player',
     },
     events: {
-      "click .play": "inputplay",
-      "click .pause": "inputpause",
-      "click .send": "inputsend",
-      "click .back": "inputback",
-      "click .forward": "inputforward",
-      "click .choosefile": "chooseFile",
-      "change .fileinput":  "choseFile"
+      'click .play': 'inputplay',
+      'click .pause': 'inputpause',
+      'click .send': 'inputsend',
+      'click .back': 'inputback',
+      'click .forward': 'inputforward',
+      'click .choosefile': 'chooseFile',
+      'change .fileinput': 'choseFile',
     },
-    initializeModule: function(){
-      this.$("button").button();
+    initializeModule: function() {
+      this.$('button').button();
 
-      this._video = this.$("video")[0];
-      this._video.crossOrigin = "anonymous";
-      this._video.crossorigin = "anonymous"; // moz bug?
+      this._video = this.$('video')[0];
+      this._video.crossOrigin = 'anonymous';
+      this._video.crossorigin = 'anonymous'; // moz bug?
+      this._video.muted = this._muted;
+      this._video.autoplay = this._autoplay;
+      this._video.loop = this._loop;
       var self = this;
-      $(this._video).on("loadedmetadata", function(e){
+      $(this._video).on('loadedmetadata', function(e) {
         self.loadedMetadata();
       });
+      $(this._video).on('ended', function(e) {
+        self.send('ended');
+      });
     },
-    inputurl: function(url){
+    inputurl: function(url) {
       if (this._url !== url) {
         // TODO: remake video element, since ff doesn't notice source changes
         // this.$el.remove(this._video);
@@ -49,24 +55,24 @@ $(function(){
         this._corsTested = false;
         this._corsOK = false;
         this._videoStarted = false;
-        var urls = url.split(" ");
+        var urls = url.split(' ');
         if (urls.length === 1) {
           this._video.src = url;
         } else {
           // Multiple sources
-          this._video.removeAttribute("src");
-          var sources = "";
-          _.each(urls, function(url){
-            sources += '<source src="'+url+'" />';
+          this._video.removeAttribute('src');
+          var sources = '';
+          _.each(urls, function(url) {
+            sources += '<source src="' + url + '" />';
           });
           $(this._video).html(sources);
         }
       }
     },
-    chooseFile: function(){
-      this.$(".fileinput").trigger("click");
+    chooseFile: function() {
+      this.$('.fileinput').trigger('click');
     },
-    choseFile: function (event){
+    choseFile: function(event) {
       // Thanks Robert Nyman https://hacks.mozilla.org/2012/04/taking-pictures-with-the-camera-api-part-of-webapi/
       // Get a reference to the taken picture or chosen file
       var files = event.target.files;
@@ -82,21 +88,20 @@ $(function(){
         this._video.src = imgURL;
         // Revoke ObjectURL
         // window.URL.revokeObjectURL(imgURL);
-      }
-      catch (e) {
+      } catch (e) {
         try {
           // Fallback if createObjectURL is not supported
           var fileReader = new FileReader();
-          fileReader.onload = function (event) {
+          fileReader.onload = function(event) {
             this._video.src = event.target.result;
           };
           fileReader.readAsDataURL(file);
-        }
-        catch (error) {
-          console.warn("Neither createObjectURL nor FileReader are supported");
+        } catch (error) {
+          console.warn('Neither createObjectURL nor FileReader are supported');
         }
       }
-    },    loadedMetadata: function(){
+    },
+    loadedMetadata: function() {
       // Called from this._video loadedmetadata
       if (this._video) {
         // Here we find the video's reported size
@@ -105,17 +110,17 @@ $(function(){
         if (!this._height) {
           // Firefox takes its time; try again in 0.5s
           var self = this;
-          window.setTimeout(function(){
+          window.setTimeout(function() {
             self.loadedMetadata();
           }, 500);
           return false;
         }
       } else {
-        return false;        
+        return false;
       }
 
       // Initialize hidden canvas, size match video
-      this.canvas = document.createElement("canvas");
+      this.canvas = document.createElement('canvas');
       this.context = this.canvas.getContext('2d');
       this.canvas.width = this._width;
       this.canvas.height = this._height;
@@ -124,68 +129,83 @@ $(function(){
     },
     _corsTested: false,
     _corsOK: false,
-    drawFrame: function(){
-      if (!this._videoStarted) { return false; }
+    drawFrame: function() {
+      if (!this._videoStarted) {
+        return false;
+      }
 
       if (!this._corsTested) {
         this._corsOK = false;
         // Test for cross-origin blarp
-        var testCanvas = document.createElement("canvas");
-        var testContext = testCanvas.getContext("2d");
+        var testCanvas = document.createElement('canvas');
+        var testContext = testCanvas.getContext('2d');
         testContext.drawImage(this._video, 0, 0);
         try {
           testContext.getImageData(0, 0, 1, 1);
           this._corsOK = true;
-          this.$(".info").html('');
+          this.$('.info').html('');
         } catch (e) {
           this._corsOK = false;
-          this.$(".info").html('( ;_;) We can\'t get the image data from this video. Encourage your video host to <a href="http://enable-cors.org/" target="_blank">enable CORS</a>. There might be a workaround by using <a href="http://www.corsproxy.com/" target="_blank">this proxy</a> in the video URL.');
+          this.$('.info').html(
+            '( ;_;) We can\'t get the image data from this video. Encourage your video host to <a href="http://enable-cors.org/" target="_blank">enable CORS</a>. There might be a workaround by using <a href="http://www.corsproxy.com/" target="_blank">this proxy</a> in the video URL.'
+          );
         }
         this._corsTested = true;
       }
 
       if (this._corsOK) {
         this.context.drawImage(this._video, 0, 0);
-        this.send("stream", this.canvas);
+        this.send('stream', this.canvas);
         if (this._sendNext) {
-          this.send("image", this.canvas);
+          this.send('image', this.canvas);
           this._sendNext = false;
         }
       }
-
     },
-    inputplay: function (){
+    inputplay: function() {
       this._video.play();
     },
-    inputpause: function (){
+    inputpause: function() {
       this._video.pause();
     },
-    inputtime: function (time){
-      this._video.currentTime = time;        
+    inputtime: function(time) {
+      this._video.currentTime = time;
     },
-    inputvolume: function (v){
-      this._video.volume = v;        
+    inputvolume: function(v) {
+      this._video.volume = v;
     },
-    _frameTime: 1/30,
-    inputforward: function (){
+    inputmuted: function(bool) {
+      this._muted = bool;
+      this._video.muted = bool;
+    },
+    inputautoplay: function(bool) {
+      this._autoplay = bool;
+      this._video.autoplay = bool;
+    },
+    inputloop: function(bool) {
+      this._loop = bool;
+      this._video.loop = bool;
+    },
+    _frameTime: 1 / 30,
+    inputforward: function() {
       this._video.pause();
       this._video.currentTime += this._frameTime;
     },
-    inputback: function (){
+    inputback: function() {
       this._video.pause();
       this._video.currentTime -= this._frameTime;
     },
     _sendNext: false,
-    inputsend: function () {
+    inputsend: function() {
       if (this._video.paused) {
         // Send now
-        this.send("image", this.canvas);
+        this.send('image', this.canvas);
       } else {
         // Send next
         this._sendNext = true;
       }
     },
-    remove: function(){
+    remove: function() {
       if (this._stream) {
         this._stream.stop();
       }
@@ -193,7 +213,7 @@ $(function(){
         clearInterval(this._interval);
       }
     },
-    redraw: function(){
+    redraw: function() {
       // Called from NodeBoxNativeView.renderAnimationFrame()
       if (this.resetSizes) {
         this.setSizes();
@@ -201,7 +221,7 @@ $(function(){
       }
     },
     _lastTimeSent: null,
-    renderAnimationFrame: function (timestamp) {
+    renderAnimationFrame: function(timestamp) {
       // Get a tick from GraphView.renderAnimationFrame()
       // this._valueChanged is set by NodeBox.receive()
       if (this._triggerRedraw) {
@@ -211,64 +231,81 @@ $(function(){
       var currentTime = this._video.currentTime;
       if (this._videoStarted && currentTime !== this._lastTimeSent) {
         this.drawFrame();
-        this.send("time", currentTime);
+        this.send('time', currentTime);
         this._lastTimeSent = currentTime;
         this._lastRedraw = timestamp;
       }
     },
     inputs: {
       url: {
-        type: "string",
-        description: "video file, or space-separated list of urls for different formats (http://...webm http://...mp4)"
+        type: 'string',
+        description:
+          'video file, or space-separated list of urls for different formats (http://...webm http://...mp4)',
       },
       play: {
-        type: "bang",
-        description: "play the video"
+        type: 'bang',
+        description: 'play the video',
       },
       pause: {
-        type: "bang",
-        description: "pause the video"
+        type: 'bang',
+        description: 'pause the video',
       },
       time: {
-        type: "float",
-        description: "skip to time"
+        type: 'float',
+        description: 'skip to time',
       },
       volume: {
-        type: "float",
-        description: "volume, 0 to 1",
+        type: 'float',
+        description: 'volume, 0 to 1',
         min: 0,
         max: 1,
-        "default": 1
+        default: 1,
+      },
+      muted: {
+        type: 'boolean',
+        description: 'video muted attribute',
+        default: false,
+      },
+      autoplay: {
+        type: 'boolean',
+        description: 'video autoplay attribute',
+        default: false,
+      },
+      loop: {
+        type: 'boolean',
+        description: 'video loop attribute',
+        default: false,
       },
       forward: {
-        type: "bang",
-        description: "skip video forward (depends on browser/codec)"
+        type: 'bang',
+        description: 'skip video forward (depends on browser/codec)',
       },
       back: {
-        type: "bang",
-        description: "skip video back (depends on browser/codec)"
+        type: 'bang',
+        description: 'skip video back (depends on browser/codec)',
       },
       send: {
-        type: "bang",
-        description: "send the image"
-      }
+        type: 'bang',
+        description: 'send the image',
+      },
     },
     outputs: {
       stream: {
-        type: "image",
-        description: "sends constant stream of images"
+        type: 'image',
+        description: 'sends constant stream of images',
       },
       image: {
-        type: "image",
-        description: "sends image only when \"send\" is hit"
+        type: 'image',
+        description: 'sends image only when "send" is hit',
       },
       time: {
-        type: "float",
-        description: "currentTime of video"
-      }
-    }
-
+        type: 'float',
+        description: 'currentTime of video',
+      },
+      ended: {
+        type: 'bang',
+        description: 'sends on video ended event',
+      },
+    },
   });
-
-
 });
