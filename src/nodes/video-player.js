@@ -184,7 +184,6 @@ $(function() {
     },
     inputloop: function(bool) {
       this._loop = bool;
-      console.log(this, bool);
       this._video.loop = bool;
     },
     _frameTime: 1 / 30,
