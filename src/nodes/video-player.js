@@ -35,7 +35,6 @@ $(function() {
       this._video = this.$('video')[0];
       this._video.crossOrigin = 'anonymous';
       this._video.crossorigin = 'anonymous'; // moz bug?
-      console.log(this);
       this._video.muted = this._muted;
       this._video.autoplay = this._autoplay;
       this._video.loop = this._loop;
