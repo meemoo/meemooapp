@@ -82,7 +82,7 @@
           '!src/nodes/webgl-sphere.js',
         ],
         options: {
-          esversion: 5,
+          esversion: 6,
           browser: true,
           sub: true,
           globals: {
