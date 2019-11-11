@@ -39,7 +39,8 @@ $(function(){
       {"src":"meemoo:util/math","info":{"title":"math","author":"silentmatt","description":"math equation evaluator"}},
       {"src":"meemoo:util/logic","info":{"title":"logic","author":"meemoo","description":"greater than (>) less than (<) equal (==) not equal (!=) logic"}},
       {"src":"meemoo:file/webm","info":{"title":"webm","author":"meemoo","description":"Canvas to WebM video encoder"}},
-      {"src":"meemoo:string/markov","info":{"title":"markov","author":"BrianHicks","description":"makes a markov chain based on seed text. useful for gibberish, a kind of cutup method."}}
+      {"src":"meemoo:string/markov","info":{"title":"markov","author":"BrianHicks","description":"makes a markov chain based on seed text. useful for gibberish, a kind of cutup method."}},
+      {"src":"meemoo:file/lottie","info":{"title":"lottie","author":"meemoo","description":"Canvas animation to lottie.json encoder"}},
     ],
     subgraph: [
       {"src":"meemoo:subgraph/subgraph","info":{"title":"subgraph","author":"meemoo","description":"encapsulate some nodes into a nested macro subgraph"}},
