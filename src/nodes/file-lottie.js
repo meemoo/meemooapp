@@ -84,7 +84,8 @@ $(function() {
       },
     }
   );
-
+  
+  // Modified from https://observablehq.com/@forresto/video-to-lottie
   function animationToLottie(animation, quality) {
     const {width, height, fps, frames} = animation;
 
