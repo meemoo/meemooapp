@@ -53,6 +53,10 @@ $(function() {
           window.URL.revokeObjectURL(url);
         });
         this._builds = [];
+
+        this._animation = null;
+        this.$('.info').text('...');
+        this.$('.videos').text('');
       },
       inputs: {
         animation: {
