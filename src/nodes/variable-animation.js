@@ -37,7 +37,7 @@ $(function() {
       "change .pingpong": "clickPingpong",
       "click .make-spritesheet": "makeSpritesheet",
       "click .make-gif": "makeGif",
-      "wheel .preview": "handleWheel",
+      "wheel .preview": "handleWheel"
     },
     initializeModule: function() {
       this._animation = {
@@ -72,22 +72,22 @@ $(function() {
       );
     },
     wheelDelta: 0,
-    handleWheel: function (e) {
+    handleWheel: function(e) {
       e.preventDefault();
-      const {deltaY} = e.originalEvent;
+      const { deltaY } = e.originalEvent;
 
       if (deltaY > 0 && this._previewFrame > 0) {
         this.wheelDelta += deltaY;
         if (this.wheelDelta > 15) {
           this.wheelDelta = 0;
-          this.inputprev()
+          this.inputprev();
         }
       }
-      if (deltaY < 0 && this._previewFrame < this._animation.length-1) {
+      if (deltaY < 0 && this._previewFrame < this._animation.length - 1) {
         this.wheelDelta += deltaY;
         if (this.wheelDelta < -15) {
           this.wheelDelta = 0;
-          this.inputnext()
+          this.inputnext();
         }
       }
     },
