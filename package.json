@@ -27,7 +27,7 @@
     }
   ],
   "dependencies": {
-    "jquery": ">= 3.4.0",
+    "jquery": ">= 3.5.0",
     "backbone": ">= 1.0.0",
     "underscore": ">= 1.4.4"
   },
