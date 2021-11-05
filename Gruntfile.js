@@ -1,7 +1,7 @@
 (function() {
   module.exports = function() {
     var banner =
-      "/*! <%= pkg.title %> <%= pkg.homepage %> - v<%= pkg.version %> - <%= grunt.template.today('yyyy-mm-dd') %> (<%= grunt.template.date('longTime') %>)\n* Copyright (c) <%= grunt.template.today('yyyy') %> <%= pkg.author.name %>; Licensed <%= _.pluck(pkg.licenses, 'type').join(', ') %> */\n";
+      "/*! <%= pkg.title %> <%= pkg.homepage %> - v<%= pkg.version %> - <%= grunt.template.today('yyyy-mm-dd') %> (<%= grunt.template.date('longTime') %>)\n* Copyright (c) <%= grunt.template.today('yyyy') %> <%= pkg.author.name %>; Licensed MIT, AGPL. */\n";
 
     var grunt = this;
 
