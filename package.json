@@ -29,7 +29,7 @@
   "dependencies": {
     "jquery": ">= 3.4.0",
     "backbone": ">= 1.0.0",
-    "underscore": ">= 1.4.4"
+    "underscore": ">= 1.12.1"
   },
   "keywords": [],
   "devDependencies": {
