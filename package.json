@@ -44,6 +44,6 @@
   "scripts": {
     "test": "grunt test",
     "build": "grunt build",
-    "start": "grunt dev"
+    "dev": "grunt dev"
   }
 }
