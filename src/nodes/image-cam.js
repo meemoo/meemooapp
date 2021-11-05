@@ -54,17 +54,10 @@ $(function(){
       this.onionskin.height = 10;
       this.$el.append(this.onionskin);
 
-      // this.$("button").button();
       this.$(".stopcamera").hide();
       this.$(".sendimage").hide();
 
-      if ( !window.URL ) {
-        window.URL = window.webkitURL || window.msURL || window.oURL || false;
-      }
-      if ( !navigator.getUserMedia ) {
-        navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || null;
-      }
-      if ( !navigator.getUserMedia ) {
+      if ( !navigator.mediaDevices.getUserMedia ) {
         this.$(".startcamera")
           .text("no cam access")
           .prop("disabled", true);
@@ -88,8 +81,6 @@ $(function(){
           self.setSizes();
         });
       }
-      /* Let's ignore we're using reserved `catch` word for now */
-      /* jshint -W024 */
       if (navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices
           .getUserMedia({video: true, audio: false})
