@@ -326,7 +326,7 @@ $(function(){
         type: 'GET',
         dataType: 'jsonp'
       })
-      .success( function(gistdata) {
+      .done( function(gistdata) {
         var graphs = [];
         for (var file in gistdata.data.files) {
           if (gistdata.data.files.hasOwnProperty(file)) {
@@ -354,7 +354,7 @@ $(function(){
           Iframework.closePanels();
         }
       })
-      .error( function(e) {
+      .fail( function(e) {
         console.warn("gist load error", e);
       });
 
@@ -386,7 +386,7 @@ $(function(){
         dataType: 'json',
         data: JSON.stringify(data)
       })
-      .success(function(e){
+      .done(function(e){
         // Save gist url to graph's info.parents
         var info = Iframework.graph.get("info");
         if (!info.hasOwnProperty("parents") || !info.parents.push) {
@@ -400,12 +400,12 @@ $(function(){
 
         Iframework.analyze("save", "gist", e.id);
       })
-      .error(function(e){
+      .fail(function(e){
         var description = "meemoo app: " + Iframework.graph.toJSON()["info"]["title"];
         Iframework.$(".permalink").html('api is down (;_;) copy your app source code to <a href="https://gist.github.com/?description='+encodeURIComponent(description)+'" target="_blank">gist.github.com</a>');
         console.warn("gist save error", e);
       })
-      .complete(function(e){
+      .always(function(e){
         // Button
         this.$(".savegist")
           .prop('disabled', false)
