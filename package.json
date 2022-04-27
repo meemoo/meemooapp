@@ -34,7 +34,7 @@
   },
   "keywords": [],
   "devDependencies": {
-    "grunt": "~1.4.1",
+    "grunt": "~1.5.2",
     "grunt-cli": "~1.4.3",
     "grunt-contrib-concat": "~2.0.0",
     "grunt-contrib-uglify": "~5.0.1",
