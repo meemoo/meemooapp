@@ -10,23 +10,23 @@ http://meemoo.org/
 A data flow visual programming framework for browser audio/visual hacking.
 
 by 
- Forrest Oliphant, http://forresto.com/
+ Forrest Oliphant, https://forresto.com/
 with help from 
  Media Lab Helsinki, http://mlab.taik.fi/
  NLnet Foundation, http://nlnet.nl/
  The Shuttleworth Foundation, http://www.shuttleworthfoundation.org/
  Mozilla/Eyebeam Open(Art), http://openart.eyebeam.org/
 
-demo: http://meemoo.org/iframework
-blog: http://meemoo.org/blog
+demo: https://app.meemoo.org/
+blog: https://meemoo.org/blog
 
 ---
 
 meemoospeak : model : html5speak
 ------------+-------+--------------------------------------
 app         : graph : json, like graph={nodes:[],edges:[]}
-module      : node  : iframe
-wire        : edge  : window.postMessage()
+module      : node  : iframe / web component
+wire        : edge  : postMessage / custom event
 
 ---
 
@@ -39,11 +39,6 @@ If the AGPL suits your project better you are also free to use Meemoo under that
 You don’t have to do anything special to choose one license or the other and you don’t have to notify anyone which license you are using. You are free to use Meemoo in commercial projects as long as the copyright header is left intact.
 
 ---
-
-Donations: 
- Flattr: https://flattr.com/thing/183497/Meemoo-hackable-web-apps
- Paypal: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=K7UYG9Y6XLHHS
-
 
       _________________
      /\  _____________ \

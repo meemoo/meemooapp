@@ -40,7 +40,7 @@ $(function(){
     '<div class="savecontrols">'+
       '<button class="savelocal icon-install">save local</button>'+
       '<button class="forklocal icon-split" title="save as... copy app and save under a new name">fork</button>'+
-      '<button class="savegist icon-globe-1" title="save app to gist.github.com anonymously">save public</button>'+
+      '<a class="savegist button icon-globe-1" href="https://gist.github.com/?filename=app.meemoo.json" target="_blank" rel="noopener noreferrer" title="save app to gist.github.com">save public</button>'+
       '<button class="deletelocal icon-trash" title="delete local app"></button>'+
     '</div>'+
     '<div class="permalink" title="last publicly saved version">'+
@@ -73,7 +73,6 @@ $(function(){
       "click .newblank":       "newBlank",
 
       "submit .loadfromgist":  "loadFromGist",
-      "click .savegist":       "saveGist",
       "click .savelocal":      "saveLocal",
       "click .forklocal":      "forkLocal",
       "click .deletelocal":    "deleteLocal",
@@ -361,56 +360,6 @@ $(function(){
       this.analyze("load", "gist", gistid);
 
       return gistid;
-    },
-    saveGist: function () {
-      // Save app to gist
-      var graph = this.graph.toJSON();
-      var data = {
-        "description": "meemoo app: "+graph["info"]["title"],
-        "public": true
-      };
-      data["files"] = {};
-      var filename = graph["info"]["url"]+".json";
-      data["files"][filename] = {
-        "content": JSON.stringify(graph, null, "  ")
-      };
-
-      // Button
-      this.$(".savegist")
-        .prop('disabled', true)
-        .text("saving...");
-
-      $.ajax({
-        url: 'https://api.github.com/gists',
-        type: 'POST',
-        dataType: 'json',
-        data: JSON.stringify(data)
-      })
-      .done(function(e){
-        // Save gist url to graph's info.parents
-        var info = Iframework.graph.get("info");
-        if (!info.hasOwnProperty("parents") || !info.parents.push) {
-          graph.info.parents = [];
-        }
-        graph.info.parents.push(e.html_url);
-        // Save local with new gist reference
-        Iframework.saveLocal();
-        // Show new permalink
-        Iframework.updateCurrentInfo();
-
-        Iframework.analyze("save", "gist", e.id);
-      })
-      .fail(function(e){
-        var description = "meemoo app: " + Iframework.graph.toJSON()["info"]["title"];
-        Iframework.$(".permalink").html('api is down (;_;) copy your app source code to <a href="https://gist.github.com/?description='+encodeURIComponent(description)+'" target="_blank">gist.github.com</a>');
-        console.warn("gist save error", e);
-      })
-      .always(function(e){
-        // Button
-        this.$(".savegist")
-          .prop('disabled', false)
-          .text("save public");
-      });
     },
     loadLocalApps: function () {
       // Load apps from local storage
