@@ -79,9 +79,16 @@ $(function () {
         });
       }
       if (navigator.mediaDevices.getUserMedia) {
-        const videoValue = this._camId ? {deviceId: this._camId} : true;
+        const constraints = {
+          video: {
+            deviceId: this._camId, // Will be undefined until select box changes
+            width: {ideal: 1920},
+            height: {ideal: 1080},
+          },
+          audio: false,
+        };
         navigator.mediaDevices
-          .getUserMedia({video: videoValue, audio: false})
+          .getUserMedia(constraints)
           .then(function (mediaStream) {
             self.enumerateDevices();
             try {
