@@ -1,63 +1,70 @@
 // extends src/node-box-native-view.js
 
-$(function(){
-
-  var template = 
+$(function () {
+  var template =
     // '<canvas id="canvas-<%= id %>" class="canvas" width="500" height="500" style="max-width:100%;" />'+
     '<div class="info" />';
 
-  Iframework.NativeNodes["image"] = Iframework.NodeBoxNativeView.extend({
-
+  Iframework.NativeNodes['image'] = Iframework.NodeBoxNativeView.extend({
     template: _.template(template),
     canvas: null,
     context: null,
-    initializeCategory: function() {
+    initializeCategory: function () {
       // Add popout button to box
       var self = this;
-      this.model.view.$("button.remove")
-        .after(
-          $('<button title="popout" type="button" class="popout icon-popup"></button>')
-            // .button({ icons: { primary: "icon-popup" }, text: false })
-            .click(function(){
-              self.popout();
-            })
-        );
+      this.model.view.$('button.remove').after(
+        $(
+          '<button title="popout" type="button" class="popout icon-popup"></button>'
+        )
+          // .button({ icons: { primary: "icon-popup" }, text: false })
+          .click(function () {
+            self.popout();
+          })
+      );
+      this.model.view.$('button.remove').before(
+        $(
+          '<button title="save image" type="button" class="save-file icon-install"></button>'
+        ).click(function () {
+          self.saveFile();
+        })
+      );
 
-      this.canvas = document.createElement("canvas");
+      this.canvas = document.createElement('canvas');
       this.canvas.width = 10;
       this.canvas.height = 10;
       this.context = this.canvas.getContext('2d');
 
       $(this.canvas)
         .attr({
-          "class": "canvas",
-          "id": "canvas-"+this.model.id
+          class: 'canvas',
+          id: 'canvas-' + this.model.id,
         })
         .css({
-          maxWidth: "100%",
-          cursor: "pointer"
+          maxWidth: '100%',
+          cursor: 'pointer',
         })
         .draggable({
-          cursor: "pointer",
-          cursorAt: { top: -10, left: -10 },
-          helper: function( event ) {
-            var helper = $( '<div class="drag-image"><h2>Copy this</h2></div>' )
-              .data({
-                "meemoo-drag-type": "canvas",
-                "meemoo-source-node": self
-              });
+          cursor: 'pointer',
+          cursorAt: {top: -10, left: -10},
+          helper: function (event) {
+            var helper = $(
+              '<div class="drag-image"><h2>Copy this</h2></div>'
+            ).data({
+              'meemoo-drag-type': 'canvas',
+              'meemoo-source-node': self,
+            });
             $(document.body).append(helper);
-            _.delay(function(){
+            _.delay(function () {
               self.dragCopyCanvas(helper);
             }, 100);
             return helper;
-          }
+          },
         });
 
       // If there is an image input
       var firstImageInput;
       for (var name in this.inputs) {
-        if (this.inputs[name].type==="image"){
+        if (this.inputs[name].type === 'image') {
           firstImageInput = name;
           break;
         }
@@ -66,40 +73,50 @@ $(function(){
       // Setup droppable
       if (firstImageInput) {
         // Add drop indicator (shown in CSS)
-        this.$el.append('<div class="drop-indicator"><p class="icon-login">input '+firstImageInput+'</p></div>');
-        
-        // Make droppable        
+        this.$el.append(
+          '<div class="drop-indicator"><p class="icon-login">input ' +
+            firstImageInput +
+            '</p></div>'
+        );
+
+        // Make droppable
         this.$el.droppable({
-          accept: ".canvas, .meemoo-plugin-images-thumbnail",
-          tolerance: "pointer",
-          hoverClass: "drop-hover",
-          activeClass: "drop-active",
+          accept: '.canvas, .meemoo-plugin-images-thumbnail',
+          tolerance: 'pointer',
+          hoverClass: 'drop-hover',
+          activeClass: 'drop-active',
           // Don't also drop on graph
-          greedy: true
+          greedy: true,
         });
-        this.$el.on("drop", {"self": this, "inputName": firstImageInput}, Iframework.util.imageDrop);
+        this.$el.on(
+          'drop',
+          {self: this, inputName: firstImageInput},
+          Iframework.util.imageDrop
+        );
       }
 
       this.$el.prepend(this.canvas);
     },
-    dragCopyCanvas: function(helper) {
-      if (!helper) { return; }
-      var canvasCopy = document.createElement("canvas");
+    dragCopyCanvas: function (helper) {
+      if (!helper) {
+        return;
+      }
+      var canvasCopy = document.createElement('canvas');
       canvasCopy.width = this.canvas.width;
       canvasCopy.height = this.canvas.height;
-      canvasCopy.getContext("2d").drawImage(this.canvas, 0, 0);
-      helper.data("meemoo-drag-canvas", canvasCopy);
+      canvasCopy.getContext('2d').drawImage(this.canvas, 0, 0);
+      helper.data('meemoo-drag-canvas', canvasCopy);
       helper.append(canvasCopy);
     },
-    scale: function(){
+    scale: function () {
       // canvas is shown at this scaling factor
       // useful for absolute positioning other elements over the canvas
-      return this.$(".canvas").width() / this.canvas.width;
+      return this.$('.canvas').width() / this.canvas.width;
     },
     outputs: {
       image: {
-        type: "image"
-      }
+        type: 'image',
+      },
     },
     _smoothing: true,
     inputsmoothing: function (s) {
@@ -108,15 +125,24 @@ $(function(){
       this.context.webkitImageSmoothingEnabled = s;
       this.context.mozImageSmoothingEnabled = s;
     },
-    exportImage: function(){
+    saveFile: function () {
       try {
-        var url = this.canvas.toDataURL();
-        window.open(url);
+        this.canvas.toBlob((blob) => {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          const date = new Date();
+          const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}-${String(date.getHours()).padStart(2, '0')}-${String(date.getMinutes()).padStart(2, '0')}-${String(date.getSeconds()).padStart(2, '0')}`;
+          a.download = `meemoo-${dateString}.png`;
+          a.click();
+          URL.revokeObjectURL(url);
+        });
       } catch (e) {
         // Maybe it is dirty with non-CORS data
+        console.log(e);
       }
     },
-    popout: function() {
+    popout: function () {
       if (this.w) {
         // Toggle
         this.popin();
@@ -129,9 +155,13 @@ $(function(){
       // $(this.localCanvas).hide();
 
       // Open new window to about:blank
-      this.w = window.open("", "meemooRemoteWindow", "menubar=no,location=no,resizable=yes,scrollbars=no,status=no");
+      this.w = window.open(
+        '',
+        'meemooRemoteWindow',
+        'menubar=no,location=no,resizable=yes,scrollbars=no,status=no'
+      );
       var self = this;
-      this.w.addEventListener("unload", function(){
+      this.w.addEventListener('unload', function () {
         self.popin();
       });
 
@@ -141,10 +171,10 @@ $(function(){
       }
       Iframework.popoutModule = this;
       // TODO: fade out other canvas?
-      this.w.document.body.innerHTML = "";
+      this.w.document.body.innerHTML = '';
 
       // Make new canvas
-      this.canvas = this.w.document.createElement("canvas");
+      this.canvas = this.w.document.createElement('canvas');
       this.canvas.width = this.localCanvas.width;
       this.canvas.height = this.localCanvas.height;
       this.context = this.canvas.getContext('2d');
@@ -152,22 +182,22 @@ $(function(){
       this.w.document.body.appendChild(this.canvas);
 
       // Full-screen styling
-      this.w.document.body.style.backgroundColor="black";
-      this.w.document.body.style.overflow = "hidden";
-      this.w.document.body.style.margin="0px";
-      this.w.document.body.style.padding="0px";
-      this.w.document.title = "meemoo.org";
-      this.canvas.style.position="absolute";
-      this.canvas.style.top="0px";
-      this.canvas.style.left="0px";
-      this.canvas.style.width="100%";
+      this.w.document.body.style.backgroundColor = 'black';
+      this.w.document.body.style.overflow = 'hidden';
+      this.w.document.body.style.margin = '0px';
+      this.w.document.body.style.padding = '0px';
+      this.w.document.title = 'meemoo.org';
+      this.canvas.style.position = 'absolute';
+      this.canvas.style.top = '0px';
+      this.canvas.style.left = '0px';
+      this.canvas.style.width = '100%';
 
       // Smoothing on new canvas
       this.inputsmoothing(this._smoothing);
 
       return false;
     },
-    popin: function() {
+    popin: function () {
       if (this.w) {
         this.w = null;
       }
@@ -179,11 +209,11 @@ $(function(){
       this.inputsmoothing(this._smoothing);
 
       return false;
-    }    
+    },
     // showResizer: function(translateX, translateY, scale, rotate){
     //   if (!this.resizer) {
     //     this.resizer = $('<div class="resizer">');
-    //     this.$el.append(this.resizer);        
+    //     this.$el.append(this.resizer);
     //   }
     //   var sizedScale = this.scale();
     //   this.resizer
@@ -218,8 +248,5 @@ $(function(){
     //     this.$("canvas").remove();
     //   }
     // }
-
   });
-
-
 });

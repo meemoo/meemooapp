@@ -1,38 +1,38 @@
 // extends src/nodes/image.js which extends src/node-box-native-view.js
 
-$(function(){
-
-  var template = 
-    '<p class="saveas">'+
-      'Right-click to Save Image As...'+
-    '</p>'+
-    '<div class="control">'+
-      '<button class="export">export</button>'+
-    '</div>'+
-    '<p class="info">'+
-      '<a href="http://meemoo.org/hack-tivities/physical-gif.html" target="_blank">How this works.</a> '+
-      'If interlacing 3 images, input the one to be viewed from the right first, then middle, then left. '+
-      'If interlacing 2 images, input the one to be viewed from the left first, then right. '+
+$(function () {
+  var template =
+    '<p class="saveas">' +
+    'Right-click to Save Image As...' +
+    '</p>' +
+    '<div class="control">' +
+    '<button class="export">export</button>' +
+    '</div>' +
+    '<p class="info">' +
+    '<a href="http://meemoo.org/hack-tivities/physical-gif.html" target="_blank">How this works.</a> ' +
+    'If interlacing 3 images, input the one to be viewed from the right first, then middle, then left. ' +
+    'If interlacing 2 images, input the one to be viewed from the left first, then right. ' +
     '</p>';
 
-  Iframework.NativeNodes["image-interlace"] = Iframework.NativeNodes["image"].extend({
-
+  Iframework.NativeNodes['image-interlace'] = Iframework.NativeNodes[
+    'image'
+  ].extend({
     template: _.template(template),
     info: {
-      title: "interlace",
-      author: "forresto",
-      description: "interlace images together"
+      title: 'interlace',
+      author: 'forresto',
+      description: 'interlace images together',
     },
     events: {
-      "click .export"  : "exportImage"
+      'click .export': 'saveFile',
     },
-    initializeModule: function(){
-      var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
-      if (is_chrome) {
-        this.$("button").button();
-        this.$(".saveas").hide();
-      } else {
-        this.$("button").hide();
+    initializeModule: function () {
+      const is_safari = /^((?!chrome|android).)*safari/i.test(
+        navigator.userAgent
+      );
+      this.$('button').button();
+      if (is_safari) {
+        this.$('.saveas').hide();
       }
     },
     _added: 0,
@@ -67,43 +67,40 @@ $(function(){
       this.canvas.height = 10;
     },
     inputsend: function () {
-      this.send("image", this.canvas);
+      this.send('image', this.canvas);
     },
     inputs: {
       image: {
-        type: "image",
-        description: "image to add to grid"
+        type: 'image',
+        description: 'image to add to grid',
       },
       count: {
-        type: "int",
-        description: "how many images to interlace together, usually 2 or 3",
+        type: 'int',
+        description: 'how many images to interlace together, usually 2 or 3',
         min: 2,
         max: 10,
-        "default": 3
+        default: 3,
       },
       size: {
-        type: "int",
-        description: "strip width",
+        type: 'int',
+        description: 'strip width',
         min: 1,
-        "default": 25
+        default: 25,
       },
       clear: {
-        type: "bang",
-        description: "clear the image and tiles"
+        type: 'bang',
+        description: 'clear the image and tiles',
       },
       send: {
-        type: "bang",
-        description: "send the image"
-      }
+        type: 'bang',
+        description: 'send the image',
+      },
     },
     outputs: {
       image: {
-        type: "image",
-        description: "the whole grid image"
-      }
-    }
-
+        type: 'image',
+        description: 'the whole grid image',
+      },
+    },
   });
-
-
 });

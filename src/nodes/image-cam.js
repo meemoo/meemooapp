@@ -67,7 +67,8 @@ $(function () {
     _placeholderWarning: null,
     startCam: function () {
       var self = this;
-      this.$('button').hide();
+      this.$('.startcamera').hide();
+      this.$('.chooseimage').hide();
       this.$('.stopcamera').show();
       this.$('.sendimage').show();
 
