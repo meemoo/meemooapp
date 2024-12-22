@@ -135,7 +135,6 @@ $(function () {
           .then((devices) => {
             const selectEl = this.$('.choosecamera');
             selectEl.empty();
-            const camInfo = [];
             for (let device of devices) {
               const {kind, label, deviceId} = device;
               if (kind === 'videoinput') {

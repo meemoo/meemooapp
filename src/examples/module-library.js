@@ -1,8 +1,8 @@
 // Module is used for Iframework.Library and has info about ins and outs
 // Node is used by Graph, and has info about x, y, w, h
 
-$(function(){
-
+$(function () {
+  // prettier-ignore
   var library = {
     image: [
       {"src":"meemoo:image/cam","info":{"title":"cam","author":"meemoo","description":"HTML5 webcam with getUserMedia."}},
@@ -72,7 +72,8 @@ $(function(){
       {"src":"meemoo:ui/leap","info":{"title":"leap","author":"meemoo","description":"leap motion hand tracker"}},
       {"src":"meemoo:ui/facetracker","info":{"title":"facetracker","author":"meemoo","description":"checks image for face, sends coordinates"}},
       {"src":"meemoo:ui/makeymakey","info":{"title":"makeymakey","author":"meemoo","description":"makeymakey board"}},
-      {"src":"meemoo:ui/smartphone","info":{"title":"smartphone","author":"meemoo","description":"iOS or Android smartphone gamepad controller via muzzley.com"}}
+      // {"src":"meemoo:ui/smartphone","info":{"title":"smartphone","author":"meemoo","description":"iOS or Android smartphone gamepad controller via muzzley.com"}}
+      {"src":"meemoo:audio/mic","info":{"title":"mic","author":"meemoo","description":"HTML5 microphone with getUserMedia."}},
     ],
     "iframe---fading": [
       // {"src":"https://forresto.github.io/meemoo-camcanvas/onionskin.html","info":{"title":"cam+onionskin","author":"taboca + forresto + ginger","description":"flash webcam image to canvas with onionskin of last frame"}},
@@ -84,9 +85,9 @@ $(function(){
       // {"src":"https://forresto.github.io/meemoo-image/mask.html","info":{"title":"alpha mask","author":"forresto","description":"use a grayscale image as the alpha for another image"}},
       // {"src":"https://forresto.github.io/meemoo-image/threshold.html","info":{"title":"threshold","author":"forresto","description":"image to monochrome via luminosity threshold"}},
       // {"src":"https://forresto.github.io/meemoo-image/alpha.html","info":{"title":"alpha","author":"forresto","description":"use a greyscale image as the alpha for a color image"}},
-      {"src":"https://forresto.github.io/meemoo-image/aviary.html","info":{"title":"aviary","author":"aviary","description":"aviary.com image editor with enhance, brightness, contrast, crop, paint, stickers, text..."}},
+      // {"src":"https://forresto.github.io/meemoo-image/aviary.html","info":{"title":"aviary","author":"aviary","description":"aviary.com image editor with enhance, brightness, contrast, crop, paint, stickers, text..."}},
       {"src":"https://forresto.github.io/meemoo-paint/paint.html","info":{"title":"paint","author":"forresto","description":"canvas pixel paint"}},
-      {"src":"http://automata.github.com/meemoo-harmony/","info":{"title":"harmony","author":"ze frank + mr.doob + automata","description":"sketchy procedural drawing tool"}},
+      // {"src":"http://automata.github.com/meemoo-harmony/","info":{"title":"harmony","author":"ze frank + mr.doob + automata","description":"sketchy procedural drawing tool"}},
       // {"src":"https://forresto.github.io/meemoo-image/text.html","info":{"title":"text","author":"forresto","description":"text to image"}},
       // {"src":"https://forresto.github.io/meemoo-image/rectangle.html","info":{"title":"rectangle","author":"forresto","description":"draw a rectangle"}},
       // {"src":"https://forresto.github.io/meemoo-image/circle.html","info":{"title":"circle","author":"forresto","description":"draw a circle or an arc"}},
@@ -97,11 +98,11 @@ $(function(){
       // {"src":"https://forresto.github.io/meemoo-math/math.html","info":{"title":"math","author":"silentmatt + forresto","description":"math equation evaluator"}},
       // {"src":"https://forresto.github.io/meemoo-modules/color-hsla.html","info":{"title":"color-hsla","author":"forresto","description":"make hsla() css color (hue, saturation, lightness, alpha)"}},
       // {"src":"https://forresto.github.io/meemoo-modules/color-rgba.html","info":{"title":"color-rgba","author":"forresto","description":"make rgba() css color (red, green, blue, alpha)"}},
-      {"src":"https://forresto.github.io/meemoo-modules/string-join.html","info":{"title":"string-join","author":"forresto","description":"join text strings into one string"}},
-      {"src":"https://forresto.github.io/meemoo-modules/log.html","info":{"title":"log","author":"meemoo","description":"log all messages"}},
+      // {"src":"https://forresto.github.io/meemoo-modules/string-join.html","info":{"title":"string-join","author":"forresto","description":"join text strings into one string"}},
+      // {"src":"https://forresto.github.io/meemoo-modules/log.html","info":{"title":"log","author":"meemoo","description":"log all messages"}},
       // {"src":"http://meemoo-image-in.phpfogapp.com/image-in.html","info":{"title":"image-in","author":"forresto","description":"Public image url to get the canvas pixel data."}},
       // {"src":"https://forresto.github.io/meemoo-modules/file-reader-image.html","info":{"title":"image file","author":"forresto","description":"Select or drag local images to get the canvas pixel data. Requires a browser with the FileReader API, like Firefox or Chrome."}},
-      {"src":"https://forresto.github.io/meemoo-modules/canvas2img.html","info":{"title":"canvas2img","author":"forresto","description":"canvas image data to image data url"}},
+      // {"src":"https://forresto.github.io/meemoo-modules/canvas2img.html","info":{"title":"canvas2img","author":"forresto","description":"canvas image data to image data url"}},
       {"src":"https://forresto.github.io/meemoo-modules/imgur.html","info":{"title":"imgur","author":"forresto","description":"image data url to Imgur image sharing service"}},
       // {"src":"https://forresto.github.io/meemoo-modules/img2canvas.html","info":{"title":"img2canvas","author":"forresto","description":"image data url to canvas image data"}},
       {"src":"https://forresto.github.io/meemoo-modules/delay.html","info":{"title":"delay","author":"forresto","description":"hold a stack of stack of data until buffer is full"}},
@@ -109,12 +110,11 @@ $(function(){
       {"src":"https://forresto.github.io/meemoo-modules/clock.html","info":{"title":"clock","author":"forresto","description":"time: hours minutes seconds with percentages"}},
       // {"src":"https://forresto.github.io/meemoo-modules/metronome.html","info":{"title":"metronome","author":"forresto","description":"meemoo.js module for rhythm in bpm or ms"}},
       {"src":"https://forresto.github.io/meemoo-modules/taptempo.html","info":{"title":"taptempo","author":"forresto","description":"tap out your rhythm, averages last 4 taps"}},
-      {"src":"https://forresto.github.io/meemoo-modules/audioarray.html","info":{"title":"audioarray","author":"forresto","description":"hold and address a stack of audio objects"}},
+      // {"src":"https://forresto.github.io/meemoo-modules/audioarray.html","info":{"title":"audioarray","author":"forresto","description":"hold and address a stack of audio objects"}},
       {"src":"https://forresto.github.io/meemoo-modules/speech2text.html","info":{"title":"speech2text","author":"forresto","description":"speech to text with x-webkit-speech"}},
       {"src":"https://forresto.github.io/meemoo-speak.js/text2speech.html","info":{"title":"text2speech","author":"forresto","description":"text to speech with speak.js"}}
     ]
   };
-  
-  Iframework.loadLibrary(library);
 
+  Iframework.loadLibrary(library);
 });
