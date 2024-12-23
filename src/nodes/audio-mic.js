@@ -63,23 +63,17 @@ $(function () {
     started: false,
     inputstart: function () {
       var self = this;
-      if (!navigator.getUserMedia) {
-        navigator.getUserMedia =
-          navigator.webkitGetUserMedia ||
-          navigator.mozGetUserMedia ||
-          navigator.msGetUserMedia ||
-          null;
-      }
-      if (!navigator.getUserMedia) {
+      if (!navigator.mediaDevices.getUserMedia) {
         return;
       }
       const constraints = {
         video: false,
         audio: this._micId ? {deviceId: this._micId} : true,
       };
-      navigator.getUserMedia(
-        constraints,
-        function (stream) {
+      navigator.mediaDevices
+        .getUserMedia(constraints)
+        .then(function (stream) {
+          console.log(stream);
           self._stream = stream;
           var microphone = self.audioContext.createMediaStreamSource(stream);
           microphone.connect(self.audioOutput);
@@ -88,9 +82,11 @@ $(function () {
           self.enumerateDevices();
           self.$('.stop').show();
           self.$('.choose').show();
-        },
-        function (error) {}
-      );
+        })
+        .catch(function (error) {
+          console.error('navigator.getUserMedia error: ', error);
+          self.stop();
+        });
     },
     enumerateDevices: function () {
       if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
