@@ -1,5 +1,5 @@
-(function() {
-  module.exports = function() {
+(function () {
+  module.exports = function () {
     var banner =
       "/*! <%= pkg.title %> <%= pkg.homepage %> - v<%= pkg.version %> - <%= grunt.template.today('yyyy-mm-dd') %> (<%= grunt.template.date('longTime') %>)\n* Copyright (c) <%= grunt.template.today('yyyy') %> <%= pkg.author.name %>; Licensed MIT, AGPL. */\n";
 
@@ -82,7 +82,7 @@
           '!src/nodes/webgl-sphere.js',
         ],
         options: {
-          esversion: 6,
+          esversion: 9,
           browser: true,
           sub: true,
           globals: {
@@ -127,7 +127,7 @@
     });
 
     // Only lint the changed file when watching
-    this.event.on('watch', function(action, filepath) {
+    this.event.on('watch', function (action, filepath) {
       grunt.config('jshint.force.files.src', filepath);
     });
 
@@ -146,4 +146,4 @@
     this.registerTask('test', ['jshint:all']);
     this.registerTask('default', ['test', 'build']);
   };
-}.call(this));
+}).call(this);
