@@ -40,7 +40,9 @@ $(function () {
     '<button class="savelocal icon-install">save local</button>' +
     '<button class="forklocal icon-split" title="save as... copy app and save under a new name">fork</button>' +
     '<button class="deletelocal icon-trash" title="delete local app"></button>' +
-    '<button class="savegist button icon-globe-1" title="login to save app to gist.github.com">login with github</button>' +
+    '<button class="savegist button icon-globe-1" title="save app to Github gist.github.com">save gist</button>' +
+    '<button class="login button icon-login" title="login to save app to gist.github.com">github login</button>' +
+    '<button class="logout button icon-logout">github logout</button>' +
     '</div>' +
     '<div class="permalink" title="last publicly saved version">' +
     '</div>';
@@ -77,7 +79,9 @@ $(function () {
       'click .savelocal': 'saveLocal',
       'click .forklocal': 'forkLocal',
       'click .deletelocal': 'deleteLocal',
+      'click .login': 'saveGist',
       'click .savegist': 'saveGist',
+      'click .logout': 'logout',
 
       'blur .settitle': 'setTitle',
       'blur .setdescription': 'setDescription',
@@ -678,6 +682,11 @@ $(function () {
           this.$('.savegist').prop('disabled', false);
         });
     },
+    logout: function () {
+      localStorage.removeItem('meemoo_gist_token');
+      alert('Logged out of GitHub');
+      this.updateCurrentInfo();
+    },
     setTitle: function () {
       var input = this.$('.currentapp .info .settitle').text();
       if (input !== this.graph.get('info')['title']) {
@@ -717,9 +726,13 @@ $(function () {
 
       const loggedIn = Boolean(localStorage.getItem('meemoo_gist_token'));
       if (loggedIn) {
-        this.$('.currentapp .savegist')
-          .attr('title', 'save app to gist.github.com')
-          .text('save to gist');
+        this.$('.currentapp .savegist').show();
+        this.$('.currentapp .login').hide();
+        this.$('.currentapp .logout').show();
+      } else {
+        this.$('.currentapp .savegist').hide();
+        this.$('.currentapp .login').show();
+        this.$('.currentapp .logout').hide();
       }
 
       if (graph.info.hasOwnProperty('parents')) {
@@ -832,8 +845,12 @@ $(function () {
 
     if (githubToken) {
       localStorage.setItem('meemoo_gist_token', githubToken);
-      // Redirect to main app page
-      window.location.href = '/' + window.location.hash;
+      // Replace current history entry with clean URL, omitting search params
+      const cleanUrl =
+        window.location.origin +
+        window.location.pathname +
+        window.location.hash;
+      history.replaceState(null, '', cleanUrl);
     }
   }
 
