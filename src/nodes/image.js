@@ -133,7 +133,8 @@ $(function () {
           a.href = url;
           const date = new Date();
           const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}-${String(date.getHours()).padStart(2, '0')}-${String(date.getMinutes()).padStart(2, '0')}-${String(date.getSeconds()).padStart(2, '0')}`;
-          a.download = `meemoo-${dateString}.png`;
+          const appUrl = Iframework.graph.get('info')?.url || '';
+          a.download = `meemoo-${appUrl}-${dateString}.png`;
           a.click();
           URL.revokeObjectURL(url);
         });
