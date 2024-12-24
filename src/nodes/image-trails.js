@@ -1,18 +1,17 @@
 // extends src/nodes/image.js which extends src/node-box-native-view.js
 
-$(function(){
-
-  Iframework.NativeNodes["image-trails"] = Iframework.NativeNodes["image"].extend({
-
+$(function () {
+  Iframework.NativeNodes['image-trails'] = Iframework.NativeNodes[
+    'image'
+  ].extend({
     info: {
-      title: "trails",
-      description: "draws image without clearing, leaving motion trails"
+      title: 'trails',
+      description: 'draws image without clearing, leaving motion trails',
     },
-    initializeModule: function(){
-    },
-    disconnectEdge: function(edge) {
+    initializeModule: function () {},
+    disconnectEdge: function (edge) {
       // Called from Edge.disconnect();
-      if (edge.Target.id === "image") {
+      if (edge.Target.id === 'image') {
         this._image = null;
       }
     },
@@ -21,17 +20,21 @@ $(function(){
       var oldmode = this.context.globalCompositeOperation;
       this.context.globalCompositeOperation = mode;
       if (this.context.globalCompositeOperation !== mode) {
-        this.$(".info").text("globalCompositeOperation '"+mode+"' not supported in this browser");
+        this.$('.info').text(
+          "globalCompositeOperation '" +
+            mode +
+            "' not supported in this browser"
+        );
       }
     },
     _clear: false,
-    inputclear: function(){
+    inputclear: function () {
       this._clear = true;
     },
     inputsend: function () {
-      this.send("image", this.canvas);
+      this.send('image', this.canvas);
     },
-    redraw: function(){
+    redraw: function () {
       // Called from NodeBoxNativeView.renderAnimationFrame()
       if (this._clear) {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -52,33 +55,59 @@ $(function(){
     },
     inputs: {
       image: {
-        type: "image",
-        description: "image to stack"
+        type: 'image',
+        description: 'image to stack',
       },
       composite: {
-        type: "string",
-        description: "composite (source-over, source-in, source-out, source-atop, destination-over, destination-in, destination-out, destination-atop, lighter, darker, copy, xor) and/or blend mode (Firefox 20 only as of April 2013: normal, multiply, screen, overlay, darken, lighten, color-dodge, color-burn, hard-light, soft-light, difference, exclusion, hue, saturation, color, luminosity) ",
-        options: ['source-over', 'source-in', 'source-out', 'source-atop', 'destination-over', 'destination-in', 'destination-out', 'destination-atop', 'lighter', 'darker', 'copy', 'xor', 
-          'normal', 'multiply', 'screen', 'overlay', 'darken', 'lighten', 'color-dodge', 'color-burn', 'hard-light', 'soft-light', 'difference', 'exclusion', 'hue', 'saturation', 'color', 'luminosity'],
-        "default": "source-over"
+        type: 'string',
+        description:
+          'composite (source-over, source-in, source-out, source-atop, destination-over, destination-in, destination-out, destination-atop, lighter, darker, copy, xor) and/or blend mode (Firefox 20 only as of April 2013: normal, multiply, screen, overlay, darken, lighten, color-dodge, color-burn, hard-light, soft-light, difference, exclusion, hue, saturation, color, luminosity) ',
+        options: [
+          'source-over',
+          'source-in',
+          'source-out',
+          'source-atop',
+          'destination-over',
+          'destination-in',
+          'destination-out',
+          'destination-atop',
+          'lighter',
+          'darker',
+          'copy',
+          'xor',
+          'normal',
+          'multiply',
+          'screen',
+          'overlay',
+          'darken',
+          'lighten',
+          'color-dodge',
+          'color-burn',
+          'hard-light',
+          'soft-light',
+          'difference',
+          'exclusion',
+          'hue',
+          'saturation',
+          'color',
+          'luminosity',
+        ],
+        default: 'source-over',
       },
       clear: {
-        type: "bang",
-        description: "send the image"
+        type: 'bang',
+        description: 'send the image',
       },
       send: {
-        type: "bang",
-        description: "send the image"
-      }
+        type: 'bang',
+        description: 'send the image',
+      },
     },
     outputs: {
       image: {
-        type: "image",
-        description: "image with trails"
-      }
-    }
-
+        type: 'image',
+        description: 'image with trails',
+      },
+    },
   });
-
-
 });

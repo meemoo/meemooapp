@@ -40,9 +40,9 @@ $(function () {
     '<button class="savelocal icon-install">save local</button>' +
     '<button class="forklocal icon-split" title="save as... copy app and save under a new name">fork</button>' +
     '<button class="deletelocal icon-trash" title="delete local app"></button>' +
-    '<button class="savegist button icon-globe-1" title="save app to Github gist.github.com">save gist</button>' +
-    '<button class="login button icon-login" title="login to save app to gist.github.com">github login</button>' +
-    '<button class="logout button icon-logout">github logout</button>' +
+    '<button class="savegist button icon-globe-1" title="save app to gist.github.com">make public</button>' +
+    '<button class="login button icon-login" title="login to save app to gist.github.com">login</button>' +
+    '<button class="logout button icon-logout">logout</button>' +
     '</div>' +
     '<div class="permalink" title="last publicly saved version">' +
     '</div>';

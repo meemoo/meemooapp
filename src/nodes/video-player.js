@@ -1,6 +1,6 @@
 // extends src/nodes/video.js which extends src/node-box-native-view.js
 
-$(function() {
+$(function () {
   var template =
     '<video id="video-<%= id %>" class="video" controls="" playsinline="" crossorigin="anonymous" style="max-width:100%;" /><br />' +
     '<button class="play">play</button>' +
@@ -29,7 +29,7 @@ $(function() {
       'click .choosefile': 'chooseFile',
       'change .fileinput': 'choseFile',
     },
-    initializeModule: function() {
+    initializeModule: function () {
       this.$('button').button();
 
       this._video = this.$('video')[0];
@@ -39,14 +39,14 @@ $(function() {
       this._video.autoplay = this._autoplay;
       this._video.loop = this._loop;
       var self = this;
-      $(this._video).on('loadedmetadata', function(e) {
+      $(this._video).on('loadedmetadata', function (e) {
         self.loadedMetadata();
       });
-      $(this._video).on('ended', function(e) {
+      $(this._video).on('ended', function (e) {
         self.send('ended');
       });
     },
-    inputurl: function(url) {
+    inputurl: function (url) {
       if (this._url !== url) {
         // TODO: remake video element, since ff doesn't notice source changes
         // this.$el.remove(this._video);
@@ -62,17 +62,17 @@ $(function() {
           // Multiple sources
           this._video.removeAttribute('src');
           var sources = '';
-          _.each(urls, function(url) {
+          _.each(urls, function (url) {
             sources += '<source src="' + url + '" />';
           });
           $(this._video).html(sources);
         }
       }
     },
-    chooseFile: function() {
+    chooseFile: function () {
       this.$('.fileinput').trigger('click');
     },
-    choseFile: function(event) {
+    choseFile: function (event) {
       // Thanks Robert Nyman https://hacks.mozilla.org/2012/04/taking-pictures-with-the-camera-api-part-of-webapi/
       // Get a reference to the taken picture or chosen file
       var files = event.target.files;
@@ -80,7 +80,7 @@ $(function() {
         this.loadFile(files[0]);
       }
     },
-    loadFile: function(file) {
+    loadFile: function (file) {
       try {
         // Create ObjectURL
         var imgURL = window.URL.createObjectURL(file);
@@ -92,7 +92,7 @@ $(function() {
         try {
           // Fallback if createObjectURL is not supported
           var fileReader = new FileReader();
-          fileReader.onload = function(event) {
+          fileReader.onload = function (event) {
             this._video.src = event.target.result;
           };
           fileReader.readAsDataURL(file);
@@ -101,7 +101,7 @@ $(function() {
         }
       }
     },
-    loadedMetadata: function() {
+    loadedMetadata: function () {
       // Called from this._video loadedmetadata
       if (this._video) {
         // Here we find the video's reported size
@@ -110,7 +110,7 @@ $(function() {
         if (!this._height) {
           // Firefox takes its time; try again in 0.5s
           var self = this;
-          window.setTimeout(function() {
+          window.setTimeout(function () {
             self.loadedMetadata();
           }, 500);
           return false;
@@ -129,7 +129,7 @@ $(function() {
     },
     _corsTested: false,
     _corsOK: false,
-    drawFrame: function() {
+    drawFrame: function () {
       if (!this._videoStarted) {
         return false;
       }
@@ -162,41 +162,41 @@ $(function() {
         }
       }
     },
-    inputplay: function() {
+    inputplay: function () {
       this._video.play();
     },
-    inputpause: function() {
+    inputpause: function () {
       this._video.pause();
     },
-    inputtime: function(time) {
+    inputtime: function (time) {
       this._video.currentTime = time;
     },
-    inputvolume: function(v) {
+    inputvolume: function (v) {
       this._video.volume = v;
     },
-    inputmuted: function(bool) {
+    inputmuted: function (bool) {
       this._muted = bool;
       this._video.muted = bool;
     },
-    inputautoplay: function(bool) {
+    inputautoplay: function (bool) {
       this._autoplay = bool;
       this._video.autoplay = bool;
     },
-    inputloop: function(bool) {
+    inputloop: function (bool) {
       this._loop = bool;
       this._video.loop = bool;
     },
     _frameTime: 1 / 30,
-    inputforward: function() {
+    inputforward: function () {
       this._video.pause();
       this._video.currentTime += this._frameTime;
     },
-    inputback: function() {
+    inputback: function () {
       this._video.pause();
       this._video.currentTime -= this._frameTime;
     },
     _sendNext: false,
-    inputsend: function() {
+    inputsend: function () {
       if (this._video.paused) {
         // Send now
         this.send('image', this.canvas);
@@ -205,7 +205,7 @@ $(function() {
         this._sendNext = true;
       }
     },
-    remove: function() {
+    remove: function () {
       if (this._stream) {
         this._stream.stop();
       }
@@ -213,7 +213,7 @@ $(function() {
         clearInterval(this._interval);
       }
     },
-    redraw: function() {
+    redraw: function () {
       // Called from NodeBoxNativeView.renderAnimationFrame()
       if (this.resetSizes) {
         this.setSizes();
@@ -221,7 +221,7 @@ $(function() {
       }
     },
     _lastTimeSent: null,
-    renderAnimationFrame: function(timestamp) {
+    renderAnimationFrame: function (timestamp) {
       // Get a tick from GraphView.renderAnimationFrame()
       // this._valueChanged is set by NodeBox.receive()
       if (this._triggerRedraw) {

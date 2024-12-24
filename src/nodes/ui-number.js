@@ -2,9 +2,9 @@
 
 // extends src/nodes/time.js which extends src/node-box-native-view.js
 
-$(function(){
-
-  var template = 
+$(function () {
+  // prettier-ignore
+  var template =
     '<form class="textform">'+
       '<label><span class="label"></span> '+
         '<input type="number" class="number" step="any" style="width:90%"></input>'+
@@ -12,58 +12,53 @@ $(function(){
       '<button class="send" type="submit">send</button>'+
     '</form>';
 
-  Iframework.NativeNodes["ui-number"] = Iframework.NativeNodes["ui"].extend({
-
+  Iframework.NativeNodes['ui-number'] = Iframework.NativeNodes['ui'].extend({
     template: _.template(template),
     info: {
-      title: "number",
-      description: "a number box to save and send int/float"
+      title: 'number',
+      description: 'a number box to save and send int/float',
     },
     events: {
-      "submit .textform": "submit"
+      'submit .textform': 'submit',
     },
-    initializeModule: function(){
-    },
-    submit: function(){
-      this._val = parseFloat( this.$(".number").val() );
+    initializeModule: function () {},
+    submit: function () {
+      this._val = parseFloat(this.$('.number').val());
       this.inputsend();
       return false;
     },
-    inputvalue: function(val){
+    inputvalue: function (val) {
       this._val = val;
       this.inputsend();
       this._triggerRedraw = true;
     },
-    inputlabel: function(label){
-      this.$(".label").text(label);
+    inputlabel: function (label) {
+      this.$('.label').text(label);
     },
-    inputsend: function(){
-      this.send("number", this._val);
+    inputsend: function () {
+      this.send('number', this._val);
     },
-    redraw: function(timestamp){
-      this.$(".number").val( this._val );
+    redraw: function (timestamp) {
+      this.$('.number').val(this._val);
     },
     inputs: {
       value: {
-        type: "float",
-        description: "default number"
+        type: 'float',
+        description: 'default number',
       },
       label: {
-        type: "string",
-        description: "label for input"
+        type: 'string',
+        description: 'label for input',
       },
       send: {
-        type: "bang",
-        description: "send the text"
-      }
+        type: 'bang',
+        description: 'send the text',
+      },
     },
     outputs: {
       number: {
-        type: "float"
-      }
-    }
-
+        type: 'float',
+      },
+    },
   });
-
-
 });

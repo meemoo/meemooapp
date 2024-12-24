@@ -1,3 +1,4 @@
+// prettier-ignore
 $(function(){
 
   // glMatrix v0.9.5
@@ -40,7 +41,7 @@ $(function(){
 
 
 
-  var fragment = 
+  var fragment =
     "precision mediump float; "+
 
     "varying vec2 vTextureCoord; "+
@@ -53,7 +54,7 @@ $(function(){
     "    gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a); "+
     "}";
 
-  var vertex = 
+  var vertex =
     "attribute vec3 aVertexPosition;" +
     "attribute vec3 aVertexNormal;" +
     "attribute vec2 aTextureCoord;" +

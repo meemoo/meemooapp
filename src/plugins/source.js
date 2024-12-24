@@ -1,5 +1,5 @@
-$( function() {
-
+$(function () {
+  // prettier-ignore
   var template = $(
     '<div>'+
       '<div class="sourceedit">'+
@@ -13,36 +13,36 @@ $( function() {
     '</div>'
   );
 
-  var code = template.find("textarea");
+  var code = template.find('textarea');
 
   // Add menu
-  Iframework.addMenu("source", template, "icon-cog");
+  Iframework.addMenu('source', template, 'icon-cog');
 
   // On change update code view
-  Iframework.on("change", function(graph){
-    if (Iframework.graph && Iframework.$(".menu-source").is(":visible")) {
+  Iframework.on('change', function (graph) {
+    if (Iframework.graph && Iframework.$('.menu-source').is(':visible')) {
       // Bookmark to scroll back to
-      var scrollBackTop = code.prop("scrollTop");
-      code.val( JSON.stringify(Iframework.graph.toJSON(), null, "  ") );
-      code.scrollTop( scrollBackTop );
+      var scrollBackTop = code.prop('scrollTop');
+      code.val(JSON.stringify(Iframework.graph.toJSON(), null, '  '));
+      code.scrollTop(scrollBackTop);
     }
   });
 
-  var sourceRefresh = function(){
-    code.val( JSON.stringify(Iframework.graph, null, "  ") );
+  var sourceRefresh = function () {
+    code.val(JSON.stringify(Iframework.graph, null, '  '));
   };
-  template.find(".sourcerefresh").click(sourceRefresh);
+  template.find('.sourcerefresh').click(sourceRefresh);
 
   // On show manu update source
-  Iframework.on("showmenu:source", sourceRefresh);
+  Iframework.on('showmenu:source', sourceRefresh);
 
-  var sourceCompress = function(){
-    code.val( JSON.stringify(Iframework.graph, null, "") );
+  var sourceCompress = function () {
+    code.val(JSON.stringify(Iframework.graph, null, ''));
   };
-  template.find(".sourcecompress").click(sourceCompress);
+  template.find('.sourcecompress').click(sourceCompress);
 
   // Apply source to test graph
-  var sourceApply = function(){
+  var sourceApply = function () {
     //   try {
     //     var newGraph = JSON.parse( this.$(".sourceedit textarea").val() );
     //     this.loadGraph(newGraph);
@@ -54,8 +54,8 @@ $( function() {
     //   }
     var graph;
     try {
-      graph = JSON.parse( code.val() );
-    } catch(error){
+      graph = JSON.parse(code.val());
+    } catch (error) {
       return false;
     }
     if (graph) {
@@ -63,10 +63,9 @@ $( function() {
       // reset localStorage version
       Iframework._loadedLocalApp = null;
       sourceRefresh();
-      g.trigger("change");
+      g.trigger('change');
     }
     return false;
   };
-  template.find(".sourceapply").click(sourceApply);
-
-} );
+  template.find('.sourceapply').click(sourceApply);
+});

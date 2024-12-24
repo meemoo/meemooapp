@@ -1,42 +1,41 @@
-$(function(){
-
+$(function () {
   Iframework.NodeBox = Iframework.Node.extend({
     loaded: false,
-    defaults: function() {
+    defaults: function () {
       return {
-        src: "",
+        src: '',
         x: 100,
         y: 400,
         z: 0,
         w: 200,
         h: 210,
-        state: {}
+        state: {},
       };
     },
     info: {
-      title: "native-node",
-      description: "extend me"
+      title: 'native-node',
+      description: 'extend me',
     },
     initialize: function () {
       this.Inputs = new Iframework.PortsIn();
       this.Outputs = new Iframework.PortsOut();
 
-      this.parentGraph = this.get("parentGraph");
+      this.parentGraph = this.get('parentGraph');
 
       // Change event
-      this.on("change", this.nodeChanged);
+      this.on('change', this.nodeChanged);
     },
     initializeView: function () {
       // Called from GraphView.addNode
-      this.view = new Iframework.NodeBoxView({model:this});
+      this.view = new Iframework.NodeBoxView({model: this});
       return this.view;
     },
     send: function (name, value) {
       // Send message out to connected modules
       // Defer to make this safe for infinite loops
       var self = this;
-      _.defer(function(){
-        self.trigger("send:"+name, value);
+      _.defer(function () {
+        self.trigger('send:' + name, value);
       });
     },
     receive: function (name, value) {
@@ -52,8 +51,8 @@ $(function(){
       }
     },
     setState: function () {
-      var state = this.get("state");
-      if (state && this.view.Native){
+      var state = this.get('state');
+      if (state && this.view.Native) {
         for (var name in state) {
           var eqSet = this.setEquation(name, state[name]);
           if (!eqSet) {
@@ -82,9 +81,13 @@ $(function(){
         this.view.addInput(newPort);
       }
       // Set state to post defaults
-      var currentState = this.get("state");
-      if ( info.hasOwnProperty("default") && info["default"] !== "" && !currentState.hasOwnProperty(info.name) ) {
-        currentState[info.name] = info["default"];
+      var currentState = this.get('state');
+      if (
+        info.hasOwnProperty('default') &&
+        info['default'] !== '' &&
+        !currentState.hasOwnProperty(info.name)
+      ) {
+        currentState[info.name] = info['default'];
       }
       return newPort;
     },
@@ -111,7 +114,7 @@ $(function(){
     },
     nodeChanged: function () {
       if (this.parentGraph) {
-        this.parentGraph.trigger("change");
+        this.parentGraph.trigger('change');
       }
     },
     remove: function (fromView) {
@@ -127,24 +130,28 @@ $(function(){
         }
       }
     },
-    setValues: function(info) {
+    setValues: function (info) {
       for (var name in info) {
         this.setValue(name, info[name]);
       }
       this.nodeChanged();
     },
-    setValue: function(name, value) {
+    setValue: function (name, value) {
       this.setEquation(name, value);
-      this.get("state")[name] = value;
+      this.get('state')[name] = value;
       this.nodeChanged();
     },
     setEquation: function (name, value) {
-      if (!this.view.Native) { return; }
+      if (!this.view.Native) {
+        return;
+      }
       var input = this.Inputs.get(name);
-      if (!input) { return; }
-      var type = input.get("type");
-      if ( type === "int" || type === "float" || type === "number" ) {
-        if (value && value.toString().substr(0,1) === "=") {
+      if (!input) {
+        return;
+      }
+      var type = input.get('type');
+      if (type === 'int' || type === 'float' || type === 'number') {
+        if (value && value.toString().substr(0, 1) === '=') {
           this.view.Native.setEquation(name, value.substr(1));
           return true;
         } else {
@@ -152,29 +159,27 @@ $(function(){
         }
       }
     },
-    toString: function() {
+    toString: function () {
       if (this.info) {
-        return "Native node "+this.get("id")+": "+this.info.title;
+        return 'Native node ' + this.get('id') + ': ' + this.info.title;
       } else {
-        return "Native node "+this.get("id");
+        return 'Native node ' + this.get('id');
       }
     },
     toJSON: function () {
       return {
         id: this.id,
-        src: this.get("src"),
-        x: this.get("x"),
-        y: this.get("y"),
-        w: this.get("w"),
-        h: this.get("h"),
-        state: this.get("state")
+        src: this.get('src'),
+        x: this.get('x'),
+        y: this.get('y'),
+        w: this.get('w'),
+        h: this.get('h'),
+        state: this.get('state'),
       };
-    }
-
+    },
   });
-  
+
   Iframework.Nodes = Backbone.Collection.extend({
-    model: Iframework.Node
+    model: Iframework.Node,
   });
-
 });

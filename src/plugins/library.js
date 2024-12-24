@@ -1,5 +1,5 @@
-$( function () {
-
+$(function () {
+  // prettier-ignore
   var template = $(
     '<div>'+
       '<div class="controls">'+
@@ -14,25 +14,26 @@ $( function () {
   );
 
   // Add menu
-  Iframework.addMenu("library", template, "icon-plus");
+  Iframework.addMenu('library', template, 'icon-plus');
 
   Iframework.loadLibrary = function (library) {
-
     var autocompleteData = [];
 
-    var accordion = $("<div></div>");
+    var accordion = $('<div></div>');
 
     for (var category in library) {
-      if (!library.hasOwnProperty(category)){continue;}
+      if (!library.hasOwnProperty(category)) {
+        continue;
+      }
       var section = $('<div class="library-section"></div>');
 
       // section title
-      section.append( $('<h3><a href="#">'+category+"</a></h3>") );
+      section.append($('<h3><a href="#">' + category + '</a></h3>'));
 
       // section items
-      var sectionDiv = $("<div></div>");
+      var sectionDiv = $('<div></div>');
       var modules = library[category];
-      for (var i = 0; i<modules.length; i++) {
+      for (var i = 0; i < modules.length; i++) {
         var module = new Iframework.Module(modules[i]);
         // this.Library.add(module);
 
@@ -40,75 +41,83 @@ $( function () {
         sectionDiv.append(module.view.$el);
 
         var autocompleteDataItem = {
-          value: module.get("src"),
-          label: module.get("info").title + " - " + module.get("info").description + " - " + module.get("src"),
-          title: module.get("info").title,
-          description: module.get("info").description + " - " + module.get("src")
+          value: module.get('src'),
+          label:
+            module.get('info').title +
+            ' - ' +
+            module.get('info').description +
+            ' - ' +
+            module.get('src'),
+          title: module.get('info').title,
+          description:
+            module.get('info').description + ' - ' + module.get('src'),
         };
         autocompleteData.push(autocompleteDataItem);
       }
-      section.append( sectionDiv );
-      accordion.append( section );
+      section.append(sectionDiv);
+      accordion.append(section);
     }
 
     template.find('.listing').append(accordion);
-    accordion.children(".library-section")
-      .accordion({
-        animate: false,
-        header: "h3",
-        heightStyle: "content",
-        collapsible: true,
-        active: false
-      });
+    accordion.children('.library-section').accordion({
+      animate: false,
+      header: 'h3',
+      heightStyle: 'content',
+      collapsible: true,
+      active: false,
+    });
 
-    template.find('.addbyurlinput')
+    template
+      .find('.addbyurlinput')
       .autocomplete({
         minLength: 1,
         source: autocompleteData,
-        select: function( event, ui ) {
-          _.defer(function(){
+        select: function (event, ui) {
+          _.defer(function () {
             Iframework.addByUrl();
           });
-        }
+        },
       })
-      .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
-        // Custom display
-        return $( "<li>" )
-          .append( '<a><span style="font-size:120%;">' + item.title + "</span><br>" + item.description + "</a>" )
-          .appendTo( ul );
-      };
+      .data('ui-autocomplete')._renderItem = function (ul, item) {
+      // Custom display
+      return $('<li>')
+        .append(
+          '<a><span style="font-size:120%;">' +
+            item.title +
+            '</span><br>' +
+            item.description +
+            '</a>'
+        )
+        .appendTo(ul);
+    };
   };
 
-  var addByUrl = Iframework.addByUrl = function() {
-    var addByUrlInput = Iframework.$(".addbyurlinput");
+  var addByUrl = (Iframework.addByUrl = function () {
+    var addByUrlInput = Iframework.$('.addbyurlinput');
     addByUrlInput.blur();
 
     var url = addByUrlInput.val();
-    if (url !== "") {
-      var graphEl = Iframework.$(".graph");
+    if (url !== '') {
+      var graphEl = Iframework.$('.graph');
       Iframework.shownGraph.addNode({
-        "src": url,
-        "x": Math.floor(graphEl.scrollLeft() + graphEl.width()/2) - 100,
-        "y": Math.floor(graphEl.scrollTop() + graphEl.height()/2) - 100
+        src: url,
+        x: Math.floor(graphEl.scrollLeft() + graphEl.width() / 2) - 100,
+        y: Math.floor(graphEl.scrollTop() + graphEl.height() / 2) - 100,
       });
-      addByUrlInput
-        .val("")
-        .attr("placeholder", "loading...");
-      window.setTimeout(function(){
-        addByUrlInput
-          .attr("placeholder", "search or url");
+      addByUrlInput.val('').attr('placeholder', 'loading...');
+      window.setTimeout(function () {
+        addByUrlInput.attr('placeholder', 'search or url');
       }, 1000);
     }
     return false;
-  };
+  });
 
   // Form submit action
-  template.find(".addbyurl").submit(function(){
+  template.find('.addbyurl').submit(function () {
     addByUrl();
     return false;
   });
 
- 
   // var library = $('<ul class="dataflow-plugin-library" style="list-style:none; padding-left:0" />');
 
   // var addNode = function(node, x, y) {
@@ -171,5 +180,4 @@ $( function () {
   // Iframework.addPlugin("library", library);
 
   // Iframework.plugins.library.update = update;
-
-} );
+});

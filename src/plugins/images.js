@@ -1,12 +1,12 @@
-$( function() {
-
-  var IMGUR_ID = "9877b5345adf3fc";
+$(function () {
+  var IMGUR_ID = '9877b5345adf3fc';
 
   // Shim
-  if ( !window.URL ) {
+  if (!window.URL) {
     window.URL = window.webkitURL || window.msURL || window.oURL || false;
   }
 
+  // prettier-ignore
   var template = $(
     '<div class="meemoo-plugin-images">'+
       '<div class="listing">'+
@@ -26,109 +26,115 @@ $( function() {
   );
 
   // Add menu
-  Iframework.addMenu("images", template, "icon-picture");
+  Iframework.addMenu('images', template, 'icon-picture');
 
   // Set info
-  var info = template.find(".info");
+  var info = template.find('.info');
   var setInfo = function (string) {
     info.text(string);
   };
 
   // Open image panel by dragging over show button
-  Iframework.$(".show-images").droppable({
-    accept: ".canvas, .image",
-    tolerance: "pointer",
-    activeClass: "drop-indicator",
+  Iframework.$('.show-images').droppable({
+    accept: '.canvas, .image',
+    tolerance: 'pointer',
+    activeClass: 'drop-indicator',
     over: function (event, ui) {
-      $(this).trigger("click");
-    }
+      $(this).trigger('click');
+    },
   });
 
   // Drop panels
-  template.find(".image-drop").droppable({
-    accept: ".canvas",
-    tolerance: "pointer",
-    hoverClass: "drop-hover",
-    activeClass: "drop-active",
+  template.find('.image-drop').droppable({
+    accept: '.canvas',
+    tolerance: 'pointer',
+    hoverClass: 'drop-hover',
+    activeClass: 'drop-active',
     // Don't also drop on graph
-    greedy: true
+    greedy: true,
   });
-  template.find(".public-drop").droppable({
+  template.find('.public-drop').droppable({
     // also accept img drops
-    accept: ".canvas, .image"
+    accept: '.canvas, .image',
   });
-  template.find(".local-drop").on("drop", function(event, ui) {
-    var image = ui.helper.data("meemoo-drag-canvas");
-    if (!image) { return false; }
+  template.find('.local-drop').on('drop', function (event, ui) {
+    var image = ui.helper.data('meemoo-drag-canvas');
+    if (!image) {
+      return false;
+    }
     var thumbnail = makeThumbnail(image);
-    localListing.append( thumbnail );
+    localListing.append(thumbnail);
   });
 
   // Make thumbnail element
-  var makeThumbnail = function(image){
+  var makeThumbnail = function (image) {
     // image can be Image or Canvas
     var el = $('<div class="meemoo-plugin-images-thumbnail canvas">')
       .append(image)
       .draggable({
-        cursor: "pointer",
-        cursorAt: { top: -10, left: -10 },
-        helper: function( event ) {
-          var helper = $( '<div class="drag-image"><h2>Copy this</h2></div>' )
-            .data({
-              "meemoo-drag-type": "canvas",
-              "meemoo-source-image": image
-            });
+        cursor: 'pointer',
+        cursorAt: {top: -10, left: -10},
+        helper: function (event) {
+          var helper = $(
+            '<div class="drag-image"><h2>Copy this</h2></div>'
+          ).data({
+            'meemoo-drag-type': 'canvas',
+            'meemoo-source-image': image,
+          });
           $(document.body).append(helper);
-          _.delay(function(){
+          _.delay(function () {
             dragCopyCanvas(helper);
           }, 100);
           return helper;
-        }
+        },
       });
     return el;
   };
 
   var dragCopyCanvas = function (helper) {
-    if (!helper) { return; }
-    var image = helper.data("meemoo-source-image");
-    var canvasCopy = document.createElement("canvas");
+    if (!helper) {
+      return;
+    }
+    var image = helper.data('meemoo-source-image');
+    var canvasCopy = document.createElement('canvas');
     canvasCopy.width = image.naturalWidth ? image.naturalWidth : image.width;
-    canvasCopy.height = image.naturalHeight ? image.naturalHeight : image.height;
-    canvasCopy.getContext("2d").drawImage(image, 0, 0);
-    helper.data("meemoo-drag-canvas", canvasCopy);
+    canvasCopy.height = image.naturalHeight
+      ? image.naturalHeight
+      : image.height;
+    canvasCopy.getContext('2d').drawImage(image, 0, 0);
+    helper.data('meemoo-drag-canvas', canvasCopy);
     helper.append(canvasCopy);
   };
 
-
   // Local files
-  var fileInput = template.find(".file-input-local");
-  var localListing = template.find(".local-listing");
-  fileInput.change( function (event) {
+  var fileInput = template.find('.file-input-local');
+  var localListing = template.find('.local-listing');
+  fileInput.change(function (event) {
     // Load local image
     var files = event.target.files;
-    for (var i=0; i<files.length; i++) {
+    for (var i = 0; i < files.length; i++) {
       var img = new Image();
-      img.src = window.URL.createObjectURL( files[i] );
+      img.src = window.URL.createObjectURL(files[i]);
       var thumbnail = makeThumbnail(img);
-      localListing.append( thumbnail );
+      localListing.append(thumbnail);
     }
   });
-  template.find(".localfile").click(function(){
-    // Trigger 
-    fileInput.trigger("click");
+  template.find('.localfile').click(function () {
+    // Trigger
+    fileInput.trigger('click');
   });
 
   // Native select local files to Imgur
-  var fileInputPublic = template.find(".file-input-public");
-  fileInputPublic.change( function (event) {
+  var fileInputPublic = template.find('.file-input-public');
+  fileInputPublic.change(function (event) {
     var files = event.target.files;
     if (files.length < 1) {
       return;
     }
     // Upload them
     setInfo('Uploading...');
-    
-    function makeSuccess (fileName) {
+
+    function makeSuccess(fileName) {
       return function (response) {
         if (response.success) {
           saveImgurLocal(response.data);
@@ -138,34 +144,34 @@ $( function() {
         }
       };
     }
-    
-    function makeError (fileName) {
+
+    function makeError(fileName) {
       return function () {
         setInfo('Upload ' + fileName + 'failed :(');
       };
     }
-    
+
     for (var i = 0, len = files.length; i < len; i++) {
       var file = files[i];
       $.ajax({
         url: 'https://api.imgur.com/3/image',
         type: 'post',
         headers: {
-          Authorization: 'Client-ID ' + IMGUR_ID
+          Authorization: 'Client-ID ' + IMGUR_ID,
         },
         data: file,
         processData: false,
         success: makeSuccess(file.name),
-        error: makeError(file.name)
+        error: makeError(file.name),
       });
     }
   });
-  template.find(".publicfile").click(function(){
-    // Trigger 
-    fileInputPublic.trigger("click");
+  template.find('.publicfile').click(function () {
+    // Trigger
+    fileInputPublic.trigger('click');
   });
-  
-  function enforceHTTPS (url) {
+
+  function enforceHTTPS(url) {
     if (!url) {
       return;
     }
@@ -175,11 +181,11 @@ $( function() {
     }
     return linkSplit.join(':');
   }
-  
-  function saveImgurLocal (data) {
+
+  function saveImgurLocal(data) {
     // Make small thumbnail url
     var thumbSplit = data.link.split('.');
-    thumbSplit[thumbSplit.length-2] += 's';
+    thumbSplit[thumbSplit.length - 2] += 's';
     var linkThumb = thumbSplit.join('.');
     // Make model, add to collection, save to localStorage
     var img = new Iframework.plugins.images.GalleryImage({
@@ -191,31 +197,34 @@ $( function() {
       animated: data.animated,
       gifv: enforceHTTPS(data.gifv),
       mp4: enforceHTTPS(data.mp4),
-      webm: enforceHTTPS(data.webm)
+      webm: enforceHTTPS(data.webm),
     });
     publicImages.add(img);
     img.save();
   }
 
-
   // Meemoo drop to Imgur
-  template.find(".public-drop").on("drop", function(event, ui) {
-    var canvas = ui.helper.data("meemoo-drag-canvas");
-    var image = ui.helper.data("meemoo-source-image");
-    if (!canvas && !image) { return false; }
+  template.find('.public-drop').on('drop', function (event, ui) {
+    var canvas = ui.helper.data('meemoo-drag-canvas');
+    var image = ui.helper.data('meemoo-source-image');
+    if (!canvas && !image) {
+      return false;
+    }
 
     var b64;
 
     if (canvas) {
-      try{
+      try {
         b64 = canvas.toDataURL().split(',', 2)[1];
       } catch (error) {
-        setInfo('Not able to get image data. Right-click "Save as..." or take a screenshot.');
+        setInfo(
+          'Not able to get image data. Right-click "Save as..." or take a screenshot.'
+        );
         return false;
       }
     } else if (image) {
       // Make sure data url
-      if (image.src.split(':')[0] !== "data") {
+      if (image.src.split(':')[0] !== 'data') {
         return false;
       }
 
@@ -225,24 +234,26 @@ $( function() {
       b64 = split[1];
     }
 
-    if (!b64) { return false; }
-    
+    if (!b64) {
+      return false;
+    }
+
     setInfo('Uploading...');
 
     $.ajax({
       url: 'https://api.imgur.com/3/image',
       type: 'post',
       headers: {
-        Authorization: 'Client-ID ' + IMGUR_ID
+        Authorization: 'Client-ID ' + IMGUR_ID,
       },
       data: {
         image: b64,
         type: 'base64',
         title: 'made with meemoo.org',
-        description: 'browser-based media hacking https://app.meemoo.org/'
+        description: 'browser-based media hacking https://app.meemoo.org/',
       },
       dataType: 'json',
-      success: function(response) {
+      success: function (response) {
         if (response.success) {
           saveImgurLocal(response.data);
           setInfo('Upload done :)');
@@ -252,10 +263,9 @@ $( function() {
       },
       error: function () {
         setInfo('Upload failed :( save it to your computer');
-      }
+      },
     });
   });
-
 
   // Globally-accessible functions
   Iframework.plugins.images = {};
@@ -266,18 +276,21 @@ $( function() {
     },
     initializeView: function () {
       if (!this.view) {
-        this.view = new Iframework.plugins.images.GalleryImageView({model:this});
+        this.view = new Iframework.plugins.images.GalleryImageView({
+          model: this,
+        });
       }
       return this.view;
-    }
+    },
   });
 
   Iframework.plugins.images.GalleryImages = Backbone.Collection.extend({
     model: Iframework.plugins.images.GalleryImage,
-    localStorage: new Backbone.LocalStorage("GalleryImages")
+    localStorage: new Backbone.LocalStorage('GalleryImages'),
   });
 
-  var imageTemplate = 
+  // prettier-ignore
+  var imageTemplate =
     '<img crossorigin="anonymous" title="drag to graph or image node" />'+
     '<div class="controls">'+
       '<a class="link button icon-link" title="Open image in new window" target="_blank"></a>'+
@@ -286,57 +299,58 @@ $( function() {
     '</div>';
 
   Iframework.plugins.images.GalleryImageView = Backbone.View.extend({
-    tagName: "div",
-    className: "meemoo-plugin-images-thumbnail",
+    tagName: 'div',
+    className: 'meemoo-plugin-images-thumbnail',
     template: _.template(imageTemplate),
     events: {
-      "click .delete": "destroyModel"
+      'click .delete': 'destroyModel',
     },
     initialize: function () {
       this.$el.html(this.template(this.model.toJSON()));
 
       var mainsrc = this.model.get('link');
-      this.$(".link").attr("href", mainsrc);
+      this.$('.link').attr('href', mainsrc);
 
       var animated = this.model.get('animated');
       if (animated) {
         var animatedLink = this.model.get('gifv') || mainsrc;
-        this.$(".link-animated")
-          .attr("href", animatedLink)
-          .css({"display": "inline-block"});
+        this.$('.link-animated')
+          .attr('href', animatedLink)
+          .css({display: 'inline-block'});
       }
 
       // Load thumbnail
-      var img = this.$("img")[0];
+      var img = this.$('img')[0];
       img.src = this.model.get('linkThumb');
 
       this.$el.draggable({
-        cursor: "pointer",
-        cursorAt: { top: -10, left: -10 },
-        helper: function( event ) {
-          var helper = $( '<div class="drag-image"><h2>Copy this</h2></div>' )
-            .data({
-              "meemoo-drag-type": "canvas",
-              "meemoo-source-image": img,
-              "meemoo-image-url": mainsrc
-            });
+        cursor: 'pointer',
+        cursorAt: {top: -10, left: -10},
+        helper: function (event) {
+          var helper = $(
+            '<div class="drag-image"><h2>Copy this</h2></div>'
+          ).data({
+            'meemoo-drag-type': 'canvas',
+            'meemoo-source-image': img,
+            'meemoo-image-url': mainsrc,
+          });
           $(document.body).append(helper);
-          _.delay(function(){
+          _.delay(function () {
             dragCopyCanvas(helper);
           }, 100);
           return helper;
-        }
+        },
       });
 
-      var publicListing = template.find(".public-listing");
-      publicListing.prepend( this.el );
+      var publicListing = template.find('.public-listing');
+      publicListing.prepend(this.el);
 
       this.model.on('destroy', this.remove, this);
 
       return this;
     },
     destroyModel: function () {
-      if (!window.confirm("Are you sure you want to delete this image?")) {
+      if (!window.confirm('Are you sure you want to delete this image?')) {
         return;
       }
       // Delete imgur file
@@ -348,9 +362,9 @@ $( function() {
           url: 'https://api.imgur.com/3/image/' + deletehash,
           type: 'delete',
           headers: {
-            Authorization: 'Client-ID ' + IMGUR_ID
+            Authorization: 'Client-ID ' + IMGUR_ID,
           },
-          success: function(response) {
+          success: function (response) {
             if (response.success) {
               model.destroy();
               setInfo('Deleted');
@@ -360,7 +374,7 @@ $( function() {
           },
           error: function () {
             setInfo('Delete failed');
-          }
+          },
         });
         return;
       }
@@ -369,21 +383,19 @@ $( function() {
     },
     remove: function () {
       this.$el.remove();
-    }
-
+    },
   });
 
   // Load local images from local storage
   var publicImages = new Iframework.plugins.images.GalleryImages();
   publicImages.fetch({
-    success: function(e) {
-      publicImages.each(function(image){
+    success: function (e) {
+      publicImages.each(function (image) {
         image.initializeView();
       });
     },
     error: function (e) {
-      console.warn("error loading public images");
-    }
+      console.warn('error loading public images');
+    },
   });
-
-} );
+});

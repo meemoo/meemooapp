@@ -1,23 +1,21 @@
-$(function(){
-
+$(function () {
   Iframework.Port = Backbone.Model.extend({
     defaults: {
-      name: "",
-      type: "",
-      description: "",
-      "default": null
+      name: '',
+      type: '',
+      description: '',
+      default: null,
     },
     initialize: function () {
-      if (this.get("type")==="") {
+      if (this.get('type') === '') {
         // No type set, connect to anything
-        this.set("type", "all");
+        this.set('type', 'all');
       }
-      this.parentNode = this.get("parentNode");
+      this.parentNode = this.get('parentNode');
       // To sanitize data:image/gif types for css class
       // this.set( "type_class", this.get("type").split("/")[0].replace(":", "_") );
-      this.set( "type_class", this.get("type").split(":")[0] );
+      this.set('type_class', this.get('type').split(':')[0]);
       this.Edges = new Iframework.Edges();
-
     },
     // Ports keep track of connected edges
     connect: function (edge) {
@@ -28,7 +26,7 @@ $(function(){
     },
     remove: function () {
       // Disconnect edges
-      while(this.Edges.length > 0) {
+      while (this.Edges.length > 0) {
         var edge = this.Edges.at(0);
         this.parentNode.parentGraph.removeEdge(edge);
       }
@@ -36,11 +34,10 @@ $(function(){
       if (this.view) {
         this.view.remove();
       }
-    }
-  });
-  
-  Iframework.Ports = Backbone.Collection.extend({
-    model: Iframework.Port
+    },
   });
 
+  Iframework.Ports = Backbone.Collection.extend({
+    model: Iframework.Port,
+  });
 });

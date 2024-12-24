@@ -1,14 +1,13 @@
-$(function(){
-
+$(function () {
   var template = '<div class="info" />';
 
   Iframework.NodeBoxNativeView = Backbone.View.extend({
-    tagName: "div",
-    className: "nativenode",
+    tagName: 'div',
+    className: 'nativenode',
     template: _.template(template),
     info: {
-      title: "native-node-view",
-      description: "extend me"
+      title: 'native-node-view',
+      description: 'extend me',
     },
     inputs: {},
     outputs: {},
@@ -39,10 +38,10 @@ $(function(){
 
       return this;
     },
-    initializeCategory: function(){
+    initializeCategory: function () {
       // for example, override in nodes/image.js
     },
-    initializeModule: function(){
+    initializeModule: function () {
       // for example, override in nodes/image-combine.js
     },
     render: function () {
@@ -85,7 +84,9 @@ $(function(){
           }
         } catch (error) {
           // If equation doesn't parse, pass through val
-          this.equations[name] = function(vars){return vars.x;};
+          this.equations[name] = function (vars) {
+            return vars.x;
+          };
         }
       } else {
         if (this.equations[name]) {
@@ -94,34 +95,32 @@ $(function(){
       }
     },
     receive: function (name, value) {
-      if (this.equations && this.equations[name]){
-        value = this.equations[name].evaluate({x:value});
+      if (this.equations && this.equations[name]) {
+        value = this.equations[name].evaluate({x: value});
       }
-      if (this["input"+name]){
-        this["input"+name](value);
+      if (this['input' + name]) {
+        this['input' + name](value);
         // Must manually set _triggerRedraw in that function if needed
       } else {
-        this["_"+name] = value;
+        this['_' + name] = value;
         // Will trigger a NodeBoxNativeView.redraw() on next renderAnimationFrame
         this._triggerRedraw = true;
       }
     },
-    toString: function() {
-      return "Native view: "+this.model.get("id")+": "+this.info.title;
+    toString: function () {
+      return 'Native view: ' + this.model.get('id') + ': ' + this.info.title;
     },
-    resize: function(w,h) {
+    resize: function (w, h) {
       // Called from NodeBoxView.resizestop()
     },
-    connectEdge: function(edge) {
+    connectEdge: function (edge) {
       // Called from Edge.connect();
     },
-    disconnectEdge: function(edge) {
+    disconnectEdge: function (edge) {
       // Called from Edge.disconnect();
     },
-    remove: function(){
+    remove: function () {
       // Called from NodeBoxView.remove();
-    }
-
+    },
   });
-
 });

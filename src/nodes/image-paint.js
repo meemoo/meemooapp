@@ -1,45 +1,61 @@
 // extends src/nodes/image.js which extends src/node-box-native-view.js
 
-$(function(){
-
+$(function () {
   var makeTools = function () {
-
     var tools = {
       painting: false,
       lastX: 0,
       lastY: 0,
-      startX: 0, 
+      startX: 0,
       startY: 0,
       minThickness: 1,
       maxThickness: 5,
-      ctx: null, 
-      mouseX: null, 
+      ctx: null,
+      mouseX: null,
       mouseY: null,
       canvasPosition: {},
-      stamp: null, 
-      stampW: null, 
+      stamp: null,
+      stampW: null,
       stampH: null,
-      move: function(e){
+      move: function (e) {
         tools.mouseX = e.pageX - tools.canvasPosition.left;
         tools.mouseY = e.pageY - tools.canvasPosition.top;
       },
-      drawStamp: function(e) {
-        if (!tools.painting || !tools.stamp) { return; }
-        if (e) { tools.move(e); }
+      drawStamp: function (e) {
+        if (!tools.painting || !tools.stamp) {
+          return;
+        }
+        if (e) {
+          tools.move(e);
+        }
 
-        tools.ctx.drawImage(tools.stamp, tools.mouseX-tools.stampW, tools.mouseY-tools.stampH);
+        tools.ctx.drawImage(
+          tools.stamp,
+          tools.mouseX - tools.stampW,
+          tools.mouseY - tools.stampH
+        );
         tools.lastX = tools.mouseX;
         tools.lastY = tools.mouseY;
       },
-      drawSmoothPencil: function(e) {
-        if (!tools.painting) { return; }
-        if (e) { tools.move(e); }
+      drawSmoothPencil: function (e) {
+        if (!tools.painting) {
+          return;
+        }
+        if (e) {
+          tools.move(e);
+        }
 
-        if (tools.lastX===tools.mouseX && tools.lastY===tools.mouseY) {
+        if (tools.lastX === tools.mouseX && tools.lastY === tools.mouseY) {
           // Draw circle
           tools.ctx.beginPath();
           tools.ctx.moveTo(tools.lastX, tools.lastY);
-          tools.ctx.arc(tools.mouseX, tools.mouseY, tools.maxThickness/2, 0, Math.PI*2);
+          tools.ctx.arc(
+            tools.mouseX,
+            tools.mouseY,
+            tools.maxThickness / 2,
+            0,
+            Math.PI * 2
+          );
           var oldW = tools.ctx.lineWidth;
           var oldC = tools.ctx.fillStyle;
           tools.ctx.lineWidth = 1;
@@ -56,26 +72,32 @@ $(function(){
         }
         tools.lastX = tools.mouseX;
         tools.lastY = tools.mouseY;
-
       },
-      drawRect: function(e){
-        if (!tools.painting) { return; }
-        if (e) { tools.move(e); }
-
+      drawRect: function (e) {
+        if (!tools.painting) {
+          return;
+        }
+        if (e) {
+          tools.move(e);
+        }
       },
-      drawPixelBrush: function(e) {
+      drawPixelBrush: function (e) {
         // Thanks Loktar! http://stackoverflow.com/a/10130705/592125
-        if (!tools.painting) { return; }
-        if (e) { tools.move(e); }
+        if (!tools.painting) {
+          return;
+        }
+        if (e) {
+          tools.move(e);
+        }
 
-        // find all points between        
+        // find all points between
         var x1 = tools.mouseX;
         var x2 = tools.lastX;
         var y1 = tools.mouseY;
         var y2 = tools.lastY;
         var x, y;
-        var steep = (Math.abs(y2 - y1) > Math.abs(x2 - x1));
-        if (steep){
+        var steep = Math.abs(y2 - y1) > Math.abs(x2 - x1);
+        if (steep) {
           x = x1;
           x1 = y1;
           y1 = x;
@@ -102,15 +124,17 @@ $(function(){
         if (y1 < y2) {
           yStep = 1;
         }
-        lineThickness = tools.maxThickness - Math.sqrt((x2 - x1) *(x2-x1) + (y2 - y1) * (y2-y1))/10;
-        if(lineThickness < tools.minThickness){
+        lineThickness =
+          tools.maxThickness -
+          Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)) / 10;
+        if (lineThickness < tools.minThickness) {
           lineThickness = tools.minThickness;
         }
         for (x = x1; x < x2; x++) {
           if (steep) {
-            tools.ctx.fillRect(y, x, lineThickness , lineThickness );
+            tools.ctx.fillRect(y, x, lineThickness, lineThickness);
           } else {
-            tools.ctx.fillRect(x, y, lineThickness , lineThickness );
+            tools.ctx.fillRect(x, y, lineThickness, lineThickness);
           }
           error += de;
           if (error >= 0.5) {
@@ -120,92 +144,103 @@ $(function(){
         }
         tools.lastX = tools.mouseX;
         tools.lastY = tools.mouseY;
-      }
+      },
     };
 
     return tools;
   };
 
-
-  Iframework.NativeNodes["image-paint"] = Iframework.NativeNodes["image"].extend({
-
+  Iframework.NativeNodes['image-paint'] = Iframework.NativeNodes[
+    'image'
+  ].extend({
     info: {
-      title: "paint",
-      description: "paint on, trace, or cut out an image"
+      title: 'paint',
+      description: 'paint on, trace, or cut out an image',
     },
     events: {
       // "mousedown .draw": "startLine",
       // "mouseup .draw": "endLine"
     },
-    initializeModule: function(){
+    initializeModule: function () {
       this.tools = makeTools();
 
-      $(this.canvas).css("max-width", "none");
+      $(this.canvas).css('max-width', 'none');
 
-      this.combine = document.createElement("canvas");
+      this.combine = document.createElement('canvas');
       this.combine.width = this.canvas.width;
       this.combine.height = this.canvas.height;
-      this.combineContext = this.combine.getContext("2d");
+      this.combineContext = this.combine.getContext('2d');
 
-      this.trace = document.createElement("canvas");
+      this.trace = document.createElement('canvas');
       this.trace.width = this.canvas.width;
       this.trace.height = this.canvas.height;
-      this.traceContext = this.trace.getContext("2d");
+      this.traceContext = this.trace.getContext('2d');
       $(this.canvas).before(this.trace);
 
-      this.draw = document.createElement("canvas");
+      this.draw = document.createElement('canvas');
       this.draw.width = this.canvas.width;
       this.draw.height = this.canvas.height;
-      this.drawContext = this.tools.ctx = this.draw.getContext("2d");
-      this.drawContext.lineCap = "round";
+      this.drawContext = this.tools.ctx = this.draw.getContext('2d');
+      this.drawContext.lineCap = 'round';
       $(this.canvas).after(this.draw);
       $(this.draw).css({
-        border: "1px solid #eee",
-        borderWidth: "0 1px 1px 0"
+        border: '1px solid #eee',
+        borderWidth: '0 1px 1px 0',
       });
 
-      this.$("canvas").css({position:"absolute", top:0, left:0});
+      this.$('canvas').css({position: 'absolute', top: 0, left: 0});
 
       var self = this;
 
-      this.draw.onmouseover = function(e){
-        if (self._mode === "trace" || self._mode === "cutout") {
-          self.canvas.style.backgroundColor = "rgba(255,255,255,0.5)";
+      this.draw.onmouseover = function (e) {
+        if (self._mode === 'trace' || self._mode === 'cutout') {
+          self.canvas.style.backgroundColor = 'rgba(255,255,255,0.5)';
         }
       };
-      this.draw.onmouseout = function(e){
-        if (self._mode === "trace" || self._mode === "cutout") {
-          self.canvas.style.backgroundColor = "rgba(255,255,255,1)";
+      this.draw.onmouseout = function (e) {
+        if (self._mode === 'trace' || self._mode === 'cutout') {
+          self.canvas.style.backgroundColor = 'rgba(255,255,255,1)';
         }
       };
 
-      this.draw.onmousedown = function(e){
+      this.draw.onmousedown = function (e) {
         self.tools.painting = true;
-        self.tools.startX = self.tools.lastX = e.pageX - self.tools.canvasPosition.left;
-        self.tools.startY = self.tools.lastY = e.pageY - self.tools.canvasPosition.top;
+        self.tools.startX = self.tools.lastX =
+          e.pageX - self.tools.canvasPosition.left;
+        self.tools.startY = self.tools.lastY =
+          e.pageY - self.tools.canvasPosition.top;
         self.draw.onmousemove(e);
         // $(this.draw).trigger("mousemove", e);
       };
-      $(window).mouseup(function(e){
+      $(window).mouseup(function (e) {
         self.endLine(e);
       });
 
-      _.defer( function(){self.bindOffset();} );
-
+      _.defer(function () {
+        self.bindOffset();
+      });
     },
     bindOffset: function () {
       // Offset is a pain in the ass
       this.tools.canvasPosition = {};
-      var scrollParent = this.model.view.$(".inner")[0];
+      var scrollParent = this.model.view.$('.inner')[0];
       var scrollGraph = this.model.parentGraph.view.el;
       var self = this;
-      var setOffset = function(){
-        self.tools.canvasPosition.left = self.model.get("x") - scrollParent.scrollLeft - scrollGraph.scrollLeft + 3;
-        self.tools.canvasPosition.top = self.model.get("y") - scrollParent.scrollTop - scrollGraph.scrollTop + 3;
+      var setOffset = function () {
+        self.tools.canvasPosition.left =
+          self.model.get('x') -
+          scrollParent.scrollLeft -
+          scrollGraph.scrollLeft +
+          3;
+        self.tools.canvasPosition.top =
+          self.model.get('y') -
+          scrollParent.scrollTop -
+          scrollGraph.scrollTop +
+          3;
       };
       $(scrollParent).scroll(setOffset);
       $(scrollGraph).scroll(setOffset);
-      this.model.on("change:x, change:y", setOffset);
+      this.model.on('change:x, change:y', setOffset);
       setOffset();
     },
     // startLine: function(e) {
@@ -214,7 +249,7 @@ $(function(){
     //   this.tools.startY = this.tools.lastY = e.pageY - this.tools.canvasPosition.top;
     //   $(this.draw).trigger("mousemove", e);
     // },
-    endLine: function(e){
+    endLine: function (e) {
       if (this.tools.painting) {
         this.tools.painting = false;
         // Copy to main canvas on every stroke
@@ -233,32 +268,33 @@ $(function(){
     },
     inputstamp: function (image) {
       this.tools.stamp = image;
-      this.tools.stampW = Math.floor(image.width/2);
-      this.tools.stampH = Math.floor(image.height/2);
-      if (this._tool === "stamp" && this.tools.painting) {
+      this.tools.stampW = Math.floor(image.width / 2);
+      this.tools.stampH = Math.floor(image.height / 2);
+      if (this._tool === 'stamp' && this.tools.painting) {
         this.draw.onmousemove();
       }
     },
     inputtool: function (tool) {
       this._tool = tool;
       switch (tool) {
-        case "stamp" :
+        case 'stamp':
           this.draw.onmousemove = this.tools.drawStamp;
           break;
-        case "smoothPencil" :
+        case 'smoothPencil':
           this.tools.minThickness = this._strokewidth;
           this.tools.maxThickness = this._strokewidth;
           this.draw.onmousemove = this.tools.drawSmoothPencil;
           break;
-        case "pixelBrush" :
+        case 'pixelBrush':
           this.tools.minThickness = 1;
-          this.tools.maxThickness = this._strokewidth > 1 ? this._strokewidth : 2;
+          this.tools.maxThickness =
+            this._strokewidth > 1 ? this._strokewidth : 2;
           this.drawContext.fillStyle = this._stroke;
 
           this.draw.onmousemove = this.tools.drawPixelBrush;
           break;
         default: // pixelPencil
-          this._tool = "pixelPencil";
+          this._tool = 'pixelPencil';
 
           this.tools.minThickness = this._strokewidth;
           this.tools.maxThickness = this._strokewidth;
@@ -271,17 +307,17 @@ $(function(){
     inputmode: function (mode) {
       this._mode = mode;
       switch (mode) {
-        case "trace" :
-          this.canvas.style.backgroundColor = "rgba(255,255,255,1)";
+        case 'trace':
+          this.canvas.style.backgroundColor = 'rgba(255,255,255,1)';
           break;
-        case "cutout" :
-          this.canvas.style.backgroundColor = "rgba(255,255,255,1)";
+        case 'cutout':
+          this.canvas.style.backgroundColor = 'rgba(255,255,255,1)';
           break;
         default: // on
-          this._mode = "on";
-          this.canvas.style.backgroundColor = "transparent";
+          this._mode = 'on';
+          this.canvas.style.backgroundColor = 'transparent';
           break;
-      }    
+      }
     },
     inputfill: function (color) {
       this._triggerRedraw = true;
@@ -300,35 +336,35 @@ $(function(){
       this.drawContext.lineWidth = this._strokewidth;
       this.inputtool(this._tool);
     },
-    disconnectEdge: function(edge) {
+    disconnectEdge: function (edge) {
       // Called from Edge.disconnect();
-      if (edge.Target.id === "matte") {
+      if (edge.Target.id === 'matte') {
         this._matte = null;
         this._triggerRedraw = true;
       }
     },
     canvasSettings: function () {
-      if (this._fill === "") {
-        this.drawContext.fillStyle = "none";
+      if (this._fill === '') {
+        this.drawContext.fillStyle = 'none';
       } else {
         this.drawContext.fillStyle = this._fill;
       }
-      if (this._stroke === "") {
-        this.drawContext.strokeStyle = "none";
+      if (this._stroke === '') {
+        this.drawContext.strokeStyle = 'none';
       } else {
         this.drawContext.strokeStyle = this._stroke;
       }
       this.drawContext.lineWidth = this._strokewidth;
-      this.drawContext.lineCap = "round";
+      this.drawContext.lineCap = 'round';
     },
-    redraw: function(){
+    redraw: function () {
       // Called from NodeBoxNativeView.renderAnimationFrame()
       if (this.canvas.width !== this._width) {
         this.canvas.width = this._width;
         this.trace.width = this._width;
         this.draw.width = this._width;
         this.combine.width = this._width;
-        this.tools.width =  this._width;
+        this.tools.width = this._width;
         this.canvasSettings();
       }
       if (this.canvas.height !== this._height) {
@@ -336,7 +372,7 @@ $(function(){
         this.trace.height = this._height;
         this.draw.height = this._height;
         this.combine.height = this._height;
-        this.tools.height =  this._height;
+        this.tools.height = this._height;
         this.canvasSettings();
       }
       // this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -346,92 +382,90 @@ $(function(){
       this.context.clearRect(0, 0, this._width, this._height);
     },
     inputsend: function () {
-      if (this._mode === "on") {
+      if (this._mode === 'on') {
         this.combineContext.clearRect(0, 0, this._width, this._height);
-        this.combineContext.globalCompositeOperation = "source-over";
+        this.combineContext.globalCompositeOperation = 'source-over';
         this.combineContext.drawImage(this.trace, 0, 0);
         this.combineContext.drawImage(this.canvas, 0, 0);
-        this.send("image", this.combine);
-      } else if (this._mode === "cutout") {
+        this.send('image', this.combine);
+      } else if (this._mode === 'cutout') {
         this.combineContext.clearRect(0, 0, this._width, this._height);
-        this.combineContext.globalCompositeOperation = "source-over";
+        this.combineContext.globalCompositeOperation = 'source-over';
         this.combineContext.drawImage(this.trace, 0, 0);
-        this.combineContext.globalCompositeOperation = "destination-in";
+        this.combineContext.globalCompositeOperation = 'destination-in';
         this.combineContext.drawImage(this.canvas, 0, 0);
-        this.combineContext.globalCompositeOperation = "source-over";
-        this.send("image", this.combine);
+        this.combineContext.globalCompositeOperation = 'source-over';
+        this.send('image', this.combine);
       } else {
         // trace
-        this.send("image", this.canvas);
+        this.send('image', this.canvas);
       }
     },
     inputs: {
       image: {
-        type: "image",
-        description: "image to paint on, trace, or cut out"
+        type: 'image',
+        description: 'image to paint on, trace, or cut out',
       },
       width: {
-        type: "int",
-        description: "canvas width",
-        "default": 500
+        type: 'int',
+        description: 'canvas width',
+        default: 500,
       },
       height: {
-        type: "int",
-        description: "canvas height",
-        "default": 500
+        type: 'int',
+        description: 'canvas height',
+        default: 500,
       },
       stamp: {
-        type: "image",
-        description: "image to use as stamp"
+        type: 'image',
+        description: 'image to use as stamp',
       },
       fill: {
-        type: "color",
-        description: "fill color",
-        "default": "red"
+        type: 'color',
+        description: 'fill color',
+        default: 'red',
       },
       stroke: {
-        type: "color",
-        description: "stroke color",
-        "default": "black"
+        type: 'color',
+        description: 'stroke color',
+        default: 'black',
       },
       strokewidth: {
-        type: "float",
-        description: "stroke width",
-        "default": 2
+        type: 'float',
+        description: 'stroke width',
+        default: 2,
       },
       tool: {
-        type: "string",
-        description: "pixelPencil, pixelBrush, smoothPencil, stamp",
-        options: "pixelPencil pixelBrush smoothPencil stamp".split(" "),
-        "default": "smoothPencil"
+        type: 'string',
+        description: 'pixelPencil, pixelBrush, smoothPencil, stamp',
+        options: 'pixelPencil pixelBrush smoothPencil stamp'.split(' '),
+        default: 'smoothPencil',
       },
       mode: {
-        type: "string",
-        description: "how to combine drawing and image: on (draw on the image), trace (don't use image), or cutout (draw the matte for the image)",
-        options: "on trace cutout".split(" "),
-        "default": "on"
+        type: 'string',
+        description:
+          "how to combine drawing and image: on (draw on the image), trace (don't use image), or cutout (draw the matte for the image)",
+        options: 'on trace cutout'.split(' '),
+        default: 'on',
       },
       clear: {
-        type: "bang",
-        description: "clear the canvas"
+        type: 'bang',
+        description: 'clear the canvas',
       },
       sendEvery: {
-        type: "boolean",
-        description: "send each stroke as you make it",
-        "default": false
+        type: 'boolean',
+        description: 'send each stroke as you make it',
+        default: false,
       },
       send: {
-        type: "bang",
-        description: "send the combined canvas"
-      }
+        type: 'bang',
+        description: 'send the combined canvas',
+      },
     },
     outputs: {
       image: {
-        type: "image"
-      }
-    }
-
+        type: 'image',
+      },
+    },
   });
-
-
 });

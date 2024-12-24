@@ -2,16 +2,14 @@
 
 // extends src/node-box-native-view.js
 
-$(function(){
-
-  var template = 
-    '<canvas id="canvas-<%= id %>" class="canvas" width="500" height="500" style="max-width:100%;" />'+
+$(function () {
+  var template =
+    '<canvas id="canvas-<%= id %>" class="canvas" width="500" height="500" style="max-width:100%;" />' +
     '<div class="info" />';
-    // '<input type="checkbox" checked="checked" class="showpreview" id="showpreview-<%= id %>" />'+
-    // '<label for="showpreview-<%= id %>">show preview</label>';
+  // '<input type="checkbox" checked="checked" class="showpreview" id="showpreview-<%= id %>" />'+
+  // '<label for="showpreview-<%= id %>">show preview</label>';
 
-  Iframework.NativeNodes["seriously"] = Iframework.NodeBoxNativeView.extend({
-
+  Iframework.NativeNodes['seriously'] = Iframework.NodeBoxNativeView.extend({
     template: _.template(template),
     canvas: null,
     context: null,
@@ -19,24 +17,24 @@ $(function(){
     // events: {
     //   "click .showpreview": "togglePreview"
     // },
-    initializeCategory: function() {
+    initializeCategory: function () {
       if (window.Seriously) {
-        this.canvas = this.$(".canvas")[0];
+        this.canvas = this.$('.canvas')[0];
 
         this._seriously = new Seriously();
         this.initializeModule();
       } else {
         var self = this;
         yepnope({
-          load: "libs/seriously.min.js",
+          load: 'libs/seriously.min.js',
           complete: function () {
             self.initializeCategory();
-          }
+          },
         });
       }
     },
-    effectName: "",
-    initializeModule: function(){
+    effectName: '',
+    initializeModule: function () {
       if (this._seriously) {
         this._ready = true;
         if (this._deferStart && this._image) {
@@ -51,17 +49,20 @@ $(function(){
     },
     // loadSeriouslyEffect: function(effect) {
     // },
-    scale: function(){
+    scale: function () {
       // canvas is shown at this scaling factor
       // useful for absolute positioning other elements over the canvas
-      return this.$(".canvas").width() / this.canvas.width;
+      return this.$('.canvas').width() / this.canvas.width;
     },
     _deferStart: false,
     inputimage: function (image) {
       if (image !== this._image) {
         this._image = image;
       }
-      if (this.canvas.width !== this._image.width || this.canvas.height !== this._image.height) {
+      if (
+        this.canvas.width !== this._image.width ||
+        this.canvas.height !== this._image.height
+      ) {
         this.canvas.width = this._image.width;
         this.canvas.height = this._image.height;
         // TODO reset Seriously
@@ -80,10 +81,10 @@ $(function(){
           // No Seriously.go() because Meemoo has own loop
 
           for (var name in this._params) {
-            this._effect[name] = this._params[name];            
+            this._effect[name] = this._params[name];
           }
-          if (this._params["amount"]) {
-            this._effect.amount = this._params["amount"];
+          if (this._params['amount']) {
+            this._effect.amount = this._params['amount'];
           }
 
           this._triggerRedraw = true;
@@ -101,9 +102,9 @@ $(function(){
       this._triggerRedraw = true;
     },
     inputsend: function () {
-      this.send("image", this.canvas);
+      this.send('image', this.canvas);
     },
-    redraw: function(timestamp){
+    redraw: function (timestamp) {
       if (this._source && this._target) {
         this._source.update();
         this._target.render();
@@ -112,15 +113,15 @@ $(function(){
     },
     outputs: {
       image: {
-        type: "image"
-      }
-    }
+        type: 'image',
+      },
+    },
     // showCanvas: function(){
     //   $(this.canvas).attr({
     //     "class": "canvas",
     //     "id": "canvas-"+this.model.id,
     //     "style": "max-width:100%"
-    //   });      
+    //   });
     //   this.$el.prepend(this.canvas);
     // }
     //,
@@ -131,8 +132,5 @@ $(function(){
     //     this.$("canvas").remove();
     //   }
     // }
-
   });
-
-
 });

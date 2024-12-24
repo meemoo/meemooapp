@@ -1,19 +1,17 @@
 // extends src/nodes/image.js which extends src/node-box-native-view.js
 
-$(function(){
-
-  Iframework.NativeNodes["image-transform"] = Iframework.NativeNodes["image"].extend({
-
+$(function () {
+  Iframework.NativeNodes['image-transform'] = Iframework.NativeNodes[
+    'image'
+  ].extend({
     info: {
-      title: "transform",
-      description: "scale, translate, and/or rotate image"
+      title: 'transform',
+      description: 'scale, translate, and/or rotate image',
     },
     dragstart: null,
-    initializeModule: function(){
+    initializeModule: function () {
       // this.showResizer(20,20,0.5);
-
       // TODO drag to move x, y
-
       // var self = this;
       // $(this.canvas).draggable({
       //   helper: function(){
@@ -28,7 +26,6 @@ $(function(){
       //     console.log(event, ui);
       //   },
       //   stop: function(event, ui){
-
       //     self.dragstart = null;
       //     event.stopPropagation();
       //   }
@@ -54,18 +51,18 @@ $(function(){
       this._scale = f;
       this._triggerRedraw = true;
     },
-    disconnectEdge: function(edge) {
+    disconnectEdge: function (edge) {
       // Called from Edge.disconnect();
-      if (edge.Target.id === "background") {
+      if (edge.Target.id === 'background') {
         this._background = null;
         this._triggerRedraw = true;
       }
-      if (edge.Target.id === "image") {
+      if (edge.Target.id === 'image') {
         this._image = null;
         this._triggerRedraw = true;
       }
     },
-    redraw: function(){
+    redraw: function () {
       // Called from NodeBoxNativeView.renderAnimationFrame()
       if (this._sizeChanged) {
         if (this.canvas.width !== this._width) {
@@ -85,15 +82,21 @@ $(function(){
       if (this._image && this._image.width && this._image.height) {
         var width = this._image.width * this._scale;
         var height = this._image.height * this._scale;
-        var x = this.canvas.width/2 + this._translateX;
-        var y = this.canvas.height/2 + this._translateY;
-        
+        var x = this.canvas.width / 2 + this._translateX;
+        var y = this.canvas.height / 2 + this._translateY;
+
         this.context.globalCompositeOperation = this._composite;
 
         // context.save();
         this.context.translate(x, y);
         this.context.rotate(this._rotate);
-        this.context.drawImage(this._image, -width/2, -height/2, width, height);
+        this.context.drawImage(
+          this._image,
+          -width / 2,
+          -height / 2,
+          width,
+          height
+        );
         // context.restore();
         this.context.rotate(-this._rotate);
         this.context.translate(-x, -y);
@@ -102,77 +105,104 @@ $(function(){
       this.inputsend();
     },
     inputsend: function () {
-      this.send("image", this.canvas);
+      this.send('image', this.canvas);
     },
     inputs: {
       image: {
-        type: "image",
-        description: "image to center and transform"
+        type: 'image',
+        description: 'image to center and transform',
       },
       background: {
-        type: "image",
-        description: "background image"
+        type: 'image',
+        description: 'background image',
       },
       width: {
-        type: "int",
-        description: "canvas width",
+        type: 'int',
+        description: 'canvas width',
         min: 1,
-        "default": 500
+        default: 500,
       },
       height: {
-        type: "int",
-        description: "canvas height",
+        type: 'int',
+        description: 'canvas height',
         min: 1,
-        "default": 500
+        default: 500,
       },
       scale: {
-        type: "float",
-        description: "scale percentage",
-        "default": 1.0
+        type: 'float',
+        description: 'scale percentage',
+        default: 1.0,
       },
       translateX: {
-        type: "float",
-        description: "translate x pixels",
-        "default": 0
+        type: 'float',
+        description: 'translate x pixels',
+        default: 0,
       },
       translateY: {
-        type: "float",
-        description: "translate y pixels",
-        "default": 0
+        type: 'float',
+        description: 'translate y pixels',
+        default: 0,
       },
       rotate: {
-        type: "float",
-        description: "rotate percentage",
-        "default": 0
+        type: 'float',
+        description: 'rotate percentage',
+        default: 0,
       },
       composite: {
-        type: "string",
-        description: "composite (source-over, source-in, source-out, source-atop, destination-over, destination-in, destination-out, destination-atop, lighter, darker, copy, xor) and/or blend mode (Firefox 20 only as of April 2013: normal, multiply, screen, overlay, darken, lighten, color-dodge, color-burn, hard-light, soft-light, difference, exclusion, hue, saturation, color, luminosity) ",
-        options: ['source-over', 'source-in', 'source-out', 'source-atop', 'destination-over', 'destination-in', 'destination-out', 'destination-atop', 'lighter', 'darker', 'copy', 'xor', 
-          'normal', 'multiply', 'screen', 'overlay', 'darken', 'lighten', 'color-dodge', 'color-burn', 'hard-light', 'soft-light', 'difference', 'exclusion', 'hue', 'saturation', 'color', 'luminosity'],
-        "default": "source-over"
+        type: 'string',
+        description:
+          'composite (source-over, source-in, source-out, source-atop, destination-over, destination-in, destination-out, destination-atop, lighter, darker, copy, xor) and/or blend mode (Firefox 20 only as of April 2013: normal, multiply, screen, overlay, darken, lighten, color-dodge, color-burn, hard-light, soft-light, difference, exclusion, hue, saturation, color, luminosity) ',
+        options: [
+          'source-over',
+          'source-in',
+          'source-out',
+          'source-atop',
+          'destination-over',
+          'destination-in',
+          'destination-out',
+          'destination-atop',
+          'lighter',
+          'darker',
+          'copy',
+          'xor',
+          'normal',
+          'multiply',
+          'screen',
+          'overlay',
+          'darken',
+          'lighten',
+          'color-dodge',
+          'color-burn',
+          'hard-light',
+          'soft-light',
+          'difference',
+          'exclusion',
+          'hue',
+          'saturation',
+          'color',
+          'luminosity',
+        ],
+        default: 'source-over',
       },
       smoothing: {
-        type: "boolean",
-        description: "true for smooth image transforms, false for pixeley (only in firefox and chrome)",
-        "default": "true"
+        type: 'boolean',
+        description:
+          'true for smooth image transforms, false for pixeley (only in firefox and chrome)',
+        default: 'true',
       },
       // clear: {
       //   type: "bang",
       //   description: "clear the canvas"
       // },
       send: {
-        type: "bang",
-        description: "send the image"
-      }
+        type: 'bang',
+        description: 'send the image',
+      },
     },
     outputs: {
       image: {
-        type: "image"
-      }
-    }
-
+        type: 'image',
+      },
+    },
   });
-
-
 });

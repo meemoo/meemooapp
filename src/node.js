@@ -1,5 +1,4 @@
-$(function(){
-
+$(function () {
   Iframework.Node = Backbone.Model.extend({
     send: function (message) {
       // Send message out to connected nodes
@@ -8,13 +7,11 @@ $(function(){
       // Get message from another node
     },
     //iframe only
-    sendFromFrame: function(){},
-    iframeLoaded: function(){}
-
+    sendFromFrame: function () {},
+    iframeLoaded: function () {},
   });
-  
+
   Iframework.Nodes = Backbone.Collection.extend({
-    model: Iframework.Node
+    model: Iframework.Node,
   });
-
 });

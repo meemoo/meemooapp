@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
   var template = '<div class="info" />' + '<div class="videos" />';
 
   Iframework.NativeNodes['file-lottie'] = Iframework.NativeNodes['file'].extend(
@@ -9,7 +9,7 @@ $(function() {
         description: 'encode animation to lottie.json file',
       },
       _animation: null,
-      inputanimation: function(animation) {
+      inputanimation: function (animation) {
         if (!animation || !animation.frames || !animation.frames.length) {
           this._animation = null;
           this.$('.info').text('...');
@@ -20,7 +20,7 @@ $(function() {
           `${animation.width}x${animation.height}, ${animation.frames.length} frames`
         );
       },
-      inputbuild: function() {
+      inputbuild: function () {
         if (!this._animation) {
           return;
         }
@@ -48,8 +48,8 @@ $(function() {
         this.$('.videos').prepend(info);
       },
       _builds: [],
-      inputclear: function() {
-        this._builds.forEach(function(url) {
+      inputclear: function () {
+        this._builds.forEach(function (url) {
           window.URL.revokeObjectURL(url);
         });
         this._builds = [];
@@ -88,13 +88,13 @@ $(function() {
       },
     }
   );
-  
+
   // Modified from https://observablehq.com/@forresto/video-to-lottie
   function animationToLottie(animation, quality) {
     const {width, height, fps, frames} = animation;
 
     return frames.reduce(
-      function(lottie, frame, index) {
+      function (lottie, frame, index) {
         const id = 'fr_' + index;
         const w = width;
         const w2 = Math.floor(w / 2);

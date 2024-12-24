@@ -1,17 +1,10 @@
 // extends src/node-box-native-view.js
 
-$(function(){
+$(function () {
+  var template = '<div class="info" />';
 
-  var template = 
-    '<div class="info" />';
-
-  Iframework.NativeNodes["ui"] = Iframework.NodeBoxNativeView.extend({
-
+  Iframework.NativeNodes['ui'] = Iframework.NodeBoxNativeView.extend({
     template: _.template(template),
-    initializeCategory: function() {
-    }
-
+    initializeCategory: function () {},
   });
-
-
 });

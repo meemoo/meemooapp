@@ -1,12 +1,10 @@
-$(function(){
-
+$(function () {
   Iframework.NodeView = Backbone.View.extend({
-    send: function(message) {
+    send: function (message) {
       this.model.send(message);
     },
-    receive: function(message) {
+    receive: function (message) {
       this.model.receive(message);
-    }
+    },
   });
-
 });

@@ -1,15 +1,14 @@
-$(function(){
-
+$(function () {
   Iframework.Edge = Backbone.Model.extend({
     defaults: {
-      source: [0, "default"], 
-      target: [0, "default"]
+      source: [0, 'default'],
+      target: [0, 'default'],
     },
     initialize: function () {
-      this.parentGraph = this.get("parentGraph");
+      this.parentGraph = this.get('parentGraph');
     },
     initializeView: function () {
-      this.view = new Iframework.EdgeView({model:this});
+      this.view = new Iframework.EdgeView({model: this});
       return this.view;
     },
     Source: null,
@@ -19,14 +18,25 @@ $(function(){
     connect: function () {
       // Called from graph.connectEdges()
       try {
-        this.Source = this.parentGraph.get("nodes").get( this.get("source")[0] ).Outputs.get( this.get("source")[1] );
-        this.Target = this.parentGraph.get("nodes").get( this.get("target")[0] ).Inputs.get( this.get("target")[1] );
+        this.Source = this.parentGraph
+          .get('nodes')
+          .get(this.get('source')[0])
+          .Outputs.get(this.get('source')[1]);
+        this.Target = this.parentGraph
+          .get('nodes')
+          .get(this.get('target')[0])
+          .Inputs.get(this.get('target')[1]);
       } catch (e) {
-        console.warn("Edge source or target port not found, try #"+this.connectTryCount+": "+this.toString());
+        console.warn(
+          'Edge source or target port not found, try #' +
+            this.connectTryCount +
+            ': ' +
+            this.toString()
+        );
         if (this.connectTryCount > 0) {
           this.connectTryCount--;
           var self = this;
-          _.delay(function(){
+          _.delay(function () {
             self.connect();
           }, 1000);
         }
@@ -38,10 +48,10 @@ $(function(){
       this.Source.connect(this);
       this.Target.connect(this);
       this.Source.node.receive({
-        connect: { 
+        connect: {
           source: [this.Source.node.id, this.Source.id],
-          target: [this.Target.node.id, this.Target.id]
-        }
+          target: [this.Target.node.id, this.Target.id],
+        },
       });
       if (this.parentGraph.view) {
         this.parentGraph.view.addEdge(this);
@@ -52,12 +62,12 @@ $(function(){
       this.connected = true;
 
       // Set up listener
-      this.Source.node.on( "send:"+this.Source.id, this.send, this );
+      this.Source.node.on('send:' + this.Source.id, this.send, this);
 
       return this;
     },
     send: function (value) {
-      this.Target.node.receive( this.Target.id, value );
+      this.Target.node.receive(this.Target.id, value);
     },
     disconnect: function () {
       // Called from graph.removeEdge()
@@ -65,10 +75,10 @@ $(function(){
         this.Source.disconnect(this);
         this.Target.disconnect(this);
         this.Source.node.receive({
-          disconnect: { 
+          disconnect: {
             source: [this.Source.node.id, this.Source.id],
-            target: [this.Target.node.id, this.Target.id]
-          }
+            target: [this.Target.node.id, this.Target.id],
+          },
         });
         if (this.Target.node.view && this.Target.node.view.Native) {
           this.Target.node.view.Native.disconnectEdge(this);
@@ -79,26 +89,33 @@ $(function(){
       }
 
       // Remove listener
-      this.Source.node.off( "send:"+this.Source.id, this.send, this );
+      this.Source.node.off('send:' + this.Source.id, this.send, this);
 
       this.connected = false;
     },
-    remove: function(){
+    remove: function () {
       this.parentGraph.removeEdge(this);
     },
     toJSON: function () {
       return {
-        source: this.get("source"),
-        target: this.get("target")
+        source: this.get('source'),
+        target: this.get('target'),
       };
     },
-    toString: function(){
-      return this.get("source")[0]+":"+this.get("source")[1]+"->"+this.get("target")[0]+":"+this.get("target")[1];
-    }
-  });
-  
-  Iframework.Edges = Backbone.Collection.extend({
-    model: Iframework.Edge
+    toString: function () {
+      return (
+        this.get('source')[0] +
+        ':' +
+        this.get('source')[1] +
+        '->' +
+        this.get('target')[0] +
+        ':' +
+        this.get('target')[1]
+      );
+    },
   });
 
+  Iframework.Edges = Backbone.Collection.extend({
+    model: Iframework.Edge,
+  });
 });

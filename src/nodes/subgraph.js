@@ -1,20 +1,14 @@
 // extends src/node-box-native-view.js
 
-$(function(){
-
+$(function () {
   var template = '<div class="info" />';
 
-  Iframework.NativeNodes["subgraph"] = Iframework.NodeBoxNativeView.extend({
-
+  Iframework.NativeNodes['subgraph'] = Iframework.NodeBoxNativeView.extend({
     template: _.template(template),
     info: {
-      title: "subgraph",
-      description: "extend me"
+      title: 'subgraph',
+      description: 'extend me',
     },
-    initializeCategory: function() {
-    }
-
+    initializeCategory: function () {},
   });
-
-
 });
