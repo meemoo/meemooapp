@@ -61,6 +61,8 @@ $(function () {
     );
   })();
 
+  const githubAPI = new window.MeemooGithubAPI();
+
   var IframeworkView = Backbone.View.extend({
     tagName: 'div',
     className: 'app',
@@ -94,14 +96,25 @@ $(function () {
       // Hide panels
       this.closePanels();
 
-      // Check if we're coming back from GitHub OAuth
-      handleGitHubCallback();
-
       // After all of the .js is loaded, this.allLoaded will be triggered to finish the init
       this.once('allLoaded', this.loadLocalApps, this);
+
+      // Add event listener with bound method
+      window.addEventListener(
+        'github-login-status-changed',
+        this.updateCurrentInfo.bind(this),
+        false
+      );
     },
     allLoaded: function () {
       this.trigger('allLoaded');
+
+      // Check if we're coming back from GitHub OAuth
+      const isLoginLoad = githubAPI.handleCallback();
+      if (isLoginLoad) {
+        // Open app panel if we're logging in
+        this.showLoad();
+      }
 
       // Start animation loop
       window.requestAnimationFrame(this.renderAnimationFrame.bind(this));
@@ -342,7 +355,12 @@ $(function () {
       }
       return false;
     },
-    loadFromGistId: function (gistid) {
+    loadFromGistId: async function (gistid) {
+      if (!githubAPI) {
+        console.error('GitHub API not initialized');
+        return;
+      }
+
       this._loadedGist = gistid;
       // "https://gist.github.com/2439102" or just "2439102"
       var split = gistid.split('/'); // ["https:", "", "gist.github.com", "2439102"]
@@ -350,46 +368,40 @@ $(function () {
         gistid = split[split.length - 1];
       }
 
-      // Load gist to json to app
-      $.ajax({
-        url: 'https://api.github.com/gists/' + gistid,
-        type: 'GET',
-        dataType: 'jsonp',
-      })
-        .done(function (gistdata) {
-          var graphs = [];
-          for (var file in gistdata.data.files) {
-            if (gistdata.data.files.hasOwnProperty(file)) {
-              var graph = JSON.parse(gistdata.data.files[file].content);
-              if (graph) {
-                var gisturl = gistdata.data.html_url;
-                // Insert a reference to the parent
-                if (!graph.info.parents || !graph.info.parents.push) {
-                  graph.info.parents = [];
-                }
-                // Only if this gist url isn't already in graph's parents
-                if (graph.info.parents.indexOf(gisturl) === -1) {
-                  graph.info.parents.push(gisturl);
-                }
-                graphs.push(graph);
+      try {
+        // Use githubAPI.getGist instead of direct AJAX call
+        const gistdata = await githubAPI.getGist(gistid);
+
+        const graphs = [];
+        for (let file in gistdata.files) {
+          if (gistdata.files.hasOwnProperty(file)) {
+            const graph = JSON.parse(gistdata.files[file].content);
+            if (graph) {
+              const gisturl = gistdata.html_url;
+              // Insert a reference to the parent
+              if (!graph.info.parents || !graph.info.parents.push) {
+                graph.info.parents = [];
               }
+              // Only if this gist url isn't already in graph's parents
+              if (graph.info.parents.indexOf(gisturl) === -1) {
+                graph.info.parents.push(gisturl);
+              }
+              graphs.push(graph);
             }
           }
-          if (graphs.length > 0) {
-            // reset localStorage version
-            // FIXME
-            // Iframework._loadedLocalApp = null;
-            // load graph
-            Iframework.loadGraph(graphs[0]);
-            Iframework.closePanels();
-          }
-        })
-        .fail(function (e) {
-          console.warn('gist load error', e);
-        });
+        }
+
+        if (graphs.length > 0) {
+          // reset localStorage version
+          this._loadedLocalApp = null;
+          // load graph
+          this.loadGraph(graphs[0]);
+        }
+      } catch (error) {
+        console.warn('gist load error', error);
+      }
 
       this.analyze('load', 'gist', gistid);
-
       return gistid;
     },
     loadLocalApps: function () {
@@ -514,11 +526,10 @@ $(function () {
 
       this.analyze('save', 'local', 'x');
 
-      // To show when url changes
-      this.updateCurrentInfo();
-
       // URL hash
       Iframework.router.navigate('local/' + key);
+      this.updateCurrentInfo();
+
       return app;
     },
     forkLocal: function () {
@@ -538,154 +549,47 @@ $(function () {
         this._loadedLocalApp = null;
       }
     },
-    saveGist: function () {
-      const token = localStorage.getItem('meemoo_gist_token');
-      if (!token) {
-        const redirectUri = encodeURIComponent(window.location.href);
-        window.location.href = `https://forresto-meemoo_org_share.web.val.run/login?redirect=${redirectUri}`;
+    saveGist: async function () {
+      if (!githubAPI.isLoggedIn()) {
+        // Redirects to Github Oauth server page.
+        githubAPI.login();
         return;
       }
 
       this.$('.savegist').prop('disabled', true);
 
-      // Get current app graph
-      const currentAppGraph = JSON.parse(JSON.stringify(this.graph));
+      try {
+        const currentAppGraph = JSON.parse(JSON.stringify(this.graph));
+        const response = await githubAPI.saveGraph(currentAppGraph);
 
-      // Create filename using current app URL + .meemoo.json
-      const filename =
-        (currentAppGraph.info.url || 'untitled') + '.meemoo.json';
+        // Update graph with new gist url
+        this.setParent(response.html_url);
 
-      // Prepare files object for Gist API
-      const files = {};
-      files[filename] = {
-        content: JSON.stringify(currentAppGraph, null, 2),
-      };
-
-      // Check if this app was already saved as a gist
-      let existingGistId = null;
-      if (
-        currentAppGraph.info.parents &&
-        currentAppGraph.info.parents.length > 0
-      ) {
-        const lastParent =
-          currentAppGraph.info.parents[currentAppGraph.info.parents.length - 1];
-        const gistIdMatch = lastParent.match(/\/([a-f0-9]+)$/);
-        if (gistIdMatch) {
-          existingGistId = gistIdMatch[1];
+        // Update URL hash
+        if (this.router) {
+          this.router.navigate('gist/' + response.id);
         }
+
+        const action = window.location.hash.startsWith('#gist/')
+          ? 'updated'
+          : 'created';
+        alert(`Gist successfully ${action}!`);
+        this.analyze('save', 'gist', response.id);
+      } catch (error) {
+        console.error('Error saving to Gist:', error);
+        alert(
+          'Error saving to Gist: ' +
+            (error.responseJSON?.message || error.message)
+        );
+      } finally {
+        this.$('.savegist').prop('disabled', false);
       }
 
-      // Prepare Gist data
-      const data = {
-        description: currentAppGraph.info.title,
-        public: true,
-        files: files,
-      };
-
-      // If there's an existing gist, check if the current user owns it
-      if (existingGistId) {
-        $.ajax({
-          url: `https://api.github.com/gists/${existingGistId}`,
-          type: 'GET',
-          headers: {
-            Authorization: 'token ' + token,
-          },
-        })
-          .done((response) => {
-            if (response.owner && response.owner.login) {
-              // First get the current user's info
-              $.ajax({
-                url: 'https://api.github.com/user',
-                type: 'GET',
-                headers: {
-                  Authorization: 'token ' + token,
-                },
-              })
-                .done((userResponse) => {
-                  const isOwner = userResponse.login === response.owner.login;
-                  if (isOwner) {
-                    this.proceedWithGistSave(existingGistId, currentAppGraph, {
-                      ...data,
-                      // On update, we can link back to the meemoo app from the gist description
-                      description: `${currentAppGraph.info.title} – https://app.meemoo.org/#gist/${existingGistId}`,
-                    });
-                  } else {
-                    this.proceedWithGistSave(null, currentAppGraph, data);
-                  }
-                })
-                .fail((jqXHR, textStatus, errorThrown) => {
-                  // If we can't verify ownership, create new
-                  this.proceedWithGistSave(null, currentAppGraph, data);
-                });
-            } else {
-              // If we can't verify ownership, create new
-              this.proceedWithGistSave(null, currentAppGraph, data);
-            }
-          })
-          .fail((jqXHR, textStatus, errorThrown) => {
-            // If gist doesn't exist or other error, create new
-            this.proceedWithGistSave(null, currentAppGraph, data);
-          });
-      } else {
-        // No existing gist, create new
-        this.proceedWithGistSave(null, currentAppGraph, data);
-      }
-    },
-    proceedWithGistSave: function (existingGistId, currentAppGraph, data) {
-      const isUpdate = Boolean(existingGistId);
-      const url = isUpdate
-        ? `https://api.github.com/gists/${existingGistId}`
-        : 'https://api.github.com/gists';
-      const method = isUpdate ? 'PATCH' : 'POST';
-
-      console.log(data);
-
-      $.ajax({
-        url: url,
-        type: method,
-        dataType: 'json',
-        contentType: 'application/json',
-        headers: {
-          Authorization: 'token ' + localStorage.getItem('meemoo_gist_token'),
-        },
-        data: JSON.stringify(data),
-      })
-        .done((response) => {
-          // Update graph with new gist url "parent"
-          this.setParent(response.html_url);
-
-          // Update UI
-          this.updateCurrentInfo();
-
-          // Update URL hash
-          const gistId = response.id;
-          if (this.router) {
-            this.router.navigate('gist/' + gistId);
-          }
-
-          // Show success message
-          const action = isUpdate ? 'updated' : 'created';
-          alert(`Gist successfully ${action}!`);
-
-          this.analyze('save', 'gist', gistId);
-          this.$('.savegist').prop('disabled', false);
-        })
-        .fail((jqXHR, textStatus, errorThrown) => {
-          console.error('Error saving to Gist:', textStatus, errorThrown);
-          let errorMessage = 'Error saving to Gist: ';
-          if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
-            errorMessage += jqXHR.responseJSON.message;
-          } else {
-            errorMessage += errorThrown;
-          }
-          alert(errorMessage);
-          this.$('.savegist').prop('disabled', false);
-        });
+      this.updateCurrentInfo();
     },
     logout: function () {
-      localStorage.removeItem('meemoo_gist_token');
+      githubAPI.logout();
       alert('Logged out of GitHub');
-      this.updateCurrentInfo();
     },
     setTitle: function () {
       var input = this.$('.currentapp .info .settitle').text();
@@ -712,7 +616,9 @@ $(function () {
         this.graph.setInfo('parents', currentParents.concat([url]));
       }
     },
-    updateCurrentInfo: function () {
+    updateCurrentInfo: async function () {
+      if (!this.graph) return;
+
       var graph = this.graph.toJSON();
       this.$('.currentapp').html(this.currentTemplate(graph));
 
@@ -724,15 +630,20 @@ $(function () {
 
       this.$('.editable').attr('contenteditable', 'true');
 
-      const loggedIn = Boolean(localStorage.getItem('meemoo_gist_token'));
-      if (loggedIn) {
-        this.$('.currentapp .savegist').show();
-        this.$('.currentapp .login').hide();
-        this.$('.currentapp .logout').show();
-      } else {
-        this.$('.currentapp .savegist').hide();
-        this.$('.currentapp .login').show();
-        this.$('.currentapp .logout').hide();
+      if (githubAPI) {
+        if (githubAPI.isLoggedIn()) {
+          // Check if we can update the current gist
+          const canUpdate = await githubAPI.canUpdateCurrentGist();
+          this.$('.currentapp .savegist')
+            .text(canUpdate ? 'update public' : 'make public')
+            .show();
+          this.$('.currentapp .login').hide();
+          this.$('.currentapp .logout').show();
+        } else {
+          this.$('.currentapp .savegist').hide();
+          this.$('.currentapp .login').show();
+          this.$('.currentapp .logout').hide();
+        }
       }
 
       if (graph.info.hasOwnProperty('parents')) {
@@ -832,27 +743,14 @@ $(function () {
 
       // URL hash
       Iframework.router.navigate('new');
+
+      this.updateCurrentInfo();
     },
     analyze: function (group, type, id) {
       // Google analytics
       // _gaq.push(['_trackEvent', group, type, id]);
     },
   });
-
-  function handleGitHubCallback() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const githubToken = urlParams.get('token');
-
-    if (githubToken) {
-      localStorage.setItem('meemoo_gist_token', githubToken);
-      // Replace current history entry with clean URL, omitting search params
-      const cleanUrl =
-        window.location.origin +
-        window.location.pathname +
-        window.location.hash;
-      history.replaceState(null, '', cleanUrl);
-    }
-  }
 
   // Start app
   window.Iframework = new IframeworkView();

@@ -56,6 +56,7 @@
             'src/plugins/source.js',
             'src/plugins/library.js',
             'src/plugins/images.js',
+            'src/plugins/github-api.js',
             // 'src/plugins/towtruck.js',
             // All Iframework loaded
             'src/iframework-last.js',
