@@ -1,4 +1,4 @@
-/*! Meemoo Iframework http://meemoo.org/ - v0.3.5 - 2024-12-23 (8:49:13 PM GMT+0200)
+/*! Meemoo Iframework http://meemoo.org/ - v0.3.5 - 2024-12-26 (5:34:19 PM GMT+0200)
 * Copyright (c) 2024 Forrest Oliphant; Licensed MIT, AGPL. */
 (function(){var n=this,t=n._,r={},e=Array.prototype,u=Object.prototype,i=Function.prototype,a=e.push,o=e.slice,c=e.concat,l=u.toString,f=u.hasOwnProperty,s=e.forEach,p=e.map,h=e.reduce,v=e.reduceRight,d=e.filter,g=e.every,m=e.some,y=e.indexOf,b=e.lastIndexOf,x=Array.isArray,_=Object.keys,j=i.bind,w=function(n){return n instanceof w?n:this instanceof w?(this._wrapped=n,void 0):new w(n)};"undefined"!=typeof exports?("undefined"!=typeof module&&module.exports&&(exports=module.exports=w),exports._=w):n._=w,w.VERSION="1.4.4";var A=w.each=w.forEach=function(n,t,e){if(null!=n)if(s&&n.forEach===s)n.forEach(t,e);else if(n.length===+n.length){for(var u=0,i=n.length;i>u;u++)if(t.call(e,n[u],u,n)===r)return}else for(var a in n)if(w.has(n,a)&&t.call(e,n[a],a,n)===r)return};w.map=w.collect=function(n,t,r){var e=[];return null==n?e:p&&n.map===p?n.map(t,r):(A(n,function(n,u,i){e[e.length]=t.call(r,n,u,i)}),e)};var O="Reduce of empty array with no initial value";w.reduce=w.foldl=w.inject=function(n,t,r,e){var u=arguments.length>2;if(null==n&&(n=[]),h&&n.reduce===h)return e&&(t=w.bind(t,e)),u?n.reduce(t,r):n.reduce(t);if(A(n,function(n,i,a){u?r=t.call(e,r,n,i,a):(r=n,u=!0)}),!u)throw new TypeError(O);return r},w.reduceRight=w.foldr=function(n,t,r,e){var u=arguments.length>2;if(null==n&&(n=[]),v&&n.reduceRight===v)return e&&(t=w.bind(t,e)),u?n.reduceRight(t,r):n.reduceRight(t);var i=n.length;if(i!==+i){var a=w.keys(n);i=a.length}if(A(n,function(o,c,l){c=a?a[--i]:--i,u?r=t.call(e,r,n[c],c,l):(r=n[c],u=!0)}),!u)throw new TypeError(O);return r},w.find=w.detect=function(n,t,r){var e;return E(n,function(n,u,i){return t.call(r,n,u,i)?(e=n,!0):void 0}),e},w.filter=w.select=function(n,t,r){var e=[];return null==n?e:d&&n.filter===d?n.filter(t,r):(A(n,function(n,u,i){t.call(r,n,u,i)&&(e[e.length]=n)}),e)},w.reject=function(n,t,r){return w.filter(n,function(n,e,u){return!t.call(r,n,e,u)},r)},w.every=w.all=function(n,t,e){t||(t=w.identity);var u=!0;return null==n?u:g&&n.every===g?n.every(t,e):(A(n,function(n,i,a){return(u=u&&t.call(e,n,i,a))?void 0:r}),!!u)};var E=w.some=w.any=function(n,t,e){t||(t=w.identity);var u=!1;return null==n?u:m&&n.some===m?n.some(t,e):(A(n,function(n,i,a){return u||(u=t.call(e,n,i,a))?r:void 0}),!!u)};w.contains=w.include=function(n,t){return null==n?!1:y&&n.indexOf===y?n.indexOf(t)!=-1:E(n,function(n){return n===t})},w.invoke=function(n,t){var r=o.call(arguments,2),e=w.isFunction(t);return w.map(n,function(n){return(e?t:n[t]).apply(n,r)})},w.pluck=function(n,t){return w.map(n,function(n){return n[t]})},w.where=function(n,t,r){return w.isEmpty(t)?r?null:[]:w[r?"find":"filter"](n,function(n){for(var r in t)if(t[r]!==n[r])return!1;return!0})},w.findWhere=function(n,t){return w.where(n,t,!0)},w.max=function(n,t,r){if(!t&&w.isArray(n)&&n[0]===+n[0]&&65535>n.length)return Math.max.apply(Math,n);if(!t&&w.isEmpty(n))return-1/0;var e={computed:-1/0,value:-1/0};return A(n,function(n,u,i){var a=t?t.call(r,n,u,i):n;a>=e.computed&&(e={value:n,computed:a})}),e.value},w.min=function(n,t,r){if(!t&&w.isArray(n)&&n[0]===+n[0]&&65535>n.length)return Math.min.apply(Math,n);if(!t&&w.isEmpty(n))return 1/0;var e={computed:1/0,value:1/0};return A(n,function(n,u,i){var a=t?t.call(r,n,u,i):n;e.computed>a&&(e={value:n,computed:a})}),e.value},w.shuffle=function(n){var t,r=0,e=[];return A(n,function(n){t=w.random(r++),e[r-1]=e[t],e[t]=n}),e};var k=function(n){return w.isFunction(n)?n:function(t){return t[n]}};w.sortBy=function(n,t,r){var e=k(t);return w.pluck(w.map(n,function(n,t,u){return{value:n,index:t,criteria:e.call(r,n,t,u)}}).sort(function(n,t){var r=n.criteria,e=t.criteria;if(r!==e){if(r>e||r===void 0)return 1;if(e>r||e===void 0)return-1}return n.index<t.index?-1:1}),"value")};var F=function(n,t,r,e){var u={},i=k(t||w.identity);return A(n,function(t,a){var o=i.call(r,t,a,n);e(u,o,t)}),u};w.groupBy=function(n,t,r){return F(n,t,r,function(n,t,r){(w.has(n,t)?n[t]:n[t]=[]).push(r)})},w.countBy=function(n,t,r){return F(n,t,r,function(n,t){w.has(n,t)||(n[t]=0),n[t]++})},w.sortedIndex=function(n,t,r,e){r=null==r?w.identity:k(r);for(var u=r.call(e,t),i=0,a=n.length;a>i;){var o=i+a>>>1;u>r.call(e,n[o])?i=o+1:a=o}return i},w.toArray=function(n){return n?w.isArray(n)?o.call(n):n.length===+n.length?w.map(n,w.identity):w.values(n):[]},w.size=function(n){return null==n?0:n.length===+n.length?n.length:w.keys(n).length},w.first=w.head=w.take=function(n,t,r){return null==n?void 0:null==t||r?n[0]:o.call(n,0,t)},w.initial=function(n,t,r){return o.call(n,0,n.length-(null==t||r?1:t))},w.last=function(n,t,r){return null==n?void 0:null==t||r?n[n.length-1]:o.call(n,Math.max(n.length-t,0))},w.rest=w.tail=w.drop=function(n,t,r){return o.call(n,null==t||r?1:t)},w.compact=function(n){return w.filter(n,w.identity)};var R=function(n,t,r){return A(n,function(n){w.isArray(n)?t?a.apply(r,n):R(n,t,r):r.push(n)}),r};w.flatten=function(n,t){return R(n,t,[])},w.without=function(n){return w.difference(n,o.call(arguments,1))},w.uniq=w.unique=function(n,t,r,e){w.isFunction(t)&&(e=r,r=t,t=!1);var u=r?w.map(n,r,e):n,i=[],a=[];return A(u,function(r,e){(t?e&&a[a.length-1]===r:w.contains(a,r))||(a.push(r),i.push(n[e]))}),i},w.union=function(){return w.uniq(c.apply(e,arguments))},w.intersection=function(n){var t=o.call(arguments,1);return w.filter(w.uniq(n),function(n){return w.every(t,function(t){return w.indexOf(t,n)>=0})})},w.difference=function(n){var t=c.apply(e,o.call(arguments,1));return w.filter(n,function(n){return!w.contains(t,n)})},w.zip=function(){for(var n=o.call(arguments),t=w.max(w.pluck(n,"length")),r=Array(t),e=0;t>e;e++)r[e]=w.pluck(n,""+e);return r},w.object=function(n,t){if(null==n)return{};for(var r={},e=0,u=n.length;u>e;e++)t?r[n[e]]=t[e]:r[n[e][0]]=n[e][1];return r},w.indexOf=function(n,t,r){if(null==n)return-1;var e=0,u=n.length;if(r){if("number"!=typeof r)return e=w.sortedIndex(n,t),n[e]===t?e:-1;e=0>r?Math.max(0,u+r):r}if(y&&n.indexOf===y)return n.indexOf(t,r);for(;u>e;e++)if(n[e]===t)return e;return-1},w.lastIndexOf=function(n,t,r){if(null==n)return-1;var e=null!=r;if(b&&n.lastIndexOf===b)return e?n.lastIndexOf(t,r):n.lastIndexOf(t);for(var u=e?r:n.length;u--;)if(n[u]===t)return u;return-1},w.range=function(n,t,r){1>=arguments.length&&(t=n||0,n=0),r=arguments[2]||1;for(var e=Math.max(Math.ceil((t-n)/r),0),u=0,i=Array(e);e>u;)i[u++]=n,n+=r;return i},w.bind=function(n,t){if(n.bind===j&&j)return j.apply(n,o.call(arguments,1));var r=o.call(arguments,2);return function(){return n.apply(t,r.concat(o.call(arguments)))}},w.partial=function(n){var t=o.call(arguments,1);return function(){return n.apply(this,t.concat(o.call(arguments)))}},w.bindAll=function(n){var t=o.call(arguments,1);return 0===t.length&&(t=w.functions(n)),A(t,function(t){n[t]=w.bind(n[t],n)}),n},w.memoize=function(n,t){var r={};return t||(t=w.identity),function(){var e=t.apply(this,arguments);return w.has(r,e)?r[e]:r[e]=n.apply(this,arguments)}},w.delay=function(n,t){var r=o.call(arguments,2);return setTimeout(function(){return n.apply(null,r)},t)},w.defer=function(n){return w.delay.apply(w,[n,1].concat(o.call(arguments,1)))},w.throttle=function(n,t){var r,e,u,i,a=0,o=function(){a=new Date,u=null,i=n.apply(r,e)};return function(){var c=new Date,l=t-(c-a);return r=this,e=arguments,0>=l?(clearTimeout(u),u=null,a=c,i=n.apply(r,e)):u||(u=setTimeout(o,l)),i}},w.debounce=function(n,t,r){var e,u;return function(){var i=this,a=arguments,o=function(){e=null,r||(u=n.apply(i,a))},c=r&&!e;return clearTimeout(e),e=setTimeout(o,t),c&&(u=n.apply(i,a)),u}},w.once=function(n){var t,r=!1;return function(){return r?t:(r=!0,t=n.apply(this,arguments),n=null,t)}},w.wrap=function(n,t){return function(){var r=[n];return a.apply(r,arguments),t.apply(this,r)}},w.compose=function(){var n=arguments;return function(){for(var t=arguments,r=n.length-1;r>=0;r--)t=[n[r].apply(this,t)];return t[0]}},w.after=function(n,t){return 0>=n?t():function(){return 1>--n?t.apply(this,arguments):void 0}},w.keys=_||function(n){if(n!==Object(n))throw new TypeError("Invalid object");var t=[];for(var r in n)w.has(n,r)&&(t[t.length]=r);return t},w.values=function(n){var t=[];for(var r in n)w.has(n,r)&&t.push(n[r]);return t},w.pairs=function(n){var t=[];for(var r in n)w.has(n,r)&&t.push([r,n[r]]);return t},w.invert=function(n){var t={};for(var r in n)w.has(n,r)&&(t[n[r]]=r);return t},w.functions=w.methods=function(n){var t=[];for(var r in n)w.isFunction(n[r])&&t.push(r);return t.sort()},w.extend=function(n){return A(o.call(arguments,1),function(t){if(t)for(var r in t)n[r]=t[r]}),n},w.pick=function(n){var t={},r=c.apply(e,o.call(arguments,1));return A(r,function(r){r in n&&(t[r]=n[r])}),t},w.omit=function(n){var t={},r=c.apply(e,o.call(arguments,1));for(var u in n)w.contains(r,u)||(t[u]=n[u]);return t},w.defaults=function(n){return A(o.call(arguments,1),function(t){if(t)for(var r in t)null==n[r]&&(n[r]=t[r])}),n},w.clone=function(n){return w.isObject(n)?w.isArray(n)?n.slice():w.extend({},n):n},w.tap=function(n,t){return t(n),n};var I=function(n,t,r,e){if(n===t)return 0!==n||1/n==1/t;if(null==n||null==t)return n===t;n instanceof w&&(n=n._wrapped),t instanceof w&&(t=t._wrapped);var u=l.call(n);if(u!=l.call(t))return!1;switch(u){case"[object String]":return n==t+"";case"[object Number]":return n!=+n?t!=+t:0==n?1/n==1/t:n==+t;case"[object Date]":case"[object Boolean]":return+n==+t;case"[object RegExp]":return n.source==t.source&&n.global==t.global&&n.multiline==t.multiline&&n.ignoreCase==t.ignoreCase}if("object"!=typeof n||"object"!=typeof t)return!1;for(var i=r.length;i--;)if(r[i]==n)return e[i]==t;r.push(n),e.push(t);var a=0,o=!0;if("[object Array]"==u){if(a=n.length,o=a==t.length)for(;a--&&(o=I(n[a],t[a],r,e)););}else{var c=n.constructor,f=t.constructor;if(c!==f&&!(w.isFunction(c)&&c instanceof c&&w.isFunction(f)&&f instanceof f))return!1;for(var s in n)if(w.has(n,s)&&(a++,!(o=w.has(t,s)&&I(n[s],t[s],r,e))))break;if(o){for(s in t)if(w.has(t,s)&&!a--)break;o=!a}}return r.pop(),e.pop(),o};w.isEqual=function(n,t){return I(n,t,[],[])},w.isEmpty=function(n){if(null==n)return!0;if(w.isArray(n)||w.isString(n))return 0===n.length;for(var t in n)if(w.has(n,t))return!1;return!0},w.isElement=function(n){return!(!n||1!==n.nodeType)},w.isArray=x||function(n){return"[object Array]"==l.call(n)},w.isObject=function(n){return n===Object(n)},A(["Arguments","Function","String","Number","Date","RegExp"],function(n){w["is"+n]=function(t){return l.call(t)=="[object "+n+"]"}}),w.isArguments(arguments)||(w.isArguments=function(n){return!(!n||!w.has(n,"callee"))}),"function"!=typeof/./&&(w.isFunction=function(n){return"function"==typeof n}),w.isFinite=function(n){return isFinite(n)&&!isNaN(parseFloat(n))},w.isNaN=function(n){return w.isNumber(n)&&n!=+n},w.isBoolean=function(n){return n===!0||n===!1||"[object Boolean]"==l.call(n)},w.isNull=function(n){return null===n},w.isUndefined=function(n){return n===void 0},w.has=function(n,t){return f.call(n,t)},w.noConflict=function(){return n._=t,this},w.identity=function(n){return n},w.times=function(n,t,r){for(var e=Array(n),u=0;n>u;u++)e[u]=t.call(r,u);return e},w.random=function(n,t){return null==t&&(t=n,n=0),n+Math.floor(Math.random()*(t-n+1))};var M={escape:{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#x27;","/":"&#x2F;"}};M.unescape=w.invert(M.escape);var S={escape:RegExp("["+w.keys(M.escape).join("")+"]","g"),unescape:RegExp("("+w.keys(M.unescape).join("|")+")","g")};w.each(["escape","unescape"],function(n){w[n]=function(t){return null==t?"":(""+t).replace(S[n],function(t){return M[n][t]})}}),w.result=function(n,t){if(null==n)return null;var r=n[t];return w.isFunction(r)?r.call(n):r},w.mixin=function(n){A(w.functions(n),function(t){var r=w[t]=n[t];w.prototype[t]=function(){var n=[this._wrapped];return a.apply(n,arguments),D.call(this,r.apply(w,n))}})};var N=0;w.uniqueId=function(n){var t=++N+"";return n?n+t:t},w.templateSettings={evaluate:/<%([\s\S]+?)%>/g,interpolate:/<%=([\s\S]+?)%>/g,escape:/<%-([\s\S]+?)%>/g};var T=/(.)^/,q={"'":"'","\\":"\\","\r":"r","\n":"n","	":"t","\u2028":"u2028","\u2029":"u2029"},B=/\\|'|\r|\n|\t|\u2028|\u2029/g;w.template=function(n,t,r){var e;r=w.defaults({},r,w.templateSettings);var u=RegExp([(r.escape||T).source,(r.interpolate||T).source,(r.evaluate||T).source].join("|")+"|$","g"),i=0,a="__p+='";n.replace(u,function(t,r,e,u,o){return a+=n.slice(i,o).replace(B,function(n){return"\\"+q[n]}),r&&(a+="'+\n((__t=("+r+"))==null?'':_.escape(__t))+\n'"),e&&(a+="'+\n((__t=("+e+"))==null?'':__t)+\n'"),u&&(a+="';\n"+u+"\n__p+='"),i=o+t.length,t}),a+="';\n",r.variable||(a="with(obj||{}){\n"+a+"}\n"),a="var __t,__p='',__j=Array.prototype.join,"+"print=function(){__p+=__j.call(arguments,'');};\n"+a+"return __p;\n";try{e=Function(r.variable||"obj","_",a)}catch(o){throw o.source=a,o}if(t)return e(t,w);var c=function(n){return e.call(this,n,w)};return c.source="function("+(r.variable||"obj")+"){\n"+a+"}",c},w.chain=function(n){return w(n).chain()};var D=function(n){return this._chain?w(n).chain():n};w.mixin(w),A(["pop","push","reverse","shift","sort","splice","unshift"],function(n){var t=e[n];w.prototype[n]=function(){var r=this._wrapped;return t.apply(r,arguments),"shift"!=n&&"splice"!=n||0!==r.length||delete r[0],D.call(this,r)}}),A(["concat","join","slice"],function(n){var t=e[n];w.prototype[n]=function(){return D.call(this,t.apply(this._wrapped,arguments))}}),w.extend(w.prototype,{chain:function(){return this._chain=!0,this},value:function(){return this._wrapped}})}).call(this);
 (function(){var t=this;var e=t.Backbone;var i=[];var r=i.push;var s=i.slice;var n=i.splice;var a;if(typeof exports!=="undefined"){a=exports}else{a=t.Backbone={}}a.VERSION="1.0.0";var h=t._;if(!h&&typeof require!=="undefined")h=require("underscore");a.$=t.jQuery||t.Zepto||t.ender||t.$;a.noConflict=function(){t.Backbone=e;return this};a.emulateHTTP=false;a.emulateJSON=false;var o=a.Events={on:function(t,e,i){if(!l(this,"on",t,[e,i])||!e)return this;this._events||(this._events={});var r=this._events[t]||(this._events[t]=[]);r.push({callback:e,context:i,ctx:i||this});return this},once:function(t,e,i){if(!l(this,"once",t,[e,i])||!e)return this;var r=this;var s=h.once(function(){r.off(t,s);e.apply(this,arguments)});s._callback=e;return this.on(t,s,i)},off:function(t,e,i){var r,s,n,a,o,u,c,f;if(!this._events||!l(this,"off",t,[e,i]))return this;if(!t&&!e&&!i){this._events={};return this}a=t?[t]:h.keys(this._events);for(o=0,u=a.length;o<u;o++){t=a[o];if(n=this._events[t]){this._events[t]=r=[];if(e||i){for(c=0,f=n.length;c<f;c++){s=n[c];if(e&&e!==s.callback&&e!==s.callback._callback||i&&i!==s.context){r.push(s)}}}if(!r.length)delete this._events[t]}}return this},trigger:function(t){if(!this._events)return this;var e=s.call(arguments,1);if(!l(this,"trigger",t,e))return this;var i=this._events[t];var r=this._events.all;if(i)c(i,e);if(r)c(r,arguments);return this},stopListening:function(t,e,i){var r=this._listeners;if(!r)return this;var s=!e&&!i;if(typeof e==="object")i=this;if(t)(r={})[t._listenerId]=t;for(var n in r){r[n].off(e,i,this);if(s)delete this._listeners[n]}return this}};var u=/\s+/;var l=function(t,e,i,r){if(!i)return true;if(typeof i==="object"){for(var s in i){t[e].apply(t,[s,i[s]].concat(r))}return false}if(u.test(i)){var n=i.split(u);for(var a=0,h=n.length;a<h;a++){t[e].apply(t,[n[a]].concat(r))}return false}return true};var c=function(t,e){var i,r=-1,s=t.length,n=e[0],a=e[1],h=e[2];switch(e.length){case 0:while(++r<s)(i=t[r]).callback.call(i.ctx);return;case 1:while(++r<s)(i=t[r]).callback.call(i.ctx,n);return;case 2:while(++r<s)(i=t[r]).callback.call(i.ctx,n,a);return;case 3:while(++r<s)(i=t[r]).callback.call(i.ctx,n,a,h);return;default:while(++r<s)(i=t[r]).callback.apply(i.ctx,e)}};var f={listenTo:"on",listenToOnce:"once"};h.each(f,function(t,e){o[e]=function(e,i,r){var s=this._listeners||(this._listeners={});var n=e._listenerId||(e._listenerId=h.uniqueId("l"));s[n]=e;if(typeof i==="object")r=this;e[t](i,r,this);return this}});o.bind=o.on;o.unbind=o.off;h.extend(a,o);var d=a.Model=function(t,e){var i;var r=t||{};e||(e={});this.cid=h.uniqueId("c");this.attributes={};h.extend(this,h.pick(e,p));if(e.parse)r=this.parse(r,e)||{};if(i=h.result(this,"defaults")){r=h.defaults({},r,i)}this.set(r,e);this.changed={};this.initialize.apply(this,arguments)};var p=["url","urlRoot","collection"];h.extend(d.prototype,o,{changed:null,validationError:null,idAttribute:"id",initialize:function(){},toJSON:function(t){return h.clone(this.attributes)},sync:function(){return a.sync.apply(this,arguments)},get:function(t){return this.attributes[t]},escape:function(t){return h.escape(this.get(t))},has:function(t){return this.get(t)!=null},set:function(t,e,i){var r,s,n,a,o,u,l,c;if(t==null)return this;if(typeof t==="object"){s=t;i=e}else{(s={})[t]=e}i||(i={});if(!this._validate(s,i))return false;n=i.unset;o=i.silent;a=[];u=this._changing;this._changing=true;if(!u){this._previousAttributes=h.clone(this.attributes);this.changed={}}c=this.attributes,l=this._previousAttributes;if(this.idAttribute in s)this.id=s[this.idAttribute];for(r in s){e=s[r];if(!h.isEqual(c[r],e))a.push(r);if(!h.isEqual(l[r],e)){this.changed[r]=e}else{delete this.changed[r]}n?delete c[r]:c[r]=e}if(!o){if(a.length)this._pending=true;for(var f=0,d=a.length;f<d;f++){this.trigger("change:"+a[f],this,c[a[f]],i)}}if(u)return this;if(!o){while(this._pending){this._pending=false;this.trigger("change",this,i)}}this._pending=false;this._changing=false;return this},unset:function(t,e){return this.set(t,void 0,h.extend({},e,{unset:true}))},clear:function(t){var e={};for(var i in this.attributes)e[i]=void 0;return this.set(e,h.extend({},t,{unset:true}))},hasChanged:function(t){if(t==null)return!h.isEmpty(this.changed);return h.has(this.changed,t)},changedAttributes:function(t){if(!t)return this.hasChanged()?h.clone(this.changed):false;var e,i=false;var r=this._changing?this._previousAttributes:this.attributes;for(var s in t){if(h.isEqual(r[s],e=t[s]))continue;(i||(i={}))[s]=e}return i},previous:function(t){if(t==null||!this._previousAttributes)return null;return this._previousAttributes[t]},previousAttributes:function(){return h.clone(this._previousAttributes)},fetch:function(t){t=t?h.clone(t):{};if(t.parse===void 0)t.parse=true;var e=this;var i=t.success;t.success=function(r){if(!e.set(e.parse(r,t),t))return false;if(i)i(e,r,t);e.trigger("sync",e,r,t)};R(this,t);return this.sync("read",this,t)},save:function(t,e,i){var r,s,n,a=this.attributes;if(t==null||typeof t==="object"){r=t;i=e}else{(r={})[t]=e}if(r&&(!i||!i.wait)&&!this.set(r,i))return false;i=h.extend({validate:true},i);if(!this._validate(r,i))return false;if(r&&i.wait){this.attributes=h.extend({},a,r)}if(i.parse===void 0)i.parse=true;var o=this;var u=i.success;i.success=function(t){o.attributes=a;var e=o.parse(t,i);if(i.wait)e=h.extend(r||{},e);if(h.isObject(e)&&!o.set(e,i)){return false}if(u)u(o,t,i);o.trigger("sync",o,t,i)};R(this,i);s=this.isNew()?"create":i.patch?"patch":"update";if(s==="patch")i.attrs=r;n=this.sync(s,this,i);if(r&&i.wait)this.attributes=a;return n},destroy:function(t){t=t?h.clone(t):{};var e=this;var i=t.success;var r=function(){e.trigger("destroy",e,e.collection,t)};t.success=function(s){if(t.wait||e.isNew())r();if(i)i(e,s,t);if(!e.isNew())e.trigger("sync",e,s,t)};if(this.isNew()){t.success();return false}R(this,t);var s=this.sync("delete",this,t);if(!t.wait)r();return s},url:function(){var t=h.result(this,"urlRoot")||h.result(this.collection,"url")||U();if(this.isNew())return t;return t+(t.charAt(t.length-1)==="/"?"":"/")+encodeURIComponent(this.id)},parse:function(t,e){return t},clone:function(){return new this.constructor(this.attributes)},isNew:function(){return this.id==null},isValid:function(t){return this._validate({},h.extend(t||{},{validate:true}))},_validate:function(t,e){if(!e.validate||!this.validate)return true;t=h.extend({},this.attributes,t);var i=this.validationError=this.validate(t,e)||null;if(!i)return true;this.trigger("invalid",this,i,h.extend(e||{},{validationError:i}));return false}});var v=["keys","values","pairs","invert","pick","omit"];h.each(v,function(t){d.prototype[t]=function(){var e=s.call(arguments);e.unshift(this.attributes);return h[t].apply(h,e)}});var g=a.Collection=function(t,e){e||(e={});if(e.url)this.url=e.url;if(e.model)this.model=e.model;if(e.comparator!==void 0)this.comparator=e.comparator;this._reset();this.initialize.apply(this,arguments);if(t)this.reset(t,h.extend({silent:true},e))};var m={add:true,remove:true,merge:true};var y={add:true,merge:false,remove:false};h.extend(g.prototype,o,{model:d,initialize:function(){},toJSON:function(t){return this.map(function(e){return e.toJSON(t)})},sync:function(){return a.sync.apply(this,arguments)},add:function(t,e){return this.set(t,h.defaults(e||{},y))},remove:function(t,e){t=h.isArray(t)?t.slice():[t];e||(e={});var i,r,s,n;for(i=0,r=t.length;i<r;i++){n=this.get(t[i]);if(!n)continue;delete this._byId[n.id];delete this._byId[n.cid];s=this.indexOf(n);this.models.splice(s,1);this.length--;if(!e.silent){e.index=s;n.trigger("remove",n,this,e)}this._removeReference(n)}return this},set:function(t,e){e=h.defaults(e||{},m);if(e.parse)t=this.parse(t,e);if(!h.isArray(t))t=t?[t]:[];var i,s,a,o,u,l;var c=e.at;var f=this.comparator&&c==null&&e.sort!==false;var d=h.isString(this.comparator)?this.comparator:null;var p=[],v=[],g={};for(i=0,s=t.length;i<s;i++){if(!(a=this._prepareModel(t[i],e)))continue;if(u=this.get(a)){if(e.remove)g[u.cid]=true;if(e.merge){u.set(a.attributes,e);if(f&&!l&&u.hasChanged(d))l=true}}else if(e.add){p.push(a);a.on("all",this._onModelEvent,this);this._byId[a.cid]=a;if(a.id!=null)this._byId[a.id]=a}}if(e.remove){for(i=0,s=this.length;i<s;++i){if(!g[(a=this.models[i]).cid])v.push(a)}if(v.length)this.remove(v,e)}if(p.length){if(f)l=true;this.length+=p.length;if(c!=null){n.apply(this.models,[c,0].concat(p))}else{r.apply(this.models,p)}}if(l)this.sort({silent:true});if(e.silent)return this;for(i=0,s=p.length;i<s;i++){(a=p[i]).trigger("add",a,this,e)}if(l)this.trigger("sort",this,e);return this},reset:function(t,e){e||(e={});for(var i=0,r=this.models.length;i<r;i++){this._removeReference(this.models[i])}e.previousModels=this.models;this._reset();this.add(t,h.extend({silent:true},e));if(!e.silent)this.trigger("reset",this,e);return this},push:function(t,e){t=this._prepareModel(t,e);this.add(t,h.extend({at:this.length},e));return t},pop:function(t){var e=this.at(this.length-1);this.remove(e,t);return e},unshift:function(t,e){t=this._prepareModel(t,e);this.add(t,h.extend({at:0},e));return t},shift:function(t){var e=this.at(0);this.remove(e,t);return e},slice:function(t,e){return this.models.slice(t,e)},get:function(t){if(t==null)return void 0;return this._byId[t.id!=null?t.id:t.cid||t]},at:function(t){return this.models[t]},where:function(t,e){if(h.isEmpty(t))return e?void 0:[];return this[e?"find":"filter"](function(e){for(var i in t){if(t[i]!==e.get(i))return false}return true})},findWhere:function(t){return this.where(t,true)},sort:function(t){if(!this.comparator)throw new Error("Cannot sort a set without a comparator");t||(t={});if(h.isString(this.comparator)||this.comparator.length===1){this.models=this.sortBy(this.comparator,this)}else{this.models.sort(h.bind(this.comparator,this))}if(!t.silent)this.trigger("sort",this,t);return this},sortedIndex:function(t,e,i){e||(e=this.comparator);var r=h.isFunction(e)?e:function(t){return t.get(e)};return h.sortedIndex(this.models,t,r,i)},pluck:function(t){return h.invoke(this.models,"get",t)},fetch:function(t){t=t?h.clone(t):{};if(t.parse===void 0)t.parse=true;var e=t.success;var i=this;t.success=function(r){var s=t.reset?"reset":"set";i[s](r,t);if(e)e(i,r,t);i.trigger("sync",i,r,t)};R(this,t);return this.sync("read",this,t)},create:function(t,e){e=e?h.clone(e):{};if(!(t=this._prepareModel(t,e)))return false;if(!e.wait)this.add(t,e);var i=this;var r=e.success;e.success=function(s){if(e.wait)i.add(t,e);if(r)r(t,s,e)};t.save(null,e);return t},parse:function(t,e){return t},clone:function(){return new this.constructor(this.models)},_reset:function(){this.length=0;this.models=[];this._byId={}},_prepareModel:function(t,e){if(t instanceof d){if(!t.collection)t.collection=this;return t}e||(e={});e.collection=this;var i=new this.model(t,e);if(!i._validate(t,e)){this.trigger("invalid",this,t,e);return false}return i},_removeReference:function(t){if(this===t.collection)delete t.collection;t.off("all",this._onModelEvent,this)},_onModelEvent:function(t,e,i,r){if((t==="add"||t==="remove")&&i!==this)return;if(t==="destroy")this.remove(e,r);if(e&&t==="change:"+e.idAttribute){delete this._byId[e.previous(e.idAttribute)];if(e.id!=null)this._byId[e.id]=e}this.trigger.apply(this,arguments)}});var _=["forEach","each","map","collect","reduce","foldl","inject","reduceRight","foldr","find","detect","filter","select","reject","every","all","some","any","include","contains","invoke","max","min","toArray","size","first","head","take","initial","rest","tail","drop","last","without","indexOf","shuffle","lastIndexOf","isEmpty","chain"];h.each(_,function(t){g.prototype[t]=function(){var e=s.call(arguments);e.unshift(this.models);return h[t].apply(h,e)}});var w=["groupBy","countBy","sortBy"];h.each(w,function(t){g.prototype[t]=function(e,i){var r=h.isFunction(e)?e:function(t){return t.get(e)};return h[t](this.models,r,i)}});var b=a.View=function(t){this.cid=h.uniqueId("view");this._configure(t||{});this._ensureElement();this.initialize.apply(this,arguments);this.delegateEvents()};var x=/^(\S+)\s*(.*)$/;var E=["model","collection","el","id","attributes","className","tagName","events"];h.extend(b.prototype,o,{tagName:"div",$:function(t){return this.$el.find(t)},initialize:function(){},render:function(){return this},remove:function(){this.$el.remove();this.stopListening();return this},setElement:function(t,e){if(this.$el)this.undelegateEvents();this.$el=t instanceof a.$?t:a.$(t);this.el=this.$el[0];if(e!==false)this.delegateEvents();return this},delegateEvents:function(t){if(!(t||(t=h.result(this,"events"))))return this;this.undelegateEvents();for(var e in t){var i=t[e];if(!h.isFunction(i))i=this[t[e]];if(!i)continue;var r=e.match(x);var s=r[1],n=r[2];i=h.bind(i,this);s+=".delegateEvents"+this.cid;if(n===""){this.$el.on(s,i)}else{this.$el.on(s,n,i)}}return this},undelegateEvents:function(){this.$el.off(".delegateEvents"+this.cid);return this},_configure:function(t){if(this.options)t=h.extend({},h.result(this,"options"),t);h.extend(this,h.pick(t,E));this.options=t},_ensureElement:function(){if(!this.el){var t=h.extend({},h.result(this,"attributes"));if(this.id)t.id=h.result(this,"id");if(this.className)t["class"]=h.result(this,"className");var e=a.$("<"+h.result(this,"tagName")+">").attr(t);this.setElement(e,false)}else{this.setElement(h.result(this,"el"),false)}}});a.sync=function(t,e,i){var r=k[t];h.defaults(i||(i={}),{emulateHTTP:a.emulateHTTP,emulateJSON:a.emulateJSON});var s={type:r,dataType:"json"};if(!i.url){s.url=h.result(e,"url")||U()}if(i.data==null&&e&&(t==="create"||t==="update"||t==="patch")){s.contentType="application/json";s.data=JSON.stringify(i.attrs||e.toJSON(i))}if(i.emulateJSON){s.contentType="application/x-www-form-urlencoded";s.data=s.data?{model:s.data}:{}}if(i.emulateHTTP&&(r==="PUT"||r==="DELETE"||r==="PATCH")){s.type="POST";if(i.emulateJSON)s.data._method=r;var n=i.beforeSend;i.beforeSend=function(t){t.setRequestHeader("X-HTTP-Method-Override",r);if(n)return n.apply(this,arguments)}}if(s.type!=="GET"&&!i.emulateJSON){s.processData=false}if(s.type==="PATCH"&&window.ActiveXObject&&!(window.external&&window.external.msActiveXFilteringEnabled)){s.xhr=function(){return new ActiveXObject("Microsoft.XMLHTTP")}}var o=i.xhr=a.ajax(h.extend(s,i));e.trigger("request",e,o,i);return o};var k={create:"POST",update:"PUT",patch:"PATCH","delete":"DELETE",read:"GET"};a.ajax=function(){return a.$.ajax.apply(a.$,arguments)};var S=a.Router=function(t){t||(t={});if(t.routes)this.routes=t.routes;this._bindRoutes();this.initialize.apply(this,arguments)};var $=/\((.*?)\)/g;var T=/(\(\?)?:\w+/g;var H=/\*\w+/g;var A=/[\-{}\[\]+?.,\\\^$|#\s]/g;h.extend(S.prototype,o,{initialize:function(){},route:function(t,e,i){if(!h.isRegExp(t))t=this._routeToRegExp(t);if(h.isFunction(e)){i=e;e=""}if(!i)i=this[e];var r=this;a.history.route(t,function(s){var n=r._extractParameters(t,s);i&&i.apply(r,n);r.trigger.apply(r,["route:"+e].concat(n));r.trigger("route",e,n);a.history.trigger("route",r,e,n)});return this},navigate:function(t,e){a.history.navigate(t,e);return this},_bindRoutes:function(){if(!this.routes)return;this.routes=h.result(this,"routes");var t,e=h.keys(this.routes);while((t=e.pop())!=null){this.route(t,this.routes[t])}},_routeToRegExp:function(t){t=t.replace(A,"\\$&").replace($,"(?:$1)?").replace(T,function(t,e){return e?t:"([^/]+)"}).replace(H,"(.*?)");return new RegExp("^"+t+"$")},_extractParameters:function(t,e){var i=t.exec(e).slice(1);return h.map(i,function(t){return t?decodeURIComponent(t):null})}});var I=a.History=function(){this.handlers=[];h.bindAll(this,"checkUrl");if(typeof window!=="undefined"){this.location=window.location;this.history=window.history}};var N=/^[#\/]|\s+$/g;var P=/^\/+|\/+$/g;var O=/msie [\w.]+/;var C=/\/$/;I.started=false;h.extend(I.prototype,o,{interval:50,getHash:function(t){var e=(t||this).location.href.match(/#(.*)$/);return e?e[1]:""},getFragment:function(t,e){if(t==null){if(this._hasPushState||!this._wantsHashChange||e){t=this.location.pathname;var i=this.root.replace(C,"");if(!t.indexOf(i))t=t.substr(i.length)}else{t=this.getHash()}}return t.replace(N,"")},start:function(t){if(I.started)throw new Error("Backbone.history has already been started");I.started=true;this.options=h.extend({},{root:"/"},this.options,t);this.root=this.options.root;this._wantsHashChange=this.options.hashChange!==false;this._wantsPushState=!!this.options.pushState;this._hasPushState=!!(this.options.pushState&&this.history&&this.history.pushState);var e=this.getFragment();var i=document.documentMode;var r=O.exec(navigator.userAgent.toLowerCase())&&(!i||i<=7);this.root=("/"+this.root+"/").replace(P,"/");if(r&&this._wantsHashChange){this.iframe=a.$('<iframe src="javascript:0" tabindex="-1" />').hide().appendTo("body")[0].contentWindow;this.navigate(e)}if(this._hasPushState){a.$(window).on("popstate",this.checkUrl)}else if(this._wantsHashChange&&"onhashchange"in window&&!r){a.$(window).on("hashchange",this.checkUrl)}else if(this._wantsHashChange){this._checkUrlInterval=setInterval(this.checkUrl,this.interval)}this.fragment=e;var s=this.location;var n=s.pathname.replace(/[^\/]$/,"$&/")===this.root;if(this._wantsHashChange&&this._wantsPushState&&!this._hasPushState&&!n){this.fragment=this.getFragment(null,true);this.location.replace(this.root+this.location.search+"#"+this.fragment);return true}else if(this._wantsPushState&&this._hasPushState&&n&&s.hash){this.fragment=this.getHash().replace(N,"");this.history.replaceState({},document.title,this.root+this.fragment+s.search)}if(!this.options.silent)return this.loadUrl()},stop:function(){a.$(window).off("popstate",this.checkUrl).off("hashchange",this.checkUrl);clearInterval(this._checkUrlInterval);I.started=false},route:function(t,e){this.handlers.unshift({route:t,callback:e})},checkUrl:function(t){var e=this.getFragment();if(e===this.fragment&&this.iframe){e=this.getFragment(this.getHash(this.iframe))}if(e===this.fragment)return false;if(this.iframe)this.navigate(e);this.loadUrl()||this.loadUrl(this.getHash())},loadUrl:function(t){var e=this.fragment=this.getFragment(t);var i=h.any(this.handlers,function(t){if(t.route.test(e)){t.callback(e);return true}});return i},navigate:function(t,e){if(!I.started)return false;if(!e||e===true)e={trigger:e};t=this.getFragment(t||"");if(this.fragment===t)return;this.fragment=t;var i=this.root+t;if(this._hasPushState){this.history[e.replace?"replaceState":"pushState"]({},document.title,i)}else if(this._wantsHashChange){this._updateHash(this.location,t,e.replace);if(this.iframe&&t!==this.getFragment(this.getHash(this.iframe))){if(!e.replace)this.iframe.document.open().close();this._updateHash(this.iframe.location,t,e.replace)}}else{return this.location.assign(i)}if(e.trigger)this.loadUrl(t)},_updateHash:function(t,e,i){if(i){var r=t.href.replace(/(javascript:|#).*$/,"");t.replace(r+"#"+e)}else{t.hash="#"+e}}});a.history=new I;var j=function(t,e){var i=this;var r;if(t&&h.has(t,"constructor")){r=t.constructor}else{r=function(){return i.apply(this,arguments)}}h.extend(r,i,e);var s=function(){this.constructor=r};s.prototype=i.prototype;r.prototype=new s;if(t)h.extend(r.prototype,t);r.__super__=i.prototype;return r};d.extend=g.extend=S.extend=b.extend=I.extend=j;var U=function(){throw new Error('A "url" property or function must be specified')};var R=function(t,e){var i=e.error;e.error=function(r){if(i)i(t,r,e);t.trigger("error",t,r,e)}}}).call(this);
@@ -3867,6 +3867,276 @@ var Parser = (function (scope) {
 })(typeof exports === 'undefined' ? {} : exports);
 
 $(function () {
+  class GithubAPI {
+    static API_BASE_URL = 'https://api.github.com';
+    static AUTH_ENDPOINT =
+      'https://forresto-meemoo_org_share.web.val.run/login';
+
+    _token = undefined;
+    _currentUser = undefined;
+    _loadedGistId = undefined;
+    _loadedGistResponse = undefined;
+
+    constructor() {
+      this._token = localStorage.getItem('meemoo_gist_token');
+      if (this._token) {
+        // Load user data on init if logged in
+        this.loadCurrentUser();
+      }
+
+      window.addEventListener('hashchange', () => {
+        const currentHash = window.location.hash;
+        if (!currentHash.startsWith('#gist/')) {
+          this.clearCache();
+        }
+      });
+    }
+
+    isLoggedIn() {
+      return Boolean(this._token);
+    }
+
+    login() {
+      const redirectUri = encodeURIComponent(window.location.href);
+      window.location.href = `${GithubAPI.AUTH_ENDPOINT}?redirect=${redirectUri}`;
+    }
+
+    logout() {
+      this._token = undefined;
+      localStorage.removeItem('meemoo_gist_token');
+      this._currentUser = undefined;
+      this.emitLoginStatusChange();
+    }
+
+    emitLoginStatusChange() {
+      const event = new CustomEvent('github-login-status-changed', {
+        detail: {
+          isLoggedIn: this.isLoggedIn(),
+        },
+      });
+      window.dispatchEvent(event);
+    }
+
+    handleCallback() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const githubToken = urlParams.get('token');
+
+      if (githubToken) {
+        this._token = githubToken;
+        localStorage.setItem('meemoo_gist_token', githubToken);
+        // Replace current history entry with clean URL, omitting search params
+        const cleanUrl =
+          window.location.origin +
+          window.location.pathname +
+          window.location.hash;
+        history.replaceState(null, '', cleanUrl);
+        this.emitLoginStatusChange();
+        return true;
+      }
+      return false;
+    }
+
+    async loadCurrentUser() {
+      try {
+        this._currentUser = await this.getCurrentUser();
+      } catch (err) {
+        console.error('Failed to load GitHub user:', err);
+        this._currentUser = null;
+        // Token might be invalid
+        this.logout();
+      }
+      this.emitLoginStatusChange();
+    }
+
+    async getCurrentUser() {
+      const response = await $.ajax({
+        url: GithubAPI.API_BASE_URL + '/user',
+        type: 'GET',
+        headers: {
+          Authorization: 'token ' + this._token,
+        },
+      });
+      return response;
+    }
+
+    async canUpdateCurrentGist() {
+      if (!this.isLoggedIn() || !this._currentUser) return false;
+
+      const currentHash = window.location.hash;
+      const gistMatch = currentHash.match(/^#gist\/([a-f0-9]+)/);
+      if (!gistMatch) return false;
+
+      try {
+        const gist = await this.getGist(gistMatch[1]);
+        return this._currentUser.login === gist.owner.login;
+      } catch (err) {
+        console.error('Failed to check gist ownership:', err);
+        return false;
+      }
+    }
+
+    async getGist(gistId) {
+      if (!gistId) {
+        throw new Error('Gist ID is required');
+      }
+      if (gistId === this._loadedGistId) {
+        return this._loadedGistResponse;
+      }
+      try {
+        const headers = this._token
+          ? {Authorization: 'token ' + this._token}
+          : {};
+
+        const response = await $.ajax({
+          url: `${GithubAPI.API_BASE_URL}/gists/${gistId}`,
+          type: 'GET',
+          headers,
+        });
+
+        // Cache the successful response
+        this._loadedGistId = gistId;
+        this._loadedGistResponse = response;
+        return response;
+      } catch (err) {
+        // Clear cache on error
+        this.clearCache();
+
+        // Handle specific error cases
+        if (err.status === 404) {
+          throw new Error(`Gist ${gistId} not found`);
+        }
+        if (err.status === 403) {
+          throw new Error('Rate limit exceeded or access denied');
+        }
+
+        // Re-throw other errors with more context
+        throw new Error(`Failed to fetch gist: ${err.message}`);
+      }
+    }
+
+    clearCache() {
+      this._loadedGistId = undefined;
+      this._loadedGistResponse = undefined;
+    }
+
+    async createGist(data) {
+      if (!this._token) {
+        throw new Error('Authentication token required');
+      }
+      try {
+        return await $.ajax({
+          url: GithubAPI.API_BASE_URL + '/gists',
+          type: 'POST',
+          dataType: 'json',
+          contentType: 'application/json',
+          headers: {
+            Authorization: 'token ' + this._token,
+          },
+          data: JSON.stringify(data),
+        });
+      } catch (err) {
+        if (err.status === 401) {
+          throw new Error('Invalid authentication token');
+        }
+        if (err.status === 403) {
+          throw new Error('Rate limit exceeded or access denied');
+        }
+        throw new Error(`Failed to create gist: ${err.message}`);
+      }
+    }
+
+    async updateGist(gistId, data) {
+      if (!gistId) {
+        throw new Error('Gist ID is required');
+      }
+      if (!this._token) {
+        throw new Error('Authentication token required');
+      }
+
+      try {
+        return await $.ajax({
+          url: `${GithubAPI.API_BASE_URL}/gists/${gistId}`,
+          type: 'PATCH',
+          dataType: 'json',
+          contentType: 'application/json',
+          headers: {
+            Authorization: 'token ' + this._token,
+          },
+          data: JSON.stringify(data),
+        });
+      } catch (err) {
+        if (err.status === 404) {
+          throw new Error(`Gist ${gistId} not found`);
+        }
+        if (err.status === 401) {
+          throw new Error('Invalid authentication token');
+        }
+        if (err.status === 403) {
+          throw new Error('Rate limit exceeded or access denied');
+        }
+        throw new Error(`Failed to update gist: ${err.message}`);
+      }
+    }
+
+    async saveGraph(graph) {
+      if (!this.isLoggedIn()) {
+        throw new Error('Must be logged in to save gist');
+      }
+      if (!graph) {
+        throw new Error('Graph data is required');
+      }
+      if (!graph.info) {
+        throw new Error('Graph info is missing');
+      }
+
+      const currentHash = window.location.hash;
+      const gistMatch = currentHash.match(/^#gist\/([a-f0-9]+)/);
+
+      // Only allow updates if we're on a #gist/ URL
+      const existingGistId = gistMatch ? gistMatch[1] : null;
+
+      const filename = (graph.info.url || 'untitled') + '.meemoo.json';
+      const files = {
+        [filename]: {
+          content: JSON.stringify(graph, null, 2),
+        },
+      };
+
+      const data = {
+        description: graph.info.title,
+        public: true,
+        files: files,
+      };
+
+      let response;
+
+      if (existingGistId) {
+        // Check ownership before updating
+        const gist = await this.getGist(existingGistId);
+        const user = await this.getCurrentUser();
+        const isOwner = user.login === gist.owner.login;
+
+        if (isOwner) {
+          // Update existing gist
+          data.description = `${graph.info.title} – https://app.meemoo.org/#gist/${existingGistId}`;
+          response = await this.updateGist(existingGistId, data);
+        } else {
+          // Create new gist if not owner
+          response = await this.createGist(data);
+        }
+      } else {
+        // Create new gist
+        response = await this.createGist(data);
+      }
+
+      return response;
+    }
+  }
+
+  window.MeemooGithubAPI = GithubAPI;
+});
+
+$(function () {
   var template =
     '<div class="showpanel">' +
     '<button class="button show-load icon-folder-open">app</button>' +
@@ -3908,9 +4178,9 @@ $(function () {
     '<button class="savelocal icon-install">save local</button>' +
     '<button class="forklocal icon-split" title="save as... copy app and save under a new name">fork</button>' +
     '<button class="deletelocal icon-trash" title="delete local app"></button>' +
-    '<button class="savegist button icon-globe-1" title="save app to Github gist.github.com">save gist</button>' +
-    '<button class="login button icon-login" title="login to save app to gist.github.com">github login</button>' +
-    '<button class="logout button icon-logout">github logout</button>' +
+    '<button class="savegist button icon-globe-1" title="save app to gist.github.com">make public</button>' +
+    '<button class="login button icon-login" title="login to save app to gist.github.com">login</button>' +
+    '<button class="logout button icon-logout">logout</button>' +
     '</div>' +
     '<div class="permalink" title="last publicly saved version">' +
     '</div>';
@@ -3928,6 +4198,8 @@ $(function () {
       }
     );
   })();
+
+  const githubAPI = new window.MeemooGithubAPI();
 
   var IframeworkView = Backbone.View.extend({
     tagName: 'div',
@@ -3962,14 +4234,25 @@ $(function () {
       // Hide panels
       this.closePanels();
 
-      // Check if we're coming back from GitHub OAuth
-      handleGitHubCallback();
-
       // After all of the .js is loaded, this.allLoaded will be triggered to finish the init
       this.once('allLoaded', this.loadLocalApps, this);
+
+      // Add event listener with bound method
+      window.addEventListener(
+        'github-login-status-changed',
+        this.updateCurrentInfo.bind(this),
+        false
+      );
     },
     allLoaded: function () {
       this.trigger('allLoaded');
+
+      // Check if we're coming back from GitHub OAuth
+      const isLoginLoad = githubAPI.handleCallback();
+      if (isLoginLoad) {
+        // Open app panel if we're logging in
+        this.showLoad();
+      }
 
       // Start animation loop
       window.requestAnimationFrame(this.renderAnimationFrame.bind(this));
@@ -4210,7 +4493,12 @@ $(function () {
       }
       return false;
     },
-    loadFromGistId: function (gistid) {
+    loadFromGistId: async function (gistid) {
+      if (!githubAPI) {
+        console.error('GitHub API not initialized');
+        return;
+      }
+
       this._loadedGist = gistid;
       // "https://gist.github.com/2439102" or just "2439102"
       var split = gistid.split('/'); // ["https:", "", "gist.github.com", "2439102"]
@@ -4218,46 +4506,40 @@ $(function () {
         gistid = split[split.length - 1];
       }
 
-      // Load gist to json to app
-      $.ajax({
-        url: 'https://api.github.com/gists/' + gistid,
-        type: 'GET',
-        dataType: 'jsonp',
-      })
-        .done(function (gistdata) {
-          var graphs = [];
-          for (var file in gistdata.data.files) {
-            if (gistdata.data.files.hasOwnProperty(file)) {
-              var graph = JSON.parse(gistdata.data.files[file].content);
-              if (graph) {
-                var gisturl = gistdata.data.html_url;
-                // Insert a reference to the parent
-                if (!graph.info.parents || !graph.info.parents.push) {
-                  graph.info.parents = [];
-                }
-                // Only if this gist url isn't already in graph's parents
-                if (graph.info.parents.indexOf(gisturl) === -1) {
-                  graph.info.parents.push(gisturl);
-                }
-                graphs.push(graph);
+      try {
+        // Use githubAPI.getGist instead of direct AJAX call
+        const gistdata = await githubAPI.getGist(gistid);
+
+        const graphs = [];
+        for (let file in gistdata.files) {
+          if (gistdata.files.hasOwnProperty(file)) {
+            const graph = JSON.parse(gistdata.files[file].content);
+            if (graph) {
+              const gisturl = gistdata.html_url;
+              // Insert a reference to the parent
+              if (!graph.info.parents || !graph.info.parents.push) {
+                graph.info.parents = [];
               }
+              // Only if this gist url isn't already in graph's parents
+              if (graph.info.parents.indexOf(gisturl) === -1) {
+                graph.info.parents.push(gisturl);
+              }
+              graphs.push(graph);
             }
           }
-          if (graphs.length > 0) {
-            // reset localStorage version
-            // FIXME
-            // Iframework._loadedLocalApp = null;
-            // load graph
-            Iframework.loadGraph(graphs[0]);
-            Iframework.closePanels();
-          }
-        })
-        .fail(function (e) {
-          console.warn('gist load error', e);
-        });
+        }
+
+        if (graphs.length > 0) {
+          // reset localStorage version
+          this._loadedLocalApp = null;
+          // load graph
+          this.loadGraph(graphs[0]);
+        }
+      } catch (error) {
+        console.warn('gist load error', error);
+      }
 
       this.analyze('load', 'gist', gistid);
-
       return gistid;
     },
     loadLocalApps: function () {
@@ -4382,11 +4664,10 @@ $(function () {
 
       this.analyze('save', 'local', 'x');
 
-      // To show when url changes
-      this.updateCurrentInfo();
-
       // URL hash
       Iframework.router.navigate('local/' + key);
+      this.updateCurrentInfo();
+
       return app;
     },
     forkLocal: function () {
@@ -4406,154 +4687,47 @@ $(function () {
         this._loadedLocalApp = null;
       }
     },
-    saveGist: function () {
-      const token = localStorage.getItem('meemoo_gist_token');
-      if (!token) {
-        const redirectUri = encodeURIComponent(window.location.href);
-        window.location.href = `https://forresto-meemoo_org_share.web.val.run/login?redirect=${redirectUri}`;
+    saveGist: async function () {
+      if (!githubAPI.isLoggedIn()) {
+        // Redirects to Github Oauth server page.
+        githubAPI.login();
         return;
       }
 
       this.$('.savegist').prop('disabled', true);
 
-      // Get current app graph
-      const currentAppGraph = JSON.parse(JSON.stringify(this.graph));
+      try {
+        const currentAppGraph = JSON.parse(JSON.stringify(this.graph));
+        const response = await githubAPI.saveGraph(currentAppGraph);
 
-      // Create filename using current app URL + .meemoo.json
-      const filename =
-        (currentAppGraph.info.url || 'untitled') + '.meemoo.json';
+        // Update graph with new gist url
+        this.setParent(response.html_url);
 
-      // Prepare files object for Gist API
-      const files = {};
-      files[filename] = {
-        content: JSON.stringify(currentAppGraph, null, 2),
-      };
-
-      // Check if this app was already saved as a gist
-      let existingGistId = null;
-      if (
-        currentAppGraph.info.parents &&
-        currentAppGraph.info.parents.length > 0
-      ) {
-        const lastParent =
-          currentAppGraph.info.parents[currentAppGraph.info.parents.length - 1];
-        const gistIdMatch = lastParent.match(/\/([a-f0-9]+)$/);
-        if (gistIdMatch) {
-          existingGistId = gistIdMatch[1];
+        // Update URL hash
+        if (this.router) {
+          this.router.navigate('gist/' + response.id);
         }
+
+        const action = window.location.hash.startsWith('#gist/')
+          ? 'updated'
+          : 'created';
+        alert(`Gist successfully ${action}!`);
+        this.analyze('save', 'gist', response.id);
+      } catch (error) {
+        console.error('Error saving to Gist:', error);
+        alert(
+          'Error saving to Gist: ' +
+            (error.responseJSON?.message || error.message)
+        );
+      } finally {
+        this.$('.savegist').prop('disabled', false);
       }
 
-      // Prepare Gist data
-      const data = {
-        description: currentAppGraph.info.title,
-        public: true,
-        files: files,
-      };
-
-      // If there's an existing gist, check if the current user owns it
-      if (existingGistId) {
-        $.ajax({
-          url: `https://api.github.com/gists/${existingGistId}`,
-          type: 'GET',
-          headers: {
-            Authorization: 'token ' + token,
-          },
-        })
-          .done((response) => {
-            if (response.owner && response.owner.login) {
-              // First get the current user's info
-              $.ajax({
-                url: 'https://api.github.com/user',
-                type: 'GET',
-                headers: {
-                  Authorization: 'token ' + token,
-                },
-              })
-                .done((userResponse) => {
-                  const isOwner = userResponse.login === response.owner.login;
-                  if (isOwner) {
-                    this.proceedWithGistSave(existingGistId, currentAppGraph, {
-                      ...data,
-                      // On update, we can link back to the meemoo app from the gist description
-                      description: `${currentAppGraph.info.title} – https://app.meemoo.org/#gist/${existingGistId}`,
-                    });
-                  } else {
-                    this.proceedWithGistSave(null, currentAppGraph, data);
-                  }
-                })
-                .fail((jqXHR, textStatus, errorThrown) => {
-                  // If we can't verify ownership, create new
-                  this.proceedWithGistSave(null, currentAppGraph, data);
-                });
-            } else {
-              // If we can't verify ownership, create new
-              this.proceedWithGistSave(null, currentAppGraph, data);
-            }
-          })
-          .fail((jqXHR, textStatus, errorThrown) => {
-            // If gist doesn't exist or other error, create new
-            this.proceedWithGistSave(null, currentAppGraph, data);
-          });
-      } else {
-        // No existing gist, create new
-        this.proceedWithGistSave(null, currentAppGraph, data);
-      }
-    },
-    proceedWithGistSave: function (existingGistId, currentAppGraph, data) {
-      const isUpdate = Boolean(existingGistId);
-      const url = isUpdate
-        ? `https://api.github.com/gists/${existingGistId}`
-        : 'https://api.github.com/gists';
-      const method = isUpdate ? 'PATCH' : 'POST';
-
-      console.log(data);
-
-      $.ajax({
-        url: url,
-        type: method,
-        dataType: 'json',
-        contentType: 'application/json',
-        headers: {
-          Authorization: 'token ' + localStorage.getItem('meemoo_gist_token'),
-        },
-        data: JSON.stringify(data),
-      })
-        .done((response) => {
-          // Update graph with new gist url "parent"
-          this.setParent(response.html_url);
-
-          // Update UI
-          this.updateCurrentInfo();
-
-          // Update URL hash
-          const gistId = response.id;
-          if (this.router) {
-            this.router.navigate('gist/' + gistId);
-          }
-
-          // Show success message
-          const action = isUpdate ? 'updated' : 'created';
-          alert(`Gist successfully ${action}!`);
-
-          this.analyze('save', 'gist', gistId);
-          this.$('.savegist').prop('disabled', false);
-        })
-        .fail((jqXHR, textStatus, errorThrown) => {
-          console.error('Error saving to Gist:', textStatus, errorThrown);
-          let errorMessage = 'Error saving to Gist: ';
-          if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
-            errorMessage += jqXHR.responseJSON.message;
-          } else {
-            errorMessage += errorThrown;
-          }
-          alert(errorMessage);
-          this.$('.savegist').prop('disabled', false);
-        });
+      this.updateCurrentInfo();
     },
     logout: function () {
-      localStorage.removeItem('meemoo_gist_token');
+      githubAPI.logout();
       alert('Logged out of GitHub');
-      this.updateCurrentInfo();
     },
     setTitle: function () {
       var input = this.$('.currentapp .info .settitle').text();
@@ -4580,7 +4754,9 @@ $(function () {
         this.graph.setInfo('parents', currentParents.concat([url]));
       }
     },
-    updateCurrentInfo: function () {
+    updateCurrentInfo: async function () {
+      if (!this.graph) return;
+
       var graph = this.graph.toJSON();
       this.$('.currentapp').html(this.currentTemplate(graph));
 
@@ -4592,15 +4768,20 @@ $(function () {
 
       this.$('.editable').attr('contenteditable', 'true');
 
-      const loggedIn = Boolean(localStorage.getItem('meemoo_gist_token'));
-      if (loggedIn) {
-        this.$('.currentapp .savegist').show();
-        this.$('.currentapp .login').hide();
-        this.$('.currentapp .logout').show();
-      } else {
-        this.$('.currentapp .savegist').hide();
-        this.$('.currentapp .login').show();
-        this.$('.currentapp .logout').hide();
+      if (githubAPI) {
+        if (githubAPI.isLoggedIn()) {
+          // Check if we can update the current gist
+          const canUpdate = await githubAPI.canUpdateCurrentGist();
+          this.$('.currentapp .savegist')
+            .text(canUpdate ? 'update public' : 'make public')
+            .show();
+          this.$('.currentapp .login').hide();
+          this.$('.currentapp .logout').show();
+        } else {
+          this.$('.currentapp .savegist').hide();
+          this.$('.currentapp .login').show();
+          this.$('.currentapp .logout').hide();
+        }
       }
 
       if (graph.info.hasOwnProperty('parents')) {
@@ -4700,27 +4881,14 @@ $(function () {
 
       // URL hash
       Iframework.router.navigate('new');
+
+      this.updateCurrentInfo();
     },
     analyze: function (group, type, id) {
       // Google analytics
       // _gaq.push(['_trackEvent', group, type, id]);
     },
   });
-
-  function handleGitHubCallback() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const githubToken = urlParams.get('token');
-
-    if (githubToken) {
-      localStorage.setItem('meemoo_gist_token', githubToken);
-      // Replace current history entry with clean URL, omitting search params
-      const cleanUrl =
-        window.location.origin +
-        window.location.pathname +
-        window.location.hash;
-      history.replaceState(null, '', cleanUrl);
-    }
-  }
 
   // Start app
   window.Iframework = new IframeworkView();
@@ -4729,63 +4897,72 @@ $(function () {
   window.addEventListener('message', Iframework.gotMessage, false);
 });
 
-$(function(){
-
+$(function () {
   Iframework.util = {
     // From YUI3 via http://stackoverflow.com/a/7390555/592125
     types: {
-      'undefined'        : 'undefined',
-      'number'           : 'number',
-      'boolean'          : 'boolean',
-      'string'           : 'string',
+      undefined: 'undefined',
+      number: 'number',
+      boolean: 'boolean',
+      string: 'string',
       '[object Function]': 'function',
-      '[object RegExp]'  : 'regexp',
-      '[object Array]'   : 'array',
-      '[object Date]'    : 'date',
-      '[object Error]'   : 'error',
+      '[object RegExp]': 'regexp',
+      '[object Array]': 'array',
+      '[object Date]': 'date',
+      '[object Error]': 'error',
       '[object HTMLCanvasElement]': 'HTMLCanvasElement',
-      '[object ImageData]': 'ImageData'
+      '[object ImageData]': 'ImageData',
     },
-    type: function(o) {
-      return this.types[typeof o] || this.types[Object.prototype.toString.call(o)] || (o ? 'object' : 'null');
+    type: function (o) {
+      return (
+        this.types[typeof o] ||
+        this.types[Object.prototype.toString.call(o)] ||
+        (o ? 'object' : 'null')
+      );
     },
-    imageTypes: ["png", "gif", "jpg", "jpeg", "webp"],
-    isImageURL: function(url) {
-      var fileTypeSplit = url.split(".");
+    imageTypes: ['png', 'gif', 'jpg', 'jpeg', 'webp'],
+    isImageURL: function (url) {
+      var fileTypeSplit = url.split('.');
       if (fileTypeSplit.length > 1) {
-        var fileType = fileTypeSplit[fileTypeSplit.length-1];
-        return (this.imageTypes.indexOf(fileType) > -1);
+        var fileType = fileTypeSplit[fileTypeSplit.length - 1];
+        return this.imageTypes.indexOf(fileType) > -1;
       }
       return false;
     },
-    imageDrop: function(event, ui){
+    imageDrop: function (event, ui) {
       // Used in image.js and variable-animation.js
       // TODO only drop to top
 
       // Don't deal with dropped file
-      if (!ui) { return false; }
+      if (!ui) {
+        return false;
+      }
 
       // Don't also drop on graph
       event.stopPropagation();
 
       var self = event.data.self;
 
-      var type = ui.helper.data("meemoo-drag-type");
-      if ( !type || type !== "canvas" ) { return false; }
+      var type = ui.helper.data('meemoo-drag-type');
+      if (!type || type !== 'canvas') {
+        return false;
+      }
 
       var inputName = event.data.inputName;
-      if ( !inputName ) { return false; }
+      if (!inputName) {
+        return false;
+      }
 
       var canvas;
 
-      var url = ui.helper.data("meemoo-image-url");
+      var url = ui.helper.data('meemoo-image-url');
       if (url) {
         // Load big image instead of thumbnail
         var img = new Image();
-        img.crossOrigin = "anonymous";
-        img.onload = function(){
-          canvas = document.createElement("canvas");
-          var context = canvas.getContext("2d");
+        img.crossOrigin = 'anonymous';
+        img.onload = function () {
+          canvas = document.createElement('canvas');
+          var context = canvas.getContext('2d');
           canvas.width = img.width;
           canvas.height = img.height;
           context.drawImage(img, 0, 0);
@@ -4794,65 +4971,62 @@ $(function(){
         };
         img.src = url;
       } else {
-        canvas = ui.helper.data("meemoo-drag-canvas");
-        if ( !canvas) { return false; }
+        canvas = ui.helper.data('meemoo-drag-canvas');
+        if (!canvas) {
+          return false;
+        }
         // Hit own input with image
         self.receive(inputName, canvas);
       }
-
     },
-    fitAndCopy: function(source, target){
+    fitAndCopy: function (source, target) {
       // source and target 2d canvases
 
       var w = target.width;
       var h = target.height;
-      var ratio = w/h;
+      var ratio = w / h;
 
       var inWidth = source.width;
       var inHeight = source.height;
-      var inRatio = inWidth/inHeight;
+      var inRatio = inWidth / inHeight;
 
       var sx, sy, sw, sh;
 
       if (ratio >= inRatio) {
         sw = inWidth;
-        sh = Math.floor(inWidth/ratio);
+        sh = Math.floor(inWidth / ratio);
         sx = 0;
-        sy = Math.floor((inHeight-sh)/2);
+        sy = Math.floor((inHeight - sh) / 2);
       } else {
-        sw = Math.floor(inHeight*ratio);
+        sw = Math.floor(inHeight * ratio);
         sh = inHeight;
-        sx = Math.floor((inWidth-sw)/2);
+        sx = Math.floor((inWidth - sw) / 2);
         sy = 0;
       }
 
-      var context = target.getContext("2d");
+      var context = target.getContext('2d');
       context.drawImage(source, sx, sy, sw, sh, 0, 0, w, h);
-    }
-
+    },
   };
-
 });
 
-$(function(){
-  
+$(function () {
   Iframework.Event = Backbone.Model.extend({
     defaults: function () {
       return {
-        action: "",
-        args: {}
+        action: '',
+        args: {},
       };
     },
-    initialize: function () {
-    }
+    initialize: function () {},
   });
 
   Iframework.EventsHistory = Backbone.Collection.extend({
-    model: Iframework.Event
+    model: Iframework.Event,
   });
-  
+
   // binding undo to ctrl+z
-  Mousetrap.bind(['command+z', 'ctrl+z'], function(e) {
+  Mousetrap.bind(['command+z', 'ctrl+z'], function (e) {
     // TODO work with subgraph
     // actual graph shown by iframework
     var graph = window.Iframework.shownGraph;
@@ -4860,46 +5034,44 @@ $(function(){
     var event = graph.eventsHistory.last();
 
     // what kind of action ocurred?
-    if (event.get("action") === "removeNode") {
-      var node = event.get("args").node;
+    if (event.get('action') === 'removeNode') {
+      var node = event.get('args').node;
       // make sure the node will use the same id
-      var originalIndex = graph.usedIds.indexOf(node.get("id"));
+      var originalIndex = graph.usedIds.indexOf(node.get('id'));
       graph.usedIds.splice(originalIndex, 1);
       // add the node again
       graph.addNode(node);
       // add input and output ports
       var i;
-      for (i=0; i<node.Inputs.length; i++) {
+      for (i = 0; i < node.Inputs.length; i++) {
         node.view.addInput(node.Inputs.at(i));
       }
-      for (i=0; i<node.Outputs.length; i++) {
+      for (i = 0; i < node.Outputs.length; i++) {
         node.view.addOutput(node.Outputs.at(i));
       }
       // add edges
-      var edges = event.get("args").edges;
-      for (i=0; i<edges.length; i++) {
+      var edges = event.get('args').edges;
+      for (i = 0; i < edges.length; i++) {
         graph.addEdge(edges[i]);
       }
     }
     // updates the events stack
     graph.eventsHistory.pop();
   });
-
 });
-$(function(){
 
+$(function () {
   Iframework.LocalApp = Backbone.Model.extend({
     initializeView: function () {
       if (!this.view) {
-        this.view = new Iframework.LocalAppView({model:this});
+        this.view = new Iframework.LocalAppView({model: this});
       }
       return this.view;
     },
-    load: function(){
-      
+    load: function () {
       Iframework._loadedLocalApp = this;
       // Clone graph
-      var graph = JSON.parse(JSON.stringify(this.get("graph")));
+      var graph = JSON.parse(JSON.stringify(this.get('graph')));
       Iframework.loadGraph(graph);
 
       //DEBUG
@@ -4908,59 +5080,56 @@ $(function(){
     toJSON: function () {
       return {
         id: this.id,
-        graph: this.get("graph")
+        graph: this.get('graph'),
       };
-    }
+    },
   });
 
   Iframework.LocalApps = Backbone.Collection.extend({
     model: Iframework.LocalApp,
-    localStorage: new Backbone.LocalStorage("LocalApps"),
+    localStorage: new Backbone.LocalStorage('LocalApps'),
     getByUrl: function (url) {
-      var app = this.find(function(app){
-        return app.get("graph")["info"]["url"] === url;
+      var app = this.find(function (app) {
+        return app.get('graph')['info']['url'] === url;
       });
       return app;
     },
     updateOrCreate: function (graph) {
       var app;
-      app = this.find(function(app){
-        return app.get("graph")["info"]["url"] === graph["info"]["url"];
+      app = this.find(function (app) {
+        return app.get('graph')['info']['url'] === graph['info']['url'];
       });
       if (app) {
-        app.save({graph:graph});
-        app.trigger("change");
+        app.save({graph: graph});
+        app.trigger('change');
       } else {
-        app = this.create({graph:graph});
+        app = this.create({graph: graph});
         app.initializeView();
       }
       return app;
-    }
-
+    },
   });
-    
 });
 
-$(function(){
-
-  var template = 
-    '<a class="url" href="#local/<%= graph.info.url %>"></a> - '+
+$(function () {
+  var template =
+    '<a class="url" href="#local/<%= graph.info.url %>"></a> - ' +
     '<a class="macro" title="load as subgraph into current graph" href="#">sub</a> ';
-    // '<div class="info">'+
-    //   '<h2 class="title"><%= graph.info.title %></h2>' +
-    //   '<p class="description"><%= graph.info.description %></p>' +
-    // '</div>';
+  // '<div class="info">'+
+  //   '<h2 class="title"><%= graph.info.title %></h2>' +
+  //   '<p class="description"><%= graph.info.description %></p>' +
+  // '</div>';
 
   Iframework.LocalAppView = Backbone.View.extend({
-    tagName: "div",
-    className: "localapp",
+    tagName: 'div',
+    className: 'localapp',
     template: _.template(template),
     events: {
-      "click .macro": "loadAsMacro"
+      'click .macro': 'loadAsMacro',
     },
     initialize: function () {
       this.render();
-      Iframework.$(".localapps").append( this.el );
+      Iframework.$('.localapps').append(this.el);
 
       this.model.on('change', this.update, this);
       this.model.on('destroy', this.remove, this);
@@ -4969,7 +5138,9 @@ $(function(){
     },
     render: function () {
       this.$el.html(this.template(this.model.toJSON()));
-      this.$(".url").text( decodeURIComponent(this.model.get("graph")["info"]["url"]) );
+      this.$('.url').text(
+        decodeURIComponent(this.model.get('graph')['info']['url'])
+      );
       // this.$(".info").hide();
     },
     update: function () {
@@ -4980,37 +5151,34 @@ $(function(){
       event.preventDefault();
 
       Iframework.shownGraph.addNode({
-        src: "meemoo:subgraph/subgraph",
+        src: 'meemoo:subgraph/subgraph',
         state: {
-          label: decodeURIComponent(this.model.get("graph")["info"]["url"]),
-          graph: this.model.get("graph")
-        }
+          label: decodeURIComponent(this.model.get('graph')['info']['url']),
+          graph: this.model.get('graph'),
+        },
       });
 
       return false;
     },
     remove: function () {
       this.$el.remove();
-    }
-
+    },
   });
-
 });
 
-$(function(){
-
+$(function () {
   Iframework.Graph = Backbone.Model.extend({
     loaded: false,
     defaults: {
       info: {
-        author: "meemoo",
-        title: "Untitled",
-        description: "Meemoo app description",
+        author: 'meemoo',
+        title: 'Untitled',
+        description: 'Meemoo app description',
         parents: [],
-        url: ""
+        url: '',
       },
       nodes: [],
-      edges: []
+      edges: [],
     },
     usedIds: [],
     edgeCount: 0,
@@ -5019,7 +5187,7 @@ $(function(){
     // loadingNodes: [],
     initialize: function () {
       // Is this a subgraph?
-      var parentGraph = this.get("parentGraph");
+      var parentGraph = this.get('parentGraph');
       if (parentGraph) {
         this.isSubgraph = true;
         this.parentGraph = parentGraph;
@@ -5030,7 +5198,7 @@ $(function(){
       if (this.attributes.nodes) {
         var nodes = this.attributes.nodes;
         this.attributes.nodes = new Iframework.Nodes();
-        for (var i=0; i<nodes.length; i++) {
+        for (var i = 0; i < nodes.length; i++) {
           var node = this.makeNode(nodes[i]);
           if (node) {
             this.addNode(node);
@@ -5040,7 +5208,7 @@ $(function(){
       if (this.attributes.edges) {
         var edges = this.attributes.edges;
         this.attributes.edges = new Iframework.Edges();
-        for (var j=0; j<edges.length; j++) {
+        for (var j = 0; j < edges.length; j++) {
           edges[j].parentGraph = this;
           var edge = new Iframework.Edge(edges[j]);
           this.addEdge(edge);
@@ -5049,17 +5217,17 @@ $(function(){
       this.eventsHistory = new Iframework.EventsHistory();
 
       var self = this;
-      _.defer(function(){
+      _.defer(function () {
         self.testLoaded();
       });
 
       // Change event
-      this.on("change", this.graphChanged);
+      this.on('change', this.graphChanged);
     },
-    testLoaded: function(){
+    testLoaded: function () {
       var allLoaded = true;
-      this.get("nodes").each(function(node){
-        if (node.hasOwnProperty("lazyLoadType")) {
+      this.get('nodes').each(function (node) {
+        if (node.hasOwnProperty('lazyLoadType')) {
           if (!Iframework.NativeNodes.hasOwnProperty(node.lazyLoadType)) {
             // That nativenode's js hasn't loaded yet
             allLoaded = false;
@@ -5075,18 +5243,18 @@ $(function(){
       }
       return allLoaded;
     },
-    initializeView: function() {
+    initializeView: function () {
       if (!this.view) {
-        this.view = new Iframework.GraphView({model:this});
+        this.view = new Iframework.GraphView({model: this});
       }
     },
     setInfo: function (key, val) {
-      var info = this.get("info");
+      var info = this.get('info');
       info[key] = val;
-      this.trigger("change");
+      this.trigger('change');
     },
     makeNode: function (info) {
-      if (!info.src){
+      if (!info.src) {
         return false;
       }
       info.parentGraph = this;
@@ -5095,44 +5263,46 @@ $(function(){
       if (Iframework.util.isImageURL(info.src)) {
         // Probably an image
         var src = info.src;
-        info.src = "meemoo:image/in";
-        if (!info.state){
+        info.src = 'meemoo:image/in';
+        if (!info.state) {
           info.state = {};
         }
         info.state.url = src;
       }
       // Test if native
-      var srcSplit = info.src.split(":");
+      var srcSplit = info.src.split(':');
       if (srcSplit.length < 2) {
         // No protocol
         return false;
       }
-      if (srcSplit[0] === "meemoo") {
+      if (srcSplit[0] === 'meemoo') {
         // Native type node
-        var id = srcSplit[srcSplit.length-1];
-        var path = id.split("/");
-        id = path.join("-");
+        var id = srcSplit[srcSplit.length - 1];
+        var path = id.split('/');
+        id = path.join('-');
 
         // Load js if needed
         // HACK only for loading meemoo:group/node
-        //   from src/nodes/group-node.js 
+        //   from src/nodes/group-node.js
         //   to Iframework.NativeNodes[group-node]
         var self = this;
         if (path[0] && path[1]) {
           yepnope([
             {
               test: Iframework.NativeNodes.hasOwnProperty(path[0]),
-              nope: "src/nodes/"+path[0]+".js"
+              nope: 'src/nodes/' + path[0] + '.js',
             },
             {
-              test: Iframework.NativeNodes.hasOwnProperty(path[0]+"-"+path[1]),
-              nope: "src/nodes/"+path[0]+"-"+path[1]+".js",
-              complete: function() {
-                _.defer(function(){
+              test: Iframework.NativeNodes.hasOwnProperty(
+                path[0] + '-' + path[1]
+              ),
+              nope: 'src/nodes/' + path[0] + '-' + path[1] + '.js',
+              complete: function () {
+                _.defer(function () {
                   self.testLoaded();
                 });
-              }
-            }
+              },
+            },
           ]);
         }
         // Native node
@@ -5153,54 +5323,66 @@ $(function(){
         }
       }
 
-      var count = this.get("nodes").length;
+      var count = this.get('nodes').length;
       // Give id if not defined or NaN
       var nodeId = parseInt(node.get('id'), 10);
       if (nodeId !== nodeId) {
-        node.set({"id": count});
+        node.set({id: count});
       }
       // Make sure node id is unique
-      while ( this.usedIds.indexOf(node.get('id')) >= 0 ) {
+      while (this.usedIds.indexOf(node.get('id')) >= 0) {
         count++;
-        node.set({"id": count});
+        node.set({id: count});
       }
-      this.usedIds.push( node.get('id') );
+      this.usedIds.push(node.get('id'));
 
-      var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      var randomKey = "";
-      for (var i=0; i<5; i++) {
-        randomKey += keyStr.charAt( Math.floor(Math.random()*keyStr.length) );
+      var keyStr =
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      var randomKey = '';
+      for (var i = 0; i < 5; i++) {
+        randomKey += keyStr.charAt(Math.floor(Math.random() * keyStr.length));
       }
 
       // Iframework.frameCount works around a FF bug with recycling iframes with the same name
-      node.frameIndex = "frame_"+node.get('id')+"_"+(Iframework.frameCount++)+randomKey+"_through";
+      node.frameIndex =
+        'frame_' +
+        node.get('id') +
+        '_' +
+        Iframework.frameCount++ +
+        randomKey +
+        '_through';
 
-      this.get("nodes").add(node);
+      this.get('nodes').add(node);
 
       if (this.view) {
         this.view.addNode(node);
       }
 
-      this.trigger("change");
+      this.trigger('change');
 
       return node;
     },
     addEdge: function (edge) {
       // Make sure edge is unique
-      var isDupe = this.get("edges").any(function(_edge) {
-        return ( _edge.get('source')[0] === edge.get('source')[0] && _edge.get('source')[1] === edge.get('source')[1] && _edge.get('target')[0] === edge.get('target')[0] && _edge.get('target')[1] === edge.get('target')[1] );
+      var isDupe = this.get('edges').any(function (_edge) {
+        return (
+          _edge.get('source')[0] === edge.get('source')[0] &&
+          _edge.get('source')[1] === edge.get('source')[1] &&
+          _edge.get('target')[0] === edge.get('target')[0] &&
+          _edge.get('target')[1] === edge.get('target')[1]
+        );
       });
       if (isDupe) {
-        console.warn("duplicate edge ignored", edge);
+        console.warn('duplicate edge ignored', edge);
         return false;
       } else {
-        this.trigger("change");
-        return this.get("edges").add(edge);
+        this.trigger('change');
+        return this.get('edges').add(edge);
       }
     },
-    remove: function() {
+    remove: function () {
       // Called from IframeworkView.loadGraph
-      this.get("nodes").each(function(node){
+      this.get('nodes').each(function (node) {
         node.remove(false);
       });
       if (this.view) {
@@ -5211,15 +5393,18 @@ $(function(){
       var connected = [];
 
       // Disconnect edges
-      this.get("edges").each(function (edge) {
+      this.get('edges').each(function (edge) {
         if (edge.Source && edge.Target) {
-          if (edge.Source.parentNode === node || edge.Target.parentNode === node) {
+          if (
+            edge.Source.parentNode === node ||
+            edge.Target.parentNode === node
+          ) {
             connected.push(edge);
           }
         }
       }, this);
 
-      _.each(connected, function(edge){
+      _.each(connected, function (edge) {
         edge.remove();
       });
 
@@ -5227,71 +5412,71 @@ $(function(){
         this.view.removeNode(node);
       }
 
-      this.get("nodes").remove(node);
+      this.get('nodes').remove(node);
 
-      this.eventsHistory.add( 
+      this.eventsHistory.add(
         new Iframework.Event({
-          action: "removeNode", 
+          action: 'removeNode',
           args: {
-            "node": node, 
-            "edges": connected
-          }
+            node: node,
+            edges: connected,
+          },
         })
       );
 
-      this.trigger("change");
+      this.trigger('change');
     },
     removeEdge: function (edge) {
       edge.disconnect();
-      this.get("edges").remove(edge);
+      this.get('edges').remove(edge);
       if (this.view) {
         this.view.removeEdge(edge);
       }
-      this.trigger("change");
+      this.trigger('change');
     },
     checkLoaded: function () {
       // Called from NodeBoxView.initializeNative()
-      for (var i=0; i<this.get("nodes").length; i++) {
-        if (this.get("nodes").at(i).loaded === false) { 
-          return false; 
+      for (var i = 0; i < this.get('nodes').length; i++) {
+        if (this.get('nodes').at(i).loaded === false) {
+          return false;
         }
       }
       this.loaded = true;
-      
+
       // Connect edges when all modules have loaded (+.5 seconds)
       var self = this;
-      setTimeout(function(){
+      setTimeout(function () {
         self.connectEdges();
       }, 500);
-      
+
       return true;
     },
     reconnectEdges: function () {
-      for(var i=0; i<this.get("edges").length; i++) {
+      for (var i = 0; i < this.get('edges').length; i++) {
         // Disconnect them first to be sure not doubled
-        this.get("edges").at(i).disconnect();
+        this.get('edges').at(i).disconnect();
       }
       // Connect edges when all modules have loaded (+.5 seconds)
       var self = this;
-      _.delay(function(){
+      _.delay(function () {
         self.connectEdges();
       }, 500);
     },
     connectEdges: function () {
       // Connect edges
-      this.get("edges").each(function(edge){
+      this.get('edges').each(function (edge) {
         if (!edge.connected) {
           edge.connect();
         }
       });
 
       // Set state of nodes
-      this.get("nodes").each(function(node){
+      this.get('nodes').each(function (node) {
         node.setState();
       });
     },
     graphChanged: function () {
-      Iframework.trigger("change", this);
+      Iframework.trigger('change', this);
       // if (Iframework.$(".source").is(":visible")) {
       //   window.setTimeout(function(){
       //     Iframework.sourceRefresh();
@@ -5300,48 +5485,46 @@ $(function(){
     },
     toJSON: function () {
       return {
-        info: this.get("info"),
-        nodes: this.get("nodes"),
-        edges: this.get("edges")
+        info: this.get('info'),
+        nodes: this.get('nodes'),
+        edges: this.get('edges'),
       };
-    }
-  });
-  
-  Iframework.Graphs = Backbone.Collection.extend({
-    model: Iframework.Graph
+    },
   });
 
+  Iframework.Graphs = Backbone.Collection.extend({
+    model: Iframework.Graph,
+  });
 });
 
-$(function(){
-
-  var template = 
-    '<div class="edges">'+
-      '<svg class="edgesSvg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300"></svg>'+
-    '</div>'+
-    '<div class="nodes" />'+
-    '<div class="iframework-graph-nav" style="display:none;">'+
-      '<button class="show-parent-graph">back to parent graph</button>'+
+$(function () {
+  var template =
+    '<div class="edges">' +
+    '<svg class="edgesSvg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300"></svg>' +
+    '</div>' +
+    '<div class="nodes" />' +
+    '<div class="iframework-graph-nav" style="display:none;">' +
+    '<button class="show-parent-graph">back to parent graph</button>' +
     '</div>';
 
   Iframework.GraphView = Backbone.View.extend({
-    tagName: "div",
-    className: "graph",
+    tagName: 'div',
+    className: 'graph',
     template: _.template(template),
     events: {
-      "click":           "click",
-      "dragenter":       "ignoreDrag",
-      "dragover":        "ignoreDrag",
-      "drop":            "drop",
-      "selectablestart": "selectableStart",
-      "selectablestop":  "selectableStop",
-      "click .show-parent-graph": "showParentGraph"
+      click: 'click',
+      dragenter: 'ignoreDrag',
+      dragover: 'ignoreDrag',
+      drop: 'drop',
+      selectablestart: 'selectableStart',
+      selectablestop: 'selectableStop',
+      'click .show-parent-graph': 'showParentGraph',
     },
     unhidden: false,
     initialize: function () {
       this.render();
       if (this.model.isSubgraph) {
-        this.$(".iframework-graph-nav").show();
+        this.$('.iframework-graph-nav').show();
         this.$el.hide();
       }
       Iframework.$el.prepend(this.el);
@@ -5349,15 +5532,15 @@ $(function(){
       this.edgesSvg = this.$('.edgesSvg')[0];
 
       // HACK Panel visible?
-      if ( Iframework.$(".panel").is(":visible") ){
-        this.$el.css("right", "350px");
+      if (Iframework.$('.panel').is(':visible')) {
+        this.$el.css('right', '350px');
       }
 
-      this.model.get("nodes").each( this.addNode.bind(this) );
+      this.model.get('nodes').each(this.addNode.bind(this));
 
       // Drag helper from module library
-      this.$el.droppable({ 
-        accept: ".addnode, .canvas, .meemoo-plugin-images-thumbnail"
+      this.$el.droppable({
+        accept: '.addnode, .canvas, .meemoo-plugin-images-thumbnail',
       });
 
       // Thanks Stu Cox http://stackoverflow.com/a/14578826/592125
@@ -5365,13 +5548,12 @@ $(function(){
       if (!supportsTouch) {
         // Selectable messes up scroll on touch devices
         this.$el.selectable({
-          filter: ".module",
-          delay: 20
+          filter: '.module',
+          delay: 20,
         });
       }
 
       this.resizeEdgeSVG();
-
     },
     render: function () {
       this.$el.html(this.template(this.model.toJSON()));
@@ -5379,7 +5561,7 @@ $(function(){
     },
     renderAnimationFrame: function (timestamp) {
       // Hit all nodes
-      this.model.get("nodes").each(function(node){
+      this.model.get('nodes').each(function (node) {
         if (node.view.Native) {
           node.view.Native.renderAnimationFrame(timestamp);
         }
@@ -5387,13 +5569,13 @@ $(function(){
     },
     click: function (event) {
       // Hide dis/connection boxes
-      $(".edge-edit").remove();
+      $('.edge-edit').remove();
       Iframework.selectedPort = null;
-      
+
       // Deactivate modules
-      this.$(".module").removeClass("active");
+      this.$('.module').removeClass('active');
       // Deselect modules
-      this.$(".module").removeClass("ui-selected");
+      this.$('.module').removeClass('ui-selected');
     },
     ignoreDrag: function (event) {
       event.originalEvent.stopPropagation();
@@ -5406,27 +5588,27 @@ $(function(){
       var dt = event.originalEvent.dataTransfer;
       if (dt) {
         var files = dt.files;
-        if ( dt.files.length > 0 ) {
+        if (dt.files.length > 0) {
           var file = dt.files[0];
-          var split = file.type.split("/");
+          var split = file.type.split('/');
           var o = {
             x: this.el.scrollLeft + event.originalEvent.clientX + 10,
-            y: this.el.scrollTop + event.originalEvent.clientY + 35
+            y: this.el.scrollTop + event.originalEvent.clientY + 35,
           };
-          if (split[0]==="image"){
-            o.src = "meemoo:image/in";
-            o.state = { url: window.URL.createObjectURL( file ) };
-            Iframework.shownGraph.addNode( o );
-          } else if (split[0]==="video"){
-            o.src = "meemoo:video/player";
-            o.state = { url: window.URL.createObjectURL( file ) };
-            Iframework.shownGraph.addNode( o );
-          } else if (split[0]==="text"){
+          if (split[0] === 'image') {
+            o.src = 'meemoo:image/in';
+            o.state = {url: window.URL.createObjectURL(file)};
+            Iframework.shownGraph.addNode(o);
+          } else if (split[0] === 'video') {
+            o.src = 'meemoo:video/player';
+            o.state = {url: window.URL.createObjectURL(file)};
+            Iframework.shownGraph.addNode(o);
+          } else if (split[0] === 'text') {
             var reader = new FileReader();
-            reader.onload = function(e) {
-              o.src = "meemoo:ui/textarea";
-              o.state = { value: e.target.result };
-              Iframework.shownGraph.addNode( o );
+            reader.onload = function (e) {
+              o.src = 'meemoo:ui/textarea';
+              o.state = {value: e.target.result};
+              Iframework.shownGraph.addNode(o);
             };
             reader.readAsText(file);
           }
@@ -5434,37 +5616,41 @@ $(function(){
       }
 
       // Drop images or mods from libraries
-      if (!ui) {return false;}
+      if (!ui) {
+        return false;
+      }
 
-      var type = ui.helper.data("meemoo-drag-type");
-      if (!type) {return false;}
+      var type = ui.helper.data('meemoo-drag-type');
+      if (!type) {
+        return false;
+      }
 
       var options = {
         x: Math.round(this.el.scrollLeft + ui.offset.left + 10),
-        y: Math.round(this.el.scrollTop + ui.offset.top + 35)
+        y: Math.round(this.el.scrollTop + ui.offset.top + 35),
       };
 
-      switch(type){
-        case "library-module":
-          var module = ui.draggable.data("module");
+      switch (type) {
+        case 'library-module':
+          var module = ui.draggable.data('module');
           if (module) {
             // Add module
-            module.view.dragAddNode( options );
+            module.view.dragAddNode(options);
           }
           break;
-        case "canvas":
-          var canvas = ui.helper.data("meemoo-drag-canvas");
+        case 'canvas':
+          var canvas = ui.helper.data('meemoo-drag-canvas');
           // Copy canvas
           if (canvas) {
-            options.src = "meemoo:image/in";
+            options.src = 'meemoo:image/in';
             options.canvas = canvas;
-            var url = ui.helper.data("meemoo-image-url");
-            if (url && url.slice(0,4)==="http") {
+            var url = ui.helper.data('meemoo-image-url');
+            if (url && url.slice(0, 4) === 'http') {
               // Dragged from public image library
               options.state = {};
               options.state.url = url;
             }
-            Iframework.shownGraph.addNode( options );
+            Iframework.shownGraph.addNode(options);
           }
           break;
         default:
@@ -5473,7 +5659,7 @@ $(function(){
       return false;
     },
     addNode: function (node) {
-      this.$(".nodes").append( node.initializeView().el );
+      this.$('.nodes').append(node.initializeView().el);
       // Render the native view
       if (node.lazyLoadType) {
         node.view.initializeNative();
@@ -5489,7 +5675,7 @@ $(function(){
         edge.Target.view.resetRelatedEdges();
       }
     },
-    remove: function(){
+    remove: function () {
       this.$el.remove();
     },
     removeNode: function (node) {
@@ -5508,7 +5694,7 @@ $(function(){
         edge.view.remove();
       }
     },
-    resizeEdgeSVG: _.debounce( function () {
+    resizeEdgeSVG: _.debounce(function () {
       // _.debounce keeps it from getting called more than needed
       var svg = this.$('.edgesSvg')[0];
       // Don't choke on off-screen svg
@@ -5526,11 +5712,11 @@ $(function(){
         height = this.$el.height();
       }
       // Only get bigger
-      if (svg.getAttribute("width") < width) {
-        svg.setAttribute("width", Math.round(width));
+      if (svg.getAttribute('width') < width) {
+        svg.setAttribute('width', Math.round(width));
       }
-      if (svg.getAttribute("height") < height) {
-        svg.setAttribute("height", Math.round(height));
+      if (svg.getAttribute('height') < height) {
+        svg.setAttribute('height', Math.round(height));
       }
     }, 100),
     selectableStart: function () {
@@ -5542,42 +5728,43 @@ $(function(){
       this.unmaskFrames();
     },
     selectAll: function () {
-      this.$(".module").addClass("ui-selected");
+      this.$('.module').addClass('ui-selected');
     },
     selectNone: function () {
-      this.$(".module").removeClass("ui-selected");
+      this.$('.module').removeClass('ui-selected');
     },
-    cut: function(){
+    cut: function () {
       // Copy selected
       this.copy();
       var i;
-      for (i=0; i<Iframework._copied.nodes.length; i++) {
+      for (i = 0; i < Iframework._copied.nodes.length; i++) {
         // HACK offset cut for pasting in same spot
         Iframework._copied.nodes[i].x -= 50;
         Iframework._copied.nodes[i].y -= 50;
       }
       // Delete selected
-      var uiselected = this.$(".module.ui-selected");
-      for (i=0; i<uiselected.length; i++) {
-        $(uiselected[i]).data("iframework-node-view").removeModel();
+      var uiselected = this.$('.module.ui-selected');
+      for (i = 0; i < uiselected.length; i++) {
+        $(uiselected[i]).data('iframework-node-view').removeModel();
       }
     },
-    copy: function(){
-      var copied = {nodes:[],edges:[]};
-      var uiselected = this.$(".module.ui-selected");
+    copy: function () {
+      var copied = {nodes: [], edges: []};
+      var uiselected = this.$('.module.ui-selected');
       var i, selected;
 
       // Copy selected nodes
-      for (i=0; i<uiselected.length; i++) {
-        selected = $(uiselected[i]).data("iframework-node-view").model;
-        copied.nodes.push( JSON.parse(JSON.stringify(selected)) );
+      for (i = 0; i < uiselected.length; i++) {
+        selected = $(uiselected[i]).data('iframework-node-view').model;
+        copied.nodes.push(JSON.parse(JSON.stringify(selected)));
       }
 
       // Copy common edges
-      this.model.get("edges").each(function(edge){
-        var sourceSelected, targetSelected = false;
-        for (i=0; i<uiselected.length; i++) {
-          selected = $(uiselected[i]).data("iframework-node-view").model;
+      this.model.get('edges').each(function (edge) {
+        var sourceSelected,
+          targetSelected = false;
+        for (i = 0; i < uiselected.length; i++) {
+          selected = $(uiselected[i]).data('iframework-node-view').model;
           if (edge.Source.node === selected) {
             sourceSelected = true;
           }
@@ -5586,20 +5773,20 @@ $(function(){
           }
         }
         if (sourceSelected && targetSelected) {
-          copied.edges.push( JSON.parse(JSON.stringify(edge)) );
+          copied.edges.push(JSON.parse(JSON.stringify(edge)));
         }
       }, this);
       // Save these to Iframework so can paste to other graphs
       Iframework._copied = copied;
     },
-    paste: function(){
+    paste: function () {
       var copied = Iframework._copied;
       if (copied && copied.nodes.length > 0) {
         var newNodes = [];
         // Select none
-        this.$(".module").removeClass("ui-selected");
-        for (var i=0; i<copied.nodes.length; i++) {
-          var oldNode = JSON.parse(JSON.stringify( copied.nodes[i] ));
+        this.$('.module').removeClass('ui-selected');
+        for (var i = 0; i < copied.nodes.length; i++) {
+          var oldNode = JSON.parse(JSON.stringify(copied.nodes[i]));
           // Offset pasted
           oldNode.x += 50;
           oldNode.y += 50;
@@ -5613,10 +5800,10 @@ $(function(){
           }
         }
         // Add edges
-        for (var j=0; j<copied.edges.length; j++) {
-          var oldEdge = JSON.parse(JSON.stringify( copied.edges[j] ));
-          var newEdge = {source:[],target:[]};
-          for (var k=0; k<newNodes.length; k++) {
+        for (var j = 0; j < copied.edges.length; j++) {
+          var oldEdge = JSON.parse(JSON.stringify(copied.edges[j]));
+          var newEdge = {source: [], target: []};
+          for (var k = 0; k < newNodes.length; k++) {
             var node = newNodes[k];
             if (oldEdge.source[0] === node.copiedFrom) {
               newEdge.source[0] = node.id;
@@ -5628,36 +5815,33 @@ $(function(){
           newEdge.source[1] = oldEdge.source[1];
           newEdge.target[1] = oldEdge.target[1];
           newEdge.parentGraph = this.model;
-          newEdge = new Iframework.Edge( newEdge );
+          newEdge = new Iframework.Edge(newEdge);
           this.model.addEdge(newEdge);
         }
       }
     },
     maskFrames: function () {
-      $(".iframe-type").append( '<div class="iframemask" />' );
+      $('.iframe-type').append('<div class="iframemask" />');
     },
     unmaskFrames: function () {
-      $(".iframemask").remove();
+      $('.iframemask').remove();
     },
     showParentGraph: function () {
       if (this.model.parentGraph) {
-        Iframework.showGraph( this.model.parentGraph );
+        Iframework.showGraph(this.model.parentGraph);
       }
     },
     rerenderEdges: function () {
-      this.model.get("edges").each(function(edge){
+      this.model.get('edges').each(function (edge) {
         if (edge.view) {
           edge.view.redraw();
         }
       }, this);
-    }
-    
+    },
   });
-
 });
 
-$(function(){
-
+$(function () {
   Iframework.Node = Backbone.Model.extend({
     send: function (message) {
       // Send message out to connected nodes
@@ -5666,69 +5850,64 @@ $(function(){
       // Get message from another node
     },
     //iframe only
-    sendFromFrame: function(){},
-    iframeLoaded: function(){}
-
+    sendFromFrame: function () {},
+    iframeLoaded: function () {},
   });
-  
+
   Iframework.Nodes = Backbone.Collection.extend({
-    model: Iframework.Node
+    model: Iframework.Node,
   });
-
 });
 
-$(function(){
-
+$(function () {
   Iframework.NodeView = Backbone.View.extend({
-    send: function(message) {
+    send: function (message) {
       this.model.send(message);
     },
-    receive: function(message) {
+    receive: function (message) {
       this.model.receive(message);
-    }
+    },
   });
-
 });
 
-$(function(){
-
+$(function () {
   Iframework.NodeBox = Iframework.Node.extend({
     loaded: false,
-    defaults: function() {
+    defaults: function () {
       return {
-        src: "",
+        src: '',
         x: 100,
         y: 400,
         z: 0,
         w: 200,
         h: 210,
-        state: {}
+        state: {},
       };
     },
     info: {
-      title: "native-node",
-      description: "extend me"
+      title: 'native-node',
+      description: 'extend me',
     },
     initialize: function () {
       this.Inputs = new Iframework.PortsIn();
       this.Outputs = new Iframework.PortsOut();
 
-      this.parentGraph = this.get("parentGraph");
+      this.parentGraph = this.get('parentGraph');
 
       // Change event
-      this.on("change", this.nodeChanged);
+      this.on('change', this.nodeChanged);
     },
     initializeView: function () {
       // Called from GraphView.addNode
-      this.view = new Iframework.NodeBoxView({model:this});
+      this.view = new Iframework.NodeBoxView({model: this});
       return this.view;
     },
     send: function (name, value) {
       // Send message out to connected modules
       // Defer to make this safe for infinite loops
       var self = this;
-      _.defer(function(){
-        self.trigger("send:"+name, value);
+      _.defer(function () {
+        self.trigger('send:' + name, value);
       });
     },
     receive: function (name, value) {
@@ -5744,8 +5923,8 @@ $(function(){
       }
     },
     setState: function () {
-      var state = this.get("state");
-      if (state && this.view.Native){
+      var state = this.get('state');
+      if (state && this.view.Native) {
         for (var name in state) {
           var eqSet = this.setEquation(name, state[name]);
           if (!eqSet) {
@@ -5774,9 +5953,13 @@ $(function(){
         this.view.addInput(newPort);
       }
       // Set state to post defaults
-      var currentState = this.get("state");
-      if ( info.hasOwnProperty("default") && info["default"] !== "" && !currentState.hasOwnProperty(info.name) ) {
-        currentState[info.name] = info["default"];
+      var currentState = this.get('state');
+      if (
+        info.hasOwnProperty('default') &&
+        info['default'] !== '' &&
+        !currentState.hasOwnProperty(info.name)
+      ) {
+        currentState[info.name] = info['default'];
       }
       return newPort;
     },
@@ -5803,7 +5986,7 @@ $(function(){
     },
     nodeChanged: function () {
       if (this.parentGraph) {
-        this.parentGraph.trigger("change");
+        this.parentGraph.trigger('change');
       }
     },
     remove: function (fromView) {
@@ -5819,24 +6002,28 @@ $(function(){
         }
       }
     },
-    setValues: function(info) {
+    setValues: function (info) {
       for (var name in info) {
         this.setValue(name, info[name]);
       }
       this.nodeChanged();
     },
-    setValue: function(name, value) {
+    setValue: function (name, value) {
       this.setEquation(name, value);
-      this.get("state")[name] = value;
+      this.get('state')[name] = value;
       this.nodeChanged();
     },
     setEquation: function (name, value) {
-      if (!this.view.Native) { return; }
+      if (!this.view.Native) {
+        return;
+      }
       var input = this.Inputs.get(name);
-      if (!input) { return; }
-      var type = input.get("type");
-      if ( type === "int" || type === "float" || type === "number" ) {
-        if (value && value.toString().substr(0,1) === "=") {
+      if (!input) {
+        return;
+      }
+      var type = input.get('type');
+      if (type === 'int' || type === 'float' || type === 'number') {
+        if (value && value.toString().substr(0, 1) === '=') {
           this.view.Native.setEquation(name, value.substr(1));
           return true;
         } else {
@@ -5844,36 +6031,34 @@ $(function(){
         }
       }
     },
-    toString: function() {
+    toString: function () {
       if (this.info) {
-        return "Native node "+this.get("id")+": "+this.info.title;
+        return 'Native node ' + this.get('id') + ': ' + this.info.title;
       } else {
-        return "Native node "+this.get("id");
+        return 'Native node ' + this.get('id');
       }
     },
     toJSON: function () {
       return {
         id: this.id,
-        src: this.get("src"),
-        x: this.get("x"),
-        y: this.get("y"),
-        w: this.get("w"),
-        h: this.get("h"),
-        state: this.get("state")
+        src: this.get('src'),
+        x: this.get('x'),
+        y: this.get('y'),
+        w: this.get('w'),
+        h: this.get('h'),
+        state: this.get('state'),
       };
-    }
-
+    },
   });
-  
+
   Iframework.Nodes = Backbone.Collection.extend({
-    model: Iframework.Node
+    model: Iframework.Node,
   });
-
 });
 
-$(function(){
-
-  var template = 
+$(function () {
+  // prettier-ignore
+  var template =
     '<div class="module" style="left:<%= get("x")-10 %>px;top:<%= get("y")-30 %>px;width:<%= get("w")+20 %>px;height:<%= get("h")+40 %>px;" >'+
       '<div class="outer"></div>'+
       '<div class="ports ports-in"></div>'+
@@ -5894,63 +6079,70 @@ $(function(){
   // var innerTemplate = '<div class="info" />';
 
   Iframework.NodeBoxView = Iframework.NodeView.extend({
-    tagName: "div",
-    className: "node",
+    tagName: 'div',
+    className: 'node',
     template: _.template(template),
     // innerTemplate: _.template(innerTemplate),
     events: {
-      "dragstart .module":   "dragStart",
-      "drag .module":        "drag",
-      "dragstop .module":    "dragStop",
-      "resizestart .module": "resizestart",
-      "resize .module":      "resize",
-      "resizestop .module":  "resizestop",
-      "mousedown .module, .title": "mousedown",
-      "click .module, .title": "click",
-      "click .showcontrols": "showControls",
-      "click .hidecontrols": "hideControls",
-      "click .remove":       "removeModel"
+      'dragstart .module': 'dragStart',
+      'drag .module': 'drag',
+      'dragstop .module': 'dragStop',
+      'resizestart .module': 'resizestart',
+      'resize .module': 'resize',
+      'resizestop .module': 'resizestop',
+      'mousedown .module, .title': 'mousedown',
+      'click .module, .title': 'click',
+      'click .showcontrols': 'showControls',
+      'click .hidecontrols': 'hideControls',
+      'click .remove': 'removeModel',
     },
     initialize: function () {
       this.render();
-      this.$(".module")
-        .data({"iframework-node-view": this})
-        .draggable({ 
-          handle: "h1",
-          helper: function(event) {
+      this.$('.module')
+        .data({'iframework-node-view': this})
+        .draggable({
+          handle: 'h1',
+          helper: function (event) {
             var node = $(this);
-            return $('<div class="ui-draggable-helper" style="width:'+node.width()+'px; height:'+node.height()+'px">');
-          }
+            return $(
+              '<div class="ui-draggable-helper" style="width:' +
+                node.width() +
+                'px; height:' +
+                node.height() +
+                'px">'
+            );
+          },
         })
-        .resizable({ 
-          minHeight: 100, 
-          minWidth: 100, 
-          helper: "ui-draggable-helper"
+        .resizable({
+          minHeight: 100,
+          minWidth: 100,
+          helper: 'ui-draggable-helper',
         });
 
       // View source button
       if (this.model.lazyLoadType) {
-        this.$(".viewsource").attr({
-          "href": "src/nodes/"+this.model.lazyLoadType+".js",
-          "target": "_blank"
+        this.$('.viewsource').attr({
+          href: 'src/nodes/' + this.model.lazyLoadType + '.js',
+          target: '_blank',
         });
       } else {
-        this.$(".viewsource").hide();
+        this.$('.viewsource').hide();
       }
 
       // Disable selection for better drag+drop
-      this.$("h1").disableSelection();
+      this.$('h1').disableSelection();
 
       // Bring newest to top
       this.mousedown();
-
     },
     initializeNative: function () {
       // Called from GraphView.addNode
-      if (!this.Native){
+      if (!this.Native) {
         if (Iframework.NativeNodes.hasOwnProperty(this.model.lazyLoadType)) {
-          this.Native = new Iframework.NativeNodes[this.model.lazyLoadType]({model:this.model});
-          this.$(".inner").append( this.Native.$el );
+          this.Native = new Iframework.NativeNodes[this.model.lazyLoadType]({
+            model: this.model,
+          });
+          this.$('.inner').append(this.Native.$el);
           // Check if all modules are loaded
           this.model.loaded = true;
           this.model.parentGraph.checkLoaded();
@@ -5964,93 +6156,108 @@ $(function(){
       return this;
     },
     infoLoaded: function (info) {
-      this.$('h1')
-        .attr("title", this.model.get("id") + ": " + (info.author ? "by "+info.author+": " : "" ) + info.description);
-      this.$('.node-box-title-name')
-        .text(info.title);
+      this.$('h1').attr(
+        'title',
+        this.model.get('id') +
+          ': ' +
+          (info.author ? 'by ' + info.author + ': ' : '') +
+          info.description
+      );
+      this.$('.node-box-title-name').text(info.title);
 
       if (this.model.lazyLoadType) {
-        this.$(".module-icon").addClass("module-icon-"+this.model.lazyLoadType);
+        this.$('.module-icon').addClass(
+          'module-icon-' + this.model.lazyLoadType
+        );
       }
     },
     _alsoDrag: [],
     _dragDelta: {},
-    dragStart: function(event, ui){
-      if (event.target !== this.$(".module")[0]) { return; }
+    dragStart: function (event, ui) {
+      if (event.target !== this.$('.module')[0]) {
+        return;
+      }
 
       // Add a mask so that iframes don't steal mouse
       this.model.parentGraph.view.maskFrames();
 
       // Select
-      if (!this.$(".module").hasClass("ui-selected")){
+      if (!this.$('.module').hasClass('ui-selected')) {
         this.click(event);
       }
 
       // Make helper and save start position of all other selected
       var self = this;
       this._alsoDrag = [];
-      this.model.parentGraph.view.$(".ui-selected").each(function() {
-        if (self.$(".module")[0] !== this) {
+      this.model.parentGraph.view.$('.ui-selected').each(function () {
+        if (self.$('.module')[0] !== this) {
           var el = $(this);
           var position = {
-            left: parseInt( el.css('left'), 10 ), 
-            top: parseInt( el.css('top'), 10 )
+            left: parseInt(el.css('left'), 10),
+            top: parseInt(el.css('top'), 10),
           };
-          el.data("ui-draggable-alsodrag-initial", position);
+          el.data('ui-draggable-alsodrag-initial', position);
           // Add helper
           var helper = $('<div class="ui-draggable-helper">').css({
             width: el.width(),
             height: el.height(),
             left: position.left,
-            top: position.top
+            top: position.top,
           });
           el.parent().append(helper);
-          el.data("ui-draggable-alsodrag-helper", helper);
+          el.data('ui-draggable-alsodrag-helper', helper);
           // Add to array
           self._alsoDrag.push(el);
         }
       });
     },
-    drag: function(event, ui){
-      if (event.target !== this.$(".module")[0]) { return; }
+    drag: function (event, ui) {
+      if (event.target !== this.$('.module')[0]) {
+        return;
+      }
 
       // Drag other helpers
       if (this._alsoDrag.length) {
-        var self = $(event.target).data("ui-draggable");
+        var self = $(event.target).data('ui-draggable');
         var op = self.originalPosition;
         var delta = {
-          top: (self.position.top - op.top) || 0, 
-          left: (self.position.left - op.left) || 0
+          top: self.position.top - op.top || 0,
+          left: self.position.left - op.left || 0,
         };
 
-        _.each(this._alsoDrag, function(el){
-          var initial = el.data("ui-draggable-alsodrag-initial");
-          var helper = el.data("ui-draggable-alsodrag-helper");
+        _.each(this._alsoDrag, function (el) {
+          var initial = el.data('ui-draggable-alsodrag-initial');
+          var helper = el.data('ui-draggable-alsodrag-helper');
           helper.css({
             left: initial.left + delta.left,
-            top: initial.top + delta.top
+            top: initial.top + delta.top,
           });
         });
       }
     },
-    dragStop: function(event, ui){
-      if (event.target !== this.$(".module")[0]) { return; }
+    dragStop: function (event, ui) {
+      if (event.target !== this.$('.module')[0]) {
+        return;
+      }
 
       var x = parseInt(ui.position.left, 10);
       var y = parseInt(ui.position.top, 10);
-      this.moveToPosition(x,y);
+      this.moveToPosition(x, y);
       // Also drag
       if (this._alsoDrag.length) {
-        _.each(this._alsoDrag, function(el){
-          var initial = el.data("ui-draggable-alsodrag-initial");
-          var helper = el.data("ui-draggable-alsodrag-helper");
-          var node = el.data("iframework-node-view");
+        _.each(this._alsoDrag, function (el) {
+          var initial = el.data('ui-draggable-alsodrag-initial');
+          var helper = el.data('ui-draggable-alsodrag-helper');
+          var node = el.data('iframework-node-view');
           // Move other node
-          node.moveToPosition(parseInt(helper.css("left"), 10), parseInt(helper.css("top"), 10));
+          node.moveToPosition(
+            parseInt(helper.css('left'), 10),
+            parseInt(helper.css('top'), 10)
+          );
           // Remove helper
           helper.remove();
-          el.data("ui-draggable-alsodrag-initial", null);
-          el.data("ui-draggable-alsodrag-helper", null);
+          el.data('ui-draggable-alsodrag-initial', null);
+          el.data('ui-draggable-alsodrag-helper', null);
         });
         this._alsoDrag = [];
       }
@@ -6058,65 +6265,64 @@ $(function(){
       // Remove iframe masks
       this.model.parentGraph.view.unmaskFrames();
     },
-    moveToPosition: function(x, y){
-      this.$(".module").css({
+    moveToPosition: function (x, y) {
+      this.$('.module').css({
         left: x,
-        top: y
+        top: y,
       });
       this.model.set({
         x: x + 10,
-        y: y + 30
+        y: y + 30,
       });
     },
     resizestart: function (event, ui) {
       // Add a mask so that iframes don't steal mouse
       this.model.parentGraph.view.maskFrames();
     },
-    resize: function (event, ui) {
-    },
+    resize: function (event, ui) {},
     resizestop: function (event, ui) {
       // Remove iframe masks
       this.model.parentGraph.view.unmaskFrames();
-      
+
       // Set model w/h
       var newW = ui.size.width;
       var newH = ui.size.height;
       this.model.set({
         w: newW - 20,
-        h: newH - 40
+        h: newH - 40,
       });
       if (this.Native) {
-        this.Native.resize(newW,newH);
+        this.Native.resize(newW, newH);
       }
       this.model.parentGraph.view.resizeEdgeSVG();
     },
     mousedown: function (event, ui) {
       // Bring to top
       var topZ = 0;
-      $("div.module").each(function(){
-        var thisZ = Number($(this).css("z-index"));
-        if (thisZ > topZ) { 
-          topZ = thisZ; 
+      $('div.module').each(function () {
+        var thisZ = Number($(this).css('z-index'));
+        if (thisZ > topZ) {
+          topZ = thisZ;
         }
       });
-      this.$(".module")
-        .css("z-index", topZ+1);
+      this.$('.module').css('z-index', topZ + 1);
 
       if (event) {
         // Don't select
         event.stopPropagation();
       }
-
     },
     click: function (event) {
       // Select
       if (event.ctrlKey || event.metaKey) {
         // Command key is pressed, toggle selection
-        this.$(".module").toggleClass("ui-selected");
+        this.$('.module').toggleClass('ui-selected');
       } else {
         // Command key isn't pressed, deselect others and select this one
-        this.model.parentGraph.view.$(".ui-selected").removeClass("ui-selected");
-        this.$(".module").addClass("ui-selected");
+        this.model.parentGraph.view
+          .$('.ui-selected')
+          .removeClass('ui-selected');
+        this.$('.module').addClass('ui-selected');
       }
 
       // Don't fire click on graph
@@ -6124,21 +6330,21 @@ $(function(){
     },
     select: function (event) {
       // Called from code
-      this.$(".module").addClass("ui-selected");
+      this.$('.module').addClass('ui-selected');
     },
     addInput: function (port) {
-      this.$(".ports-in").append( port.initializeView().el );
+      this.$('.ports-in').append(port.initializeView().el);
     },
     addOutput: function (port) {
-      this.$(".ports-out").append( port.initializeView().el );
+      this.$('.ports-out').append(port.initializeView().el);
     },
     showControls: function () {
-      this.$(".showcontrols").hide();
-      this.$(".controls").show();
+      this.$('.showcontrols').hide();
+      this.$('.controls').show();
     },
     hideControls: function () {
-      this.$(".showcontrols").show();
-      this.$(".controls").hide();
+      this.$('.showcontrols').show();
+      this.$('.controls').hide();
     },
     removeModel: function () {
       this.model.remove(true);
@@ -6150,26 +6356,21 @@ $(function(){
       }
       this.$el.remove();
     },
-    refresh: function () {
-    },
-    popout: function () {
-    }
-
+    refresh: function () {},
+    popout: function () {},
   });
-
 });
 
-$(function(){
-
+$(function () {
   var template = '<div class="info" />';
 
   Iframework.NodeBoxNativeView = Backbone.View.extend({
-    tagName: "div",
-    className: "nativenode",
+    tagName: 'div',
+    className: 'nativenode',
     template: _.template(template),
     info: {
-      title: "native-node-view",
-      description: "extend me"
+      title: 'native-node-view',
+      description: 'extend me',
     },
     inputs: {},
     outputs: {},
@@ -6200,10 +6401,10 @@ $(function(){
 
       return this;
     },
-    initializeCategory: function(){
+    initializeCategory: function () {
       // for example, override in nodes/image.js
     },
-    initializeModule: function(){
+    initializeModule: function () {
       // for example, override in nodes/image-combine.js
     },
     render: function () {
@@ -6246,7 +6447,9 @@ $(function(){
           }
         } catch (error) {
           // If equation doesn't parse, pass through val
-          this.equations[name] = function(vars){return vars.x;};
+          this.equations[name] = function (vars) {
+            return vars.x;
+          };
         }
       } else {
         if (this.equations[name]) {
@@ -6255,55 +6458,52 @@ $(function(){
       }
     },
     receive: function (name, value) {
-      if (this.equations && this.equations[name]){
-        value = this.equations[name].evaluate({x:value});
+      if (this.equations && this.equations[name]) {
+        value = this.equations[name].evaluate({x: value});
       }
-      if (this["input"+name]){
-        this["input"+name](value);
+      if (this['input' + name]) {
+        this['input' + name](value);
         // Must manually set _triggerRedraw in that function if needed
       } else {
-        this["_"+name] = value;
+        this['_' + name] = value;
         // Will trigger a NodeBoxNativeView.redraw() on next renderAnimationFrame
         this._triggerRedraw = true;
       }
     },
-    toString: function() {
-      return "Native view: "+this.model.get("id")+": "+this.info.title;
+    toString: function () {
+      return 'Native view: ' + this.model.get('id') + ': ' + this.info.title;
     },
-    resize: function(w,h) {
+    resize: function (w, h) {
       // Called from NodeBoxView.resizestop()
     },
-    connectEdge: function(edge) {
+    connectEdge: function (edge) {
       // Called from Edge.connect();
     },
-    disconnectEdge: function(edge) {
+    disconnectEdge: function (edge) {
       // Called from Edge.disconnect();
     },
-    remove: function(){
+    remove: function () {
       // Called from NodeBoxView.remove();
-    }
-
+    },
   });
-
 });
 
-$(function(){
-
+$(function () {
   Iframework.NodeBoxIframe = Iframework.NodeBox.extend({
     initializeView: function () {
       // Called from GraphView.addNode();
-      this.view = new Iframework.NodeBoxIframeView({model:this});
+      this.view = new Iframework.NodeBoxIframeView({model: this});
       return this.view;
     },
     info: {
-      title: "iframe-node",
-      description: "extend me"
+      title: 'iframe-node',
+      description: 'extend me',
     },
     sendFromFrame: function (message) {
       var name = message.output;
       var value = message.value;
       // Convert pixels message to canvas
-      if (Iframework.util.type(message.value) === "ImageData") {
+      if (Iframework.util.type(message.value) === 'ImageData') {
         value = this.makeCanvas(value);
       }
       this.send(name, value);
@@ -6311,9 +6511,11 @@ $(function(){
     receive: function (name, value) {
       if (this.view && this.view.iframeloaded) {
         // Convert canvas message to pixels
-        if (Iframework.util.type(value) === "HTMLCanvasElement") {
+        if (Iframework.util.type(value) === 'HTMLCanvasElement') {
           try {
-            value = value.getContext("2d").getImageData(0, 0, value.width, value.height);
+            value = value
+              .getContext('2d')
+              .getImageData(0, 0, value.width, value.height);
           } catch (e) {
             // Dirty canvas
             return false;
@@ -6321,13 +6523,13 @@ $(function(){
         }
         var m = {};
         m[name] = value;
-        this.view.iframe.contentWindow.postMessage(m, "*");
+        this.view.iframe.contentWindow.postMessage(m, '*');
       } else {
-        console.error("wat "+this.id+" "+this.frameIndex);
+        console.error('wat ' + this.id + ' ' + this.frameIndex);
       }
     },
     setState: function () {
-      var state = this.get("state");
+      var state = this.get('state');
       if (state) {
         this.receive({setState: state});
       }
@@ -6336,38 +6538,38 @@ $(function(){
       this.loaded = true;
       this.parentGraph.checkLoaded();
     },
-    toString: function() {
+    toString: function () {
       if (this.info) {
-        return "Iframe node "+this.get("id")+": "+this.info.title;
+        return 'Iframe node ' + this.get('id') + ': ' + this.info.title;
       } else {
-        return "Iframe node "+this.get("id");
+        return 'Iframe node ' + this.get('id');
       }
     },
-    makeCanvas: function(imageData) {
+    makeCanvas: function (imageData) {
       if (!this.canvas) {
         // Make internal canvas to pass
-        this.canvas = document.createElement("canvas");
+        this.canvas = document.createElement('canvas');
         this.context = this.canvas.getContext('2d');
       }
-      if (this.canvas.width !== imageData.width || this.canvas.height !== imageData.height) {
+      if (
+        this.canvas.width !== imageData.width ||
+        this.canvas.height !== imageData.height
+      ) {
         // Resize if needed
         this.canvas.width = imageData.width;
         this.canvas.height = imageData.height;
       }
       this.context.putImageData(imageData, 0, 0);
       return this.canvas;
-    }
-
+    },
   });
-  
+
   Iframework.Nodes = Backbone.Collection.extend({
-    model: Iframework.Node
+    model: Iframework.Node,
   });
-
 });
 
-$(function(){
-
+$(function () {
   // var innerTemplate = '<iframe class="iframe" name="<%= frameIndex %>" src="<%= get("src") %>"></iframe>';
 
   Iframework.NodeBoxIframeView = Iframework.NodeBoxView.extend({
@@ -6377,15 +6579,16 @@ $(function(){
       Iframework.NodeBoxView.prototype.initialize.call(this);
 
       // Add refresh button
-      this.$("button.remove")
-        .after(
-          $('<button title="reload iframe" type="button" class="refresh icon-cw"></button>')
-        );
+      this.$('button.remove').after(
+        $(
+          '<button title="reload iframe" type="button" class="refresh icon-cw"></button>'
+        )
+      );
       // Add refresh event
-      this.events["click .refresh"] = "refresh";
+      this.events['click .refresh'] = 'refresh';
 
       // .inner style for css
-      this.$(".inner").addClass("iframe-type");
+      this.$('.inner').addClass('iframe-type');
 
       var self = this;
       this.iframe.onload = function () {
@@ -6395,45 +6598,41 @@ $(function(){
     render: function () {
       this.$el.html(this.template(this.model));
 
-      this.iframe = document.createElement("iframe");
+      this.iframe = document.createElement('iframe');
 
       $(this.iframe).attr({
-        "class": "iframe",
-        "name": this.model.frameIndex,
-        "src": this.model.get("src")
+        class: 'iframe',
+        name: this.model.frameIndex,
+        src: this.model.get('src'),
       });
 
-      this.$(".inner").html( this.iframe );
+      this.$('.inner').html(this.iframe);
       return this;
     },
     refresh: function () {
-      this.$("iframe")[0].src = this.model.get("src");
-    }
-
+      this.$('iframe')[0].src = this.model.get('src');
+    },
   });
-
 });
 
-$(function(){
-
+$(function () {
   Iframework.Port = Backbone.Model.extend({
     defaults: {
-      name: "",
-      type: "",
-      description: "",
-      "default": null
+      name: '',
+      type: '',
+      description: '',
+      default: null,
     },
     initialize: function () {
-      if (this.get("type")==="") {
+      if (this.get('type') === '') {
         // No type set, connect to anything
-        this.set("type", "all");
+        this.set('type', 'all');
       }
-      this.parentNode = this.get("parentNode");
+      this.parentNode = this.get('parentNode');
       // To sanitize data:image/gif types for css class
       // this.set( "type_class", this.get("type").split("/")[0].replace(":", "_") );
-      this.set( "type_class", this.get("type").split(":")[0] );
+      this.set('type_class', this.get('type').split(':')[0]);
       this.Edges = new Iframework.Edges();
-
     },
     // Ports keep track of connected edges
     connect: function (edge) {
@@ -6444,7 +6643,7 @@ $(function(){
     },
     remove: function () {
       // Disconnect edges
-      while(this.Edges.length > 0) {
+      while (this.Edges.length > 0) {
         var edge = this.Edges.at(0);
         this.parentNode.parentGraph.removeEdge(edge);
       }
@@ -6452,17 +6651,16 @@ $(function(){
       if (this.view) {
         this.view.remove();
       }
-    }
-  });
-  
-  Iframework.Ports = Backbone.Collection.extend({
-    model: Iframework.Port
+    },
   });
 
+  Iframework.Ports = Backbone.Collection.extend({
+    model: Iframework.Port,
+  });
 });
 
-$(function(){
-    
+$(function () {
+  // prettier-ignore
   var popupTemplate =
     '<div class="edge-edit">'+
       '<button title="close" class="close icon-cancel"></button>'+
@@ -6471,6 +6669,7 @@ $(function(){
       // '<p><button class="publish-port">Publish</button></p>'+
     '</div>';
 
+  // prettier-ignore
   var edgeEditTemplate =
     '<div class="edge-edit-item" id="<%= model.cid %>">'+
       '<span><%= label() %></span>'+
@@ -6480,22 +6679,22 @@ $(function(){
   var accepts = {};
 
   Iframework.PortView = Backbone.View.extend({
-    tagName: "div",
-    className: "port",
+    tagName: 'div',
+    className: 'port',
     popupTemplate: _.template(popupTemplate),
     edgeEditTemplate: _.template(edgeEditTemplate),
     events: {
-      "mousedown":                   "highlightEdge",
-      "click .hole":                 "clickhole",
-      "dragstart .hole":             "dragstart",
-      "drag .hole, .holehelper":     "drag",
-      "dragstop .hole, .holehelper": "dragstop",
-      "dragstart .plugend":          "unplugstart",
-      "drag .plugend":               "unplugdrag",
-      "dragstop .plugend":           "unplugstop",
-      "drop":                        "drop",
-      "click .disconnect":           "disconnect",
-      "submit .manualinput":         "manualinput"
+      mousedown: 'highlightEdge',
+      'click .hole': 'clickhole',
+      'dragstart .hole': 'dragstart',
+      'drag .hole, .holehelper': 'drag',
+      'dragstop .hole, .holehelper': 'dragstop',
+      'dragstart .plugend': 'unplugstart',
+      'drag .plugend': 'unplugdrag',
+      'dragstop .plugend': 'unplugstop',
+      drop: 'drop',
+      'click .disconnect': 'disconnect',
+      'submit .manualinput': 'manualinput',
       // "click .publish-port":         "publishPort"
     },
     initialize: function () {
@@ -6505,13 +6704,18 @@ $(function(){
     dragstart: function (event, ui) {
       // Add a mask so that iframes don't steal mouse
       this.model.node.parentGraph.view.maskFrames();
-      
+
       // Highlight matching ins or outs
-      $("div.ports-"+(this.model.isIn ? "out" : "in")+" span.hole")
-        .addClass('fade');
-      $("div.ports-"+(this.model.isIn ? "out" : "in")+" span.hole-" + this.model.get('type_class'))
-        .addClass('highlight');
-      
+      $(
+        'div.ports-' + (this.model.isIn ? 'out' : 'in') + ' span.hole'
+      ).addClass('fade');
+      $(
+        'div.ports-' +
+          (this.model.isIn ? 'out' : 'in') +
+          ' span.hole-' +
+          this.model.get('type_class')
+      ).addClass('highlight');
+
       // Edge preview
       var edgePreview = new Iframework.EdgeView();
       Iframework.edgePreview = edgePreview;
@@ -6527,13 +6731,13 @@ $(function(){
         var dragY = ui.offset.top + 8 + Iframework.shownGraph.view.el.scrollTop;
         var thisX = this.portOffsetLeft();
         var thisY = this.portOffsetTop();
-        
+
         // Edge preview
         var positions = {
-          fromX: (this.model.isIn ? dragX-2 : thisX),
-          fromY: (this.model.isIn ? dragY : thisY),
-          toX: (this.model.isIn ? thisX : dragX+20),
-          toY: (this.model.isIn ? thisY : dragY)
+          fromX: this.model.isIn ? dragX - 2 : thisX,
+          fromY: this.model.isIn ? dragY : thisY,
+          toX: this.model.isIn ? thisX : dragX + 20,
+          toY: this.model.isIn ? thisY : dragY,
         };
         Iframework.edgePreview.setPositions(positions);
         Iframework.edgePreview.redraw();
@@ -6545,12 +6749,12 @@ $(function(){
       // Remove iframe masks
       this.model.node.parentGraph.view.unmaskFrames();
 
-      $(".hole").removeClass("fade highlight");
-      
+      $('.hole').removeClass('fade highlight');
+
       // Edge preview
       Iframework.edgePreview.remove();
       Iframework.edgePreview = undefined;
-      if (this.relatedEdges().length < 1){
+      if (this.relatedEdges().length < 1) {
         this.$('.plugend').hide();
       }
 
@@ -6564,19 +6768,19 @@ $(function(){
         this.armDelete = false;
       } else {
         // Connect wire
-        var from = $(ui.draggable).data("model");
+        var from = $(ui.draggable).data('model');
         var to = this.model;
-        var source = (this.model.isIn ? from : to);
-        var target = (this.model.isIn ? to : from);
+        var source = this.model.isIn ? from : to;
+        var target = this.model.isIn ? to : from;
         var edge = new Iframework.Edge({
-          source: [source.node.get("id"), source.get("name")],
-          target: [target.node.get("id"), target.get("name")],
-          parentGraph: this.model.parentGraph
+          source: [source.node.get('id'), source.get('name')],
+          target: [target.node.get('id'), target.get('name')],
+          parentGraph: this.model.parentGraph,
         });
         if (Iframework.edgePreview) {
           edge._color = Iframework.edgePreview._color;
         }
-        if (edge.parentGraph.addEdge(edge)){
+        if (edge.parentGraph.addEdge(edge)) {
           edge.connect();
         }
       }
@@ -6589,12 +6793,16 @@ $(function(){
     topConnectedEdge: function () {
       var topConnected;
       var topZ = 0;
-      _.each(this.relatedEdges(), function(edge){
-        if (edge.view._z >= topZ) {
-          topZ = edge.view._z;
-          topConnected = edge;
-        }
-      }, this);
+      _.each(
+        this.relatedEdges(),
+        function (edge) {
+          if (edge.view._z >= topZ) {
+            topZ = edge.view._z;
+            topConnected = edge;
+          }
+        },
+        this
+      );
       return topConnected;
     },
     unplugstart: function (event, ui) {
@@ -6603,21 +6811,29 @@ $(function(){
 
       // Find top connected wire
       var lastConnected = this.topConnectedEdge();
-      if (!lastConnected) { return false; }
+      if (!lastConnected) {
+        return false;
+      }
 
       this.unpluggingEdge = lastConnected;
       this.unpluggingEdge.view.dim();
-      if (this.relatedEdges().length===1) {
-        this.$(".plugend").hide();
+      if (this.relatedEdges().length === 1) {
+        this.$('.plugend').hide();
       }
 
-      var thatPort = this.model.isIn ? this.unpluggingEdge.Source : this.unpluggingEdge.Target;
-      this.$(".plugend").data("model", thatPort);
-      
+      var thatPort = this.model.isIn
+        ? this.unpluggingEdge.Source
+        : this.unpluggingEdge.Target;
+      this.$('.plugend').data('model', thatPort);
+
       // Highlight related ins or outs
-      $("div.ports-"+(this.model.isIn ? "in" : "out")+" span.hole-" + this.model.get('type_class'))
-        .addClass('highlight');
-      
+      $(
+        'div.ports-' +
+          (this.model.isIn ? 'in' : 'out') +
+          ' span.hole-' +
+          this.model.get('type_class')
+      ).addClass('highlight');
+
       // Edge preview
       var edgePreview = new Iframework.EdgeView();
       edgePreview.setColor(this.unpluggingEdge.view._color);
@@ -6632,16 +6848,18 @@ $(function(){
       if (Iframework.edgePreview && this.unpluggingEdge) {
         var dragX = ui.offset.left + Iframework.shownGraph.view.el.scrollLeft;
         var dragY = ui.offset.top + 6 + Iframework.shownGraph.view.el.scrollTop;
-        var thatPortView = this.model.isIn ? this.unpluggingEdge.Source.view : this.unpluggingEdge.Target.view;
+        var thatPortView = this.model.isIn
+          ? this.unpluggingEdge.Source.view
+          : this.unpluggingEdge.Target.view;
         var thatX = thatPortView.portOffsetLeft();
         var thatY = thatPortView.portOffsetTop();
-        
+
         // Edge preview
         var positions = {
-          fromX: (this.model.isIn ? thatX : dragX-2),
-          fromY: (this.model.isIn ? thatY : dragY),
-          toX: (this.model.isIn ? dragX+20 : thatX),
-          toY: (this.model.isIn ? dragY : thatY)
+          fromX: this.model.isIn ? thatX : dragX - 2,
+          fromY: this.model.isIn ? thatY : dragY,
+          toX: this.model.isIn ? dragX + 20 : thatX,
+          toY: this.model.isIn ? dragY : thatY,
         };
         Iframework.edgePreview.setPositions(positions);
         Iframework.edgePreview.redraw();
@@ -6653,7 +6871,7 @@ $(function(){
       if (this.armDelete && this.unpluggingEdge) {
         this.model.parentGraph.removeEdge(this.unpluggingEdge);
       } else {
-        this.$(".plugend").show();
+        this.$('.plugend').show();
         this.unpluggingEdge.view.undim();
       }
       this.armDelete = false;
@@ -6664,111 +6882,113 @@ $(function(){
     clickhole: function (event) {
       // Hide previous connected edges editor
       $('div.edge-edit').remove();
-        
-      var hole = this.$(".hole");
-          
+
+      var hole = this.$('.hole');
+
       // Show connected edges editor
       var isIn = this.model.isIn;
-      var portName = this.model.get("name");
-  
+      var portName = this.model.get('name');
+
       var popupEl = this.popupTemplate(this.model.toJSON());
       popupEl = $(popupEl);
       this.$el.append(popupEl);
 
       // Close button
-      popupEl.children("button.close")
+      popupEl
+        .children('button.close')
         .button({
           icons: {
-            primary: "icon-cancel"
+            primary: 'icon-cancel',
           },
-          text: false
+          text: false,
         })
-        .click(function(){
+        .click(function () {
           $('div.edge-edit').remove();
           Iframework.selectedPort = null;
         });
 
-      var typeabbr = this.model.get("type").substring(0,3);
+      var typeabbr = this.model.get('type').substring(0, 3);
       if (isIn) {
         var showForm = false;
-        var inputForm = $('<form />')
-          .attr({
-            "id": this.model.node.id + "_" + this.model.get("name"),
-            "class": "manualinput"
-          });
-        if (typeabbr === "int" || typeabbr === "num" || typeabbr === "flo" ) {
+        var inputForm = $('<form />').attr({
+          id: this.model.node.id + '_' + this.model.get('name'),
+          class: 'manualinput',
+        });
+        if (typeabbr === 'int' || typeabbr === 'num' || typeabbr === 'flo') {
           showForm = true;
           inputForm.append(
-            $("<input />").attr({
-              "type": "number",
-              "min": hole.data("min"),
-              "max": hole.data("max"),
-              "step": "any",
-              "value": this.model.node.get("state")[this.model.get("name")]
+            $('<input />').attr({
+              type: 'number',
+              min: hole.data('min'),
+              max: hole.data('max'),
+              step: 'any',
+              value: this.model.node.get('state')[this.model.get('name')],
             })
           );
-        } else if (typeabbr === "col" || typeabbr === "str") {
+        } else if (typeabbr === 'col' || typeabbr === 'str') {
           showForm = true;
           inputForm.append(
-            $("<input />").attr({
-              "type": "text",
-              "maxlength": hole.data("max"),
-              "value": this.model.node.get("state")[this.model.get("name")]
+            $('<input />').attr({
+              type: 'text',
+              maxlength: hole.data('max'),
+              value: this.model.node.get('state')[this.model.get('name')],
             })
           );
-        } else if (typeabbr === "boo") {
+        } else if (typeabbr === 'boo') {
           showForm = true;
-          var val = this.model.node.get("state")[this.model.get("name")];
-          val = (Boolean(val) && val !== "false");
+          var val = this.model.node.get('state')[this.model.get('name')];
+          val = Boolean(val) && val !== 'false';
           inputForm.append(
-            $("<input />")
-              .attr({
-                "type": "checkbox",
-                "checked": val
-              })
+            $('<input />').attr({
+              type: 'checkbox',
+              checked: val,
+            })
           );
-        } else if (typeabbr === "ban") {
-          inputForm.append("<label>Send bang:</label> ");
+        } else if (typeabbr === 'ban') {
+          inputForm.append('<label>Send bang:</label> ');
           showForm = true;
         }
         if (showForm) {
           inputForm.append(
-            $("<button></button>")
-              .html("send")
+            $('<button></button>')
+              .html('send')
               .attr({
-                "type": "submit",
-                "class": "send",
-                "title": "send value to module"
+                type: 'submit',
+                class: 'send',
+                title: 'send value to module',
               })
               .button({
                 icons: {
-                  primary: "icon-ok"
+                  primary: 'icon-ok',
                 },
-                text: false
+                text: false,
               })
           );
           popupEl.append(inputForm);
         }
       }
-      $("#select_"+this.model.id)
-        .button({
-          icons: {
-            primary: "ui-icon-power"
-          }
-        });
+      $('#select_' + this.model.id).button({
+        icons: {
+          primary: 'ui-icon-power',
+        },
+      });
       if (this.relatedEdges().length > 0) {
         popupEl.append('<h2>disconnect</h2>');
-        _.each(this.relatedEdges(), function (edge) {
-          var edgeEditEl = this.edgeEditTemplate(edge.view);
-          popupEl.append(edgeEditEl);
-        }, this);
+        _.each(
+          this.relatedEdges(),
+          function (edge) {
+            var edgeEditEl = this.edgeEditTemplate(edge.view);
+            popupEl.append(edgeEditEl);
+          },
+          this
+        );
       }
 
       // This input's options
-      if (this.model.get("options") && this.model.get("options").length > 0) {
+      if (this.model.get('options') && this.model.get('options').length > 0) {
         this.$('input').autocomplete({
           minLength: 0,
-          source: this.model.get("options")
+          source: this.model.get('options'),
         });
       }
 
@@ -6776,38 +6996,43 @@ $(function(){
       event.stopPropagation();
     },
     manualinput: function (event) {
-      var inputname = this.model.get("name");
+      var inputname = this.model.get('name');
       var val;
-      if (this.$(".manualinput").children("input")){
-        val = this.$(".manualinput").children("input").val();
+      if (this.$('.manualinput').children('input')) {
+        val = this.$('.manualinput').children('input').val();
       }
-      if (this.$(".manualinput").children("input:checkbox").length > 0) {
-        if (this.$(".manualinput").children("input:checkbox").is(':checked')) {
+      if (this.$('.manualinput').children('input:checkbox').length > 0) {
+        if (this.$('.manualinput').children('input:checkbox').is(':checked')) {
           val = true;
         } else {
           val = false;
         }
       }
-      if (this.model.get("type") === "int") {
+      if (this.model.get('type') === 'int') {
         val = parseInt(val, 10);
       }
-      if (this.model.get("type") === "number" || this.model.get("type") === "float") {
+      if (
+        this.model.get('type') === 'number' ||
+        this.model.get('type') === 'float'
+      ) {
         val = parseFloat(val);
       }
       if (val === undefined) {
-        val = "!";
+        val = '!';
       }
       var message = {};
       message[inputname] = val;
       this.model.node.receive(message);
-      this.model.node.get("state")[inputname] = val;
-      this.model.node.trigger("change");
+      this.model.node.get('state')[inputname] = val;
+      this.model.node.trigger('change');
       // $('div.edge-edit').remove();
       return false;
     },
     disconnect: function (event) {
       //HACK
-      var edge = this.model.parentGraph.get("edges").getByCid( $(event.target).parents(".edge-edit-item").attr("id") );
+      var edge = this.model.parentGraph
+        .get('edges')
+        .getByCid($(event.target).parents('.edge-edit-item').attr('id'));
       if (edge) {
         this.model.parentGraph.removeEdge(edge);
       }
@@ -6821,7 +7046,11 @@ $(function(){
       var holeoffset = this.$('.hole').offset();
       if (holeoffset) {
         // HACK
-        return holeoffset.left + 7 + this.model.parentNode.parentGraph.view.el.scrollLeft;
+        return (
+          holeoffset.left +
+          7 +
+          this.model.parentNode.parentGraph.view.el.scrollLeft
+        );
       } else {
         return 0;
       }
@@ -6830,7 +7059,11 @@ $(function(){
       var holeoffset = this.$('.hole').offset();
       if (holeoffset) {
         // HACK
-        return holeoffset.top + 10 + this.model.parentNode.parentGraph.view.el.scrollTop;
+        return (
+          holeoffset.top +
+          10 +
+          this.model.parentNode.parentGraph.view.el.scrollTop
+        );
       } else {
         return 0;
       }
@@ -6838,15 +7071,17 @@ $(function(){
     _relatedEdges: null,
     relatedEdges: function () {
       // Resets to null on dis/connect
-      if ( this._relatedEdges === null ) {
-        this._relatedEdges = this.model.parentGraph.get("edges").filter( function (edge) {
-          return ( edge.Source === this.model || edge.Target === this.model );
-        }, this);
+      if (this._relatedEdges === null) {
+        this._relatedEdges = this.model.parentGraph
+          .get('edges')
+          .filter(function (edge) {
+            return edge.Source === this.model || edge.Target === this.model;
+          }, this);
         // Toggle plugends
         if (this._relatedEdges.length >= 1) {
-          this.$(".plugend").show();
+          this.$('.plugend').show();
         } else {
-          this.$(".plugend").hide();
+          this.$('.plugend').hide();
         }
         this.model.node.view.resetRelatedEdges();
       }
@@ -6867,46 +7102,42 @@ $(function(){
     },
     highlight: function () {
       // Called by edge view
-      var plugend = this.$(".plugend");
-      plugend.addClass("highlight");
-      setTimeout(function(){
-        plugend.removeClass("highlight");
+      var plugend = this.$('.plugend');
+      plugend.addClass('highlight');
+      setTimeout(function () {
+        plugend.removeClass('highlight');
       }, 1000);
     },
     publishPort: function () {
       // i/o
-    }//,
+    }, //,
     // remove: function () {
     // }
-
   });
-
 });
 
-$(function(){
-
+$(function () {
   Iframework.PortIn = Iframework.Port.extend({
     defaults: {
-      name: "",
-      type: "",
-      description: "",
-      "default": null
+      name: '',
+      type: '',
+      description: '',
+      default: null,
     },
     initializeView: function () {
-      this.view = new Iframework.PortInView({model:this});
+      this.view = new Iframework.PortInView({model: this});
       return this.view;
-    }
-  });
-  
-  Iframework.PortsIn = Backbone.Collection.extend({
-    model: Iframework.PortIn
+    },
   });
 
+  Iframework.PortsIn = Backbone.Collection.extend({
+    model: Iframework.PortIn,
+  });
 });
 
-$(function(){
-
-  var portInTemplate = 
+$(function () {
+  // prettier-ignore
+  var portInTemplate =
     '<div class="portshown portshown-in">'+
       '<span class="hole hole-in hole-<%= type_class %> icon-login"></span>'+
       '<span class="label"><%= name %></span>'+
@@ -6914,83 +7145,90 @@ $(function(){
     '<span class="plugend plugend-in plugend-<%= type_class %>"></span>';
 
   Iframework.PortInView = Iframework.PortView.extend({
-    tagName: "div",
-    className: "port",
+    tagName: 'div',
+    className: 'port',
     portInTemplate: _.template(portInTemplate),
     events: {
-      "mousedown":                   "highlightEdge",
-      "click .hole":                 "clickhole",
-      "dragstart .hole":             "dragstart",
-      "drag .hole, .holehelper":     "drag",
-      "dragstop .hole, .holehelper": "dragstop",
-      "dragstart .plugend":          "unplugstart",
-      "drag .plugend":               "unplugdrag",
-      "dragstop .plugend":           "unplugstop",
-      "drop":                        "drop",
-      "click .disconnect":           "disconnect",
-      "submit .manualinput":         "manualinput"
+      mousedown: 'highlightEdge',
+      'click .hole': 'clickhole',
+      'dragstart .hole': 'dragstart',
+      'drag .hole, .holehelper': 'drag',
+      'dragstop .hole, .holehelper': 'dragstop',
+      'dragstart .plugend': 'unplugstart',
+      'drag .plugend': 'unplugdrag',
+      'dragstop .plugend': 'unplugstop',
+      drop: 'drop',
+      'click .disconnect': 'disconnect',
+      'submit .manualinput': 'manualinput',
       // "click .publish-port":         "publishPort"
     },
     render: function () {
-      this.$el.html( this.portInTemplate(this.model.toJSON()) );
-      this.$el.addClass("port-in");
-      this.$(".hole")
-        .draggable({
-          helper: function (e) {
-            return $('<span class="holehelper holehelper-out" />');
-          }
-        });
-      this.$(".plugend")
-        .draggable({
-          helper: function (e) {
-            return $('<span class="plugendhelper plugendhelper-in" />');
-          }
-        });
-
-      // Drag from hole
-      this.$(".hole")
-        .data({
-          model: this.model
-        });
-        
-      // The whole port is droppable
-      var accept = "";
-      var type = this.model.get("type_class");
-      if (type === "all" || type === "bang"){
-        // Anything can hit an in bang
-        accept = ".hole-out, .plugend-in";
-      } else {
-        accept = ".hole-out.hole-all, .hole-out.hole-"+type+", .plugend-in.plugend-all, .plugend-in.plugend-"+type;
-      }
-      if (type === "string"){
-        // HACK to allow int and float -> string
-        accept += ", .hole-out.hole-int, .hole-out.hole-float, .plugend-in.plugend-int, .plugend-in.plugend-float";
-      }
-      if (type === "int" || type === "float" || type === "number") {
-        // HACK to allow all int float number to connect
-        accept += ", .hole-out.hole-int, .hole-out.hole-float, .hole-out.hole-number, .plugend-in.plugend-int, .plugend-in.plugend-float, .plugend-in.plugend-number";
-      }
-      this.$el.droppable({
-        "hoverClass": "drophover",
-        "accept": accept
+      this.$el.html(this.portInTemplate(this.model.toJSON()));
+      this.$el.addClass('port-in');
+      this.$('.hole').draggable({
+        helper: function (e) {
+          return $('<span class="holehelper holehelper-out" />');
+        },
+      });
+      this.$('.plugend').draggable({
+        helper: function (e) {
+          return $('<span class="plugendhelper plugendhelper-in" />');
+        },
       });
 
-      this.$(".plugend").hide();
+      // Drag from hole
+      this.$('.hole').data({
+        model: this.model,
+      });
+
+      // The whole port is droppable
+      var accept = '';
+      var type = this.model.get('type_class');
+      if (type === 'all' || type === 'bang') {
+        // Anything can hit an in bang
+        accept = '.hole-out, .plugend-in';
+      } else {
+        accept =
+          '.hole-out.hole-all, .hole-out.hole-' +
+          type +
+          ', .plugend-in.plugend-all, .plugend-in.plugend-' +
+          type;
+      }
+      if (type === 'string') {
+        // HACK to allow int and float -> string
+        accept +=
+          ', .hole-out.hole-int, .hole-out.hole-float, .plugend-in.plugend-int, .plugend-in.plugend-float';
+      }
+      if (type === 'int' || type === 'float' || type === 'number') {
+        // HACK to allow all int float number to connect
+        accept +=
+          ', .hole-out.hole-int, .hole-out.hole-float, .hole-out.hole-number, .plugend-in.plugend-int, .plugend-in.plugend-float, .plugend-in.plugend-number';
+      }
+      this.$el.droppable({
+        hoverClass: 'drophover',
+        accept: accept,
+      });
+
+      this.$('.plugend').hide();
 
       // Disable selection for better drag+drop
-      this.$(".portshown").disableSelection();
-      
+      this.$('.portshown').disableSelection();
     },
     dragstart: function (event, ui) {
       // Add a mask so that iframes don't steal mouse
       this.model.node.parentGraph.view.maskFrames();
-      
+
       // Highlight matching ins or outs
-      $("div.ports-"+(this.model.isIn ? "out" : "in")+" span.hole")
-        .addClass('fade');
-      $("div.ports-"+(this.model.isIn ? "out" : "in")+" span.hole-" + this.model.get('type_class'))
-        .addClass('highlight');
-      
+      $(
+        'div.ports-' + (this.model.isIn ? 'out' : 'in') + ' span.hole'
+      ).addClass('fade');
+      $(
+        'div.ports-' +
+          (this.model.isIn ? 'out' : 'in') +
+          ' span.hole-' +
+          this.model.get('type_class')
+      ).addClass('highlight');
+
       // Edge preview
       var edgePreview = new Iframework.EdgeView();
       Iframework.edgePreview = edgePreview;
@@ -7006,13 +7244,13 @@ $(function(){
         var dragY = ui.offset.top + 8 + Iframework.shownGraph.view.el.scrollTop;
         var thisX = this.portOffsetLeft();
         var thisY = this.portOffsetTop();
-        
+
         // Edge preview
         var positions = {
-          fromX: (this.model.isIn ? dragX-2 : thisX),
-          fromY: (this.model.isIn ? dragY : thisY),
-          toX: (this.model.isIn ? thisX : dragX+20),
-          toY: (this.model.isIn ? thisY : dragY)
+          fromX: this.model.isIn ? dragX - 2 : thisX,
+          fromY: this.model.isIn ? dragY : thisY,
+          toX: this.model.isIn ? thisX : dragX + 20,
+          toY: this.model.isIn ? thisY : dragY,
         };
         Iframework.edgePreview.setPositions(positions);
         Iframework.edgePreview.redraw();
@@ -7024,12 +7262,12 @@ $(function(){
       // Remove iframe masks
       this.model.node.parentGraph.view.unmaskFrames();
 
-      $(".hole").removeClass("fade highlight");
-      
+      $('.hole').removeClass('fade highlight');
+
       // Edge preview
       Iframework.edgePreview.remove();
       Iframework.edgePreview = undefined;
-      if (this.relatedEdges().length < 1){
+      if (this.relatedEdges().length < 1) {
         this.$('.plugend').hide();
       }
 
@@ -7043,19 +7281,19 @@ $(function(){
         this.armDelete = false;
       } else {
         // Connect wire
-        var from = $(ui.draggable).data("model");
+        var from = $(ui.draggable).data('model');
         var to = this.model;
-        var source = (this.model.isIn ? from : to);
-        var target = (this.model.isIn ? to : from);
+        var source = this.model.isIn ? from : to;
+        var target = this.model.isIn ? to : from;
         var edge = new Iframework.Edge({
           source: [source.node.id, source.id],
           target: [target.node.id, target.id],
-          parentGraph: this.model.parentNode.parentGraph
+          parentGraph: this.model.parentNode.parentGraph,
         });
         if (Iframework.edgePreview) {
           edge._color = Iframework.edgePreview._color;
         }
-        if (edge.parentGraph.addEdge(edge)){
+        if (edge.parentGraph.addEdge(edge)) {
           edge.connect();
         }
       }
@@ -7068,12 +7306,16 @@ $(function(){
     topConnectedEdge: function () {
       var topConnected;
       var topZ = 0;
-      _.each(this.relatedEdges(), function(edge){
-        if (edge.view._z >= topZ) {
-          topZ = edge.view._z;
-          topConnected = edge;
-        }
-      }, this);
+      _.each(
+        this.relatedEdges(),
+        function (edge) {
+          if (edge.view._z >= topZ) {
+            topZ = edge.view._z;
+            topConnected = edge;
+          }
+        },
+        this
+      );
       return topConnected;
     },
     unplugstart: function (event, ui) {
@@ -7082,21 +7324,29 @@ $(function(){
 
       // Find top connected wire
       var lastConnected = this.topConnectedEdge();
-      if (!lastConnected) { return false; }
+      if (!lastConnected) {
+        return false;
+      }
 
       this.unpluggingEdge = lastConnected;
       this.unpluggingEdge.view.dim();
-      if (this.relatedEdges().length===1) {
-        this.$(".plugend").hide();
+      if (this.relatedEdges().length === 1) {
+        this.$('.plugend').hide();
       }
 
-      var thatPort = this.model.isIn ? this.unpluggingEdge.Source : this.unpluggingEdge.Target;
-      this.$(".plugend").data("model", thatPort);
-      
+      var thatPort = this.model.isIn
+        ? this.unpluggingEdge.Source
+        : this.unpluggingEdge.Target;
+      this.$('.plugend').data('model', thatPort);
+
       // Highlight related ins or outs
-      $("div.ports-"+(this.model.isIn ? "in" : "out")+" span.hole-" + this.model.get('type_class'))
-        .addClass('highlight');
-      
+      $(
+        'div.ports-' +
+          (this.model.isIn ? 'in' : 'out') +
+          ' span.hole-' +
+          this.model.get('type_class')
+      ).addClass('highlight');
+
       // Edge preview
       var edgePreview = new Iframework.EdgeView();
       edgePreview.setColor(this.unpluggingEdge.view._color);
@@ -7111,16 +7361,18 @@ $(function(){
       if (Iframework.edgePreview && this.unpluggingEdge) {
         var dragX = ui.offset.left + Iframework.shownGraph.view.el.scrollLeft;
         var dragY = ui.offset.top + 6 + Iframework.shownGraph.view.el.scrollTop;
-        var thatPortView = this.model.isIn ? this.unpluggingEdge.Source.view : this.unpluggingEdge.Target.view;
+        var thatPortView = this.model.isIn
+          ? this.unpluggingEdge.Source.view
+          : this.unpluggingEdge.Target.view;
         var thatX = thatPortView.portOffsetLeft();
         var thatY = thatPortView.portOffsetTop();
-        
+
         // Edge preview
         var positions = {
-          fromX: (this.model.isIn ? thatX : dragX-2),
-          fromY: (this.model.isIn ? thatY : dragY),
-          toX: (this.model.isIn ? dragX+20 : thatX),
-          toY: (this.model.isIn ? dragY : thatY)
+          fromX: this.model.isIn ? thatX : dragX - 2,
+          fromY: this.model.isIn ? thatY : dragY,
+          toX: this.model.isIn ? dragX + 20 : thatX,
+          toY: this.model.isIn ? dragY : thatY,
         };
         Iframework.edgePreview.setPositions(positions);
         Iframework.edgePreview.redraw();
@@ -7132,7 +7384,7 @@ $(function(){
       if (this.armDelete && this.unpluggingEdge) {
         this.model.parentGraph.removeEdge(this.unpluggingEdge);
       } else {
-        this.$(".plugend").show();
+        this.$('.plugend').show();
         this.unpluggingEdge.view.undim();
       }
       this.armDelete = false;
@@ -7143,57 +7395,54 @@ $(function(){
     clickhole: function (event) {
       // Hide previous connected edges editor
       $('div.edge-edit').remove();
-        
-      var hole = this.$(".hole");
-          
+
+      var hole = this.$('.hole');
+
       // Show connected edges editor
       var isIn = this.model.isIn;
-      var portName = this.model.get("name");
-      
+      var portName = this.model.get('name');
+
       var popupEl = this.popupTemplate(this.model.toJSON());
       popupEl = $(popupEl);
       this.$el.append(popupEl);
 
       // Close button
-      popupEl.children("button.close")
-        .click(function(){
-          $('div.edge-edit').remove();
-          Iframework.selectedPort = null;
-        });
+      popupEl.children('button.close').click(function () {
+        $('div.edge-edit').remove();
+        Iframework.selectedPort = null;
+      });
 
-      var typeabbr = this.model.get("type").substring(0,3);
+      var typeabbr = this.model.get('type').substring(0, 3);
 
       var showForm = false;
-      var inputForm = $('<form />')
-        .attr({
-          "id": this.model.node.id + "_" + this.model.get("name"),
-          "class": "manualinput",
-          "novalidate": ""
-        });
-      if (typeabbr === "int" || typeabbr === "num" || typeabbr === "flo" ) {
+      var inputForm = $('<form />').attr({
+        id: this.model.node.id + '_' + this.model.get('name'),
+        class: 'manualinput',
+        novalidate: '',
+      });
+      if (typeabbr === 'int' || typeabbr === 'num' || typeabbr === 'flo') {
         showForm = true;
         inputForm.append(
-          $("<input />").attr({
+          $('<input />').attr({
             // "type": "number",
             // "min": hole.data("min"),
             // "max": hole.data("max"),
             // "step": "any",
-            "value": this.model.node.get("state")[this.model.get("name")],
-            "title": 'use equations like "=x*100" to change all incoming values'
+            value: this.model.node.get('state')[this.model.get('name')],
+            title: 'use equations like "=x*100" to change all incoming values',
           })
         );
-      } else if (typeabbr === "col") {
+      } else if (typeabbr === 'col') {
         // Use the spectrum event instead of standard form submit
         showForm = true;
-        var color = this.model.node.get("state")[this.model.get("name")];
-        var input = $("<input />")
-          .attr({
-            "type": "text",
-            "maxlength": 140,
-            "value": color,
-            "style": "width: 90%"
-          });
-        inputForm.append( input );
+        var color = this.model.node.get('state')[this.model.get('name')];
+        var input = $('<input />').attr({
+          type: 'text',
+          maxlength: 140,
+          value: color,
+          style: 'width: 90%',
+        });
+        inputForm.append(input);
         // Has to be after added to page
         var self = this;
         input
@@ -7205,96 +7454,99 @@ $(function(){
             showPalette: true,
             palette: [
               Iframework.wireColors,
-              ["red", "green", "blue", "purple", "cyan", "magenta", "yellow"],
-              ["black", "#333", "#666", "#999", "#AAA", "#CCC", "white"]
+              ['red', 'green', 'blue', 'purple', 'cyan', 'magenta', 'yellow'],
+              ['black', '#333', '#666', '#999', '#AAA', '#CCC', 'white'],
             ],
             showSelectionPalette: true,
-            localStorageKey: "iframework.settings.colorPalette",
-            change: function(color) {
+            localStorageKey: 'iframework.settings.colorPalette',
+            change: function (color) {
               // TODO change to toString when https://github.com/bgrins/spectrum/issues/92 fixed
-              var str = color.toRgbString(); 
-              input.val( str );
+              var str = color.toRgbString();
+              input.val(str);
               self.model.node.receive(portName, str);
               self.model.node.setValue(portName, str);
             },
-            hide: function(color) {
+            hide: function (color) {
               input.show();
             },
             beforeShow: function () {
-              input.spectrum("set", input.val());
+              input.spectrum('set', input.val());
               input.hide();
-            }
+            },
           })
           .show(); // Unhide
-      } else if (typeabbr === "str") {
+      } else if (typeabbr === 'str') {
         showForm = true;
         inputForm.append(
-          $("<input />").attr({
-            "type": "text",
-            "maxlength": hole.data("max"),
-            "value": this.model.node.get("state")[this.model.get("name")]
+          $('<input />').attr({
+            type: 'text',
+            maxlength: hole.data('max'),
+            value: this.model.node.get('state')[this.model.get('name')],
           })
         );
-      } else if (typeabbr === "arr") {
+      } else if (typeabbr === 'arr') {
         showForm = true;
-        var a = this.model.node.get("state")[this.model.get("name")];
-        if (Iframework.util.type(a) !== "array") { a = []; }
-        var s = "";
-        for (var i=0; i<a.length; i++) {
-          s += (i>0 ? ", " : "") + a[i];
+        var a = this.model.node.get('state')[this.model.get('name')];
+        if (Iframework.util.type(a) !== 'array') {
+          a = [];
+        }
+        var s = '';
+        for (var i = 0; i < a.length; i++) {
+          s += (i > 0 ? ', ' : '') + a[i];
         }
         inputForm.append(
-          $("<input />").attr({
-            "type": "text",
-            "value": s
+          $('<input />').attr({
+            type: 'text',
+            value: s,
           })
         );
-      } else if (typeabbr === "boo") {
+      } else if (typeabbr === 'boo') {
         showForm = true;
-        var val = this.model.node.get("state")[this.model.get("name")];
-        val = (Boolean(val) && val !== "false");
+        var val = this.model.node.get('state')[this.model.get('name')];
+        val = Boolean(val) && val !== 'false';
         inputForm.append(
-          $("<input />")
-            .attr({
-              "type": "checkbox",
-              "checked": val
-            })
+          $('<input />').attr({
+            type: 'checkbox',
+            checked: val,
+          })
         );
-      } else if (typeabbr === "ban") {
-        inputForm.append("<label>Send bang:</label> ");
+      } else if (typeabbr === 'ban') {
+        inputForm.append('<label>Send bang:</label> ');
         showForm = true;
       }
       if (showForm) {
         inputForm.append(
-          $("<button></button>")
-            .attr({
-              "type": "submit",
-              "class": "send icon-ok",
-              "title": "send value to module"
-            })
+          $('<button></button>').attr({
+            type: 'submit',
+            class: 'send icon-ok',
+            title: 'send value to module',
+          })
         );
         popupEl.append(inputForm);
       }
-        
-      $("#select_"+this.model.id)
-        .button({
-          icons: {
-            primary: "ui-icon-power"
-          }
-        });
+
+      $('#select_' + this.model.id).button({
+        icons: {
+          primary: 'ui-icon-power',
+        },
+      });
       if (this.relatedEdges().length > 0) {
         popupEl.append('<h2>disconnect</h2>');
-        _.each(this.relatedEdges(), function (edge) {
-          var edgeEditEl = this.edgeEditTemplate(edge.view);
-          popupEl.append(edgeEditEl);
-        }, this);
+        _.each(
+          this.relatedEdges(),
+          function (edge) {
+            var edgeEditEl = this.edgeEditTemplate(edge.view);
+            popupEl.append(edgeEditEl);
+          },
+          this
+        );
       }
 
       // This input's options
-      if (this.model.get("options") && this.model.get("options").length > 0) {
+      if (this.model.get('options') && this.model.get('options').length > 0) {
         this.$('input').autocomplete({
           minLength: 0,
-          source: this.model.get("options")
+          source: this.model.get('options'),
         });
       }
 
@@ -7302,34 +7554,34 @@ $(function(){
       event.stopPropagation();
     },
     manualinput: function (event) {
-      var inputname = this.model.get("name");
-      var type = this.model.get("type");
-      var typeabbr = type.substring(0,3);
+      var inputname = this.model.get('name');
+      var type = this.model.get('type');
+      var typeabbr = type.substring(0, 3);
 
       var val;
       var saveToState = true;
-      if (this.$(".manualinput").children("input")){
-        val = this.$(".manualinput").children("input").val();
+      if (this.$('.manualinput').children('input')) {
+        val = this.$('.manualinput').children('input').val();
       }
-      if (this.$(".manualinput").children("input:checkbox").length > 0) {
-        if (this.$(".manualinput").children("input:checkbox").is(':checked')) {
+      if (this.$('.manualinput').children('input:checkbox').length > 0) {
+        if (this.$('.manualinput').children('input:checkbox').is(':checked')) {
           val = true;
         } else {
           val = false;
         }
       }
-      if (type === "int" || type === "number" || type === "float") {
-        if (typeof val === "string" && val.toString().substr(0,1)==="=") {
+      if (type === 'int' || type === 'number' || type === 'float') {
+        if (typeof val === 'string' && val.toString().substr(0, 1) === '=') {
           // Try to parse equation
-        } else if (type === "int") {
+        } else if (type === 'int') {
           val = parseInt(val, 10);
-        } else if (type === "number" || type === "float") {
+        } else if (type === 'number' || type === 'float') {
           val = parseFloat(val);
         }
       }
-      if (typeabbr === "arr") {
+      if (typeabbr === 'arr') {
         try {
-          val = JSON.parse( "[" + val + "]" );
+          val = JSON.parse('[' + val + ']');
         } catch (error) {
           // boo
           return false;
@@ -7337,7 +7589,7 @@ $(function(){
       }
       if (val === undefined) {
         // Bang
-        val = "!";
+        val = '!';
         saveToState = false;
       }
       if (saveToState) {
@@ -7348,7 +7600,9 @@ $(function(){
     },
     disconnect: function (event) {
       //HACK
-      var edge = this.model.parentGraph.get("edges").getByCid( $(event.target).parents(".edge-edit-item").attr("id") );
+      var edge = this.model.parentGraph
+        .get('edges')
+        .getByCid($(event.target).parents('.edge-edit-item').attr('id'));
       if (edge) {
         this.model.parentGraph.removeEdge(edge);
       }
@@ -7361,15 +7615,17 @@ $(function(){
     _relatedEdges: null,
     relatedEdges: function () {
       // Resets to null on dis/connect
-      if ( this._relatedEdges === null ) {
-        this._relatedEdges = this.model.parentGraph.get("edges").filter( function (edge) {
-          return ( edge.Source === this.model || edge.Target === this.model );
-        }, this);
+      if (this._relatedEdges === null) {
+        this._relatedEdges = this.model.parentGraph
+          .get('edges')
+          .filter(function (edge) {
+            return edge.Source === this.model || edge.Target === this.model;
+          }, this);
         // Toggle plugends
         if (this._relatedEdges.length >= 1) {
-          this.$(".plugend").show();
+          this.$('.plugend').show();
         } else {
-          this.$(".plugend").hide();
+          this.$('.plugend').hide();
         }
         // this.model.node.view.resetRelatedEdges();
       }
@@ -7390,68 +7646,64 @@ $(function(){
     },
     highlight: function () {
       // Called by edge view
-      var plugend = this.$(".plugend");
-      plugend.addClass("highlight");
-      setTimeout(function(){
-        plugend.removeClass("highlight");
+      var plugend = this.$('.plugend');
+      plugend.addClass('highlight');
+      setTimeout(function () {
+        plugend.removeClass('highlight');
       }, 1000);
     },
     publishPort: function () {
       // Make breakout
       var breakout = this.model.parentNode.parentGraph.addNode({
-        src: "meemoo:subgraph/input",
+        src: 'meemoo:subgraph/input',
         x: 100,
         y: 100,
         w: 80,
         h: 60,
         state: {
-          label: this.model.id
+          label: this.model.id,
         },
-        parentGraph: this.model.parentNode.parentGraph
+        parentGraph: this.model.parentNode.parentGraph,
       });
       // Connect edge
       var edge = new Iframework.Edge({
-        source: [breakout.id, "data"], 
+        source: [breakout.id, 'data'],
         target: [this.model.parentNode.id, this.model.id],
-        parentGraph: this.model.parentNode.parentGraph
+        parentGraph: this.model.parentNode.parentGraph,
       });
-      this.model.parentNode.parentGraph.addEdge( edge );
-    }
-
+      this.model.parentNode.parentGraph.addEdge(edge);
+    },
   });
-
 });
 
-$(function(){
-
+$(function () {
   Iframework.PortOut = Iframework.Port.extend({
     defaults: {
-      name: "",
-      type: "",
-      description: "",
-      "default": null
+      name: '',
+      type: '',
+      description: '',
+      default: null,
     },
     initializeView: function () {
-      this.view = new Iframework.PortOutView({model:this});
+      this.view = new Iframework.PortOutView({model: this});
       return this.view;
-    }
-  });
-  
-  Iframework.PortsOut = Backbone.Collection.extend({
-    model: Iframework.PortOut
+    },
   });
 
+  Iframework.PortsOut = Backbone.Collection.extend({
+    model: Iframework.PortOut,
+  });
 });
 
-$(function(){
-    
-  var portOutTemplate = 
+$(function () {
+  // prettier-ignore
+  var portOutTemplate =
     '<div class="portshown portshown-out">'+
       '<span class="label"><%= name %></span>'+
       '<span class="hole hole-out hole-<%= type_class %> icon-logout"></span>'+
     '</div>'+
     '<span class="plugend plugend-out plugend-<%= type_class %>"></span>';
-    
+
   // var popupTemplate =
   //   '<div class="edge-edit">'+
   //     '<button class="close">close</button>'+
@@ -7466,83 +7718,89 @@ $(function(){
   //   '</div>';
 
   Iframework.PortOutView = Iframework.PortView.extend({
-    tagName: "div",
-    className: "port",
+    tagName: 'div',
+    className: 'port',
     portOutTemplate: _.template(portOutTemplate),
     // popupTemplate: _.template(popupTemplate),
     // edgeEditTemplate: _.template(edgeEditTemplate),
     events: {
-      "mousedown":                   "highlightEdge",
-      "click .hole":                 "clickhole",
-      "dragstart .hole":             "dragstart",
-      "drag .hole, .holehelper":     "drag",
-      "dragstop .hole, .holehelper": "dragstop",
-      "dragstart .plugend":          "unplugstart",
-      "drag .plugend":               "unplugdrag",
-      "dragstop .plugend":           "unplugstop",
-      "drop":                        "drop",
-      "click .disconnect":           "disconnect"
+      mousedown: 'highlightEdge',
+      'click .hole': 'clickhole',
+      'dragstart .hole': 'dragstart',
+      'drag .hole, .holehelper': 'drag',
+      'dragstop .hole, .holehelper': 'dragstop',
+      'dragstart .plugend': 'unplugstart',
+      'drag .plugend': 'unplugdrag',
+      'dragstop .plugend': 'unplugstop',
+      drop: 'drop',
+      'click .disconnect': 'disconnect',
       // "click .publish-port":         "publishPort"
     },
     render: function () {
-      this.$el.html( this.portOutTemplate(this.model.toJSON()) );
-      this.$el.addClass("port-out");
-      this.$(".hole")
-        .draggable({
-          helper: function (e) {
-            return $('<span class="holehelper holehelper-in" />');
-          }
-        });
-      this.$(".plugend")
-        .draggable({
-          helper: function (e) {
-            return $('<span class="plugendhelper plugendhelper-out" />');
-          }
-        });
-
-      // Drag from hole
-      this.$(".hole")
-        .data({
-          model: this.model
-        });
-        
-      // The whole port is droppable
-      var accept = "";
-      var type = this.model.get("type_class");
-      if (type === "all"){
-        accept = ".hole-in, .plugend-out";
-      } else {
-        accept = ".hole-in.hole-all, .hole-in.hole-"+type+", .plugend-out.plugend-all, .plugend-out.plugend-"+type;
-        // Anything can hit an in bang
-        accept += ", .hole-in.hole-bang, .plugend-out.plugend-string";
-      }
-      if (type === "int" || type === "float" || type === "number") {
-        // Allow int and float -> string
-        accept += ", .hole-in.hole-string, .plugend-out.plugend-string";
-        // Allow all int float number to connect
-        accept += ", .hole-in.hole-int, .hole-in.hole-float, .hole-out.hole-number, .plugend-out.plugend-int, .plugend-out.plugend-float, .plugend-out.plugend-number";
-      }
-      this.$el.droppable({
-        "hoverClass": "drophover",
-        "accept": accept
+      this.$el.html(this.portOutTemplate(this.model.toJSON()));
+      this.$el.addClass('port-out');
+      this.$('.hole').draggable({
+        helper: function (e) {
+          return $('<span class="holehelper holehelper-in" />');
+        },
+      });
+      this.$('.plugend').draggable({
+        helper: function (e) {
+          return $('<span class="plugendhelper plugendhelper-out" />');
+        },
       });
 
-      this.$(".plugend").hide();
+      // Drag from hole
+      this.$('.hole').data({
+        model: this.model,
+      });
+
+      // The whole port is droppable
+      var accept = '';
+      var type = this.model.get('type_class');
+      if (type === 'all') {
+        accept = '.hole-in, .plugend-out';
+      } else {
+        accept =
+          '.hole-in.hole-all, .hole-in.hole-' +
+          type +
+          ', .plugend-out.plugend-all, .plugend-out.plugend-' +
+          type;
+        // Anything can hit an in bang
+        accept += ', .hole-in.hole-bang, .plugend-out.plugend-string';
+      }
+      if (type === 'int' || type === 'float' || type === 'number') {
+        // Allow int and float -> string
+        accept += ', .hole-in.hole-string, .plugend-out.plugend-string';
+        // Allow all int float number to connect
+        accept +=
+          ', .hole-in.hole-int, .hole-in.hole-float, .hole-out.hole-number, .plugend-out.plugend-int, .plugend-out.plugend-float, .plugend-out.plugend-number';
+      }
+      this.$el.droppable({
+        hoverClass: 'drophover',
+        accept: accept,
+      });
+
+      this.$('.plugend').hide();
 
       // Disable selection for better drag+drop
-      this.$(".portshown").disableSelection();
-      
+      this.$('.portshown').disableSelection();
     },
     dragstart: function (event, ui) {
       // Add a mask so that iframes don't steal mouse
       this.model.node.parentGraph.view.maskFrames();
-      
+
       // Highlight matching ins or outs
-      $("div.ports-"+(this.model.isIn ? "out" : "in")+" span.hole")
-        .addClass('fade');
-      $("div.ports-"+(this.model.isIn ? "out" : "in")+" span.hole-" + this.model.get('type_class'))
-        .addClass('highlight');
-      
+      $(
+        'div.ports-' + (this.model.isIn ? 'out' : 'in') + ' span.hole'
+      ).addClass('fade');
+      $(
+        'div.ports-' +
+          (this.model.isIn ? 'out' : 'in') +
+          ' span.hole-' +
+          this.model.get('type_class')
+      ).addClass('highlight');
+
       // Edge preview
       var edgePreview = new Iframework.EdgeView();
       Iframework.edgePreview = edgePreview;
@@ -7558,13 +7816,13 @@ $(function(){
         var dragY = ui.offset.top + 8 + Iframework.shownGraph.view.el.scrollTop;
         var thisX = this.portOffsetLeft();
         var thisY = this.portOffsetTop();
-        
+
         // Edge preview
         var positions = {
-          fromX: (this.model.isIn ? dragX-2 : thisX),
-          fromY: (this.model.isIn ? dragY : thisY),
-          toX: (this.model.isIn ? thisX : dragX+20),
-          toY: (this.model.isIn ? thisY : dragY)
+          fromX: this.model.isIn ? dragX - 2 : thisX,
+          fromY: this.model.isIn ? dragY : thisY,
+          toX: this.model.isIn ? thisX : dragX + 20,
+          toY: this.model.isIn ? thisY : dragY,
         };
         Iframework.edgePreview.setPositions(positions);
         Iframework.edgePreview.redraw();
@@ -7576,12 +7834,12 @@ $(function(){
       // Remove iframe masks
       this.model.node.parentGraph.view.unmaskFrames();
 
-      $(".hole").removeClass("fade highlight");
-      
+      $('.hole').removeClass('fade highlight');
+
       // Edge preview
       Iframework.edgePreview.remove();
       Iframework.edgePreview = undefined;
-      if (this.relatedEdges().length < 1){
+      if (this.relatedEdges().length < 1) {
         this.$('.plugend').hide();
       }
 
@@ -7595,19 +7853,19 @@ $(function(){
         this.armDelete = false;
       } else {
         // Connect wire
-        var from = $(ui.draggable).data("model");
+        var from = $(ui.draggable).data('model');
         var to = this.model;
-        var source = (this.model.isIn ? from : to);
-        var target = (this.model.isIn ? to : from);
+        var source = this.model.isIn ? from : to;
+        var target = this.model.isIn ? to : from;
         var edge = new Iframework.Edge({
           source: [source.node.id, source.id],
           target: [target.node.id, target.id],
-          parentGraph: this.model.parentNode.parentGraph
+          parentGraph: this.model.parentNode.parentGraph,
         });
         if (Iframework.edgePreview) {
           edge._color = Iframework.edgePreview._color;
         }
-        if (edge.parentGraph.addEdge(edge)){
+        if (edge.parentGraph.addEdge(edge)) {
           edge.connect();
         }
       }
@@ -7620,12 +7878,16 @@ $(function(){
     topConnectedEdge: function () {
       var topConnected;
       var topZ = 0;
-      _.each(this.relatedEdges(), function(edge){
-        if (edge.view && edge.view._z >= topZ) {
-          topZ = edge.view._z;
-          topConnected = edge;
-        }
-      }, this);
+      _.each(
+        this.relatedEdges(),
+        function (edge) {
+          if (edge.view && edge.view._z >= topZ) {
+            topZ = edge.view._z;
+            topConnected = edge;
+          }
+        },
+        this
+      );
       return topConnected;
     },
     unplugstart: function (event, ui) {
@@ -7634,21 +7896,29 @@ $(function(){
 
       // Find top connected wire
       var lastConnected = this.topConnectedEdge();
-      if (!lastConnected) { return false; }
+      if (!lastConnected) {
+        return false;
+      }
 
       this.unpluggingEdge = lastConnected;
       this.unpluggingEdge.view.dim();
-      if (this.relatedEdges().length===1) {
-        this.$(".plugend").hide();
+      if (this.relatedEdges().length === 1) {
+        this.$('.plugend').hide();
       }
 
-      var thatPort = this.model.isIn ? this.unpluggingEdge.Source : this.unpluggingEdge.Target;
-      this.$(".plugend").data("model", thatPort);
-      
+      var thatPort = this.model.isIn
+        ? this.unpluggingEdge.Source
+        : this.unpluggingEdge.Target;
+      this.$('.plugend').data('model', thatPort);
+
       // Highlight related ins or outs
-      $("div.ports-"+(this.model.isIn ? "in" : "out")+" span.hole-" + this.model.get('type_class'))
-        .addClass('highlight');
-      
+      $(
+        'div.ports-' +
+          (this.model.isIn ? 'in' : 'out') +
+          ' span.hole-' +
+          this.model.get('type_class')
+      ).addClass('highlight');
+
       // Edge preview
       var edgePreview = new Iframework.EdgeView();
       edgePreview.setColor(this.unpluggingEdge.view._color);
@@ -7663,16 +7933,18 @@ $(function(){
       if (Iframework.edgePreview && this.unpluggingEdge) {
         var dragX = ui.offset.left + Iframework.shownGraph.view.el.scrollLeft;
         var dragY = ui.offset.top + 6 + Iframework.shownGraph.view.el.scrollTop;
-        var thatPortView = this.model.isIn ? this.unpluggingEdge.Source.view : this.unpluggingEdge.Target.view;
+        var thatPortView = this.model.isIn
+          ? this.unpluggingEdge.Source.view
+          : this.unpluggingEdge.Target.view;
         var thatX = thatPortView.portOffsetLeft();
         var thatY = thatPortView.portOffsetTop();
-        
+
         // Edge preview
         var positions = {
-          fromX: (this.model.isIn ? thatX : dragX-2),
-          fromY: (this.model.isIn ? thatY : dragY),
-          toX: (this.model.isIn ? dragX+20 : thatX),
-          toY: (this.model.isIn ? dragY : thatY)
+          fromX: this.model.isIn ? thatX : dragX - 2,
+          fromY: this.model.isIn ? thatY : dragY,
+          toX: this.model.isIn ? dragX + 20 : thatX,
+          toY: this.model.isIn ? dragY : thatY,
         };
         Iframework.edgePreview.setPositions(positions);
         Iframework.edgePreview.redraw();
@@ -7684,7 +7956,7 @@ $(function(){
       if (this.armDelete && this.unpluggingEdge) {
         this.model.parentGraph.removeEdge(this.unpluggingEdge);
       } else {
-        this.$(".plugend").show();
+        this.$('.plugend').show();
         this.unpluggingEdge.view.undim();
       }
       this.armDelete = false;
@@ -7695,45 +7967,47 @@ $(function(){
     clickhole: function (event) {
       // Hide previous connected edges editor
       $('div.edge-edit').remove();
-        
-      var hole = this.$(".hole");
-          
+
+      var hole = this.$('.hole');
+
       // Show connected edges editor
       var isIn = this.model.isIn;
-      var portName = this.model.get("name");
-      
+      var portName = this.model.get('name');
+
       var popupEl = this.popupTemplate(this.model.toJSON());
       popupEl = $(popupEl);
       this.$el.append(popupEl);
 
       // Close button
-      popupEl.children("button.close")
-        .click(function(){
-          $('div.edge-edit').remove();
-          Iframework.selectedPort = null;
-        });
+      popupEl.children('button.close').click(function () {
+        $('div.edge-edit').remove();
+        Iframework.selectedPort = null;
+      });
 
-      var typeabbr = this.model.get("type").substring(0,3);
-      
-      $("#select_"+this.model.id)
-        .button({
-          icons: {
-            primary: "ui-icon-power"
-          }
-        });
+      var typeabbr = this.model.get('type').substring(0, 3);
+
+      $('#select_' + this.model.id).button({
+        icons: {
+          primary: 'ui-icon-power',
+        },
+      });
       if (this.relatedEdges().length > 0) {
         popupEl.append('<h2>disconnect</h2>');
-        _.each(this.relatedEdges(), function (edge) {
-          var edgeEditEl = this.edgeEditTemplate(edge.view);
-          popupEl.append(edgeEditEl);
-        }, this);
+        _.each(
+          this.relatedEdges(),
+          function (edge) {
+            var edgeEditEl = this.edgeEditTemplate(edge.view);
+            popupEl.append(edgeEditEl);
+          },
+          this
+        );
       }
 
       // This input's options
-      if (this.model.get("options") && this.model.get("options").length > 0) {
+      if (this.model.get('options') && this.model.get('options').length > 0) {
         this.$('input').autocomplete({
           minLength: 0,
-          source: this.model.get("options")
+          source: this.model.get('options'),
         });
       }
 
@@ -7742,7 +8016,9 @@ $(function(){
     },
     disconnect: function (event) {
       //HACK
-      var edge = this.model.parentGraph.get("edges").getByCid( $(event.target).parents(".edge-edit-item").attr("id") );
+      var edge = this.model.parentGraph
+        .get('edges')
+        .getByCid($(event.target).parents('.edge-edit-item').attr('id'));
       if (edge) {
         this.model.parentGraph.removeEdge(edge);
       }
@@ -7755,15 +8031,17 @@ $(function(){
     _relatedEdges: null,
     relatedEdges: function () {
       // Resets to null on dis/connect
-      if ( this._relatedEdges === null ) {
-        this._relatedEdges = this.model.parentGraph.get("edges").filter( function (edge) {
-          return ( edge.Source === this.model || edge.Target === this.model );
-        }, this);
+      if (this._relatedEdges === null) {
+        this._relatedEdges = this.model.parentGraph
+          .get('edges')
+          .filter(function (edge) {
+            return edge.Source === this.model || edge.Target === this.model;
+          }, this);
         // Toggle plugends
         if (this._relatedEdges.length >= 1) {
-          this.$(".plugend").show();
+          this.$('.plugend').show();
         } else {
-          this.$(".plugend").hide();
+          this.$('.plugend').hide();
         }
         // this.model.node.view.resetRelatedEdges();
       }
@@ -7784,124 +8062,128 @@ $(function(){
     },
     highlight: function () {
       // Called by edge view
-      var plugend = this.$(".plugend");
-      plugend.addClass("highlight");
-      setTimeout(function(){
-        plugend.removeClass("highlight");
+      var plugend = this.$('.plugend');
+      plugend.addClass('highlight');
+      setTimeout(function () {
+        plugend.removeClass('highlight');
       }, 1000);
     },
     publishPort: function () {
       // Make breakout
       var breakout = this.model.parentNode.parentGraph.addNode({
-        src: "meemoo:subgraph/output",
+        src: 'meemoo:subgraph/output',
         x: 500,
         y: 500,
         w: 80,
         h: 60,
         state: {
-          label: this.model.id
+          label: this.model.id,
         },
-        parentGraph: this.model.parentNode.parentGraph
+        parentGraph: this.model.parentNode.parentGraph,
       });
       // Connect edge
       var edge = new Iframework.Edge({
-        source: [this.model.parentNode.id, this.model.id], 
-        target: [breakout.id, "data"],
-        parentGraph: this.model.parentNode.parentGraph
+        source: [this.model.parentNode.id, this.model.id],
+        target: [breakout.id, 'data'],
+        parentGraph: this.model.parentNode.parentGraph,
       });
-      this.model.parentNode.parentGraph.addEdge( edge );
-    }
-
+      this.model.parentNode.parentGraph.addEdge(edge);
+    },
   });
-
 });
 
 // Module is used for Iframework.Library and has info about ins and outs
 // Node is used by Graph, and has info about x, y, w, h
 
-$(function(){
-
+$(function () {
   Iframework.Module = Backbone.Model.extend({
     defaults: {
-      "src": "",
-      "info": {}
+      src: '',
+      info: {},
     },
     initialize: function () {
-      var srcSplit = this.get("src").split(":");
-      this.isNative = (srcSplit[0] === "meemoo");
+      var srcSplit = this.get('src').split(':');
+      this.isNative = srcSplit[0] === 'meemoo';
       if (this.isNative) {
-        this.groupAndName = srcSplit[1].split("/");
+        this.groupAndName = srcSplit[1].split('/');
       }
     },
     initializeView: function () {
       if (!this.view) {
-        this.view = new Iframework.ModuleView({model:this});
+        this.view = new Iframework.ModuleView({model: this});
       }
       return this.view;
     },
     toJSON: function () {
       return {
-        "src": this.get("src"),
-        "info": this.get("info")
+        src: this.get('src'),
+        info: this.get('info'),
       };
-    }
+    },
   });
-  
+
   Iframework.Modules = Backbone.Collection.extend({
     model: Iframework.Module,
     findOrAdd: function (node) {
       var module;
-      module = this.find(function(module){
-        return module.get("src") === node.get("src");
+      module = this.find(function (module) {
+        return module.get('src') === node.get('src');
       });
       if (!module) {
-        module = new Iframework.Module({"node":node});
+        module = new Iframework.Module({node: node});
         this.add(module);
       }
       return module;
-    }
+    },
   });
-
 });
 
-$(function(){
-
-  var template = 
+$(function () {
+  var template =
     '<div class="addnode button module-icon" title="<%= info.description %>"></div>' +
     '<h2 class="title" title="<%= src %>"><%= info.title %></h2>';
 
   Iframework.ModuleView = Backbone.View.extend({
-    tagName: "div",
-    className: "library-module",
+    tagName: 'div',
+    className: 'library-module',
     template: _.template(template),
     events: {
-      "click .addnode":     "addNode",
-      "dragstart .addnode": "dragStart",
-      "dragstop .addnode":  "dragStop"
+      'click .addnode': 'addNode',
+      'dragstart .addnode': 'dragStart',
+      'dragstop .addnode': 'dragStop',
     },
     initialize: function () {
       this.render();
 
       var self = this;
-      this.$(".addnode")
+      this.$('.addnode')
         .data({module: this.model})
         .draggable({
           helper: function () {
-            var h = $('<div class="addnode-drag-helper module-icon" />')
-              .data({
-                "meemoo-drag-type": "library-module"
-              });
-              // .text( self.model.get("info")["title"]);
+            var h = $('<div class="addnode-drag-helper module-icon" />').data({
+              'meemoo-drag-type': 'library-module',
+            });
+            // .text( self.model.get("info")["title"]);
             if (self.model.isNative) {
-              h.addClass("module-icon-"+self.model.groupAndName[0]+"-"+self.model.groupAndName[1]);
+              h.addClass(
+                'module-icon-' +
+                  self.model.groupAndName[0] +
+                  '-' +
+                  self.model.groupAndName[1]
+              );
             }
-            $(".app").append(h);
+            $('.app').append(h);
             return h;
-          }
+          },
         });
-      
+
       if (this.model.isNative) {
-        this.$(".addnode").addClass("module-icon-"+this.model.groupAndName[0]+"-"+this.model.groupAndName[1]);
+        this.$('.addnode').addClass(
+          'module-icon-' +
+            this.model.groupAndName[0] +
+            '-' +
+            this.model.groupAndName[1]
+        );
       }
 
       return this;
@@ -7909,38 +8191,35 @@ $(function(){
     render: function () {
       this.$el.html(this.template(this.model.toJSON()));
     },
-    addNode: function(options) {
-      Iframework.$(".addbyurlinput").val( this.model.get("src") );
+    addNode: function (options) {
+      Iframework.$('.addbyurlinput').val(this.model.get('src'));
       Iframework.addByUrl(options);
     },
-    dragAddNode: function(options) {
+    dragAddNode: function (options) {
       // options has x and y from GraphView.drop()
-      options.src = this.model.get("src");
-      Iframework.shownGraph.addNode( options );
+      options.src = this.model.get('src');
+      Iframework.shownGraph.addNode(options);
     },
-    dragStart: function() {
+    dragStart: function () {
       Iframework.shownGraph.view.maskFrames();
     },
-    dragStop: function() {
+    dragStop: function () {
       Iframework.shownGraph.view.unmaskFrames();
-    }
-
+    },
   });
-
 });
 
-$(function(){
-
+$(function () {
   Iframework.Edge = Backbone.Model.extend({
     defaults: {
-      source: [0, "default"], 
-      target: [0, "default"]
+      source: [0, 'default'],
+      target: [0, 'default'],
     },
     initialize: function () {
-      this.parentGraph = this.get("parentGraph");
+      this.parentGraph = this.get('parentGraph');
     },
     initializeView: function () {
-      this.view = new Iframework.EdgeView({model:this});
+      this.view = new Iframework.EdgeView({model: this});
       return this.view;
     },
     Source: null,
@@ -7950,14 +8229,25 @@ $(function(){
     connect: function () {
       // Called from graph.connectEdges()
       try {
-        this.Source = this.parentGraph.get("nodes").get( this.get("source")[0] ).Outputs.get( this.get("source")[1] );
-        this.Target = this.parentGraph.get("nodes").get( this.get("target")[0] ).Inputs.get( this.get("target")[1] );
+        this.Source = this.parentGraph
+          .get('nodes')
+          .get(this.get('source')[0])
+          .Outputs.get(this.get('source')[1]);
+        this.Target = this.parentGraph
+          .get('nodes')
+          .get(this.get('target')[0])
+          .Inputs.get(this.get('target')[1]);
       } catch (e) {
-        console.warn("Edge source or target port not found, try #"+this.connectTryCount+": "+this.toString());
+        console.warn(
+          'Edge source or target port not found, try #' +
+            this.connectTryCount +
+            ': ' +
+            this.toString()
+        );
         if (this.connectTryCount > 0) {
           this.connectTryCount--;
           var self = this;
-          _.delay(function(){
+          _.delay(function () {
             self.connect();
           }, 1000);
         }
@@ -7969,10 +8259,10 @@ $(function(){
       this.Source.connect(this);
       this.Target.connect(this);
       this.Source.node.receive({
-        connect: { 
+        connect: {
           source: [this.Source.node.id, this.Source.id],
-          target: [this.Target.node.id, this.Target.id]
-        }
+          target: [this.Target.node.id, this.Target.id],
+        },
       });
       if (this.parentGraph.view) {
         this.parentGraph.view.addEdge(this);
@@ -7983,12 +8273,12 @@ $(function(){
       this.connected = true;
 
       // Set up listener
-      this.Source.node.on( "send:"+this.Source.id, this.send, this );
+      this.Source.node.on('send:' + this.Source.id, this.send, this);
 
       return this;
     },
     send: function (value) {
-      this.Target.node.receive( this.Target.id, value );
+      this.Target.node.receive(this.Target.id, value);
     },
     disconnect: function () {
       // Called from graph.removeEdge()
@@ -7996,10 +8286,10 @@ $(function(){
         this.Source.disconnect(this);
         this.Target.disconnect(this);
         this.Source.node.receive({
-          disconnect: { 
+          disconnect: {
             source: [this.Source.node.id, this.Source.id],
-            target: [this.Target.node.id, this.Target.id]
-          }
+            target: [this.Target.node.id, this.Target.id],
+          },
         });
         if (this.Target.node.view && this.Target.node.view.Native) {
           this.Target.node.view.Native.disconnectEdge(this);
@@ -8010,35 +8300,41 @@ $(function(){
       }
 
       // Remove listener
-      this.Source.node.off( "send:"+this.Source.id, this.send, this );
+      this.Source.node.off('send:' + this.Source.id, this.send, this);
 
       this.connected = false;
     },
-    remove: function(){
+    remove: function () {
       this.parentGraph.removeEdge(this);
     },
     toJSON: function () {
       return {
-        source: this.get("source"),
-        target: this.get("target")
+        source: this.get('source'),
+        target: this.get('target'),
       };
     },
-    toString: function(){
-      return this.get("source")[0]+":"+this.get("source")[1]+"->"+this.get("target")[0]+":"+this.get("target")[1];
-    }
-  });
-  
-  Iframework.Edges = Backbone.Collection.extend({
-    model: Iframework.Edge
+    toString: function () {
+      return (
+        this.get('source')[0] +
+        ':' +
+        this.get('source')[1] +
+        '->' +
+        this.get('target')[0] +
+        ':' +
+        this.get('target')[1]
+      );
+    },
   });
 
+  Iframework.Edges = Backbone.Collection.extend({
+    model: Iframework.Edge,
+  });
 });
 
-$(function(){
-
+$(function () {
   Iframework.EdgeView = Backbone.View.extend({
-    tagName: "div",
-    className: "edge",
+    tagName: 'div',
+    className: 'edge',
     // template: _.template(template),
     positions: null,
     graphSVGElement: null,
@@ -8069,18 +8365,26 @@ $(function(){
 
         $(this.elementWire)
           .data({
-            "model": this.model
+            model: this.model,
           })
-          .click( function(event){
-            $(event.target).data("model").view.click(event);
+          .click(function (event) {
+            $(event.target).data('model').view.click(event);
           });
 
         // Listen for changes to redraw
         if (this.model.Source) {
-          this.model.Source.parentNode.on("change:x change:y change:w change:h", this.redraw, this);
+          this.model.Source.parentNode.on(
+            'change:x change:y change:w change:h',
+            this.redraw,
+            this
+          );
         }
         if (this.model.Target) {
-          this.model.Target.parentNode.on("change:x change:y", this.redraw, this);
+          this.model.Target.parentNode.on(
+            'change:x change:y',
+            this.redraw,
+            this
+          );
         }
       }
     },
@@ -8088,18 +8392,18 @@ $(function(){
       this.calcPositions();
 
       this.elementGroup = this.makeSVG('g', {
-        "transform": "translate("+this.svgX()+","+this.svgY()+")",
-        "class": "wire-group"+(this.isPreview ? " preview" : "")
+        transform: 'translate(' + this.svgX() + ',' + this.svgY() + ')',
+        class: 'wire-group' + (this.isPreview ? ' preview' : ''),
       });
 
       this.elementShadow = this.makeSVG('path', {
-        "class": "wire-shadow",
-        "d": this.svgPathShadow()
+        class: 'wire-shadow',
+        d: this.svgPathShadow(),
       });
       this.elementWire = this.makeSVG('path', {
-        "class": "wire",
-        "d": this.svgPath(),
-        "stroke": this.color()
+        class: 'wire',
+        d: this.svgPath(),
+        stroke: this.color(),
       });
 
       this.elementGroup.appendChild(this.elementShadow);
@@ -8109,8 +8413,8 @@ $(function(){
 
       // Unhide port plugends
       if (this.model) {
-        this.model.Source.view.$(".plugend").show();
-        this.model.Target.view.$(".plugend").show();
+        this.model.Source.view.$('.plugend').show();
+        this.model.Target.view.$('.plugend').show();
         this.model.parentGraph.view.resizeEdgeSVG();
       }
 
@@ -8118,9 +8422,12 @@ $(function(){
     },
     redraw: function () {
       this.calcPositions();
-      $(this.elementGroup).attr( "transform", "translate("+this.svgX()+", "+this.svgY()+")" );
-      $(this.elementWire).attr( "d", this.svgPath() );
-      $(this.elementShadow).attr( "d", this.svgPathShadow() );
+      $(this.elementGroup).attr(
+        'transform',
+        'translate(' + this.svgX() + ', ' + this.svgY() + ')'
+      );
+      $(this.elementWire).attr('d', this.svgPath());
+      $(this.elementShadow).attr('d', this.svgPathShadow());
 
       if (this.model) {
         this.model.parentGraph.view.resizeEdgeSVG();
@@ -8137,12 +8444,24 @@ $(function(){
     calcPositions: function () {
       if (this.model) {
         // Connected edge
-        var sourceName = this.model.get("source")[1];
-        var targetName = this.model.get("target")[1];
-        this.positions.fromX = this.model.Source.view.portOffsetLeft('out', sourceName);
-        this.positions.fromY = this.model.Source.view.portOffsetTop('out', sourceName);
-        this.positions.toX = this.model.Target.view.portOffsetLeft('in', targetName);
-        this.positions.toY = this.model.Target.view.portOffsetTop('in', targetName);
+        var sourceName = this.model.get('source')[1];
+        var targetName = this.model.get('target')[1];
+        this.positions.fromX = this.model.Source.view.portOffsetLeft(
+          'out',
+          sourceName
+        );
+        this.positions.fromY = this.model.Source.view.portOffsetTop(
+          'out',
+          sourceName
+        );
+        this.positions.toX = this.model.Target.view.portOffsetLeft(
+          'in',
+          targetName
+        );
+        this.positions.toY = this.model.Target.view.portOffsetTop(
+          'in',
+          targetName
+        );
       }
     },
     svgX: function () {
@@ -8164,10 +8483,32 @@ $(function(){
       var fromY = this.positions.fromY - this.svgY();
       var toX = this.positions.toX - this.svgX();
       var toY = this.positions.toY - this.svgY();
-      return "M "+ fromX +" "+ fromY +
-        " L "+ (fromX+this.pathStraight) +" "+ fromY +
-        " C "+ (fromX+this.pathCurve) +" "+ fromY +" "+ (toX-this.pathCurve) +" "+ toY +" "+ (toX-this.pathStraight) +" "+ toY +
-        " L "+ toX +" "+ toY;
+      return (
+        'M ' +
+        fromX +
+        ' ' +
+        fromY +
+        ' L ' +
+        (fromX + this.pathStraight) +
+        ' ' +
+        fromY +
+        ' C ' +
+        (fromX + this.pathCurve) +
+        ' ' +
+        fromY +
+        ' ' +
+        (toX - this.pathCurve) +
+        ' ' +
+        toY +
+        ' ' +
+        (toX - this.pathStraight) +
+        ' ' +
+        toY +
+        ' L ' +
+        toX +
+        ' ' +
+        toY
+      );
     },
     svgPathShadow: function () {
       // Same as svgPath() but y+1
@@ -8175,10 +8516,32 @@ $(function(){
       var fromY = this.positions.fromY - this.svgY() + 1;
       var toX = this.positions.toX - this.svgX();
       var toY = this.positions.toY - this.svgY() + 1;
-      return "M "+ fromX +" "+ fromY +
-        " L "+ (fromX+this.pathStraight) +" "+ fromY +
-        " C "+ (fromX+this.pathCurve) +" "+ fromY +" "+ (toX-this.pathCurve) +" "+ toY +" "+ (toX-this.pathStraight) +" "+ toY +
-        " L "+ toX +" "+ toY;
+      return (
+        'M ' +
+        fromX +
+        ' ' +
+        fromY +
+        ' L ' +
+        (fromX + this.pathStraight) +
+        ' ' +
+        fromY +
+        ' C ' +
+        (fromX + this.pathCurve) +
+        ' ' +
+        fromY +
+        ' ' +
+        (toX - this.pathCurve) +
+        ' ' +
+        toY +
+        ' ' +
+        (toX - this.pathStraight) +
+        ' ' +
+        toY +
+        ' L ' +
+        toX +
+        ' ' +
+        toY
+      );
     },
     color: function () {
       if (this._color) {
@@ -8193,49 +8556,57 @@ $(function(){
         return Iframework.wireColors[Iframework.wireColorIndex];
       }
     },
-    setColor: function(c) {
+    setColor: function (c) {
       this._color = c;
-      $(this.elementWire).attr( "stroke", c );
+      $(this.elementWire).attr('stroke', c);
     },
     label: function () {
-      return this.model.get("source")[0] +":"+ this.model.get("source")[1] + 
-        '<span class="wiresymbol" style="color:' + this._color + '">&rarr;</span>' + 
-        this.model.get("target")[0] +":"+ this.model.get("target")[1];
+      return (
+        this.model.get('source')[0] +
+        ':' +
+        this.model.get('source')[1] +
+        '<span class="wiresymbol" style="color:' +
+        this._color +
+        '">&rarr;</span>' +
+        this.model.get('target')[0] +
+        ':' +
+        this.model.get('target')[1]
+      );
     },
     // Thanks bobince http://stackoverflow.com/a/3642265/592125
-    makeSVG: function(tag, attrs) {
-      var el= document.createElementNS('http://www.w3.org/2000/svg', tag);
+    makeSVG: function (tag, attrs) {
+      var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
       for (var k in attrs) {
-        if (k === "xlink:href") {
+        if (k === 'xlink:href') {
           // Pssh namespaces...
-          el.setAttributeNS('http://www.w3.org/1999/xlink','href', attrs[k]);
+          el.setAttributeNS('http://www.w3.org/1999/xlink', 'href', attrs[k]);
         } else {
           el.setAttribute(k, attrs[k]);
         }
       }
       return el;
     },
-    dim: function(){
-      $(this.elementGroup).attr("opacity", 0.2);
+    dim: function () {
+      $(this.elementGroup).attr('opacity', 0.2);
     },
-    undim: function(){
-      $(this.elementGroup).attr("opacity", 1);
+    undim: function () {
+      $(this.elementGroup).attr('opacity', 1);
     },
-    click: function(event) {
+    click: function (event) {
       // If not on top already
-      if (this._z < this.model.parentGraph.edgeCount-1) {
+      if (this._z < this.model.parentGraph.edgeCount - 1) {
         // Bring to top (z-order of SVG can't be done with CSS)
         this.graphSVGElement.appendChild(this.elementGroup);
         this._z = this.model.parentGraph.edgeCount++;
       }
       this.highlight();
     },
-    highlight: function() {
+    highlight: function () {
       // Highlight edge and plugends
       var shadow = $(this.elementShadow);
-      shadow.attr("class", "wire-shadow highlight");
-      setTimeout(function(){
-        shadow.attr("class", "wire-shadow");
+      shadow.attr('class', 'wire-shadow highlight');
+      setTimeout(function () {
+        shadow.attr('class', 'wire-shadow');
       }, 1000);
       if (this.model.Source.view) {
         this.model.Source.view.highlight();
@@ -8243,49 +8614,43 @@ $(function(){
       if (this.model.Target.view) {
         this.model.Target.view.highlight();
       }
-    }
-
-
+    },
   });
-
 });
 
-$(function(){
-  
+$(function () {
   // Router
   var IframeworkRouter = Backbone.Router.extend({
     routes: {
-      "example/:url": "loadExample", // #example/url
-      "new":          "newBlank",
-      "local/:url":   "loadLocal",
-      "gist/https://gist.github.com/:user/:id": "loadGistUgly", // Redirects
-      "gist/:id":     "loadGist", 
-      "*path":        "default"
+      'example/:url': 'loadExample', // #example/url
+      new: 'newBlank',
+      'local/:url': 'loadLocal',
+      'gist/https://gist.github.com/:user/:id': 'loadGistUgly', // Redirects
+      'gist/:id': 'loadGist',
+      '*path': 'default',
     },
-    loadExample: function(url) {
+    loadExample: function (url) {
       Iframework.loadExample(url);
     },
     loadGistUgly: function (id) {
-      this.navigate("gist/"+id, {replace: true});
+      this.navigate('gist/' + id, {replace: true});
       this.loadGist(id);
     },
-    loadLocal: function(url) {
+    loadLocal: function (url) {
       Iframework.loadLocal(url);
     },
-    loadGist: function(id) {
+    loadGist: function (id) {
       Iframework.loadFromGistId(id);
     },
-    newBlank: function() {
+    newBlank: function () {
       Iframework.newBlank();
     },
-    'default': function() {
-
-    }
+    default: function () {},
   });
   Iframework.router = new IframeworkRouter();
   Backbone.history.start();
-    
 });
+
 // extends src/node-box-native-view.js
 
 $(function () {
@@ -8540,8 +8905,8 @@ $(function () {
   });
 });
 
-$( function() {
-
+$(function () {
+  // prettier-ignore
   var template = $(
     '<div>'+
       '<div class="sourceedit">'+
@@ -8555,36 +8920,36 @@ $( function() {
     '</div>'
   );
 
-  var code = template.find("textarea");
+  var code = template.find('textarea');
 
   // Add menu
-  Iframework.addMenu("source", template, "icon-cog");
+  Iframework.addMenu('source', template, 'icon-cog');
 
   // On change update code view
-  Iframework.on("change", function(graph){
-    if (Iframework.graph && Iframework.$(".menu-source").is(":visible")) {
+  Iframework.on('change', function (graph) {
+    if (Iframework.graph && Iframework.$('.menu-source').is(':visible')) {
       // Bookmark to scroll back to
-      var scrollBackTop = code.prop("scrollTop");
-      code.val( JSON.stringify(Iframework.graph.toJSON(), null, "  ") );
-      code.scrollTop( scrollBackTop );
+      var scrollBackTop = code.prop('scrollTop');
+      code.val(JSON.stringify(Iframework.graph.toJSON(), null, '  '));
+      code.scrollTop(scrollBackTop);
     }
   });
 
-  var sourceRefresh = function(){
-    code.val( JSON.stringify(Iframework.graph, null, "  ") );
+  var sourceRefresh = function () {
+    code.val(JSON.stringify(Iframework.graph, null, '  '));
   };
-  template.find(".sourcerefresh").click(sourceRefresh);
+  template.find('.sourcerefresh').click(sourceRefresh);
 
   // On show manu update source
-  Iframework.on("showmenu:source", sourceRefresh);
+  Iframework.on('showmenu:source', sourceRefresh);
 
-  var sourceCompress = function(){
-    code.val( JSON.stringify(Iframework.graph, null, "") );
+  var sourceCompress = function () {
+    code.val(JSON.stringify(Iframework.graph, null, ''));
   };
-  template.find(".sourcecompress").click(sourceCompress);
+  template.find('.sourcecompress').click(sourceCompress);
 
   // Apply source to test graph
-  var sourceApply = function(){
+  var sourceApply = function () {
     //   try {
     //     var newGraph = JSON.parse( this.$(".sourceedit textarea").val() );
     //     this.loadGraph(newGraph);
@@ -8596,8 +8961,8 @@ $( function() {
     //   }
     var graph;
     try {
-      graph = JSON.parse( code.val() );
-    } catch(error){
+      graph = JSON.parse(code.val());
+    } catch (error) {
       return false;
     }
     if (graph) {
@@ -8605,16 +8970,15 @@ $( function() {
       // reset localStorage version
       Iframework._loadedLocalApp = null;
       sourceRefresh();
-      g.trigger("change");
+      g.trigger('change');
     }
     return false;
   };
-  template.find(".sourceapply").click(sourceApply);
+  template.find('.sourceapply').click(sourceApply);
+});
 
-} );
-
-$( function () {
-
+$(function () {
+  // prettier-ignore
   var template = $(
     '<div>'+
       '<div class="controls">'+
@@ -8629,25 +8993,26 @@ $( function () {
   );
 
   // Add menu
-  Iframework.addMenu("library", template, "icon-plus");
+  Iframework.addMenu('library', template, 'icon-plus');
 
   Iframework.loadLibrary = function (library) {
-
     var autocompleteData = [];
 
-    var accordion = $("<div></div>");
+    var accordion = $('<div></div>');
 
     for (var category in library) {
-      if (!library.hasOwnProperty(category)){continue;}
+      if (!library.hasOwnProperty(category)) {
+        continue;
+      }
       var section = $('<div class="library-section"></div>');
 
       // section title
-      section.append( $('<h3><a href="#">'+category+"</a></h3>") );
+      section.append($('<h3><a href="#">' + category + '</a></h3>'));
 
       // section items
-      var sectionDiv = $("<div></div>");
+      var sectionDiv = $('<div></div>');
       var modules = library[category];
-      for (var i = 0; i<modules.length; i++) {
+      for (var i = 0; i < modules.length; i++) {
         var module = new Iframework.Module(modules[i]);
         // this.Library.add(module);
 
@@ -8655,75 +9020,83 @@ $( function () {
         sectionDiv.append(module.view.$el);
 
         var autocompleteDataItem = {
-          value: module.get("src"),
-          label: module.get("info").title + " - " + module.get("info").description + " - " + module.get("src"),
-          title: module.get("info").title,
-          description: module.get("info").description + " - " + module.get("src")
+          value: module.get('src'),
+          label:
+            module.get('info').title +
+            ' - ' +
+            module.get('info').description +
+            ' - ' +
+            module.get('src'),
+          title: module.get('info').title,
+          description:
+            module.get('info').description + ' - ' + module.get('src'),
         };
         autocompleteData.push(autocompleteDataItem);
       }
-      section.append( sectionDiv );
-      accordion.append( section );
+      section.append(sectionDiv);
+      accordion.append(section);
     }
 
     template.find('.listing').append(accordion);
-    accordion.children(".library-section")
-      .accordion({
-        animate: false,
-        header: "h3",
-        heightStyle: "content",
-        collapsible: true,
-        active: false
-      });
+    accordion.children('.library-section').accordion({
+      animate: false,
+      header: 'h3',
+      heightStyle: 'content',
+      collapsible: true,
+      active: false,
+    });
 
-    template.find('.addbyurlinput')
+    template
+      .find('.addbyurlinput')
       .autocomplete({
         minLength: 1,
         source: autocompleteData,
-        select: function( event, ui ) {
-          _.defer(function(){
+        select: function (event, ui) {
+          _.defer(function () {
             Iframework.addByUrl();
           });
-        }
+        },
       })
-      .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
-        // Custom display
-        return $( "<li>" )
-          .append( '<a><span style="font-size:120%;">' + item.title + "</span><br>" + item.description + "</a>" )
-          .appendTo( ul );
-      };
+      .data('ui-autocomplete')._renderItem = function (ul, item) {
+      // Custom display
+      return $('<li>')
+        .append(
+          '<a><span style="font-size:120%;">' +
+            item.title +
+            '</span><br>' +
+            item.description +
+            '</a>'
+        )
+        .appendTo(ul);
+    };
   };
 
-  var addByUrl = Iframework.addByUrl = function() {
-    var addByUrlInput = Iframework.$(".addbyurlinput");
+  var addByUrl = (Iframework.addByUrl = function () {
+    var addByUrlInput = Iframework.$('.addbyurlinput');
     addByUrlInput.blur();
 
     var url = addByUrlInput.val();
-    if (url !== "") {
-      var graphEl = Iframework.$(".graph");
+    if (url !== '') {
+      var graphEl = Iframework.$('.graph');
       Iframework.shownGraph.addNode({
-        "src": url,
-        "x": Math.floor(graphEl.scrollLeft() + graphEl.width()/2) - 100,
-        "y": Math.floor(graphEl.scrollTop() + graphEl.height()/2) - 100
+        src: url,
+        x: Math.floor(graphEl.scrollLeft() + graphEl.width() / 2) - 100,
+        y: Math.floor(graphEl.scrollTop() + graphEl.height() / 2) - 100,
       });
-      addByUrlInput
-        .val("")
-        .attr("placeholder", "loading...");
-      window.setTimeout(function(){
-        addByUrlInput
-          .attr("placeholder", "search or url");
+      addByUrlInput.val('').attr('placeholder', 'loading...');
+      window.setTimeout(function () {
+        addByUrlInput.attr('placeholder', 'search or url');
       }, 1000);
     }
     return false;
-  };
+  });
 
   // Form submit action
-  template.find(".addbyurl").submit(function(){
+  template.find('.addbyurl').submit(function () {
     addByUrl();
     return false;
   });
 
- 
   // var library = $('<ul class="dataflow-plugin-library" style="list-style:none; padding-left:0" />');
 
   // var addNode = function(node, x, y) {
@@ -8786,18 +9159,17 @@ $( function () {
   // Iframework.addPlugin("library", library);
 
   // Iframework.plugins.library.update = update;
+});
 
-} );
-
-$( function() {
-
-  var IMGUR_ID = "9877b5345adf3fc";
+$(function () {
+  var IMGUR_ID = '9877b5345adf3fc';
 
   // Shim
-  if ( !window.URL ) {
+  if (!window.URL) {
     window.URL = window.webkitURL || window.msURL || window.oURL || false;
   }
 
+  // prettier-ignore
   var template = $(
     '<div class="meemoo-plugin-images">'+
       '<div class="listing">'+
@@ -8817,109 +9189,115 @@ $( function() {
   );
 
   // Add menu
-  Iframework.addMenu("images", template, "icon-picture");
+  Iframework.addMenu('images', template, 'icon-picture');
 
   // Set info
-  var info = template.find(".info");
+  var info = template.find('.info');
   var setInfo = function (string) {
     info.text(string);
   };
 
   // Open image panel by dragging over show button
-  Iframework.$(".show-images").droppable({
-    accept: ".canvas, .image",
-    tolerance: "pointer",
-    activeClass: "drop-indicator",
+  Iframework.$('.show-images').droppable({
+    accept: '.canvas, .image',
+    tolerance: 'pointer',
+    activeClass: 'drop-indicator',
     over: function (event, ui) {
-      $(this).trigger("click");
-    }
+      $(this).trigger('click');
+    },
   });
 
   // Drop panels
-  template.find(".image-drop").droppable({
-    accept: ".canvas",
-    tolerance: "pointer",
-    hoverClass: "drop-hover",
-    activeClass: "drop-active",
+  template.find('.image-drop').droppable({
+    accept: '.canvas',
+    tolerance: 'pointer',
+    hoverClass: 'drop-hover',
+    activeClass: 'drop-active',
     // Don't also drop on graph
-    greedy: true
+    greedy: true,
   });
-  template.find(".public-drop").droppable({
+  template.find('.public-drop').droppable({
     // also accept img drops
-    accept: ".canvas, .image"
+    accept: '.canvas, .image',
   });
-  template.find(".local-drop").on("drop", function(event, ui) {
-    var image = ui.helper.data("meemoo-drag-canvas");
-    if (!image) { return false; }
+  template.find('.local-drop').on('drop', function (event, ui) {
+    var image = ui.helper.data('meemoo-drag-canvas');
+    if (!image) {
+      return false;
+    }
     var thumbnail = makeThumbnail(image);
-    localListing.append( thumbnail );
+    localListing.append(thumbnail);
   });
 
   // Make thumbnail element
-  var makeThumbnail = function(image){
+  var makeThumbnail = function (image) {
     // image can be Image or Canvas
     var el = $('<div class="meemoo-plugin-images-thumbnail canvas">')
       .append(image)
       .draggable({
-        cursor: "pointer",
-        cursorAt: { top: -10, left: -10 },
-        helper: function( event ) {
-          var helper = $( '<div class="drag-image"><h2>Copy this</h2></div>' )
-            .data({
-              "meemoo-drag-type": "canvas",
-              "meemoo-source-image": image
-            });
+        cursor: 'pointer',
+        cursorAt: {top: -10, left: -10},
+        helper: function (event) {
+          var helper = $(
+            '<div class="drag-image"><h2>Copy this</h2></div>'
+          ).data({
+            'meemoo-drag-type': 'canvas',
+            'meemoo-source-image': image,
+          });
           $(document.body).append(helper);
-          _.delay(function(){
+          _.delay(function () {
             dragCopyCanvas(helper);
           }, 100);
           return helper;
-        }
+        },
       });
     return el;
   };
 
   var dragCopyCanvas = function (helper) {
-    if (!helper) { return; }
-    var image = helper.data("meemoo-source-image");
-    var canvasCopy = document.createElement("canvas");
+    if (!helper) {
+      return;
+    }
+    var image = helper.data('meemoo-source-image');
+    var canvasCopy = document.createElement('canvas');
     canvasCopy.width = image.naturalWidth ? image.naturalWidth : image.width;
-    canvasCopy.height = image.naturalHeight ? image.naturalHeight : image.height;
-    canvasCopy.getContext("2d").drawImage(image, 0, 0);
-    helper.data("meemoo-drag-canvas", canvasCopy);
+    canvasCopy.height = image.naturalHeight
+      ? image.naturalHeight
+      : image.height;
+    canvasCopy.getContext('2d').drawImage(image, 0, 0);
+    helper.data('meemoo-drag-canvas', canvasCopy);
     helper.append(canvasCopy);
   };
 
-
   // Local files
-  var fileInput = template.find(".file-input-local");
-  var localListing = template.find(".local-listing");
-  fileInput.change( function (event) {
+  var fileInput = template.find('.file-input-local');
+  var localListing = template.find('.local-listing');
+  fileInput.change(function (event) {
     // Load local image
     var files = event.target.files;
-    for (var i=0; i<files.length; i++) {
+    for (var i = 0; i < files.length; i++) {
       var img = new Image();
-      img.src = window.URL.createObjectURL( files[i] );
+      img.src = window.URL.createObjectURL(files[i]);
       var thumbnail = makeThumbnail(img);
-      localListing.append( thumbnail );
+      localListing.append(thumbnail);
     }
   });
-  template.find(".localfile").click(function(){
-    // Trigger 
-    fileInput.trigger("click");
+  template.find('.localfile').click(function () {
+    // Trigger
+    fileInput.trigger('click');
   });
 
   // Native select local files to Imgur
-  var fileInputPublic = template.find(".file-input-public");
-  fileInputPublic.change( function (event) {
+  var fileInputPublic = template.find('.file-input-public');
+  fileInputPublic.change(function (event) {
     var files = event.target.files;
     if (files.length < 1) {
       return;
     }
     // Upload them
     setInfo('Uploading...');
-    
-    function makeSuccess (fileName) {
+
+    function makeSuccess(fileName) {
       return function (response) {
         if (response.success) {
           saveImgurLocal(response.data);
@@ -8929,34 +9307,34 @@ $( function() {
         }
       };
     }
-    
-    function makeError (fileName) {
+
+    function makeError(fileName) {
       return function () {
         setInfo('Upload ' + fileName + 'failed :(');
       };
     }
-    
+
     for (var i = 0, len = files.length; i < len; i++) {
       var file = files[i];
       $.ajax({
         url: 'https://api.imgur.com/3/image',
         type: 'post',
         headers: {
-          Authorization: 'Client-ID ' + IMGUR_ID
+          Authorization: 'Client-ID ' + IMGUR_ID,
         },
         data: file,
         processData: false,
         success: makeSuccess(file.name),
-        error: makeError(file.name)
+        error: makeError(file.name),
       });
     }
   });
-  template.find(".publicfile").click(function(){
-    // Trigger 
-    fileInputPublic.trigger("click");
+  template.find('.publicfile').click(function () {
+    // Trigger
+    fileInputPublic.trigger('click');
   });
-  
-  function enforceHTTPS (url) {
+
+  function enforceHTTPS(url) {
     if (!url) {
       return;
     }
@@ -8966,11 +9344,11 @@ $( function() {
     }
     return linkSplit.join(':');
   }
-  
-  function saveImgurLocal (data) {
+
+  function saveImgurLocal(data) {
     // Make small thumbnail url
     var thumbSplit = data.link.split('.');
-    thumbSplit[thumbSplit.length-2] += 's';
+    thumbSplit[thumbSplit.length - 2] += 's';
     var linkThumb = thumbSplit.join('.');
     // Make model, add to collection, save to localStorage
     var img = new Iframework.plugins.images.GalleryImage({
@@ -8982,31 +9360,34 @@ $( function() {
       animated: data.animated,
       gifv: enforceHTTPS(data.gifv),
       mp4: enforceHTTPS(data.mp4),
-      webm: enforceHTTPS(data.webm)
+      webm: enforceHTTPS(data.webm),
     });
     publicImages.add(img);
     img.save();
   }
 
-
   // Meemoo drop to Imgur
-  template.find(".public-drop").on("drop", function(event, ui) {
-    var canvas = ui.helper.data("meemoo-drag-canvas");
-    var image = ui.helper.data("meemoo-source-image");
-    if (!canvas && !image) { return false; }
+  template.find('.public-drop').on('drop', function (event, ui) {
+    var canvas = ui.helper.data('meemoo-drag-canvas');
+    var image = ui.helper.data('meemoo-source-image');
+    if (!canvas && !image) {
+      return false;
+    }
 
     var b64;
 
     if (canvas) {
-      try{
+      try {
         b64 = canvas.toDataURL().split(',', 2)[1];
       } catch (error) {
-        setInfo('Not able to get image data. Right-click "Save as..." or take a screenshot.');
+        setInfo(
+          'Not able to get image data. Right-click "Save as..." or take a screenshot.'
+        );
         return false;
       }
     } else if (image) {
       // Make sure data url
-      if (image.src.split(':')[0] !== "data") {
+      if (image.src.split(':')[0] !== 'data') {
         return false;
       }
 
@@ -9016,24 +9397,26 @@ $( function() {
       b64 = split[1];
     }
 
-    if (!b64) { return false; }
-    
+    if (!b64) {
+      return false;
+    }
+
     setInfo('Uploading...');
 
     $.ajax({
       url: 'https://api.imgur.com/3/image',
       type: 'post',
       headers: {
-        Authorization: 'Client-ID ' + IMGUR_ID
+        Authorization: 'Client-ID ' + IMGUR_ID,
       },
       data: {
         image: b64,
         type: 'base64',
         title: 'made with meemoo.org',
-        description: 'browser-based media hacking https://app.meemoo.org/'
+        description: 'browser-based media hacking https://app.meemoo.org/',
       },
       dataType: 'json',
-      success: function(response) {
+      success: function (response) {
         if (response.success) {
           saveImgurLocal(response.data);
           setInfo('Upload done :)');
@@ -9043,10 +9426,9 @@ $( function() {
       },
       error: function () {
         setInfo('Upload failed :( save it to your computer');
-      }
+      },
     });
   });
-
 
   // Globally-accessible functions
   Iframework.plugins.images = {};
@@ -9057,18 +9439,21 @@ $( function() {
     },
     initializeView: function () {
       if (!this.view) {
-        this.view = new Iframework.plugins.images.GalleryImageView({model:this});
+        this.view = new Iframework.plugins.images.GalleryImageView({
+          model: this,
+        });
       }
       return this.view;
-    }
+    },
   });
 
   Iframework.plugins.images.GalleryImages = Backbone.Collection.extend({
     model: Iframework.plugins.images.GalleryImage,
-    localStorage: new Backbone.LocalStorage("GalleryImages")
+    localStorage: new Backbone.LocalStorage('GalleryImages'),
   });
 
-  var imageTemplate = 
+  // prettier-ignore
+  var imageTemplate =
     '<img crossorigin="anonymous" title="drag to graph or image node" />'+
     '<div class="controls">'+
       '<a class="link button icon-link" title="Open image in new window" target="_blank"></a>'+
@@ -9077,57 +9462,58 @@ $( function() {
     '</div>';
 
   Iframework.plugins.images.GalleryImageView = Backbone.View.extend({
-    tagName: "div",
-    className: "meemoo-plugin-images-thumbnail",
+    tagName: 'div',
+    className: 'meemoo-plugin-images-thumbnail',
     template: _.template(imageTemplate),
     events: {
-      "click .delete": "destroyModel"
+      'click .delete': 'destroyModel',
     },
     initialize: function () {
       this.$el.html(this.template(this.model.toJSON()));
 
       var mainsrc = this.model.get('link');
-      this.$(".link").attr("href", mainsrc);
+      this.$('.link').attr('href', mainsrc);
 
       var animated = this.model.get('animated');
       if (animated) {
         var animatedLink = this.model.get('gifv') || mainsrc;
-        this.$(".link-animated")
-          .attr("href", animatedLink)
-          .css({"display": "inline-block"});
+        this.$('.link-animated')
+          .attr('href', animatedLink)
+          .css({display: 'inline-block'});
       }
 
       // Load thumbnail
-      var img = this.$("img")[0];
+      var img = this.$('img')[0];
       img.src = this.model.get('linkThumb');
 
       this.$el.draggable({
-        cursor: "pointer",
-        cursorAt: { top: -10, left: -10 },
-        helper: function( event ) {
-          var helper = $( '<div class="drag-image"><h2>Copy this</h2></div>' )
-            .data({
-              "meemoo-drag-type": "canvas",
-              "meemoo-source-image": img,
-              "meemoo-image-url": mainsrc
-            });
+        cursor: 'pointer',
+        cursorAt: {top: -10, left: -10},
+        helper: function (event) {
+          var helper = $(
+            '<div class="drag-image"><h2>Copy this</h2></div>'
+          ).data({
+            'meemoo-drag-type': 'canvas',
+            'meemoo-source-image': img,
+            'meemoo-image-url': mainsrc,
+          });
           $(document.body).append(helper);
-          _.delay(function(){
+          _.delay(function () {
             dragCopyCanvas(helper);
           }, 100);
           return helper;
-        }
+        },
       });
 
-      var publicListing = template.find(".public-listing");
-      publicListing.prepend( this.el );
+      var publicListing = template.find('.public-listing');
+      publicListing.prepend(this.el);
 
       this.model.on('destroy', this.remove, this);
 
       return this;
     },
     destroyModel: function () {
-      if (!window.confirm("Are you sure you want to delete this image?")) {
+      if (!window.confirm('Are you sure you want to delete this image?')) {
         return;
       }
       // Delete imgur file
@@ -9139,9 +9525,9 @@ $( function() {
           url: 'https://api.imgur.com/3/image/' + deletehash,
           type: 'delete',
           headers: {
-            Authorization: 'Client-ID ' + IMGUR_ID
+            Authorization: 'Client-ID ' + IMGUR_ID,
           },
-          success: function(response) {
+          success: function (response) {
             if (response.success) {
               model.destroy();
               setInfo('Deleted');
@@ -9151,7 +9537,7 @@ $( function() {
           },
           error: function () {
             setInfo('Delete failed');
-          }
+          },
         });
         return;
       }
@@ -9160,52 +9546,50 @@ $( function() {
     },
     remove: function () {
       this.$el.remove();
-    }
-
+    },
   });
 
   // Load local images from local storage
   var publicImages = new Iframework.plugins.images.GalleryImages();
   publicImages.fetch({
-    success: function(e) {
-      publicImages.each(function(image){
+    success: function (e) {
+      publicImages.each(function (image) {
         image.initializeView();
       });
     },
     error: function (e) {
-      console.warn("error loading public images");
-    }
+      console.warn('error loading public images');
+    },
   });
+});
 
-} );
-$(function(){
-
+$(function () {
   // Start
   Iframework.allLoaded();
 
   // Bind shortcuts
-  Mousetrap.bind(['command+a', 'ctrl+a'], function(e) {
+  Mousetrap.bind(['command+a', 'ctrl+a'], function (e) {
     if (Iframework.shownGraph && Iframework.shownGraph.view) {
       e.preventDefault();
       Iframework.shownGraph.view.selectAll();
     }
   });
 
-  Mousetrap.bind(['command+x', 'ctrl+x'], function(e) {
+  Mousetrap.bind(['command+x', 'ctrl+x'], function (e) {
     if (Iframework.shownGraph && Iframework.shownGraph.view) {
       // e.preventDefault();
       Iframework.shownGraph.view.cut();
     }
   });
 
-  Mousetrap.bind(['command+c', 'ctrl+c'], function(e) {
+  Mousetrap.bind(['command+c', 'ctrl+c'], function (e) {
     if (Iframework.shownGraph && Iframework.shownGraph.view) {
       // e.preventDefault();
       Iframework.shownGraph.view.copy();
     }
   });
 
-  Mousetrap.bind(['command+v', 'ctrl+v'], function(e) {
+  Mousetrap.bind(['command+v', 'ctrl+v'], function (e) {
     if (Iframework.shownGraph && Iframework.shownGraph.view) {
       // e.preventDefault();
       Iframework.shownGraph.view.paste();
@@ -9218,5 +9602,4 @@ $(function(){
   //     Iframework.shownGraph.view.deleteSelected();
   //   }
   // });
-
 });

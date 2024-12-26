@@ -24,6 +24,8 @@
             'libs/jquery.ui.touch-punch.js',
             'libs/jquery.ui.touch-punch.js',
             'libs/js-expression-eval/parser.js',
+            // Before
+            'src/plugins/github-api.js',
             // Iframework
             'src/iframework.js',
             'src/iframework-utils.js',
@@ -56,7 +58,6 @@
             'src/plugins/source.js',
             'src/plugins/library.js',
             'src/plugins/images.js',
-            'src/plugins/github-api.js',
             // 'src/plugins/towtruck.js',
             // All Iframework loaded
             'src/iframework-last.js',
