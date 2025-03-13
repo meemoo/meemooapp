@@ -28,7 +28,7 @@
   ],
   "dependencies": {
     "jquery": ">= 3.6.0",
-    "jquery-ui": "1.13.0",
+    "jquery-ui": "1.13.2",
     "backbone": ">= 1.4.0",
     "underscore": ">= 1.13.1"
   },
