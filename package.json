@@ -1,50 +1,51 @@
 {
-  "name": "meemoo-iframework",
-  "title": "Meemoo Iframework",
+  "name": "meemooapp",
+  "title": "Meemoo App",
   "description": "hackable web apps",
-  "version": "0.3.5",
+  "version": "0.4.0",
   "homepage": "http://meemoo.org/",
   "author": {
     "name": "Forrest Oliphant",
-    "email": "forrest@sembiki.com",
-    "url": "http://forresto.com/"
+    "email": "forrest@forresto.com",
+    "url": "https://forresto.com/"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/meemoo/iframework.git"
+    "url": "git://github.com/meemoo/meemooapp.git"
   },
   "bugs": {
-    "url": "https://github.com/meemoo/iframework/issues"
+    "url": "https://github.com/meemoo/meemooapp/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://meemoo.org/iframework/LICENSE-MIT.txt"
+      "url": "http://meemoo.org/meemooapp/LICENSE-MIT.txt"
     },
     {
       "type": "AGPL",
-      "url": "http://meemoo.org/iframework/LICENSE-AGPL.txt"
+      "url": "http://meemoo.org/meemooapp/LICENSE-AGPL.txt"
     }
   ],
   "dependencies": {
+    "backbone": ">= 1.4.0",
     "jquery": ">= 3.6.0",
     "jquery-ui": "1.13.0",
-    "backbone": ">= 1.4.0",
     "underscore": ">= 1.13.1"
   },
   "keywords": [],
   "devDependencies": {
-    "grunt": "~1.4.1",
-    "grunt-cli": "~1.4.3",
-    "grunt-contrib-concat": "~2.0.0",
-    "grunt-contrib-uglify": "~5.0.1",
-    "grunt-contrib-jshint": "~3.1.1",
-    "grunt-contrib-connect": "~3.0.0",
-    "grunt-contrib-watch": "~1.1.0"
+    "@eslint/js": "^10.0.1",
+    "esbuild": "^0.28.2",
+    "eslint": "^10.15.0",
+    "globals": "^17.14.0",
+    "prettier": "^3.10.1",
+    "vite": "^8.3.8"
   },
   "scripts": {
-    "test": "grunt test",
-    "build": "grunt build",
-    "dev": "grunt dev"
+    "dev": "vite",
+    "build": "node scripts/build.mjs",
+    "lint": "eslint .",
+    "format": "prettier --write \"src/**/*.js\" scripts \"*.{mjs,json}\"",
+    "test": "eslint . && prettier --check \"src/**/*.js\" scripts \"*.{mjs,json}\""
   }
 }

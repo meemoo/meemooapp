@@ -1,1 +1,6 @@
 src/examples/module-library.js
+build/
+libs/
+node_modules/
+package-lock.json
+*.html
