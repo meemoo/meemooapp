@@ -173,7 +173,7 @@ $(function () {
       const all = [];
       for (let page = 1; page <= maxPages; page++) {
         const batch = await $.ajax({
-          url: `${GithubAPI.API_BASE_URL}/user/gists?per_page=${perPage}&page=${page}`,
+          url: `${GithubAPI.API_BASE_URL}/gists?per_page=${perPage}&page=${page}`,
           type: 'GET',
           headers: {Authorization: 'token ' + this._token},
         });
