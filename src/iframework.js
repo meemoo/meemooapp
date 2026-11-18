@@ -22,6 +22,10 @@ $(function () {
     '<div class="localapps">' +
     '<h1>Saved Apps</h1>' +
     '</div>' +
+    '<div class="gistapps">' +
+    '<h1>Public Apps</h1>' +
+    '<div class="list"></div>' +
+    '</div>' +
     '<div class="examples">' +
     '<h1>Examples</h1>' +
     '</div>' +
@@ -63,6 +67,14 @@ $(function () {
 
   const githubAPI = new window.MeemooGithubAPI();
 
+  const safeDecode = (s) => {
+    try {
+      return decodeURIComponent(s);
+    } catch (e) {
+      return s;
+    }
+  };
+
   var IframeworkView = Backbone.View.extend({
     tagName: 'div',
     className: 'app',
@@ -103,6 +115,11 @@ $(function () {
       window.addEventListener(
         'github-login-status-changed',
         this.updateCurrentInfo.bind(this),
+        false
+      );
+      window.addEventListener(
+        'github-login-status-changed',
+        this.renderGistApps.bind(this),
         false
       );
     },
@@ -334,6 +351,40 @@ $(function () {
     showLoad: function () {
       this.showPanel();
       this.$('.menu-load').show();
+      this.renderGistApps();
+    },
+    renderGistApps: async function () {
+      const $list = this.$('.gistapps .list');
+      if (!githubAPI.isLoggedIn()) {
+        $list
+          .empty()
+          .append(
+            $('<button class="login button icon-login">login</button>'),
+            ' to list your public apps'
+          );
+        return;
+      }
+      $list.text('loading…');
+      try {
+        const gists = await githubAPI.listMeemooGists();
+        $list.empty();
+        if (gists.length === 0) {
+          $list.text('none yet');
+          return;
+        }
+        for (const gist of gists) {
+          $list.append(
+            $('<a />')
+              .attr('href', '#gist/' + gist.id)
+              .attr('title', gist.title)
+              .text(safeDecode(gist.name)),
+            '<br />'
+          );
+        }
+      } catch (error) {
+        console.warn('Failed to list gists', error);
+        $list.text('could not load public apps');
+      }
     },
     loadFromGist: function () {
       var gistid = this.loadFromGistId(this.$('.loadfromgistinput').val());
@@ -574,6 +625,7 @@ $(function () {
           ? 'updated'
           : 'created';
         alert(`Gist successfully ${action}!`);
+        this.renderGistApps();
         this.analyze('save', 'gist', response.id);
       } catch (error) {
         console.error('Error saving to Gist:', error);

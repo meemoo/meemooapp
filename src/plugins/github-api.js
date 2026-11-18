@@ -2,12 +2,13 @@ $(function () {
   class GithubAPI {
     static API_BASE_URL = 'https://api.github.com';
     static AUTH_ENDPOINT =
-      'https://forresto-meemoo_org_share.web.val.run/login';
+      'https://auth.meemoo.org/login';
 
     _token = undefined;
     _currentUser = undefined;
     _loadedGistId = undefined;
     _loadedGistResponse = undefined;
+    _meemooGists = undefined;
 
     constructor() {
       this._token = localStorage.getItem('meemoo_gist_token');
@@ -34,6 +35,7 @@ $(function () {
     }
 
     logout() {
+      this._meemooGists = undefined;
       this._token = undefined;
       localStorage.removeItem('meemoo_gist_token');
       this._currentUser = undefined;
@@ -151,6 +153,54 @@ $(function () {
       this._loadedGistResponse = undefined;
     }
 
+    // List the logged-in user's gists that contain a *.meemoo.json file.
+    async listMeemooGists() {
+      if (!this._token) {
+        throw new Error('Authentication token required');
+      }
+      if (!this._meemooGists) {
+        this._meemooGists = this._fetchMeemooGists().catch((err) => {
+          this._meemooGists = undefined;
+          throw err;
+        });
+      }
+      return this._meemooGists;
+    }
+
+    async _fetchMeemooGists() {
+      const perPage = 100;
+      const maxPages = 10;
+      const all = [];
+      for (let page = 1; page <= maxPages; page++) {
+        const batch = await $.ajax({
+          url: `${GithubAPI.API_BASE_URL}/user/gists?per_page=${perPage}&page=${page}`,
+          type: 'GET',
+          headers: {Authorization: 'token ' + this._token},
+        });
+        all.push(...batch);
+        if (batch.length < perPage) break;
+      }
+
+      const suffix = '.meemoo.json';
+      return all
+        .map((gist) => {
+          const file = Object.keys(gist.files || {}).find((f) =>
+            f.endsWith(suffix)
+          );
+          if (!file) return null;
+          return {
+            id: gist.id,
+            name: file.slice(0, -suffix.length),
+            // saveGraph() appends " – https://app.meemoo.org/#gist/<id>"
+            title: (gist.description || '').replace(/\s+–\s+https?:\/\/\S+$/, ''),
+            updated_at: gist.updated_at,
+            html_url: gist.html_url,
+          };
+        })
+        .filter(Boolean)
+        .sort((a, b) => (a.updated_at < b.updated_at ? 1 : -1));
+    }
+
     async createGist(data) {
       if (!this._token) {
         throw new Error('Authentication token required');
@@ -261,6 +311,8 @@ $(function () {
         response = await this.createGist(data);
       }
 
+      // New or renamed gist should show up in the list
+      this._meemooGists = undefined;
       return response;
     }
   }
